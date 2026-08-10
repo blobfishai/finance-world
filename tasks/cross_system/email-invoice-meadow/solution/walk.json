@@ -1,0 +1,8 @@
+[
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "Customers", "filters": {"name": "Meadow"}}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT COUNT(*) AS n FROM erp_cust_trans t JOIN erp_customers c ON c.account=t.account WHERE LOWER(c.name) LIKE '%meadow%'"}},
+  {"server": "email", "tool": "search_messages", "args": {"query": "meadow"}},
+  {"server": "email", "tool": "get_message", "args": {"message_id": "em-0117"}},
+  {"server": "sheets", "tool": "read_sheet", "args": {"name": "AR-manual-invoice-log-FY26.xlsx"}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"found_in_erp": "no", "invoice_number": "INV-2026-047", "outstanding_amount": 18750.00, "evidence_source": "email attachment (shared AP/AR mailbox), corroborated by the manual invoice log spreadsheet"}}}
+]

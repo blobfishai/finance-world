@@ -1,0 +1,26 @@
+schema_version = "1.4"
+
+[task]
+name = "cross_system/total-ar-adventure-group"
+version = "0.1.0"
+description = "Group-wide AR exposure requires joining USMF ERP with CES Direct subsidiary books (divergent IDs, credit memo trap)."
+authors = ["nario-ai"]
+keywords = ["finance", "cross_system", "ar", "fragmentation"]
+
+[metadata]
+family = "cross_system"
+origin = "novel: data-chaos pattern 'subsidiary AR lives outside the ERP' (research/domain-workflows.md §3); FB has no cross-system tasks"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 6
+chaos = "shared counterparty under divergent IDs (SYNCUS-0002 vs BC-114); unapplied credit memo only in subsidiary"
+
+[verifier]
+timeout_sec = 120
+
+[agent]
+timeout_sec = 600
+
+[environment]
+cpus = 1
+memory_mb = 1024

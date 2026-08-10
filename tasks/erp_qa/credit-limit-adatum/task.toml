@@ -1,0 +1,25 @@
+schema_version = "1.4"
+
+[task]
+name = "erp_qa/credit-limit-adatum"
+version = "0.1.0"
+description = "Look up a customer's credit limit in the ERP (FinanceBenchmark-verbatim scenario)."
+authors = ["nario-ai"]
+keywords = ["finance", "erp_qa", "ar", "credit-limit"]
+
+[metadata]
+family = "erp_qa"
+origin = "financebenchmark:erp_qa/Credit Limit (query verbatim; GT recomputed in-world)"
+difficulty = "easy"
+acceptance_label = "pending_calibration"
+walk_len = 3
+
+[verifier]
+timeout_sec = 120
+
+[agent]
+timeout_sec = 600
+
+[environment]
+cpus = 1
+memory_mb = 1024

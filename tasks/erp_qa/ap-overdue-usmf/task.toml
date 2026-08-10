@@ -1,0 +1,25 @@
+schema_version = "1.4"
+
+[task]
+name = "erp_qa/ap-overdue-usmf"
+version = "0.1.0"
+description = "Company-wide aggregate: total overdue AP balance in USMF (FinanceBenchmark scenario)."
+authors = ["nario-ai"]
+keywords = ["finance", "erp_qa", "ap", "overdue", "aggregate"]
+
+[metadata]
+family = "erp_qa"
+origin = "financebenchmark:erp_qa/AP Overdue (user-brief example; GT computed in-world)"
+difficulty = "medium"
+acceptance_label = "pending_calibration"
+walk_len = 3
+
+[verifier]
+timeout_sec = 120
+
+[agent]
+timeout_sec = 600
+
+[environment]
+cpus = 1
+memory_mb = 1024

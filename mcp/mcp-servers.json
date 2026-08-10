@@ -1,0 +1,12 @@
+{
+  "comment": "One MCP server per tool/product, all stdio Python over the task run's WORLD_DB. sim/prepare.py instantiates this roster per run with concrete env (WORLD_DB, WORLD_NOW, TRACE_FILE).",
+  "servers": {
+    "erp":     {"script": "mcp/servers/erp_server.py",     "shaped_after": "Microsoft Dynamics 365 ERP MCP (discovery-first)", "surface": "read-only"},
+    "books":   {"script": "mcp/servers/books_server.py",   "shaped_after": "QuickBooks Online (subsidiary CES Direct LLC)",    "surface": "read-only"},
+    "sheets":  {"script": "mcp/servers/sheets_server.py",  "shaped_after": "Excel shadow trackers on the shared drive",        "surface": "read-only"},
+    "email":   {"script": "mcp/servers/email_server.py",   "shaped_after": "Shared AP/AR mailbox",                             "surface": "read-only"},
+    "filings": {"script": "mcp/servers/filings_server.py", "shaped_after": "SEC EDGAR companyconcept/submissions (frozen snapshot of real XBRL facts)", "surface": "read-only"},
+    "docs":    {"script": "mcp/servers/docs_server.py",    "shaped_after": "Internal policy/SOP document store",               "surface": "read-only"},
+    "harness": {"script": "mcp/servers/harness_server.py", "shaped_after": "Answer submission (graded state)",                 "surface": "write: answers table only"}
+  }
+}

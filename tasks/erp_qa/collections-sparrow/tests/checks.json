@@ -1,0 +1,16 @@
+{
+  "answer_checks": [
+    {"field": "collection_letter_level", "type": "contains_all", "expect": ["2"]},
+    {"field": "last_payment_date", "type": "contains_all", "expect": ["2026-02-20"]},
+    {"field": "last_payment_amount", "type": "number", "expect": 22400.00, "tol_abs": 0.01},
+    {"field": "open_balance", "type": "number", "expect": 28450.00, "tol_abs": 0.02}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["erp"]},
+    {"type": "min_calls", "server": "erp", "n": 3},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [
+    {"type": "writes_only", "tables": ["answers"]}
+  ]
+}

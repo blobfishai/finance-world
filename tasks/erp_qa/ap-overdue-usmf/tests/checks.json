@@ -1,0 +1,13 @@
+{
+  "answer_checks": [
+    {"field": "total_overdue_ap", "type": "number", "expect": 81262127.02, "tol_abs": 0.05},
+    {"field": "as_of_date", "type": "contains_all", "expect": ["2026-03-02"]}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["erp"]},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [
+    {"type": "writes_only", "tables": ["answers"]}
+  ]
+}

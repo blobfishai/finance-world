@@ -1,0 +1,26 @@
+schema_version = "1.4"
+
+[task]
+name = "business_brief/brief-caterpillar"
+version = "0.1.0"
+description = "Structured credit-brief fields for Caterpillar: real XBRL debt/equity, 3-yr ratio, internal-relationship check (FB business_brief converted to deterministic fields)."
+authors = ["nario-ai"]
+keywords = ["finance", "business_brief", "credit", "ratios"]
+
+[metadata]
+family = "business_brief"
+origin = "financebenchmark:business_brief (section schema incl. internal AR/AP fusion) converted from LLM-judge rubric to structured fields; ratios from user-brief Caterpillar example"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 8
+snapshot = "CAT LongTermDebtNoncurrent + StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest FY2022-FY2024, CIK 0000018230"
+
+[verifier]
+timeout_sec = 120
+
+[agent]
+timeout_sec = 600
+
+[environment]
+cpus = 1
+memory_mb = 1024

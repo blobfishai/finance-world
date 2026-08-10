@@ -1,0 +1,26 @@
+schema_version = "1.4"
+
+[task]
+name = "finance_qa/xom-current-assets"
+version = "0.1.0"
+description = "GAAP current assets for ExxonMobil FY2024 from the frozen filings snapshot (FB finance_qa example, deterministic GT)."
+authors = ["nario-ai"]
+keywords = ["finance", "finance_qa", "gaap", "edgar"]
+
+[metadata]
+family = "finance_qa"
+origin = "financebenchmark:finance_qa (user-brief example); GT = real XBRL fact captured from data.sec.gov 2026-08-10"
+difficulty = "easy"
+acceptance_label = "pending_calibration"
+walk_len = 3
+snapshot = "XOM AssetsCurrent FY2022-FY2024, CIK 0000034088"
+
+[verifier]
+timeout_sec = 120
+
+[agent]
+timeout_sec = 600
+
+[environment]
+cpus = 1
+memory_mb = 1024

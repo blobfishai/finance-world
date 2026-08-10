@@ -1,0 +1,25 @@
+# build artifacts — never commit exported worlds or task bundles (sibling-repo wart)
+dist/
+world/build/
+*.tar.gz
+
+# sqlite runtime files — commit only pristine seeds, never live state
+*.sqlite-wal
+*.sqlite-shm
+*.db-wal
+*.db-shm
+state.db
+
+# run outputs
+.runs/
+data/flake/*.json
+data/leaderboard/
+logs/
+*.log
+
+# os / editor
+.DS_Store
+node_modules/
+__pycache__/
+*.pyc
+.venv/
