@@ -32,6 +32,8 @@ CREATE TABLE erp_settlements(
 CREATE TABLE erp_collection_letters(
   id INTEGER PRIMARY KEY, dataareaid TEXT, account TEXT, letter_code TEXT,
   letter_date TEXT, status TEXT, fee REAL, note TEXT);
+-- Form-tool runtime state (mirrors the real server's per-session view models; SQL-backed).
+CREATE TABLE erp_form_sessions(form_id TEXT PRIMARY KEY, form TEXT, state TEXT);
 -- Batch aging snapshot (the "second truth"; may lawfully diverge from live bucketing).
 CREATE TABLE erp_aging_snapshot(
   run_id TEXT, as_of TEXT, dataareaid TEXT, account TEXT, name TEXT,
@@ -46,6 +48,9 @@ CREATE TABLE books_invoices(
 CREATE TABLE books_credit_memos(
   id TEXT PRIMARY KEY, customer_id TEXT, doc_number TEXT, txn_date TEXT,
   amount REAL, remaining REAL, memo TEXT);
+CREATE TABLE books_payments(
+  id TEXT PRIMARY KEY, customer_id TEXT, txn_date TEXT, amount REAL,
+  applied_to_invoice TEXT, method TEXT, memo TEXT);
 
 -- ============ Shadow spreadsheets ============
 CREATE TABLE sheet_files(name TEXT PRIMARY KEY, owner TEXT, modified_at TEXT, description TEXT);

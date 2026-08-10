@@ -1,80 +1,117 @@
 # Mock tools — inventory, APIs, real-service comparison, SQL backing
 
-All 23 mock tools live in **`mcp/servers/*_server.py`** — one stdio MCP server per product,
-built on `mcp/lib/framework.py` (JSON-RPC `initialize` / `tools/list` / `tools/call`, tool
-schemas in MCP `inputSchema` form, per-call tracing to `TRACE_FILE`). The roster with
-`shaped_after` provenance is `mcp/mcp-servers.json`; the evidence rule ("a server exists
-iff research says the team uses that system class AND ≥1 task requires it") is
-`docs/TOOL-CENSUS.md`.
+**61 tools across 7 MCP servers**, all in `mcp/servers/*_server.py` (one stdio MCP server
+per product, JSON-RPC framework in `mcp/lib/framework.py`, per-call tracing). Quality bar:
+grafana/mcp-grafana (98 tools, live-state-backed, category organization) — we match its
+density philosophy at the surface our domain actually has, and every tool is backed by
+state, not canned text.
 
-**Every tool is SQL-backed.** There are no canned responses: each tool handler opens the
-run's SQLite state (`WORLD_DB` → `world.sqlite` = `world/build/core.sqlite` + the task's
-`environment/seed/` overlays, materialized by `sim/prepare.py`) and computes its answer
-with live queries at call time. Change a row in the seed and every tool's answer changes
-with it — that's what makes verifier ground truths and tool responses provably consistent.
-Table namespaces are per-server, so each MCP server sees only its slice of one state file.
+**Every tool is SQL-backed.** Each handler opens the run's `world.sqlite`
+(`world/build/core.sqlite` + the task's `environment/seed/` overlays via `sim/prepare.py`)
+and computes results with live queries. Even the ERP *form tools* keep their view-model
+session state in a table (`erp_form_sessions`). Proof of consistency: the
+`ContosoCashDiscountForecast` action computes $437.11 for the cash-disc task's seed — the
+same figure its verifier pins. Change a seed row and tool output + ground truth move
+together.
 
-## Inventory (generated from the live tool registry — regenerate with the snippet at bottom)
+## Inventory (generated from the live registry — snippet at bottom)
 
-| Server | Tools | Backing tables (world/schema.sql) |
+| Server | Tools | Backing tables |
 |---|---|---|
-| `erp` | 5 | `erp_companies, erp_payment_terms, erp_cash_disc, erp_customers, erp_vendors, erp_cust_trans, erp_vend_trans, erp_settlements, erp_collection_letters, erp_aging_snapshot` |
-| `books` | 5 | `books_customers, books_invoices, books_credit_memos` |
-| `sheets` | 2 | `sheet_files, sheet_rows` |
-| `email` | 2 | `email_messages` |
-| `filings` | 4 | `filings_companies, filings_facts, filings_documents` |
-| `docs` | 3 | `docs_documents` |
-| `harness` | 2 | `answers` (the graded state) |
+| `erp` | **23** | `erp_*` (11 tables incl. `erp_form_sessions` runtime state) |
+| `books` | **14** | `books_customers, books_invoices, books_credit_memos, books_payments` |
+| `filings` | **7** | `filings_companies, filings_facts, filings_documents` |
+| `email` | **5** | `email_messages` |
+| `sheets` | **5** | `sheet_files, sheet_rows` |
+| `docs` | **5** | `docs_documents` |
+| `harness` | **2** | `answers` (the graded state) |
 
-### `erp` — 5 tools (`mcp/servers/erp_server.py`)
-- **`data_find_entity_type`**(`query`*) — find entity types from a natural-language query
-- **`data_get_entity_metadata`**(`entity`*) — field list (via `PRAGMA table_info`); unknown entity → informative error + available list
-- **`data_find_entities`**(`entity`*, `filters`, `page`) — filtered query, **25-row pages**
-- **`data_find_entities_sql`**(`sql`*) — read-only single SELECT over `erp_*` only, LIMIT 200
-- **`get_customer_aged_balances`**(`as_of`, `customer_account`, `customer_group`, `page`) — LIVE aging computed from open transactions (deliberately distinct from the batch `AgedBalancesSnapshot` entity — the dual-truth mechanic)
+### `erp` — 23 tools — **1:1 with Microsoft's Dynamics 365 ERP MCP server (22/22 + 1 alias)**
 
-### `books` — 5 tools (`mcp/servers/books_server.py`)
-`list_customers`(`query`) · `get_customer`(`customer_id`*, returns open-balance + unapplied-credit-memo summary) · `query_invoices`(`customer_id`, `status`) · `get_invoice`(`invoice`*) · `query_credit_memos`(`customer_id`)
+Mirrors learn.microsoft.com/dynamics365/fin-ops-core/dev-itpro/copilot/copilot-mcp exactly:
 
-### `sheets` — 2 tools · `email` — 2 tools · `docs` — 3 tools
-`list_spreadsheets` · `read_sheet`(`name`*, `max_rows`) — rows as JSON cells
-`search_messages`(`query`*, `folder`) · `get_message`(`message_id`*, incl. attachment text)
-`list_documents`(`doc_type`) · `search_documents`(`query`*) · `get_document`(`doc_id`*)
+- **Data tools 7/7**: `data_find_entity_type`, `data_get_entity_metadata`,
+  `data_find_entities` (25-row pages), `data_find_entities_sql` (read-only SELECT, the
+  10.0.48+ replacement), `data_create_entities`, `data_update_entities`,
+  `data_delete_entities` — the three writes exist and respond with **authentic role-based
+  rejections** (agent role: "Finance analyst (read-only)"), matching the real server's
+  RBAC contract ("the system rejects calls to actions or objects the user role cannot access").
+- **Form tools 13/13**: `form_find_menu_item`, `form_open_menu_item`, `form_close_form`,
+  `form_find_controls` (one search term per call, per the real doc), `form_open_or_close_tab`,
+  `form_filter_form`, `form_filter_grid`, `form_sort_grid_column`, `form_select_grid_row`,
+  `form_click_control`, `form_open_lookup`, `form_set_control_values`, `form_save_form`.
+  Real view-model runtime over 8 registered forms (CustTable, VendTable, CustTrans,
+  VendTrans, CustCollectionLetterJour, CustAgedBalances, PaymTerm, CashDisc) with the
+  documented behaviors: **tabs closed by default**, grid **filters support only the
+  "matches" operator**, ISO dates, 25-row pages, runtime-calculated fields on row select,
+  action controls that execute business logic (Collections → letters + aging;
+  OpenTransactions), writes RBAC-denied.
+- **Action tools 2/2**: `api_find_actions`, `api_invoke_action` over an ICustomAPI-style
+  registry (environment-specific by design, like the real server): `ContosoCustAgedBalancesLive`,
+  `ContosoCashDiscountForecast`, `ContosoCollectionStatus`.
+- **+1 convenience alias**: `get_customer_aged_balances` (the live "Customer aged balances"
+  view; kept stable for oracle walks).
 
-### `filings` — 4 tools (`mcp/servers/filings_server.py`)
-`lookup_company`(`query`*) → CIK · `list_available_concepts`(`ticker`*) · `get_company_concept`(`ticker`*, `concept`*) · `get_submissions`(`ticker`*)
+Not mocked, deliberately: Entra ID auth handshake, environment servicing downtime,
+Copilot-credit billing — outside eval scope.
 
-### `harness` — 2 tools (`mcp/servers/harness_server.py`)
-`submit_answer`(`answers`* object → `answers` table; "none" for empty-answer traps) · `list_submitted`()
+### `books` — 14 tools — QBO-shaped (AR slice of Intuit's 144-tool MCP, ~10%)
 
-## Mock vs. real service — how much are we mocking?
+`get_company_info` · **`query`** (QBO-style query language: `SELECT * FROM Invoice WHERE
+CustomerRef = 'BC-114'`, entities Customer/Invoice/CreditMemo/Payment) · `list_customers` ·
+`get_customer` · `query_invoices` · `get_invoice` · `query_credit_memos` · `query_payments` ·
+**reports 3**: `report_aged_receivables` (QBO behavior: credit memos NOT netted),
+`report_customer_balance`, `report_transaction_list` · **writes 3** (`create_invoice`,
+`update_invoice`, `void_invoice`) — exist, respond with authentic `insufficient scope:
+accounting.read` denials.
 
-| Mock | Real surface (researched) | Coverage & deliberate gaps |
+### `filings` — 7 tools — **EDGAR data-API 1:1 at the endpoint level**
+
+`lookup_company` (ticker→CIK) · `get_company_concept` (≈ `api/xbrl/companyconcept`) ·
+`get_company_facts` (≈ `api/xbrl/companyfacts`, large payload like the real one) ·
+`get_xbrl_frames` (≈ `api/xbrl/frames`: one concept, one period, all companies) ·
+`get_submissions` (≈ `data.sec.gov/submissions`) · `full_text_search` (≈ EDGAR FTS) ·
+`list_available_concepts` (snapshot index). Facts are **real XBRL values** captured from
+data.sec.gov (XOM, CAT; 2026-08-10), frozen for determinism. Rate-limit/User-Agent/CIK-padding
+friction not reproduced by default (ledger Q12: escalation lever).
+
+### `email` (5) · `sheets` (5) · `docs` (5) — the fragmentation surfaces
+
+email: `search_messages`, `get_message`, `list_folders`, `get_thread`, `get_attachment`.
+sheets: `list_spreadsheets`, `read_sheet`, `read_range`, `get_spreadsheet_metadata`
+(staleness checks — chaos mechanic), `search_content` (cross-file grep).
+docs: `list_documents`, `search_documents`, `get_document`, `get_document_metadata`
+(version/effective-date checks), `list_document_types`.
+
+### `harness` (2) — eval-only
+
+`submit_answer` (answers-as-state; literal "none" for empty-answer traps) · `list_submitted`.
+
+## Coverage summary vs real services
+
+| Mock | Real surface | Verdict |
 |---|---|---|
-| `erp` | **Microsoft Dynamics 365 ERP MCP server** (dynamic, 2025): `data_find_entity_type`, `data_get_entity_metadata`, `data_find_entities`, `data_find_entities_sql`, ~13 form tools (25-row pages), `api_find_actions`, `api_invoke_action`. Static 13-tool server retires 2026-10-01. FinanceBenchmark ships an `erp-mcp-sqlite` localhost stand-in — Microsoft's own precedent for exactly our mock. (`research/erp-domain.md` §3, `research/evals-and-benchmarks.md`) | **Discovery spine 4/4 tools, same names and call pattern.** Form tools 1/13 (aged balances — the one erp_qa tasks need; page size 25 matches). `api_*` write actions 0/2 — world is read-only until `collections_ops` (wave 2). Auth (Entra OAuth) not mocked — out of eval scope. |
-| `books` | **Intuit QuickBooks Online official MCP: 144 tools** across accounting objects. (`research/erp-domain.md` §4) | ~3% by tool count, on purpose: the 5 AR-read tools the subsidiary fragmentation mechanic needs (customers, invoices, credit memos). Entities/fields mirror QBO shapes (`DocNumber`, `Balance`, `TxnDate`, credit-memo `remaining`). |
-| `filings` | **SEC EDGAR**: `submissions`, `companyfacts`, `companyconcept`, `frames`, full-text search; 10 req/s + User-Agent friction. Community MCPs: sec-edgar-mcp, financial-datasets (9 tools). (`research/domain-workflows.md` §4) | `companyconcept` ≈ 1:1 (`get_company_concept`), `submissions` ≈ `get_submissions`, `companyfacts` index ≈ `list_available_concepts`, ticker→CIK ≈ `lookup_company`. **Facts are real XBRL values** captured from data.sec.gov (XOM CIK 0000034088, CAT CIK 0000018230; captured 2026-08-10) and frozen for determinism. Not mocked: `frames`, full-text, rate-limit/CIK-padding friction (ledger Q12: escalation lever, off by default). |
-| `email` | Gmail/Graph mail APIs (search + read). | Minimal 2-tool read surface — evidence class is "invoices arrive by email" (68% manual keying), which needs search+read only. No send (read-only world). |
-| `sheets` | Excel/Drive file listing + range reads. | 2-tool shadow-drive surface for the 94%-close-in-Excel mechanic; no write, no formulas. |
-| `docs` | SharePoint/Notion-class doc store. | 3-tool consult surface for the anchor-document pattern (dunning runbook, discount policy, brief template, credit policy). |
-| `harness` | (no real counterpart — eval-only) | House pattern: answers-as-state so verification stays deterministic; kept off the business surface. |
+| erp | D365 ERP MCP: 22 tools | **22/22 — 1:1 by name and behavior contract** |
+| filings | EDGAR data APIs: 5 endpoints + FTS | **6/6 endpoint-level 1:1** (+ index helper) |
+| books | Intuit QBO MCP: 144 tools | 14 (~10%) — full AR read slice + query language + reports; writes scope-denied |
+| email / sheets / docs | Gmail / Drive-Excel / SharePoint-class | minimal-but-honest read surfaces sized to their evidence class |
 
-## Research anchoring chain (tool → evidence → task)
+## Error & security semantics
 
-Every server traces: **real-service research** (`research/erp-domain.md`,
-`research/domain-workflows.md`) → **census justification + exclusion list**
-(`docs/TOOL-CENSUS.md`) → **roster entry with `shaped_after`** (`mcp/mcp-servers.json`) →
-**tasks whose `tests/checks.json` require it** (`required_servers`). Excluded-by-evidence:
-slack/jira/github/pagerduty/notion/calendar (no finance workflow touches them — see the
-fixed-roster anti-pattern bug, `~/dev/blobfish-0/docs/BUG-TOOL-ROSTER-INFERENCE.md`).
+Application errors are informative payloads (`{"error", "available_entities"/"hint"}`),
+never raw stack traces; the framework marks them `ok:false` in the trace so
+`required_servers` verification still demands a *successful* call. Write tools are present
+(1:1 with reality) but return authentic authorization denials — the agent's role is
+read-only, exactly how the real servers scope agents; denials are traceable, and the
+verifier `writes_only` veto independently guarantees no state mutation outside `answers`.
 
-## Error semantics (audit A2)
+## Research anchoring chain
 
-Tools return informative application errors (`{"error": ..., "available_entities": [...]}`)
-instead of raw exceptions; the framework marks any error payload `ok:false` in the trace, so
-`required_servers` verification still demands at least one *successful* call — an agent
-cannot claim "not in the ERP" off a failed query, but it recovers from a readable error,
-not a stack trace.
+Real-service research (`research/erp-domain.md`, `research/domain-workflows.md`; Microsoft
+copilot-mcp doc fetched 2026-08-10 for the verbatim 22-tool list) → census + exclusion list
+(`docs/TOOL-CENSUS.md`) → roster with `shaped_after` (`mcp/mcp-servers.json`) → tasks whose
+`required_servers` checks demand the server. Excluded: slack/jira/github/pagerduty/notion —
+see the fixed-roster anti-pattern bug (`~/dev/blobfish-0/docs/BUG-TOOL-ROSTER-INFERENCE.md`).
 
 ## Regenerating the inventory
 
@@ -82,9 +119,11 @@ not a stack trace.
 python3 - <<'EOF'
 import importlib.util
 from pathlib import Path
+total = 0
 for f in sorted(Path("mcp/servers").glob("*_server.py")):
     spec = importlib.util.spec_from_file_location(f.stem, f); m = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(m)
+    spec.loader.exec_module(m); total += len(m.S.tools)
     print(f"{m.S.name}: {len(m.S.tools)} tools — {', '.join(m.S.tools)}")
+print("TOTAL:", total)
 EOF
 ```

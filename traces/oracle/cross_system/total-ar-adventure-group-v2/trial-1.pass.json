@@ -24,70 +24,70 @@
  "final_text": "{\"walk_steps\": 10}\n",
  "trace": [
   {
-   "ts": 1786392697.947528,
+   "ts": 1786393182.1672478,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure Works\"}}",
    "ok": true
   },
   {
-   "ts": 1786392697.9485729,
+   "ts": 1786393182.168146,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT ROUND(SUM(amount - settled), 2) AS open_balance FROM erp_cust_trans WHERE account='SYNCUS-0002' AND txn_type='Invoice' AND closed=0\"}",
    "ok": true
   },
   {
-   "ts": 1786392697.949366,
+   "ts": 1786393182.171382,
    "server": "books",
    "tool": "list_customers",
    "args": "{\"query\": \"adventure\"}",
    "ok": true
   },
   {
-   "ts": 1786392697.949648,
+   "ts": 1786393182.171672,
    "server": "books",
    "tool": "get_customer",
    "args": "{\"customer_id\": \"BC-114\"}",
    "ok": true
   },
   {
-   "ts": 1786392697.9498649,
+   "ts": 1786393182.171965,
    "server": "books",
    "tool": "query_invoices",
    "args": "{\"customer_id\": \"BC-114\", \"status\": \"Open\"}",
    "ok": true
   },
   {
-   "ts": 1786392697.9500759,
+   "ts": 1786393182.1724448,
    "server": "books",
    "tool": "query_credit_memos",
    "args": "{\"customer_id\": \"BC-114\"}",
    "ok": true
   },
   {
-   "ts": 1786392697.9504309,
+   "ts": 1786393182.1728818,
    "server": "sheets",
    "tool": "list_spreadsheets",
    "args": "{}",
    "ok": true
   },
   {
-   "ts": 1786392697.950646,
+   "ts": 1786393182.173216,
    "server": "sheets",
    "tool": "read_sheet",
    "args": "{\"name\": \"CES-migration-side-log.xlsx\"}",
    "ok": true
   },
   {
-   "ts": 1786392697.9510012,
+   "ts": 1786393182.173665,
    "server": "email",
    "tool": "search_messages",
    "args": "{\"query\": \"adventure works invoice\"}",
    "ok": true
   },
   {
-   "ts": 1786392697.952062,
+   "ts": 1786393182.1747289,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"erp_open_balance\": 94749.19, \"subsidiary_net_balance\": 19050.0, \"offbook_invoice_amount\": 6200.0, \"combined_exposure\": 119999.19}}",

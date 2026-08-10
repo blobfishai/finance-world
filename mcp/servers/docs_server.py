@@ -32,5 +32,18 @@ def get_document(doc_id):
     r = cx.execute("SELECT * FROM docs_documents WHERE doc_id=?", (doc_id,)).fetchone()
     return dict(r) if r else {"error": "not found"}
 
+@S.tool("get_document_metadata", "Document metadata only (type, version, effective date) — check currency before relying on a policy.",
+        {"doc_id": {"type": "string"}}, ["doc_id"])
+def get_document_metadata(doc_id):
+    cx = S.db()
+    r = cx.execute("SELECT doc_id, title, doc_type, version, effective_date FROM docs_documents WHERE doc_id=?", (doc_id,)).fetchone()
+    return dict(r) if r else {"error": "not found"}
+
+@S.tool("list_document_types", "List document types with counts (policy, sop, template, statement, ...).")
+def list_document_types():
+    cx = S.db()
+    return {"types": [dict(r) for r in cx.execute(
+        "SELECT doc_type, COUNT(*) AS documents FROM docs_documents GROUP BY doc_type ORDER BY doc_type")]}
+
 if __name__ == "__main__":
     S.run()

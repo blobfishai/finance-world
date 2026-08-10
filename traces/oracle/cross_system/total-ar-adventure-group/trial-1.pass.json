@@ -22,42 +22,42 @@
  "final_text": "{\"walk_steps\": 6}\n",
  "trace": [
   {
-   "ts": 1786392698.105272,
+   "ts": 1786393182.331718,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure Works\"}}",
    "ok": true
   },
   {
-   "ts": 1786392698.1061351,
+   "ts": 1786393182.33252,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT ROUND(SUM(amount - settled), 2) AS open_balance FROM erp_cust_trans WHERE account='SYNCUS-0002' AND txn_type='Invoice' AND closed=0\"}",
    "ok": true
   },
   {
-   "ts": 1786392698.1065888,
+   "ts": 1786393182.332913,
    "server": "books",
    "tool": "list_customers",
    "args": "{\"query\": \"adventure\"}",
    "ok": true
   },
   {
-   "ts": 1786392698.106922,
+   "ts": 1786393182.333141,
    "server": "books",
    "tool": "get_customer",
    "args": "{\"customer_id\": \"BC-114\"}",
    "ok": true
   },
   {
-   "ts": 1786392698.1071842,
+   "ts": 1786393182.3333278,
    "server": "books",
    "tool": "query_credit_memos",
    "args": "{\"customer_id\": \"BC-114\"}",
    "ok": true
   },
   {
-   "ts": 1786392698.108275,
+   "ts": 1786393182.334489,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"erp_open_balance\": 94749.19, \"subsidiary_net_balance\": 19050.0, \"combined_exposure\": 113799.19}}",
