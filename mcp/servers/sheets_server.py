@@ -20,18 +20,29 @@ def _grid(cx, name):
     rows = cx.execute("SELECT row_no, cells FROM sheet_rows WHERE file=? ORDER BY row_no", (name,)).fetchall()
     return [json.loads(r["cells"]) for r in rows]
 
+def _cell_v(c):
+    """A cell is a literal, or {"f": "=SUM(...)", "v": cached_value} for formula cells.
+    Like real Excel, the API serves the CACHED value — it may have drifted from the
+    formula's inputs (paste-values / stale-recalc chaos)."""
+    return c.get("v", "") if isinstance(c, dict) else c
+
+def _cell_f(c):
+    return c.get("f", c.get("v", "")) if isinstance(c, dict) else c
+
 def _range_obj(grid, r0, c0, r1, c1, sheet="Sheet1"):
-    values = []
+    values, formulas = [], []
     for ri in range(r0, r1 + 1):
         row = grid[ri - 1] if 0 < ri <= len(grid) else []
-        values.append([(row[ci - 1] if 0 < ci <= len(row) else "") for ci in range(c0, c1 + 1)])
+        cells = [(row[ci - 1] if 0 < ci <= len(row) else "") for ci in range(c0, c1 + 1)]
+        values.append([_cell_v(c) for c in cells])
+        formulas.append([_cell_f(c) for c in cells])
     addr = f"{sheet}!{_col(c0)}{r0}:{_col(c1)}{r1}"
     return {"address": addr, "addressLocal": addr,
             "rowCount": r1 - r0 + 1, "columnCount": c1 - c0 + 1,
             "cellCount": (r1 - r0 + 1) * (c1 - c0 + 1),
             "rowIndex": r0 - 1, "columnIndex": c0 - 1,
             "values": values, "text": [[str(v) for v in row] for row in values],
-            "formulas": values, "numberFormat": [["General"] * (c1 - c0 + 1) for _ in range(r1 - r0 + 1)],
+            "formulas": formulas, "numberFormat": [["General"] * (c1 - c0 + 1) for _ in range(r1 - r0 + 1)],
             "valueTypes": [[("Empty" if v == "" else "Double" if isinstance(v, (int, float)) else "String")
                             for v in row] for row in values]}
 

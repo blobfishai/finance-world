@@ -1,0 +1,60 @@
+{
+ "task": "cross_system/tracker-formula-drift",
+ "family": "cross_system",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 5,
+ "walk_len": 5,
+ "budget_turns": 24,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.1,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 5}\n",
+ "trace": [
+  {
+   "ts": 1786395535.8606231,
+   "server": "sheets",
+   "tool": "get_drive_item",
+   "args": "{\"item\": \"AR-watchlist-tracker.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786395535.861075,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"AR-watchlist-tracker.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786395535.862319,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT c.name, ROUND(SUM(t.amount - t.settled), 2) AS open FROM erp_cust_trans t JOIN erp_customers c ON c.account = t.account WHERE t.account IN ('US-031','US-032','US-033') AND t.txn_type='Invoice' AND t.closed=0 GROUP BY c.name\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786395535.86313,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT ROUND(SUM(amount - settled), 2) AS total FROM erp_cust_trans WHERE account IN ('US-031','US-032','US-033') AND txn_type='Invoice' AND closed=0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786395535.864715,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"tracker_cached_total\": 118400.0, \"tracker_rows_sum\": 121900.0, \"erp_live_total\": 127450.0, \"stale_customers\": \"Tailwind Bikes, Ostara Labs\"}}",
+   "ok": true
+  }
+ ]
+}

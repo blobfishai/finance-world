@@ -22,49 +22,49 @@
  "final_text": "{\"walk_steps\": 7}\n",
  "trace": [
   {
-   "ts": 1786394985.5209868,
+   "ts": 1786395537.13678,
    "server": "docs",
    "tool": "search_documents",
    "args": "{\"query\": \"payment run\"}",
    "ok": true
   },
   {
-   "ts": 1786394985.5214038,
+   "ts": 1786395537.1371572,
    "server": "docs",
    "tool": "get_document",
    "args": "{\"doc_id\": \"sop--payment-run\"}",
    "ok": true
   },
   {
-   "ts": 1786394985.523034,
+   "ts": 1786395537.1385548,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT t.invoice, t.account, v.name, v.on_hold, t.due_date, t.cash_disc_code, ROUND(t.amount - t.settled, 2) AS open FROM erp_vend_trans t JOIN erp_vendors v ON v.account = t.account WHERE t.txn_type='Invoice' AND t.closed=0 AND t.invoice LIKE 'PPINV-%'\"}",
    "ok": true
   },
   {
-   "ts": 1786394985.523194,
+   "ts": 1786395537.138624,
    "server": "erp",
    "tool": "api_find_actions",
    "args": "{\"query\": \"cash discount\"}",
    "ok": true
   },
   {
-   "ts": 1786394985.523919,
+   "ts": 1786395537.1392121,
    "server": "erp",
    "tool": "api_invoke_action",
    "args": "{\"action\": \"ContosoCashDiscountForecast\", \"parameters\": {\"as_of\": \"2026-03-06\"}}",
    "ok": true
   },
   {
-   "ts": 1786394985.5243928,
+   "ts": 1786395537.139796,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Vendors\", \"filters\": {\"account\": \"SYNVEN-0044\"}}",
    "ok": true
   },
   {
-   "ts": 1786394985.5254989,
+   "ts": 1786395537.141,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"proposal_invoices\": \"PPINV-101, PPINV-102, PPINV-103\", \"excluded_invoice\": \"PPINV-104\", \"exclusion_reason\": \"vendor SYNVEN-0044 is on payment hold\", \"discount_captured\": 437.11, \"net_payment_total\": 36418.39}}",

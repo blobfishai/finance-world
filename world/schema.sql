@@ -24,7 +24,16 @@ CREATE TABLE erp_cust_trans(
 CREATE TABLE erp_vend_trans(
   id INTEGER PRIMARY KEY, dataareaid TEXT, account TEXT, voucher TEXT, invoice TEXT,
   txn_type TEXT, description TEXT, trans_date TEXT, due_date TEXT, currency TEXT,
-  amount REAL, settled REAL DEFAULT 0, closed INTEGER DEFAULT 0, cash_disc_code TEXT);
+  amount REAL, settled REAL DEFAULT 0, closed INTEGER DEFAULT 0, cash_disc_code TEXT,
+  po_number TEXT);
+-- Procurement (3-way match surface: PO -> product receipt -> vendor invoice).
+CREATE TABLE erp_purch_orders(
+  po_number TEXT, line INTEGER, dataareaid TEXT, vendor TEXT, item TEXT, description TEXT,
+  qty_ordered REAL, unit_price REAL, order_date TEXT, status TEXT,
+  PRIMARY KEY(po_number, line));
+CREATE TABLE erp_product_receipts(
+  receipt_id TEXT, po_number TEXT, line INTEGER, receipt_date TEXT, qty_received REAL,
+  PRIMARY KEY(receipt_id, po_number, line));
 CREATE TABLE erp_settlements(
   id INTEGER PRIMARY KEY, side TEXT, dataareaid TEXT, account TEXT,
   payment_id INTEGER, invoice_id INTEGER, amount REAL, cash_disc_taken REAL DEFAULT 0,

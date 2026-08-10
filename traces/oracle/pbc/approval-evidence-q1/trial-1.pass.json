@@ -23,42 +23,42 @@
  "final_text": "{\"walk_steps\": 6}\n",
  "trace": [
   {
-   "ts": 1786394985.687574,
+   "ts": 1786395537.303141,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT invoice, account, description, trans_date, amount FROM erp_vend_trans WHERE invoice IN ('PBINV-201','PBINV-202')\"}",
    "ok": true
   },
   {
-   "ts": 1786394985.690847,
+   "ts": 1786395537.306387,
    "server": "email",
    "tool": "messages_list",
    "args": "{\"q\": \"PBINV-201\"}",
    "ok": true
   },
   {
-   "ts": 1786394985.691256,
+   "ts": 1786395537.306738,
    "server": "email",
    "tool": "threads_get",
    "args": "{\"id\": \"em-0402\"}",
    "ok": true
   },
   {
-   "ts": 1786394985.691541,
+   "ts": 1786395537.306992,
    "server": "email",
    "tool": "messages_list",
    "args": "{\"q\": \"PBINV-202\"}",
    "ok": true
   },
   {
-   "ts": 1786394985.691926,
+   "ts": 1786395537.307327,
    "server": "docs",
    "tool": "search_documents",
    "args": "{\"query\": \"PBINV-202 approval\"}",
    "ok": true
   },
   {
-   "ts": 1786394985.692933,
+   "ts": 1786395537.3084311,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"inv201_approver\": \"Priya Shah\", \"inv201_approval_date\": \"2026-01-18\", \"inv201_evidence_location\": \"shared mailbox thread (approval reply from AP Manager)\", \"inv202_approver\": \"none\", \"inv202_finding\": \"No approval evidence located in the ERP, mailbox, or document library \\u2014 control",

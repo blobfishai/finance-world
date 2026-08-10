@@ -35,6 +35,8 @@ ENTITIES = {
     "CollectionLetters":    ("erp_collection_letters", "Collection letter journal per customer: letter_code 1..4/Collection, date, status, fee"),
     "AgedBalancesSnapshot": ("erp_aging_snapshot", "Batch customer aging snapshot (run_id, as_of, buckets). May lag live transactions."),
     "Companies":            ("erp_companies", "Legal entities"),
+    "PurchaseOrders":       ("erp_purch_orders", "Purchase order lines: vendor, item, qty ordered, unit price, status"),
+    "ProductReceipts":      ("erp_product_receipts", "Product receipt lines against purchase orders: qty received, receipt date"),
 }
 
 def _unknown(entity):
@@ -159,6 +161,9 @@ FORMS = {
                   "table": "erp_aging_snapshot",
                   "grid": ["account", "name", "as_of", "not_due", "b1_30", "b31_60", "b61_90", "b90_plus", "total_due"],
                   "tabs": {"General": ["run_id"]}, "actions": []},
+    "PurchTable": {"menu_item": "All purchase orders", "title": "Purchase orders", "table": "erp_purch_orders",
+                  "grid": ["po_number", "line", "vendor", "item", "qty_ordered", "unit_price", "status"],
+                  "tabs": {"General": ["description", "order_date"]}, "actions": []},
     "PaymTerm": {"menu_item": "Payment terms", "title": "Terms of payment", "table": "erp_payment_terms",
                   "grid": ["code", "days", "description"], "tabs": {}, "actions": []},
     "CashDisc": {"menu_item": "Cash discounts", "title": "Cash discounts", "table": "erp_cash_disc",

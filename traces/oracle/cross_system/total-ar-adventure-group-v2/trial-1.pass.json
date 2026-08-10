@@ -24,70 +24,70 @@
  "final_text": "{\"walk_steps\": 10}\n",
  "trace": [
   {
-   "ts": 1786394984.101644,
+   "ts": 1786395535.518253,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure Works\"}}",
    "ok": true
   },
   {
-   "ts": 1786394984.102499,
+   "ts": 1786395535.5192142,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT ROUND(SUM(amount - settled), 2) AS open_balance FROM erp_cust_trans WHERE account='SYNCUS-0002' AND txn_type='Invoice' AND closed=0\"}",
    "ok": true
   },
   {
-   "ts": 1786394984.103273,
+   "ts": 1786395535.520258,
    "server": "books",
    "tool": "query",
    "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%adventure%'\"}",
    "ok": true
   },
   {
-   "ts": 1786394984.10356,
+   "ts": 1786395535.520591,
    "server": "books",
    "tool": "get_customer",
    "args": "{\"customer_id\": \"BC-114\"}",
    "ok": true
   },
   {
-   "ts": 1786394984.103814,
+   "ts": 1786395535.520881,
    "server": "books",
    "tool": "query",
    "args": "{\"q\": \"SELECT * FROM Invoice WHERE CustomerRef = 'BC-114'\"}",
    "ok": true
   },
   {
-   "ts": 1786394984.104039,
+   "ts": 1786395535.521141,
    "server": "books",
    "tool": "query",
    "args": "{\"q\": \"SELECT * FROM CreditMemo WHERE CustomerRef = 'BC-114'\"}",
    "ok": true
   },
   {
-   "ts": 1786394984.1043751,
+   "ts": 1786395535.521587,
    "server": "sheets",
    "tool": "list_drive_items",
    "args": "{}",
    "ok": true
   },
   {
-   "ts": 1786394984.104604,
+   "ts": 1786395535.521836,
    "server": "sheets",
    "tool": "workbook_used_range",
    "args": "{\"item\": \"CES-migration-side-log.xlsx\"}",
    "ok": true
   },
   {
-   "ts": 1786394984.107424,
+   "ts": 1786395535.524694,
    "server": "email",
    "tool": "messages_list",
    "args": "{\"q\": \"adventure works invoice\"}",
    "ok": true
   },
   {
-   "ts": 1786394984.1084769,
+   "ts": 1786395535.52578,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"erp_open_balance\": 94749.19, \"subsidiary_net_balance\": 19050.0, \"offbook_invoice_amount\": 6200.0, \"combined_exposure\": 119999.19}}",

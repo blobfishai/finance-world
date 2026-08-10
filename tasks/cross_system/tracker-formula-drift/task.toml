@@ -1,0 +1,24 @@
+schema_version = "1.4"
+
+[task]
+name = "cross_system/tracker-formula-drift"
+version = "0.1.0"
+description = "Formula-drift audit: the AR watchlist tracker's TOTAL cell disagrees with its own rows, and two rows are stale vs the live ERP."
+authors = ["nario-ai"]
+keywords = ["finance", "cross_system", "sheets", "formula-drift", "version-drift"]
+
+[metadata]
+family = "cross_system"
+origin = "chaos patterns 'spreadsheet version drift' + '1 in 3 CFOs distrust close data' (research/domain-workflows.md §3); enabled by sheets formula-cell support (Graph serves cached values, like real Excel)"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 5
+chaos = "three layers of wrongness: cached TOTAL != rows sum != live ERP"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

@@ -1,0 +1,15 @@
+{
+  "answer_checks": [
+    {"field": "clean_invoice", "type": "contains_all", "expect": ["TWINV-301"]},
+    {"field": "price_variance_invoice", "type": "contains_all", "expect": ["TWINV-302"]},
+    {"field": "price_variance_amount", "type": "number", "expect": 300.00, "tol_abs": 0.01},
+    {"field": "qty_variance_invoice", "type": "contains_all", "expect": ["TWINV-303"]},
+    {"field": "qty_over_billed_units", "type": "number", "expect": 40, "tol_abs": 0}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["erp"]},
+    {"type": "min_calls", "server": "erp", "n": 3},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [{"type": "writes_only", "tables": ["answers"]}]
+}

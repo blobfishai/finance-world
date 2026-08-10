@@ -1,0 +1,7 @@
+[
+  {"server": "sheets", "tool": "get_drive_item", "args": {"item": "AR-watchlist-tracker.xlsx"}},
+  {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "AR-watchlist-tracker.xlsx"}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT c.name, ROUND(SUM(t.amount - t.settled), 2) AS open FROM erp_cust_trans t JOIN erp_customers c ON c.account = t.account WHERE t.account IN ('US-031','US-032','US-033') AND t.txn_type='Invoice' AND t.closed=0 GROUP BY c.name"}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT ROUND(SUM(amount - settled), 2) AS total FROM erp_cust_trans WHERE account IN ('US-031','US-032','US-033') AND txn_type='Invoice' AND closed=0"}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"tracker_cached_total": 118400.00, "tracker_rows_sum": 121900.00, "erp_live_total": 127450.00, "stale_customers": "Tailwind Bikes, Ostara Labs"}}}
+]

@@ -23,70 +23,70 @@
  "final_text": "{\"walk_steps\": 10}\n",
  "trace": [
   {
-   "ts": 1786394983.171218,
+   "ts": 1786395534.5377269,
    "server": "docs",
    "tool": "search_documents",
    "args": "{\"query\": \"brief template\"}",
    "ok": true
   },
   {
-   "ts": 1786394983.171544,
+   "ts": 1786395534.538165,
    "server": "docs",
    "tool": "get_document",
    "args": "{\"doc_id\": \"template--business-brief\"}",
    "ok": true
   },
   {
-   "ts": 1786394983.171774,
+   "ts": 1786395534.538409,
    "server": "docs",
    "tool": "get_document",
    "args": "{\"doc_id\": \"policy--counterparty-credit\"}",
    "ok": true
   },
   {
-   "ts": 1786394983.1723368,
+   "ts": 1786395534.538966,
    "server": "filings",
    "tool": "lookup_company",
    "args": "{\"query\": \"Caterpillar\"}",
    "ok": true
   },
   {
-   "ts": 1786394983.172579,
+   "ts": 1786395534.539221,
    "server": "filings",
    "tool": "list_available_concepts",
    "args": "{\"ticker\": \"CAT\"}",
    "ok": true
   },
   {
-   "ts": 1786394983.172813,
+   "ts": 1786395534.539475,
    "server": "filings",
    "tool": "get_company_concept",
    "args": "{\"ticker\": \"CAT\", \"concept\": \"LongTermDebtNoncurrent\"}",
    "ok": true
   },
   {
-   "ts": 1786394983.173038,
+   "ts": 1786395534.5397089,
    "server": "filings",
    "tool": "get_company_concept",
    "args": "{\"ticker\": \"CAT\", \"concept\": \"StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest\"}",
    "ok": true
   },
   {
-   "ts": 1786394983.173918,
+   "ts": 1786395534.540643,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Caterpillar\"}}",
    "ok": true
   },
   {
-   "ts": 1786394983.174366,
+   "ts": 1786395534.541198,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Vendors\", \"filters\": {\"name\": \"Caterpillar\"}}",
    "ok": true
   },
   {
-   "ts": 1786394983.175313,
+   "ts": 1786395534.542318,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"lt_de_2022\": 1.62, \"lt_de_2023\": 1.25, \"lt_de_2024\": 1.4, \"lt_de_ratio_3yr_avg\": 1.43, \"leverage_classification\": \"moderate\", \"internal_relationship\": \"none\"}}",
