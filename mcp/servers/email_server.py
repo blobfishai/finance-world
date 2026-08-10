@@ -1,58 +1,86 @@
 #!/usr/bin/env python3
-"""Email MCP server — read-only view of the AP/AR shared mailbox. SIMULATION ONLY."""
+"""Email MCP server — 1:1 Gmail API shapes over the shared AP/AR mailbox. Read-only.
+
+Mirrors Gmail v1: users.messages.list (q= search, returns {messages:[{id,threadId}],
+resultSizeEstimate}), users.messages.get (payload.headers + snippet + body),
+users.threads.get, users.labels.list, attachments.get. SIMULATION ONLY."""
 import sys, re
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "lib"))
 from framework import Server
 
-S = Server("email", "Shared finance mailbox (ap@ / ar@ contoso-sim). Read-only. SIMULATION ONLY.")
-
-@S.tool("search_messages", "Search messages by keyword over subject/body/sender.",
-        {"query": {"type": "string"}, "folder": {"type": "string", "description": "default inbox"}}, ["query"])
-def search_messages(query, folder="inbox"):
-    cx = S.db()
-    like = f"%{query.lower()}%"
-    rows = cx.execute("""SELECT id, folder, from_addr, subject, sent_at, attachment_name
-                         FROM email_messages
-                         WHERE folder=? AND (LOWER(subject) LIKE ? OR LOWER(body) LIKE ? OR LOWER(from_addr) LIKE ?)
-                         ORDER BY sent_at DESC LIMIT 25""", (folder, like, like, like)).fetchall()
-    return {"matches": [dict(r) for r in rows]}
-
-@S.tool("get_message", "Fetch a full message including attachment text.",
-        {"message_id": {"type": "string"}}, ["message_id"])
-def get_message(message_id):
-    cx = S.db()
-    r = cx.execute("SELECT * FROM email_messages WHERE id=?", (message_id,)).fetchone()
-    return dict(r) if r else {"error": "not found"}
-
-@S.tool("list_folders", "List mail folders (labels) with message counts.")
-def list_folders():
-    cx = S.db()
-    return {"folders": [dict(r) for r in cx.execute(
-        "SELECT folder, COUNT(*) AS messages FROM email_messages GROUP BY folder ORDER BY folder")]}
+S = Server("email", "Shared finance mailbox (ap@/ar@ contoso-sim), Gmail API shapes. Read-only. SIMULATION ONLY.")
 
 def _thread_key(subject):
     return re.sub(r"^\s*((re|fwd?|fw)\s*:\s*)+", "", (subject or "").lower()).strip()
 
-@S.tool("get_thread", "Fetch the whole conversation thread a message belongs to (grouped by normalized subject).",
-        {"message_id": {"type": "string"}}, ["message_id"])
-def get_thread(message_id):
-    cx = S.db()
-    r = cx.execute("SELECT * FROM email_messages WHERE id=?", (message_id,)).fetchone()
-    if not r: return {"error": "not found"}
-    key = _thread_key(r["subject"])
-    msgs = [dict(m) for m in cx.execute("SELECT * FROM email_messages ORDER BY sent_at")
-            if _thread_key(m["subject"]) == key]
-    return {"thread_subject": key, "message_count": len(msgs), "messages": msgs}
+def _thread_id(subject):
+    import hashlib
+    return "t_" + hashlib.sha1(_thread_key(subject).encode()).hexdigest()[:10]
 
-@S.tool("get_attachment", "Fetch a message's attachment content (text extraction).",
+def _headers(r):
+    return [{"name": "From", "value": r["from_addr"]}, {"name": "To", "value": r["to_addr"]},
+            {"name": "Subject", "value": r["subject"]}, {"name": "Date", "value": r["sent_at"]}]
+
+def _full(r):
+    msg = {"id": r["id"], "threadId": _thread_id(r["subject"]),
+           "labelIds": [r["folder"].upper()], "snippet": (r["body"] or "")[:120],
+           "internalDate": r["sent_at"],
+           "payload": {"mimeType": "multipart/mixed" if r["attachment_name"] else "text/plain",
+                       "headers": _headers(r),
+                       "body": {"data": r["body"]}}}
+    if r["attachment_name"]:
+        msg["payload"]["parts"] = [{"filename": r["attachment_name"],
+                                    "body": {"attachmentId": f"att_{r['id']}", "size": len(r["attachment_text"] or "")}}]
+    return msg
+
+@S.tool("messages_list", "Search messages (users.messages.list). `q` matches subject/body/sender; optional label (default INBOX).",
+        {"q": {"type": "string"}, "label": {"type": "string"}}, ["q"])
+def messages_list(q, label="INBOX"):
+    cx = S.db(); like = f"%{q.lower()}%"
+    rows = cx.execute("""SELECT id, subject, folder FROM email_messages
+                         WHERE UPPER(folder)=? AND (LOWER(subject) LIKE ? OR LOWER(body) LIKE ? OR LOWER(from_addr) LIKE ?)
+                         ORDER BY sent_at DESC LIMIT 25""", (label.upper(), like, like, like)).fetchall()
+    return {"messages": [{"id": r["id"], "threadId": _thread_id(r["subject"])} for r in rows],
+            "resultSizeEstimate": len(rows)}
+
+@S.tool("messages_get", "Fetch a full message (users.messages.get, format=full): headers, snippet, body, attachment parts.",
+        {"id": {"type": "string"}}, ["id"])
+def messages_get(id):
+    cx = S.db()
+    r = cx.execute("SELECT * FROM email_messages WHERE id=?", (id,)).fetchone()
+    return _full(r) if r else {"error": {"code": 404, "message": f"Requested entity was not found: {id}"}}
+
+@S.tool("threads_get", "Fetch a conversation thread (users.threads.get): all messages sharing the normalized subject.",
+        {"id": {"type": "string", "description": "a threadId from messages_list, or a message id"}}, ["id"])
+def threads_get(id):
+    cx = S.db()
+    all_rows = cx.execute("SELECT * FROM email_messages ORDER BY sent_at").fetchall()
+    tid = id
+    if not id.startswith("t_"):
+        r = next((m for m in all_rows if m["id"] == id), None)
+        if not r: return {"error": {"code": 404, "message": f"Requested entity was not found: {id}"}}
+        tid = _thread_id(r["subject"])
+    msgs = [_full(m) for m in all_rows if _thread_id(m["subject"]) == tid]
+    if not msgs: return {"error": {"code": 404, "message": f"Requested entity was not found: {id}"}}
+    return {"id": tid, "messages": msgs}
+
+@S.tool("labels_list", "List labels/folders with message counts (users.labels.list).")
+def labels_list():
+    cx = S.db()
+    return {"labels": [{"id": r["folder"].upper(), "name": r["folder"].upper(),
+                        "messagesTotal": r["n"], "type": "system"}
+                       for r in cx.execute("SELECT folder, COUNT(*) AS n FROM email_messages GROUP BY folder")]}
+
+@S.tool("attachments_get", "Fetch an attachment's content by message id (users.messages.attachments.get; text extraction).",
         {"message_id": {"type": "string"}}, ["message_id"])
-def get_attachment(message_id):
+def attachments_get(message_id):
     cx = S.db()
     r = cx.execute("SELECT attachment_name, attachment_text FROM email_messages WHERE id=?", (message_id,)).fetchone()
-    if not r: return {"error": "not found"}
-    if not r["attachment_name"]: return {"error": "message has no attachment"}
-    return {"attachment_name": r["attachment_name"], "content": r["attachment_text"]}
+    if not r: return {"error": {"code": 404, "message": f"Requested entity was not found: {message_id}"}}
+    if not r["attachment_name"]: return {"error": {"code": 404, "message": "message has no attachment"}}
+    return {"attachmentId": f"att_{message_id}", "filename": r["attachment_name"],
+            "size": len(r["attachment_text"] or ""), "data": r["attachment_text"]}
 
 if __name__ == "__main__":
     S.run()

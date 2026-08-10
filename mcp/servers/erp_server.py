@@ -85,7 +85,11 @@ def data_find_entities(entity, filters=None, page=1):
         else:
             where.append(f"{k} = ?"); args.append(v)
     sql = f"SELECT * FROM {table}" + (" WHERE " + " AND ".join(where) if where else "")
-    return S.rows(cx, sql, args, page)
+    r = S.rows(cx, sql, args, page)
+    out = {"@odata.context": f"$metadata#{entity}", "value": r["rows"], "@odata.count": r["total_rows"]}
+    if r["has_more"]:
+        out["@odata.nextLink"] = f"data_find_entities?entity={entity}&page={r['page'] + 1}"
+    return out
 
 @S.tool("data_find_entities_sql", "Find/read records using SQL (read-only single SELECT over erp_* tables; LIMIT 200 enforced). Replaces OData find in 10.0.48+.",
         {"sql": {"type": "string"}}, ["sql"])
@@ -98,7 +102,7 @@ def data_find_entities_sql(sql):
             raise ValueError(f"table {tbl} is outside the ERP (only erp_* tables exist here)")
     cx = S.db()
     rows = [dict(r) for r in cx.execute(f"SELECT * FROM ({s}) LIMIT 200").fetchall()]
-    return {"rows": rows, "row_count": len(rows), "truncated_at": 200}
+    return {"@odata.context": "$metadata#sql", "value": rows, "@odata.count": len(rows), "truncated_at": 200}
 
 @S.tool("data_create_entities", "Create data records using OData (no deep inserts). Subject to role security.",
         {"entity": {"type": "string"}, "records": {"type": "array"}}, ["entity", "records"])
@@ -414,13 +418,10 @@ def api_invoke_action(action, parameters=None):
                 "letters": letters, "open_balance": open_bal}
     return {"error": f"no action '{action}'", "hint": "use api_find_actions", "available": sorted(ACTIONS)}
 
-# ==================== convenience page alias (kept for walks) ================
+# ==================== internal: live aged balances ==========================
+# Not a public tool — the real D365 MCP has no such tool. Reachable the real ways:
+# the CustAgedBalances form (form tools) and api_invoke_action(ContosoCustAgedBalancesLive).
 
-@S.tool("get_customer_aged_balances", "LIVE aged AR balances computed from open transactions as of a date (default: today). Paged, sorted by past-due desc. (Alias of the 'Customer aged balances' live view; the batch snapshot entity may differ.)",
-        {"as_of": {"type": "string", "description": "YYYY-MM-DD, default world today"},
-         "customer_account": {"type": "string"},
-         "customer_group": {"type": "string"},
-         "page": {"type": "integer"}})
 def get_customer_aged_balances(as_of=None, customer_account=None, customer_group=None, page=1):
     as_of = as_of or S.today
     cx = S.db()

@@ -21,28 +21,28 @@
  "final_text": "{\"walk_steps\": 4}\n",
  "trace": [
   {
-   "ts": 1786393182.64128,
+   "ts": 1786394556.290272,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Fourth Coffee East\"}}",
    "ok": true
   },
   {
-   "ts": 1786393182.642268,
+   "ts": 1786394556.2911339,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT COUNT(*) AS open_invoices, ROUND(SUM(amount - settled), 2) AS open_balance FROM erp_cust_trans WHERE account='SYNCUS-0069' AND txn_type='Invoice' AND closed=0\"}",
    "ok": true
   },
   {
-   "ts": 1786393182.643025,
+   "ts": 1786394556.291817,
    "server": "erp",
-   "tool": "get_customer_aged_balances",
-   "args": "{\"customer_account\": \"SYNCUS-0069\"}",
+   "tool": "api_invoke_action",
+   "args": "{\"action\": \"ContosoCustAgedBalancesLive\", \"parameters\": {\"customer_account\": \"SYNCUS-0069\"}}",
    "ok": true
   },
   {
-   "ts": 1786393182.644351,
+   "ts": 1786394556.29291,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"customer_account\": \"SYNCUS-0069\", \"outstanding_balance\": 172068.91, \"open_invoice_count\": 5}}",

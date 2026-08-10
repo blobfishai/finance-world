@@ -1,12 +1,12 @@
 [
   {"server": "erp", "tool": "data_find_entities", "args": {"entity": "Customers", "filters": {"name": "Adventure Works"}}},
   {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT ROUND(SUM(amount - settled), 2) AS open_balance FROM erp_cust_trans WHERE account='SYNCUS-0002' AND txn_type='Invoice' AND closed=0"}},
-  {"server": "books", "tool": "list_customers", "args": {"query": "adventure"}},
+  {"server": "books", "tool": "query", "args": {"q": "SELECT * FROM Customer WHERE DisplayName LIKE '%adventure%'"}},
   {"server": "books", "tool": "get_customer", "args": {"customer_id": "BC-114"}},
-  {"server": "books", "tool": "query_invoices", "args": {"customer_id": "BC-114", "status": "Open"}},
-  {"server": "books", "tool": "query_credit_memos", "args": {"customer_id": "BC-114"}},
-  {"server": "sheets", "tool": "list_spreadsheets", "args": {}},
-  {"server": "sheets", "tool": "read_sheet", "args": {"name": "CES-migration-side-log.xlsx"}},
-  {"server": "email", "tool": "search_messages", "args": {"query": "adventure works invoice"}},
+  {"server": "books", "tool": "query", "args": {"q": "SELECT * FROM Invoice WHERE CustomerRef = 'BC-114'"}},
+  {"server": "books", "tool": "query", "args": {"q": "SELECT * FROM CreditMemo WHERE CustomerRef = 'BC-114'"}},
+  {"server": "sheets", "tool": "list_drive_items", "args": {}},
+  {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "CES-migration-side-log.xlsx"}},
+  {"server": "email", "tool": "messages_list", "args": {"q": "adventure works invoice"}},
   {"server": "harness", "tool": "submit_answer", "args": {"answers": {"erp_open_balance": 94749.19, "subsidiary_net_balance": 19050.00, "offbook_invoice_amount": 6200.00, "combined_exposure": 119999.19}}}
 ]

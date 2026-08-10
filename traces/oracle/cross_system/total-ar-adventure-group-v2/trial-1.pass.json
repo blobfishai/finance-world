@@ -24,70 +24,70 @@
  "final_text": "{\"walk_steps\": 10}\n",
  "trace": [
   {
-   "ts": 1786393182.1672478,
+   "ts": 1786394555.7927701,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure Works\"}}",
    "ok": true
   },
   {
-   "ts": 1786393182.168146,
+   "ts": 1786394555.795336,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT ROUND(SUM(amount - settled), 2) AS open_balance FROM erp_cust_trans WHERE account='SYNCUS-0002' AND txn_type='Invoice' AND closed=0\"}",
    "ok": true
   },
   {
-   "ts": 1786393182.171382,
+   "ts": 1786394555.7996879,
    "server": "books",
-   "tool": "list_customers",
-   "args": "{\"query\": \"adventure\"}",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%adventure%'\"}",
    "ok": true
   },
   {
-   "ts": 1786393182.171672,
+   "ts": 1786394555.800144,
    "server": "books",
    "tool": "get_customer",
    "args": "{\"customer_id\": \"BC-114\"}",
    "ok": true
   },
   {
-   "ts": 1786393182.171965,
+   "ts": 1786394555.800489,
    "server": "books",
-   "tool": "query_invoices",
-   "args": "{\"customer_id\": \"BC-114\", \"status\": \"Open\"}",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE CustomerRef = 'BC-114'\"}",
    "ok": true
   },
   {
-   "ts": 1786393182.1724448,
+   "ts": 1786394555.800779,
    "server": "books",
-   "tool": "query_credit_memos",
-   "args": "{\"customer_id\": \"BC-114\"}",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM CreditMemo WHERE CustomerRef = 'BC-114'\"}",
    "ok": true
   },
   {
-   "ts": 1786393182.1728818,
+   "ts": 1786394555.801287,
    "server": "sheets",
-   "tool": "list_spreadsheets",
+   "tool": "list_drive_items",
    "args": "{}",
    "ok": true
   },
   {
-   "ts": 1786393182.173216,
+   "ts": 1786394555.801603,
    "server": "sheets",
-   "tool": "read_sheet",
-   "args": "{\"name\": \"CES-migration-side-log.xlsx\"}",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"CES-migration-side-log.xlsx\"}",
    "ok": true
   },
   {
-   "ts": 1786393182.173665,
+   "ts": 1786394555.804599,
    "server": "email",
-   "tool": "search_messages",
-   "args": "{\"query\": \"adventure works invoice\"}",
+   "tool": "messages_list",
+   "args": "{\"q\": \"adventure works invoice\"}",
    "ok": true
   },
   {
-   "ts": 1786393182.1747289,
+   "ts": 1786394555.805957,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"erp_open_balance\": 94749.19, \"subsidiary_net_balance\": 19050.0, \"offbook_invoice_amount\": 6200.0, \"combined_exposure\": 119999.19}}",

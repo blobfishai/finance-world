@@ -1,10 +1,28 @@
 # Mock tools — inventory, APIs, real-service comparison, SQL backing
 
-**61 tools across 7 MCP servers**, all in `mcp/servers/*_server.py` (one stdio MCP server
+**59 tools across 7 MCP servers**, all in `mcp/servers/*_server.py` (one stdio MCP server
 per product, JSON-RPC framework in `mcp/lib/framework.py`, per-call tracing). Quality bar:
 grafana/mcp-grafana (98 tools, live-state-backed, category organization) — we match its
 density philosophy at the surface our domain actually has, and every tool is backed by
 state, not canned text.
+
+**Deep-copy pass (2026-08-10): inputs and outputs now mirror the real APIs' JSON shapes.**
+- `erp` = **exactly 22 tools** — the non-real convenience alias was removed (aged balances
+  reachable only the real ways: the CustAgedBalances form or
+  `api_invoke_action(ContosoCustAgedBalancesLive)`); data tools return OData envelopes
+  (`@odata.context`, `value`, `@odata.count`, `@odata.nextLink`).
+- `books` (12) = QBO v3 shapes: `query` responses in `{"QueryResponse": {...,
+  "startPosition", "maxResults"}}`, entities with Intuit field names (`Id`, `DisplayName`,
+  `Balance`, `DocNumber`, `TxnDate`, `CustomerRef {value,name}`), reports in
+  Header/Columns/Rows form, errors as `{"Fault": {"Error": [...], "type"}}`.
+- `filings` (7) = real EDGAR schemas: companyconcept/companyfacts with `accn`/`fy`/`fp`
+  fact objects, frames with `ccp: "CY2024Q4I"`, submissions as columnar
+  `filings.recent` arrays, FTS as `hits.hits[]._source`.
+- `email` (5) = Gmail v1 shapes: `messages_list(q)` → `{messages: [{id, threadId}],
+  resultSizeEstimate}`, `messages_get` → payload.headers + snippet + attachment parts.
+- `sheets` (6) = Graph workbook shapes: drive items, worksheets collection,
+  `workbook_range(item, address='A1:C4')` returning the workbookRange object (address,
+  values, text, formulas, numberFormat, valueTypes, row/column/cellCount), usedRange.
 
 **Every tool is SQL-backed.** Each handler opens the run's `world.sqlite`
 (`world/build/core.sqlite` + the task's `environment/seed/` overlays via `sim/prepare.py`)
