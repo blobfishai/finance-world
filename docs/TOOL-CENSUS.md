@@ -27,6 +27,64 @@ that no task requires gets deleted, not kept "for realism".
   task; add together with the bank-reconciliation task, not before.
 - **CRM (salesforce/hubspot)** — that's the *sales* world's spine, not finance's.
 
+## Why a finance person opens each tool (persona scenarios)
+
+Each scenario comes from the researched workflows (`research/domain-workflows.md`) and maps
+to a shipped task where one exists.
+
+**erp** — the system of record, opened dozens of times a day:
+- *AR analyst, Monday morning*: "who went past due over the weekend?" → aged balances →
+  prioritized collections worklist. (task: ar-balance-fourthcoffee-east)
+- *Credit manager*: sales begs to release a blocked order → credit limit vs open balance vs
+  oldest past-due → release or hold. (task: credit-limit-adatum)
+- *Collections analyst*: before escalating Sparrow Retail, what letter level are they at and
+  have they paid since? (task: collections-sparrow)
+- *AP manager, cash call*: how much AP is overdue right now; what comes due this week?
+  (tasks: ap-overdue-usmf, due-next-week-adventure)
+- *AP specialist*: vendor phones "where's my payment?" → vendor transactions + settlement.
+- *Controller at close*: does the subledger tie to the GL?
+
+**books** — because the subsidiary never migrated (documented post-acquisition pattern):
+- *Controller, group roll-up*: consolidated AR exposure must include CES Direct's invoices,
+  which exist only in QBO. (task: total-ar-adventure-group)
+- *AR analyst, dispute*: customer says "we returned that batch" — the credit memo lives in
+  the subsidiary's books, not the ERP. (same task, the credit-memo trap)
+
+**sheets** — Excel is the real close system (94% close in Excel — Ledge):
+- *AR analyst*: promise-to-pay notes live in the collections tracker, not the ERP — and the
+  tracker can be a letter-level stale (version drift).
+- *AP specialist*: manual invoice log for counterparties whose ERP entity setup is pending
+  with master data. (tasks: email-invoice-meadow, total-ar-adventure-group-v2 side-log)
+- *Controller*: month-end summary snapshots — knowing which file is stale is part of the
+  job (get_spreadsheet_metadata exists for exactly this).
+
+**email** — where paper actually arrives (68% of invoices manually keyed from email):
+- *AP specialist*: the vendor's February statement with negotiated discount terms is an
+  attachment in the AP mailbox. (task: cash-disc-fourthcoffee-east)
+- *AR analyst*: remittance advice decoupled from the wire (46% cite unapplied cash) — the
+  email says which invoices a payment covers.
+- *Anyone pre-audit*: "who approved this?" — approvals live in threads. (task:
+  email-invoice-meadow — the invoice exists only here)
+
+**filings** — grounded counterparty research, never from memory:
+- *Credit manager*: credit evaluation of a large prospect → leverage ratios from 10-Ks per
+  the 5-C's memo structure. (tasks: brief-caterpillar, brief-caterpillar-v2)
+- *FP&A / treasury*: figures for the committee brief with period + form cited. (task:
+  xom-current-assets)
+- *Procurement*: supplier-viability screen (Z-score inputs) on critical vendors.
+
+**docs** — policies are consult-don't-know knowledge:
+- *Collections analyst mid-escalation*: what day threshold triggers letter 3 and what fee
+  posts? → dunning runbook. (task: collections-sparrow)
+- *AP specialist*: is a 2/10 net 30 worth taking this week? → discount-capture policy
+  (~36% annualized: always). (task: cash-disc-fourthcoffee-east)
+- *Credit manager*: which band is a 1.40 D/E? → credit policy thresholds. (task:
+  brief-caterpillar-v2)
+- *Any analyst writing a brief*: the required section structure. (template doc)
+
+**harness** — not a finance tool: the eval-only submission surface that turns the agent's
+answer into verifiable state.
+
 ## Change control
 
 Adding a server requires: evidence row here + at least one task whose checks require it +
