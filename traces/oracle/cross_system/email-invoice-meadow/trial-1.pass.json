@@ -23,42 +23,42 @@
  "final_text": "{\"walk_steps\": 6}\n",
  "trace": [
   {
-   "ts": 1786394555.612343,
+   "ts": 1786394983.7920399,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Meadow\"}}",
    "ok": true
   },
   {
-   "ts": 1786394555.6157482,
+   "ts": 1786394983.79421,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT COUNT(*) AS n FROM erp_cust_trans t JOIN erp_customers c ON c.account=t.account WHERE LOWER(c.name) LIKE '%meadow%'\"}",
    "ok": true
   },
   {
-   "ts": 1786394555.621367,
+   "ts": 1786394983.7972229,
    "server": "email",
    "tool": "messages_list",
    "args": "{\"q\": \"meadow\"}",
    "ok": true
   },
   {
-   "ts": 1786394555.621681,
+   "ts": 1786394983.797544,
    "server": "email",
    "tool": "messages_get",
    "args": "{\"id\": \"em-0117\"}",
    "ok": true
   },
   {
-   "ts": 1786394555.624197,
+   "ts": 1786394983.797968,
    "server": "sheets",
    "tool": "workbook_used_range",
    "args": "{\"item\": \"AR-manual-invoice-log-FY26.xlsx\"}",
    "ok": true
   },
   {
-   "ts": 1786394555.6258,
+   "ts": 1786394983.79892,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"found_in_erp\": \"no\", \"invoice_number\": \"INV-2026-047\", \"outstanding_amount\": 18750.0, \"evidence_source\": \"email attachment (shared AP/AR mailbox), corroborated by the manual invoice log spreadsheet\"}}",

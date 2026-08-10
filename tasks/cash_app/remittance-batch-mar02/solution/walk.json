@@ -1,0 +1,9 @@
+[
+  {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "lockbox-2026-03-02.xlsx"}},
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "Customers", "filters": {"account": "US-021"}}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT invoice, due_date, ROUND(amount - settled, 2) AS open FROM erp_cust_trans WHERE account='US-021' AND txn_type='Invoice' AND closed=0"}},
+  {"server": "email", "tool": "messages_list", "args": {"q": "lamna remittance"}},
+  {"server": "email", "tool": "messages_get", "args": {"id": "em-0210"}},
+  {"server": "email", "tool": "messages_get", "args": {"id": "em-0211"}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"dep501_invoices": "LHINV-001, LHINV-002", "dep502_invoices": "LHINV-003", "dep503_invoices": "none", "unapplied_amount": 4000.00}}}
+]

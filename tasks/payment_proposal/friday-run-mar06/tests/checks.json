@@ -1,0 +1,15 @@
+{
+  "answer_checks": [
+    {"field": "proposal_invoices", "type": "contains_all", "expect": ["PPINV-101", "PPINV-102", "PPINV-103"]},
+    {"field": "excluded_invoice", "type": "contains_all", "expect": ["PPINV-104"]},
+    {"field": "exclusion_reason", "type": "contains_all", "expect": ["hold"]},
+    {"field": "discount_captured", "type": "number", "expect": 437.11, "tol_abs": 0.02},
+    {"field": "net_payment_total", "type": "number", "expect": 36418.39, "tol_abs": 0.05}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["erp", "docs"]},
+    {"type": "min_calls", "server": "erp", "n": 2},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [{"type": "writes_only", "tables": ["answers"]}]
+}

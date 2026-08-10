@@ -1,0 +1,18 @@
+{
+  "sheet_files": [
+    {"name": "CES-intercompany-schedule-2026-02.xlsx", "owner": "dana.kim", "modified_at": "2026-02-28T18:30:00Z", "description": "Subsidiary's intercompany payable schedule to parent, Feb close"}
+  ],
+  "sheet_rows": [
+    {"file": "CES-intercompany-schedule-2026-02.xlsx", "row_no": 1, "cells": ["Item", "Parent invoice", "Amount USD", "Status in CES books"]},
+    {"file": "CES-intercompany-schedule-2026-02.xlsx", "row_no": 2, "cells": ["Shared services allocation Q4", "ICINV-01", 30000.00, "Booked"]},
+    {"file": "CES-intercompany-schedule-2026-02.xlsx", "row_no": 3, "cells": ["Inventory transfer January", "ICINV-02", 24000.00, "Booked"]},
+    {"file": "CES-intercompany-schedule-2026-02.xlsx", "row_no": 4, "cells": ["TOTAL DUE TO PARENT", "", 54000.00, "per CES books 2026-02-28"]}
+  ],
+  "email_messages": [
+    {"id": "em-0310", "folder": "inbox", "from_addr": "dana.kim@contoso-sim.example", "to_addr": "ar@contoso-sim.example",
+     "subject": "Intercompany schedule Feb — one in-transit item",
+     "sent_at": "2026-03-01T16:45:00Z",
+     "body": "Schedule for Feb is on the drive. Note: the February management fee invoice ICINV-03 ($22,500, dated 2026-02-27) arrived here 2026-03-01 and is NOT yet booked in CES — it will post in March. Expect the parent-vs-CES difference to be exactly that item.\n\nDana (SIMULATION)",
+     "attachment_name": null, "attachment_text": null}
+  ]
+}

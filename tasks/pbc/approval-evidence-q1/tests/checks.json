@@ -1,0 +1,14 @@
+{
+  "answer_checks": [
+    {"field": "inv201_approver", "type": "contains_all", "expect": ["priya"]},
+    {"field": "inv201_approval_date", "type": "contains_all", "expect": ["2026-01-18"]},
+    {"field": "inv201_evidence_location", "type": "contains_all", "expect": ["mail"]},
+    {"field": "inv202_approver", "type": "string", "expect": "none"},
+    {"field": "inv202_finding", "type": "contains_all", "expect": ["no", "evidence"]}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["erp", "email"]},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [{"type": "writes_only", "tables": ["answers"]}]
+}

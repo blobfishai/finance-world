@@ -1,0 +1,23 @@
+{
+  "sheet_files": [
+    {"name": "lockbox-2026-03-02.xlsx", "owner": "treasury.export", "modified_at": "2026-03-02T07:00:00Z", "description": "Morning lockbox deposit file"}
+  ],
+  "sheet_rows": [
+    {"file": "lockbox-2026-03-02.xlsx", "row_no": 1, "cells": ["Date", "Deposit ref", "Amount USD", "Remitter"]},
+    {"file": "lockbox-2026-03-02.xlsx", "row_no": 2, "cells": ["2026-03-02", "DEP-501", 27500.00, "LAMNA HEALTHCARE"]},
+    {"file": "lockbox-2026-03-02.xlsx", "row_no": 3, "cells": ["2026-03-02", "DEP-502", 6200.00, "LAMNA HEALTHCARE"]},
+    {"file": "lockbox-2026-03-02.xlsx", "row_no": 4, "cells": ["2026-03-02", "DEP-503", 4000.00, "LAMNA HEALTHCARE"]}
+  ],
+  "email_messages": [
+    {"id": "em-0210", "folder": "inbox", "from_addr": "ap@lamna-sim.example", "to_addr": "ar@contoso-sim.example",
+     "subject": "Remittance advice — Lamna Healthcare payment DEP-501",
+     "sent_at": "2026-03-01T21:10:00Z",
+     "body": "Payment of $27,500.00 sent today covers invoice LHINV-001 ($18,000.00) and invoice LHINV-002 ($9,500.00) in full.\n\nLamna Healthcare AP (SIMULATION)",
+     "attachment_name": null, "attachment_text": null},
+    {"id": "em-0211", "folder": "inbox", "from_addr": "ap@lamna-sim.example", "to_addr": "ar@contoso-sim.example",
+     "subject": "Remittance advice — Lamna Healthcare payment DEP-502",
+     "sent_at": "2026-03-01T21:12:00Z",
+     "body": "Payment of $6,200.00 applies to invoice LHINV-003 (February platform fees) in full.\n\nLamna Healthcare AP (SIMULATION)",
+     "attachment_name": null, "attachment_text": null}
+  ]
+}

@@ -78,7 +78,16 @@ AR this week?") must have a single defensible answer the verifier computes.
 **Done when:** seed builds reproducibly (`create_db` script, hash-pinned), oracle can compute
 every planned ground truth, world clock frozen.
 
-### Stage 4 — Task ladder (WAVE-0: 10 TASKS, 10/10 ORACLE-GREEN 2026-08-10)
+### Stage 4 — Task ladder (WAVE 1.5: 18 TASKS, 18/18 ORACLE-GREEN 2026-08-10)
+Wave 1.5 added 6 workflow-anchored tasks from `research/workflow-mock-mapping.md`, all
+zero-new-server, exact GTs: bank_rec (4-bucket statement-vs-books taxonomy), cash_app
+(remittance emails + lockbox; no-remittance deposit must stay unapplied), cross_system/
+intercompany-tieout (parent vs sub schedule delta decomposition), payment_proposal
+(SOP-driven Friday run: discount capture + on-hold exclusion, exercises api_invoke_action),
+pbc (approval only in email thread; second invoice = no-evidence finding), cash_forecast
+(4-week direct method in separate legal entity CESP for exact arithmetic). 8 families now.
+Parked pending schema: 3-way match (needs PO/receipt tables).
+### (superseded) WAVE-0: 10 tasks
 Wave 0 in `tasks/`: 6 erp_qa (incl. FB-verbatim credit limit, name-distractor balance,
 company-wide AP aggregate, cash-discount capture, injected Sparrow collections story,
 empty-answer trap) + 2 cross_system (subsidiary join w/ credit-memo trap; email-only

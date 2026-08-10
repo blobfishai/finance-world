@@ -1,0 +1,23 @@
+schema_version = "1.4"
+
+[task]
+name = "payment_proposal/friday-run-mar06"
+version = "0.1.0"
+description = "Assemble Friday's payment proposal: due items + discount capture, excluding an on-hold vendor. Agent proposes; a human posts (D365 pattern)."
+authors = ["nario-ai"]
+keywords = ["finance", "payment_proposal", "ap", "cash-discount"]
+
+[metadata]
+family = "payment_proposal"
+origin = "research/finance-agent-workflows.md wf#3 (D365 payment-proposal automation: agent assembles, human posts); discount-capture policy AP-POL-007"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 7
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

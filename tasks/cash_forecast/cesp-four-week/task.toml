@@ -1,0 +1,24 @@
+schema_version = "1.4"
+
+[task]
+name = "cash_forecast/cesp-four-week"
+version = "0.1.0"
+description = "4-week direct cash forecast for legal entity CESP: AR inflows + AP outflows from the ERP, payroll from the calendar sheet."
+authors = ["nario-ai"]
+keywords = ["finance", "cash_forecast", "treasury"]
+
+[metadata]
+family = "cash_forecast"
+origin = "research/finance-agent-workflows.md wf#8 (13-week direct method, scoped to 4 weeks); assumptions doc = consult-don't-know"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 6
+scoping = "separate legal entity CESP keeps the arithmetic exact against core USMF noise"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

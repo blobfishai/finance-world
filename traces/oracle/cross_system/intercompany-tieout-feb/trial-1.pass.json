@@ -1,0 +1,61 @@
+{
+ "task": "cross_system/intercompany-tieout-feb",
+ "family": "cross_system",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 5,
+ "walk_len": 5,
+ "budget_turns": 24,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.1,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 5}\n",
+ "trace": [
+  {
+   "ts": 1786394983.94625,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"IC-001\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786394983.947077,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, trans_date, due_date, ROUND(amount - settled, 2) AS open FROM erp_cust_trans WHERE account='IC-001' AND txn_type='Invoice' AND closed=0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786394983.947548,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"CES-intercompany-schedule-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786394983.95009,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"intercompany\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786394983.951015,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"parent_ar_balance\": 76500.0, \"sub_recorded_balance\": 54000.0, \"difference\": 22500.0, \"difference_cause\": \"ICINV-03 ($22,500) \\u2014 received by the subsidiary 2026-03-01 but not yet booked (in transit)\"}}",
+   "ok": true
+  }
+ ]
+}

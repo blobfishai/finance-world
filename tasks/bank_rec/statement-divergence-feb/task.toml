@@ -1,0 +1,23 @@
+schema_version = "1.4"
+
+[task]
+name = "bank_rec/statement-divergence-feb"
+version = "0.1.0"
+description = "Bank reconciliation: classify statement-vs-books divergences using the 4-bucket taxonomy."
+authors = ["nario-ai"]
+keywords = ["finance", "bank_rec", "reconciliation"]
+
+[metadata]
+family = "bank_rec"
+origin = "research/finance-agent-workflows.md wf#1; grading taxonomy = Microsoft recon-agent buckets (Matched / Discrepancy / bank-only / books-only)"
+difficulty = "medium"
+acceptance_label = "pending_calibration"
+walk_len = 4
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

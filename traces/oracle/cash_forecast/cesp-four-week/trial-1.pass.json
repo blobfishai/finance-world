@@ -1,0 +1,68 @@
+{
+ "task": "cash_forecast/cesp-four-week",
+ "family": "cash_forecast",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 6,
+ "walk_len": 6,
+ "budget_turns": 24,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.1,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 6}\n",
+ "trace": [
+  {
+   "ts": 1786394983.643656,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"cash forecast assumptions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786394983.6440651,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"sop--cash-forecast-assumptions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786394983.6453161,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, due_date, ROUND(amount - settled, 2) AS open FROM erp_cust_trans WHERE dataareaid='CESP' AND txn_type='Invoice' AND closed=0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786394983.645847,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, due_date, ROUND(amount - settled, 2) AS open FROM erp_vend_trans WHERE dataareaid='CESP' AND txn_type='Invoice' AND closed=0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786394983.6463082,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"CESP-payroll-calendar-2026.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786394983.647286,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"week1_net\": 14000.0, \"week2_net\": -169000.0, \"week3_net\": 51000.0, \"week4_net\": -218000.0, \"four_week_net\": -322000.0}}",
+   "ok": true
+  }
+ ]
+}

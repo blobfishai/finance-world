@@ -1,0 +1,8 @@
+[
+  {"server": "docs", "tool": "search_documents", "args": {"query": "cash forecast assumptions"}},
+  {"server": "docs", "tool": "get_document", "args": {"doc_id": "sop--cash-forecast-assumptions"}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT invoice, due_date, ROUND(amount - settled, 2) AS open FROM erp_cust_trans WHERE dataareaid='CESP' AND txn_type='Invoice' AND closed=0"}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT invoice, due_date, ROUND(amount - settled, 2) AS open FROM erp_vend_trans WHERE dataareaid='CESP' AND txn_type='Invoice' AND closed=0"}},
+  {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "CESP-payroll-calendar-2026.xlsx"}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"week1_net": 14000.00, "week2_net": -169000.00, "week3_net": 51000.00, "week4_net": -218000.00, "four_week_net": -322000.00}}}
+]

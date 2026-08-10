@@ -1,0 +1,7 @@
+[
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "Customers", "filters": {"account": "IC-001"}}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT invoice, trans_date, due_date, ROUND(amount - settled, 2) AS open FROM erp_cust_trans WHERE account='IC-001' AND txn_type='Invoice' AND closed=0"}},
+  {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "CES-intercompany-schedule-2026-02.xlsx"}},
+  {"server": "email", "tool": "messages_list", "args": {"q": "intercompany"}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"parent_ar_balance": 76500.00, "sub_recorded_balance": 54000.00, "difference": 22500.00, "difference_cause": "ICINV-03 ($22,500) — received by the subsidiary 2026-03-01 but not yet booked (in transit)"}}}
+]
