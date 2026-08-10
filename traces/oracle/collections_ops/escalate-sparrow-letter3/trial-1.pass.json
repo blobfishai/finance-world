@@ -1,0 +1,67 @@
+{
+ "task": "collections_ops/escalate-sparrow-letter3",
+ "family": "collections_ops",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 6,
+ "walk_len": 6,
+ "budget_turns": 24,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.1,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 6}\n",
+ "trace": [
+  {
+   "ts": 1786398298.9389892,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"dunning collection\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786398298.939318,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--collections-dunning-runbook\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786398298.9401321,
+   "server": "erp",
+   "tool": "api_invoke_action",
+   "args": "{\"action\": \"ContosoCollectionStatus\", \"parameters\": {\"customer_account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786398298.940876,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, due_date, ROUND(amount-settled,2) AS open, CAST(julianday('2026-03-02') - julianday(due_date) AS INTEGER) AS days_past_due FROM erp_cust_trans WHERE account='US-008' AND txn_type='Invoice' AND closed=0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786398298.941768,
+   "server": "erp",
+   "tool": "api_invoke_action",
+   "args": "{\"action\": \"ContosoIssueCollectionLetter\", \"parameters\": {\"customer_account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786398298.942683,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"letter_issued\": \"3\", \"letter_fee\": 40.0, \"credit_hold_placed\": \"no\", \"reasoning\": \"Letter 2 was sent 14 days ago and SPINV-002 remains unpaid, so letter 3 posts with its $40 fee; the oldest past-due item is at 47 days, below the ~75-day credit-hold threshold, so no hold yet.\"}}",
+   "ok": true
+  }
+ ]
+}

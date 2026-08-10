@@ -1,0 +1,25 @@
+schema_version = "1.4"
+
+[task]
+name = "collections_ops/escalate-sparrow-letter3"
+version = "0.1.0"
+description = "WRITE task: process today's collections review for Sparrow Retail per the runbook — issue letter 3, but do NOT place a credit hold yet."
+authors = ["nario-ai"]
+keywords = ["finance", "collections_ops", "write", "dunning"]
+
+[metadata]
+family = "collections_ops"
+origin = "wave-2 writes on the D365 hold/letter machinery (research/finance-agent-workflows.md wf#10); dunning ladder AR-SOP-003"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 6
+agent_role = "collections"
+trap = "runbook credit-hold threshold is ~75 days past due; SPINV-002 is at 47 days — placing a hold is over-escalation and fails"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

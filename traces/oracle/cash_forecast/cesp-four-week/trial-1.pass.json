@@ -23,42 +23,42 @@
  "final_text": "{\"walk_steps\": 6}\n",
  "trace": [
   {
-   "ts": 1786395535.028386,
+   "ts": 1786398298.7813098,
    "server": "docs",
    "tool": "search_documents",
    "args": "{\"query\": \"cash forecast assumptions\"}",
    "ok": true
   },
   {
-   "ts": 1786395535.028747,
+   "ts": 1786398298.781652,
    "server": "docs",
    "tool": "get_document",
    "args": "{\"doc_id\": \"sop--cash-forecast-assumptions\"}",
    "ok": true
   },
   {
-   "ts": 1786395535.0308218,
+   "ts": 1786398298.7827048,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT invoice, due_date, ROUND(amount - settled, 2) AS open FROM erp_cust_trans WHERE dataareaid='CESP' AND txn_type='Invoice' AND closed=0\"}",
    "ok": true
   },
   {
-   "ts": 1786395535.0318348,
+   "ts": 1786398298.783129,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT invoice, due_date, ROUND(amount - settled, 2) AS open FROM erp_vend_trans WHERE dataareaid='CESP' AND txn_type='Invoice' AND closed=0\"}",
    "ok": true
   },
   {
-   "ts": 1786395535.032352,
+   "ts": 1786398298.7835178,
    "server": "sheets",
    "tool": "workbook_used_range",
    "args": "{\"item\": \"CESP-payroll-calendar-2026.xlsx\"}",
    "ok": true
   },
   {
-   "ts": 1786395535.033368,
+   "ts": 1786398298.7844539,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"week1_net\": 14000.0, \"week2_net\": -169000.0, \"week3_net\": 51000.0, \"week4_net\": -218000.0, \"four_week_net\": -322000.0}}",

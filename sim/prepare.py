@@ -52,7 +52,10 @@ def prepare(task_dir, run_dir):
         for p in inputs.iterdir(): shutil.copy(p, run / "workdir" / p.name)
 
     trace = run / "trace.jsonl"; trace.touch()
-    env = {"WORLD_DB": str(db), "WORLD_NOW": now, "TRACE_FILE": str(trace)}
+    import tomllib
+    meta = tomllib.loads((task_dir / "task.toml").read_text()).get("metadata", {})
+    env = {"WORLD_DB": str(db), "WORLD_NOW": now, "TRACE_FILE": str(trace),
+           "WORLD_ROLE": meta.get("agent_role", "analyst")}
     mcp = {"mcpServers": {s: {"command": "python3",
                               "args": [str(ROOT / f"mcp/servers/{s}_server.py")],
                               "env": env} for s in SERVERS}}

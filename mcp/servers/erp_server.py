@@ -22,7 +22,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "lib"))
 from framework import Server, PAGE
 
 S = Server("erp", "Contoso ERP (Dynamics 365 Finance, company USMF). SIMULATION ONLY.")
-ROLE = "Finance analyst (read-only)"
+import os as _os
+# Role-based security, like the real server: the task assigns the agent's role
+# (task.toml [metadata] agent_role). "analyst" = read-only; "collections" additionally
+# unlocks the collections ICustomAPI actions. Raw data/form writes stay denied for both
+# (least privilege — write paths are exposed as governed actions, the ICustomAPI pattern).
+ROLE_NAME = {"analyst": "Finance analyst (read-only)",
+             "collections": "Collections coordinator"}.get(_os.environ.get("WORLD_ROLE", "analyst"),
+                                                           "Finance analyst (read-only)")
+ROLE = ROLE_NAME  # used in denial messages
+def _role(): return _os.environ.get("WORLD_ROLE", "analyst")
 
 ENTITIES = {
     "Customers":            ("erp_customers", "Customer master (CustomersV3): account, name, group, terms, credit limit, hold status"),
@@ -383,20 +392,71 @@ ACTIONS = {
     "ContosoCustAgedBalancesLive": {"description": "Compute live customer aged balances as of a date (params: as_of?, customer_account?, customer_group?)"},
     "ContosoCashDiscountForecast": {"description": "List open vendor invoices whose cash-discount window is still open as of a date, with capturable amounts (params: as_of?, vendor_account?)"},
     "ContosoCollectionStatus": {"description": "Current dunning position for a customer: highest letter level, letters, open balance (params: customer_account)"},
+    "ContosoIssueCollectionLetter": {"description": "WRITE (Collections role): post the next collection letter for a customer per the dunning ladder (params: customer_account). Validates sequence, 14-day spacing, and past-due status; posts the letter with its fee.", "requires_role": "collections"},
+    "ContosoSetCreditHold": {"description": "WRITE (Collections role): set a customer's credit hold status (params: customer_account, on_hold 'Yes'|'Open', reason).", "requires_role": "collections"},
 }
+
+LETTER_FEES = {"1": 0.0, "2": 25.0, "3": 40.0}
+
+def _issue_collection_letter(cx, acct):
+    cust = cx.execute("SELECT * FROM erp_customers WHERE account=?", (acct,)).fetchone()
+    if not cust: return {"error": f"no customer '{acct}'"}
+    past_due = cx.execute("""SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_cust_trans
+                             WHERE account=? AND txn_type='Invoice' AND closed=0 AND due_date < ?""",
+                          (acct, S.today)).fetchone()[0]
+    if past_due <= 0:
+        return {"error": f"validation: customer {acct} has no past-due balance; a collection letter cannot be posted"}
+    last = cx.execute("SELECT letter_code, letter_date FROM erp_collection_letters WHERE account=? ORDER BY letter_date DESC LIMIT 1", (acct,)).fetchone()
+    next_code = str(int(last["letter_code"]) + 1) if last and last["letter_code"].isdigit() else "1"
+    if next_code not in LETTER_FEES:
+        return {"error": f"validation: customer {acct} is already at the final letter level; escalate to demand/agency, not another letter"}
+    if last:
+        gap = (dt.date.fromisoformat(S.today) - dt.date.fromisoformat(last["letter_date"])).days
+        if gap < 14:
+            return {"error": f"validation: only {gap} days since letter {last['letter_code']} ({last['letter_date']}); the runbook requires >=14 days between letters"}
+    fee = LETTER_FEES[next_code]
+    cx.execute("INSERT INTO erp_collection_letters(dataareaid, account, letter_code, letter_date, status, fee, note) VALUES(?,?,?,?,?,?,?)",
+               ("USMF", acct, next_code, S.today, "Sent", fee,
+                f"Posted via ContosoIssueCollectionLetter; past-due {past_due} as of {S.today}"))
+    cx.commit()
+    return {"posted": True, "customer_account": acct, "letter_code": next_code,
+            "letter_date": S.today, "fee": fee, "past_due_at_issuance": past_due}
+
+def _set_credit_hold(cx, acct, on_hold, reason):
+    if on_hold not in ("Yes", "Open"):
+        return {"error": "validation: on_hold must be 'Yes' (held) or 'Open' (released)"}
+    cust = cx.execute("SELECT * FROM erp_customers WHERE account=?", (acct,)).fetchone()
+    if not cust: return {"error": f"no customer '{acct}'"}
+    cx.execute("UPDATE erp_customers SET on_hold=? WHERE account=?", (on_hold, acct))
+    cx.commit()
+    return {"updated": True, "customer_account": acct, "on_hold": on_hold, "reason": reason or ""}
 
 @S.tool("api_find_actions", "Finds actions (ICustomAPI AI tools) you can invoke.",
         {"query": {"type": "string"}})
 def api_find_actions(query=None):
     q = (query or "").lower()
-    return {"actions": [{"name": n, **meta} for n, meta in ACTIONS.items()
-                        if not q or q in n.lower() or q in meta["description"].lower()]}
+    # Like the real server: only actions the current role can invoke are returned.
+    visible = {n: m for n, m in ACTIONS.items()
+               if not m.get("requires_role") or m["requires_role"] == _role()}
+    return {"actions": [{"name": n, **{k: v for k, v in meta.items() if k != "requires_role"}}
+                        for n, meta in visible.items()
+                        if not q or q in n.lower() or q in meta["description"].lower()],
+            "role": ROLE_NAME}
 
 @S.tool("api_invoke_action", "Invokes an action by name with parameters.",
         {"action": {"type": "string"}, "parameters": {"type": "object"}}, ["action"])
 def api_invoke_action(action, parameters=None):
     p = parameters or {}
     cx = S.db()
+    need = ACTIONS.get(action, {}).get("requires_role")
+    if need and _role() != need:
+        return _deny(f"invoke action '{action}' (requires the {need.title()} role)", "AI tool actions")
+    if action == "ContosoIssueCollectionLetter":
+        if not p.get("customer_account"): return {"error": "parameter customer_account is required"}
+        return _issue_collection_letter(cx, p["customer_account"])
+    if action == "ContosoSetCreditHold":
+        if not p.get("customer_account"): return {"error": "parameter customer_account is required"}
+        return _set_credit_hold(cx, p["customer_account"], p.get("on_hold"), p.get("reason"))
     if action == "ContosoCustAgedBalancesLive":
         return get_customer_aged_balances(**{k: p[k] for k in ("as_of", "customer_account", "customer_group") if k in p})
     if action == "ContosoCashDiscountForecast":

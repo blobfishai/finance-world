@@ -1,0 +1,8 @@
+[
+  {"server": "docs", "tool": "search_documents", "args": {"query": "dunning collection"}},
+  {"server": "docs", "tool": "get_document", "args": {"doc_id": "policy--collections-dunning-runbook"}},
+  {"server": "erp", "tool": "api_invoke_action", "args": {"action": "ContosoCollectionStatus", "parameters": {"customer_account": "US-008"}}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT invoice, due_date, ROUND(amount-settled,2) AS open, CAST(julianday('2026-03-02') - julianday(due_date) AS INTEGER) AS days_past_due FROM erp_cust_trans WHERE account='US-008' AND txn_type='Invoice' AND closed=0"}},
+  {"server": "erp", "tool": "api_invoke_action", "args": {"action": "ContosoIssueCollectionLetter", "parameters": {"customer_account": "US-008"}}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"letter_issued": "3", "letter_fee": 40.00, "credit_hold_placed": "no", "reasoning": "Letter 2 was sent 14 days ago and SPINV-002 remains unpaid, so letter 3 posts with its $40 fee; the oldest past-due item is at 47 days, below the ~75-day credit-hold threshold, so no hold yet."}}}
+]

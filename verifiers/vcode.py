@@ -86,11 +86,28 @@ def verify(task_dir, run_dir):
 
     init = json.loads((Path(run_dir) / "initial_state.json").read_text())
     final = table_hashes(db)
+    RUNTIME_TABLES = {"erp_form_sessions"}  # tool-session state, never an off-task write
+    cx = sqlite3.connect(db)
     for c in checks.get("state_checks", []):
-        if c["type"] == "writes_only":
-            allowed = set(c.get("tables", ["answers"]))
-            dirty = [t for t in final if t not in allowed and final[t] != init.get(t)]
+        t = c["type"]
+        if t == "writes_only":
+            allowed = set(c.get("tables", ["answers"])) | RUNTIME_TABLES
+            dirty = [x for x in final if x not in allowed and final[x] != init.get(x)]
             if dirty: failed.append(f"state:off_task_writes({dirty})")
+        elif t == "row_count":
+            n = cx.execute(c["sql"]).fetchone()[0]
+            if n != c["expect"]:
+                failed.append(f"state:row_count({c.get('name', c['sql'][:40])}: got {n}, want {c['expect']})")
+        elif t == "cell_equals":
+            row = cx.execute(c["sql"]).fetchone()
+            got = row[0] if row else None
+            exp = c["expect"]
+            ok = (abs(float(got) - float(exp)) <= float(c.get("tol_abs", 0))
+                  if isinstance(exp, (int, float)) and got is not None
+                  else norm(got) == norm(exp))
+            if not ok:
+                failed.append(f"state:cell_equals({c.get('name', c['sql'][:40])}: got {got!r}, want {exp!r})")
+    cx.close()
 
     return {"reward": 1 if not failed else 0, "failed": failed,
             "n_tool_calls": len(trace),
