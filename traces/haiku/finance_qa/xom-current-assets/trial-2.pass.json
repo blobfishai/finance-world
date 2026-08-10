@@ -1,0 +1,45 @@
+{
+ "task": "finance_qa/xom-current-assets",
+ "family": "finance_qa",
+ "agent": "claude",
+ "model": "haiku",
+ "infra_error": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 3,
+ "budget_turns": 24,
+ "num_turns": 6,
+ "agent_error": false,
+ "duration_s": 20.8,
+ "cost_usd": 0.1283795,
+ "final_text": "**Complete.** I've submitted ExxonMobil's GAAP total current assets from the SEC filings snapshot:\n\n| Field | Value |\n|-------|-------|\n| **Current Assets (USD)** | $91,990,000,000 |\n| **Period End** | December 31, 2024 |\n| **Source Form** | 10-K (Annual Report) |\n| **Filed** | February 18, 2026 |\n| **Accession** | 0000034088-26-000015 |\n\nThe figure was extracted directly from the XBRL data (`AssetsCurrent` concept) in ExxonMobil's FY 2024 10-K filing.",
+ "trace": [
+  {
+   "ts": 1786390445.6126,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"ExxonMobil\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390445.772366,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"XOM\", \"concept\": \"AssetsCurrent\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390454.4863691,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"current_assets_usd\": 91990000000, \"period_end\": \"2024-12-31\", \"source_form\": \"10-K\"}}",
+   "ok": true
+  }
+ ]
+}

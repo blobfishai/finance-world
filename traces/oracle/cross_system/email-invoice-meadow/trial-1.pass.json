@@ -1,0 +1,68 @@
+{
+ "task": "cross_system/email-invoice-meadow",
+ "family": "cross_system",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 6,
+ "walk_len": 6,
+ "budget_turns": 24,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.1,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 6}\n",
+ "trace": [
+  {
+   "ts": 1786392697.7876601,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Meadow\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786392697.7895691,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT COUNT(*) AS n FROM erp_cust_trans t JOIN erp_customers c ON c.account=t.account WHERE LOWER(c.name) LIKE '%meadow%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392697.7903638,
+   "server": "email",
+   "tool": "search_messages",
+   "args": "{\"query\": \"meadow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392697.790663,
+   "server": "email",
+   "tool": "get_message",
+   "args": "{\"message_id\": \"em-0117\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392697.791301,
+   "server": "sheets",
+   "tool": "read_sheet",
+   "args": "{\"name\": \"AR-manual-invoice-log-FY26.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392697.792379,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"found_in_erp\": \"no\", \"invoice_number\": \"INV-2026-047\", \"outstanding_amount\": 18750.0, \"evidence_source\": \"email attachment (shared AP/AR mailbox), corroborated by the manual invoice log spreadsheet\"}}",
+   "ok": true
+  }
+ ]
+}

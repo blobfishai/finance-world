@@ -1,0 +1,96 @@
+{
+ "task": "business_brief/brief-caterpillar-v2",
+ "family": "business_brief",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 10,
+ "walk_len": 10,
+ "budget_turns": 36,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.1,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 10}\n",
+ "trace": [
+  {
+   "ts": 1786392697.4671319,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"brief template\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392697.467474,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"template--business-brief\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392697.46768,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--counterparty-credit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392697.468224,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"Caterpillar\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392697.46848,
+   "server": "filings",
+   "tool": "list_available_concepts",
+   "args": "{\"ticker\": \"CAT\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392697.468703,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"CAT\", \"concept\": \"LongTermDebtNoncurrent\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392697.4689238,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"CAT\", \"concept\": \"StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392697.471034,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Caterpillar\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786392697.471491,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Vendors\", \"filters\": {\"name\": \"Caterpillar\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786392697.4725,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"lt_de_2022\": 1.62, \"lt_de_2023\": 1.25, \"lt_de_2024\": 1.4, \"lt_de_ratio_3yr_avg\": 1.43, \"leverage_classification\": \"moderate\", \"internal_relationship\": \"none\"}}",
+   "ok": true
+  }
+ ]
+}

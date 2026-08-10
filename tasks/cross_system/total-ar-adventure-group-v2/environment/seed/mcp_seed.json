@@ -1,0 +1,36 @@
+{
+  "books_customers": [
+    {"id": "BC-114", "display_name": "Adventure Works Cycles - Direct", "erp_ref": "SYNCUS-0002", "email": "ap@adventure-works-sim.example"}
+  ],
+  "books_invoices": [
+    {"id": "bi-1041", "customer_id": "BC-114", "doc_number": "CD-1041", "txn_date": "2026-01-20", "due_date": "2026-02-19", "amount": 14900.00, "balance": 14900.00, "status": "Open", "memo": "Direct-channel accessories order"},
+    {"id": "bi-1055", "customer_id": "BC-114", "doc_number": "CD-1055", "txn_date": "2026-02-12", "due_date": "2026-03-14", "amount": 7300.00, "balance": 7300.00, "status": "Open", "memo": "February direct-channel order"}
+  ],
+  "books_credit_memos": [
+    {"id": "bcm-2007", "customer_id": "BC-114", "doc_number": "CM-2007", "txn_date": "2026-02-25", "amount": 3150.00, "remaining": 3150.00, "memo": "Returned merchandise batch - not yet applied to an invoice"}
+  ],
+  "sheet_files": [
+    {"name": "CES-migration-side-log.xlsx", "owner": "dana.kim", "modified_at": "2026-02-27T17:40:00Z", "description": "Invoices issued during CES Direct system migration - not yet in either system"},
+    {"name": "AR-summary-2026-01.xlsx", "owner": "dana.kim", "modified_at": "2026-01-31T12:00:00Z", "description": "Month-end AR summary snapshot (January) - DO NOT USE for current balances"}
+  ],
+  "sheet_rows": [
+    {"file": "CES-migration-side-log.xlsx", "row_no": 1, "cells": ["Date", "Counterparty", "Invoice #", "Amount USD", "Recorded in", "Status", "Notes"]},
+    {"file": "CES-migration-side-log.xlsx", "row_no": 2, "cells": ["2026-02-14", "Adventure Works Cycles", "CES-SIDE-009", "6200.00", "NEITHER (migration gap)", "Open - unpaid", "Issued during CES cutover; enter into books after migration"]},
+    {"file": "CES-migration-side-log.xlsx", "row_no": 3, "cells": ["2026-02-16", "Tailspin Toys", "CES-SIDE-010", "2450.00", "CES books (entered 2026-02-21)", "Recorded", "Already in books - do not double count"]},
+    {"file": "AR-summary-2026-01.xlsx", "row_no": 1, "cells": ["Counterparty", "Total AR (as of 2026-01-31)", "Note"]},
+    {"file": "AR-summary-2026-01.xlsx", "row_no": 2, "cells": ["Adventure Works Cycles", "88300.00", "January snapshot - stale; balances have moved since"]}
+  ],
+  "email_messages": [
+    {
+      "id": "em-0141",
+      "folder": "inbox",
+      "from_addr": "dana.kim@contoso-sim.example",
+      "to_addr": "ar@contoso-sim.example",
+      "subject": "CES migration side-log — Adventure Works invoice CES-SIDE-009 still unpaid",
+      "sent_at": "2026-02-27T17:45:00Z",
+      "body": "Heads up for month-end: invoice CES-SIDE-009 ($6,200, Adventure Works Cycles, issued 2026-02-14 during the CES cutover) is still unpaid and still in NEITHER system. It's tracked only in CES-migration-side-log.xlsx on the shared drive. Please include it in any exposure roll-up until it lands in the books.\n\nDana (SIMULATION)",
+      "attachment_name": null,
+      "attachment_text": null
+    }
+  ]
+}

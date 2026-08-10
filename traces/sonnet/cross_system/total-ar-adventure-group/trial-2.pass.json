@@ -1,0 +1,181 @@
+{
+ "task": "cross_system/total-ar-adventure-group",
+ "family": "cross_system",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 22,
+ "walk_len": 6,
+ "budget_turns": 24,
+ "num_turns": 5,
+ "agent_error": false,
+ "duration_s": 165.6,
+ "cost_usd": 2.6035037000000005,
+ "final_text": "Submitted. Summary:\n\n| Field | Value | Source |\n|---|---|---|\n| `erp_open_balance` | **$94,749.19** | USMF ERP, customer SYNCUS-0002 \"Adventure Works Cycles\" \u2014 full open AR, all in the 90+ day past-due bucket |\n| `subsidiary_net_balance` | **$19,050.00** | CES Direct LLC books, customer BC-114 \"Adventure Works Cycles - Direct\" \u2014 $22,200.00 open invoices (CD-1041 + CD-1055) minus $3,150.00 unapplied credit memo (CM-2007) |\n| `combined_exposure` | **$113,799.19** | Sum of both |\n\nEvery figure was independently re-derived twice per system (4 total lookup passes), and all four passes matched exactly to the cent \u2014 no discrepancies to resolve. The subsidiary's `get_customer` summary endpoint also independently corroborated the invoice/credit-memo-level sums for CES Direct.",
+ "trace": [
+  {
+   "ts": 1786390822.121533,
+   "server": "books",
+   "tool": "list_customers",
+   "args": "{\"query\": \"Adventure\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390822.409808,
+   "server": "books",
+   "tool": "list_customers",
+   "args": "{\"query\": \"Adventure\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390823.1946292,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer master\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390823.692907,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomersV3\", \"filters\": {\"CustomerName\": \"Adventure\"}}",
+   "ok": false,
+   "note": "KeyError('CustomersV3')"
+  },
+  {
+   "ts": 1786390823.8365939,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer master\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390824.23185,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomersV3\", \"filters\": {\"CustomerName\": \"Adventure Works\"}}",
+   "ok": false,
+   "note": "KeyError('CustomersV3')"
+  },
+  {
+   "ts": 1786390824.290507,
+   "server": "books",
+   "tool": "get_customer",
+   "args": "{\"customer_id\": \"BC-114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390824.51793,
+   "server": "books",
+   "tool": "get_customer",
+   "args": "{\"customer_id\": \"BC-114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390824.583662,
+   "server": "books",
+   "tool": "query_invoices",
+   "args": "{\"customer_id\": \"BC-114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390824.5871959,
+   "server": "books",
+   "tool": "query_credit_memos",
+   "args": "{\"customer_id\": \"BC-114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390824.9477172,
+   "server": "books",
+   "tool": "query_invoices",
+   "args": "{\"customer_id\": \"BC-114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390824.951426,
+   "server": "books",
+   "tool": "query_credit_memos",
+   "args": "{\"customer_id\": \"BC-114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390825.789962,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390825.801944,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"CustomerName\": \"Adventure\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786390827.2320929,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786390828.300268,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390828.595838,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"CustomerName\": \"Adventure Works\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786390829.913335,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure Works\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786390831.694381,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure\"}, \"page\": 2}",
+   "ok": true
+  },
+  {
+   "ts": 1786390831.7000651,
+   "server": "erp",
+   "tool": "get_customer_aged_balances",
+   "args": "{\"customer_account\": \"SYNCUS-0002\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390833.202967,
+   "server": "erp",
+   "tool": "get_customer_aged_balances",
+   "args": "{\"customer_account\": \"SYNCUS-0002\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390870.593239,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"erp_open_balance\": 94749.19, \"subsidiary_net_balance\": 19050, \"combined_exposure\": 113799.19}}",
+   "ok": true
+  }
+ ]
+}

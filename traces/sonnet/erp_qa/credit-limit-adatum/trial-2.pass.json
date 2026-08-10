@@ -1,0 +1,132 @@
+{
+ "task": "erp_qa/credit-limit-adatum",
+ "family": "erp_qa",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "email",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 15,
+ "walk_len": 3,
+ "budget_turns": 24,
+ "num_turns": 17,
+ "agent_error": false,
+ "duration_s": 69.6,
+ "cost_usd": 0.7666914999999999,
+ "final_text": "Submitted:\n\n- **credit_limit**: 25000 (USD)\n- **customer_name**: A. Datum Corporation\n\nGrounded via the ERP `Customers` master (CustomersV3) record for account `SYNCUS-0001` in company `USMF`: `credit_max = 25000.0`, currency USD. I also checked for any credit-limit change history (separate history entity, plus docs/email search for change requests) and found none \u2014 the master table holds a single current value, so $25,000 applies as of March 2, 2026.",
+ "trace": [
+  {
+   "ts": 1786391826.371169,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391826.373953,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer master\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391828.275786,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391832.373993,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0001\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786391832.391686,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"credit limit change history audit log\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391840.146183,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"A. Datum Corporation credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391840.3449988,
+   "server": "email",
+   "tool": "search_messages",
+   "args": "{\"query\": \"SYNCUS-0001 credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391842.405951,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391842.9410188,
+   "server": "email",
+   "tool": "search_messages",
+   "args": "{\"query\": \"credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391842.942785,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"A. Datum\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391843.0725918,
+   "server": "email",
+   "tool": "search_messages",
+   "args": "{\"query\": \"A. Datum\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391845.0247412,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786391848.837631,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786391851.337745,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE account='SYNCUS-0001'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391855.704414,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 25000, \"customer_name\": \"A. Datum Corporation\"}}",
+   "ok": true
+  }
+ ]
+}

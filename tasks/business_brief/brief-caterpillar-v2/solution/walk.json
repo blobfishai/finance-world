@@ -1,0 +1,12 @@
+[
+  {"server": "docs", "tool": "search_documents", "args": {"query": "brief template"}},
+  {"server": "docs", "tool": "get_document", "args": {"doc_id": "template--business-brief"}},
+  {"server": "docs", "tool": "get_document", "args": {"doc_id": "policy--counterparty-credit"}},
+  {"server": "filings", "tool": "lookup_company", "args": {"query": "Caterpillar"}},
+  {"server": "filings", "tool": "list_available_concepts", "args": {"ticker": "CAT"}},
+  {"server": "filings", "tool": "get_company_concept", "args": {"ticker": "CAT", "concept": "LongTermDebtNoncurrent"}},
+  {"server": "filings", "tool": "get_company_concept", "args": {"ticker": "CAT", "concept": "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"}},
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "Customers", "filters": {"name": "Caterpillar"}}},
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "Vendors", "filters": {"name": "Caterpillar"}}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"lt_de_2022": 1.62, "lt_de_2023": 1.25, "lt_de_2024": 1.40, "lt_de_ratio_3yr_avg": 1.43, "leverage_classification": "moderate", "internal_relationship": "none"}}}
+]

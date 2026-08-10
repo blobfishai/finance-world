@@ -1,0 +1,88 @@
+{
+ "task": "erp_qa/ar-balance-fourthcoffee-east",
+ "family": "erp_qa",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 9,
+ "walk_len": 4,
+ "budget_turns": 24,
+ "num_turns": 11,
+ "agent_error": false,
+ "duration_s": 72.0,
+ "cost_usd": 0.7425252999999999,
+ "final_text": "## Summary\n\n**Customer:** Fourth Coffee East \u2192 account `SYNCUS-0069` (USMF, Philadelphia PA) \u2014 disambiguated from 20+ similarly-named \"Fourth Coffee *\" accounts (South, West, Central, Pacific, Atlantic, Global, USA, etc.)\n\n**Outstanding balance as of 2026-03-02:** $172,068.91, across **5 open invoices** (all posted 2025, none settled, none closed).\n\nVerified two independent ways:\n1. `get_customer_aged_balances(customer_account=SYNCUS-0069, as_of=2026-03-02)` \u2192 total_open = 172,068.91\n2. Raw `CustomerTransactions` ledger: 5 invoices (CIV-000234/235/236/237/238), all `closed=0`, `settled=0`, and `CustomerSettlements` has zero records for this account \u2014 manual sum = 172,068.91 (exact match)\n\nSubmitted via `submit_answer`:\n- `customer_account`: SYNCUS-0069\n- `outstanding_balance`: 172068.91\n- `open_invoice_count`: 5",
+ "trace": [
+  {
+   "ts": 1786391008.326515,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391008.34056,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Fourth Coffee\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786391012.8372538,
+   "server": "erp",
+   "tool": "get_customer_aged_balances",
+   "args": "{\"customer_account\": \"SYNCUS-0069\", \"as_of\": \"2026-03-02\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391012.919859,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391022.7359538,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerSettlements\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391023.335351,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT id, voucher, invoice, txn_type, trans_date, due_date, currency, amount, settled, closed FROM erp_CustomerTransactions WHERE account = 'SYNCUS-0069' AND dataareaid = 'USMF' ORDER BY trans_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786391025.2753658,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0069\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786391034.753757,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerSettlements\", \"filters\": {\"account\": \"SYNCUS-0069\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786391039.795097,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"customer_account\": \"SYNCUS-0069\", \"outstanding_balance\": 172068.91, \"open_invoice_count\": 5}}",
+   "ok": true
+  }
+ ]
+}

@@ -30,9 +30,15 @@ def find_entity_type(query):
               if any(w in (name + " " + desc).lower() for w in re.findall(r"[a-z]+", q))]
     return {"matches": scored or [{"entity": n, "description": d} for n, (_t, d) in ENTITIES.items()]}
 
+def _unknown(entity):
+    return {"error": f"unknown entity type '{entity}'",
+            "available_entities": sorted(ENTITIES),
+            "hint": "use data_find_entity_type to discover entity types"}
+
 @S.tool("data_get_entity_metadata", "Get the field list for an entity type.",
         {"entity": {"type": "string"}}, ["entity"])
 def get_entity_metadata(entity):
+    if entity not in ENTITIES: return _unknown(entity)
     table, desc = ENTITIES[entity]
     cx = S.db()
     fields = [r["name"] for r in cx.execute(f"PRAGMA table_info({table})")]
@@ -44,6 +50,7 @@ def get_entity_metadata(entity):
          "filters": {"type": "object", "description": "field -> value; strings match case-insensitive substring, numbers match exactly"},
          "page": {"type": "integer"}}, ["entity"])
 def find_entities(entity, filters=None, page=1):
+    if entity not in ENTITIES: return _unknown(entity)
     table, _ = ENTITIES[entity]
     cx = S.db()
     cols = {r["name"] for r in cx.execute(f"PRAGMA table_info({table})")}

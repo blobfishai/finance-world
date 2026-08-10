@@ -15,7 +15,12 @@ excludes infra trials from classification and resumes only them. Existing traces
 **Rule reaffirmed:** a model verdict requires at least one non-infra trial; `infra_only`
 tasks are unmeasured, not failed.
 
-### A2. Raw KeyError on unknown ERP entity (realism gap, verdict upheld) — PATCH QUEUED
+### A2. Raw KeyError on unknown ERP entity (realism gap, verdict upheld) — PATCHED 2026-08-10
+Applied after the wave-0 batch completed (wave kept internally consistent): unknown entity
+→ `{"error", "available_entities", "hint"}`; framework marks error payloads `ok:false`;
+all 12 oracle walks re-verified green post-patch. Model reruns of affected tasks are
+DEFERRED under the benchmark freeze (Sam, 2026-08-10: no benchmark runs until world
+correctness is proven).
 haiku (cross_system/email-invoice-meadow) guessed entity names ("Customer", "Account")
 instead of calling `data_find_entity_type`, received bare `KeyError('Customer')` exceptions,
 never recovered, and asserted `found_in_erp=no` without a single successful ERP query.

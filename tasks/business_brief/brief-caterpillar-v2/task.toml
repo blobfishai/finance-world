@@ -1,0 +1,26 @@
+schema_version = "1.4"
+
+[task]
+name = "business_brief/brief-caterpillar-v2"
+version = "0.1.0"
+description = "Escalated Caterpillar credit brief: per-year ratios, policy-band classification from docs, dual-master relationship check."
+authors = ["nario-ai"]
+keywords = ["finance", "business_brief", "credit", "ratios", "escalated"]
+
+[metadata]
+family = "business_brief"
+origin = "grow: escalated from business_brief/brief-caterpillar (haiku passed 2/2 -> too_easy). Escalations: per-year ratio fields, leverage classification requires reading the credit policy bands, walk 8->10."
+difficulty = "harder"
+acceptance_label = "pending_calibration"
+walk_len = 10
+parent_task = "business_brief/brief-caterpillar"
+
+[verifier]
+timeout_sec = 120
+
+[agent]
+timeout_sec = 600
+
+[environment]
+cpus = 1
+memory_mb = 1024

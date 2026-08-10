@@ -59,7 +59,11 @@ class Server:
         fn, _ = self.tools[tool]
         try:
             out = fn(**(args or {}))
-            self._trace(tool, args, True)
+            # Application-level errors ({"error": ...}) are informative to the agent but
+            # count as unsuccessful calls in the trace — required_servers demands a
+            # *successful* read, so "not in the ERP" can't be claimed off a failed query.
+            ok = not (isinstance(out, dict) and "error" in out)
+            self._trace(tool, args, ok, note="" if ok else out.get("error"))
             return out
         except Exception as e:
             self._trace(tool, args, False, note=repr(e))

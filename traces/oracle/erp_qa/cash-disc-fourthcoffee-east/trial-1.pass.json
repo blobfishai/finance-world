@@ -1,0 +1,68 @@
+{
+ "task": "erp_qa/cash-disc-fourthcoffee-east",
+ "family": "erp_qa",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "email",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 6,
+ "walk_len": 6,
+ "budget_turns": 24,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.1,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 6}\n",
+ "trace": [
+  {
+   "ts": 1786392698.567894,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Vendors\", \"filters\": {\"name\": \"Fourth Coffee East\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786392698.568234,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CashDiscounts\", \"filters\": {\"code\": \"2%10N30\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786392698.568984,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, trans_date, due_date, cash_disc_code, ROUND(amount - settled, 2) AS open FROM erp_vend_trans WHERE account='SYNVEN-0069' AND txn_type='Invoice' AND closed=0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392698.569325,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"cash discount\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392698.569654,
+   "server": "email",
+   "tool": "search_messages",
+   "args": "{\"query\": \"fourth coffee statement\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392698.570667,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"has_active_discount\": \"yes\", \"qualifying_invoices\": \"VINV-900001, VINV-900002\", \"potential_discount_usd\": 437.11}}",
+   "ok": true
+  }
+ ]
+}

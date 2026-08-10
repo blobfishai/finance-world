@@ -1,0 +1,67 @@
+{
+ "task": "cross_system/total-ar-adventure-group",
+ "family": "cross_system",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 6,
+ "walk_len": 6,
+ "budget_turns": 24,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.1,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 6}\n",
+ "trace": [
+  {
+   "ts": 1786392698.105272,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure Works\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786392698.1061351,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT ROUND(SUM(amount - settled), 2) AS open_balance FROM erp_cust_trans WHERE account='SYNCUS-0002' AND txn_type='Invoice' AND closed=0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392698.1065888,
+   "server": "books",
+   "tool": "list_customers",
+   "args": "{\"query\": \"adventure\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392698.106922,
+   "server": "books",
+   "tool": "get_customer",
+   "args": "{\"customer_id\": \"BC-114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392698.1071842,
+   "server": "books",
+   "tool": "query_credit_memos",
+   "args": "{\"customer_id\": \"BC-114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786392698.108275,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"erp_open_balance\": 94749.19, \"subsidiary_net_balance\": 19050.0, \"combined_exposure\": 113799.19}}",
+   "ok": true
+  }
+ ]
+}

@@ -93,7 +93,16 @@ metadata. Families: erp_qa · public_research · business_brief · cross_system 
 collections_ops (write actions: letters, holds) later.
 **Done when:** every authored task passes the oracle admission rule.
 
-### Stage 5 — Calibration loop (triage-and-grow)
+### Stage 5 — Calibration loop (triage-and-grow) (IN PROGRESS 2026-08-10)
+Status: wave-0 flake-scan running (haiku+sonnet, 2 trials, infra-aware resume after the
+session-limit incident — docs/AUDIT.md A1). Real signal so far: haiku solidPass on
+brief-caterpillar and total-ar-adventure-group → **escalated variants authored and
+oracle-green** (brief-caterpillar-v2: per-year ratios + policy-band classification from a
+seeded credit policy, walk 8→10; total-ar-adventure-group-v2: +side-log invoice
+corroborated by email, +stale-summary distractor, walk 6→10). haiku real failures captured:
+ap-overdue (pagination-truncation aggregation), email-invoice-meadow (guessed entity names,
+asserted ERP absence without a successful query). Auto-escalator `sim/grow_tasks.py` still
+TODO — variants are hand-grown for now (grounding beats generation).
 `sim/run-flake-scan --trials 3` against target model(s):
 - **Fail 3/3** → too_hard: park; log failure mode *after* audit-before-blame.
 - **Mixed** → in_band flaky: the product. Study why pass vs fail; write failure-mode notes.

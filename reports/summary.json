@@ -1,0 +1,276 @@
+{
+ "haiku": {
+  "business_brief/brief-caterpillar": {
+   "rewards": [
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  },
+  "cross_system/email-invoice-meadow": {
+   "rewards": [
+    0,
+    0
+   ],
+   "failed": [
+    [
+     "trace:required_servers_missing(['erp'])"
+    ],
+    [
+     "answer:outstanding_amount:not_numeric",
+     "trace:required_servers_missing(['erp'])"
+    ]
+   ],
+   "infra_trials": 0,
+   "class": "solidFail"
+  },
+  "cross_system/total-ar-adventure-group": {
+   "rewards": [
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  },
+  "erp_qa/ap-overdue-usmf": {
+   "rewards": [
+    0,
+    0
+   ],
+   "failed": [
+    [
+     "answer:total_overdue_ap:off(got=1158647.89)"
+    ],
+    [
+     "answer:total_overdue_ap:missing",
+     "answer:as_of_date:missing",
+     "trace:no_reads_before_submit"
+    ]
+   ],
+   "infra_trials": 0,
+   "class": "solidFail"
+  },
+  "erp_qa/ar-balance-fourthcoffee-east": {
+   "rewards": [
+    1,
+    0
+   ],
+   "failed": [
+    [],
+    [
+     "answer:customer_account:missing_terms(['SYNCUS-0069'])",
+     "answer:outstanding_balance:off(got=171042.72)"
+    ]
+   ],
+   "infra_trials": 0,
+   "class": "flaky"
+  },
+  "erp_qa/cash-disc-fourthcoffee-east": {
+   "rewards": [
+    1,
+    0
+   ],
+   "failed": [
+    [],
+    [
+     "trace:required_servers_missing(['erp'])",
+     "trace:min_calls(erp<2)"
+    ]
+   ],
+   "infra_trials": 0,
+   "class": "flaky"
+  },
+  "erp_qa/collections-sparrow": {
+   "rewards": [
+    1,
+    0
+   ],
+   "failed": [
+    [],
+    [
+     "answer:collection_letter_level:missing",
+     "answer:last_payment_date:missing",
+     "answer:last_payment_amount:missing",
+     "answer:open_balance:missing",
+     "trace:no_reads_before_submit"
+    ]
+   ],
+   "infra_trials": 0,
+   "class": "flaky"
+  },
+  "erp_qa/credit-limit-adatum": {
+   "rewards": [
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  },
+  "erp_qa/due-next-week-adventure": {
+   "rewards": [
+    0,
+    0
+   ],
+   "failed": [
+    [
+     "trace:required_servers_missing(['erp'])"
+    ],
+    [
+     "answer:invoice_count:missing",
+     "answer:invoice_numbers:missing",
+     "trace:required_servers_missing(['erp'])",
+     "trace:no_reads_before_submit"
+    ]
+   ],
+   "infra_trials": 0,
+   "class": "solidFail"
+  },
+  "finance_qa/xom-current-assets": {
+   "rewards": [
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  }
+ },
+ "sonnet": {
+  "business_brief/brief-caterpillar": {
+   "rewards": [
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  },
+  "cross_system/email-invoice-meadow": {
+   "rewards": [
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  },
+  "cross_system/total-ar-adventure-group": {
+   "rewards": [
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  },
+  "erp_qa/ap-overdue-usmf": {
+   "rewards": [
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  },
+  "erp_qa/ar-balance-fourthcoffee-east": {
+   "rewards": [
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  },
+  "erp_qa/cash-disc-fourthcoffee-east": {
+   "rewards": [
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  },
+  "erp_qa/collections-sparrow": {
+   "rewards": [
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  },
+  "erp_qa/credit-limit-adatum": {
+   "rewards": [
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  },
+  "erp_qa/due-next-week-adventure": {
+   "rewards": [
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  },
+  "finance_qa/xom-current-assets": {
+   "rewards": [
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  }
+ }
+}

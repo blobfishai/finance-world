@@ -1,0 +1,18 @@
+{
+  "answer_checks": [
+    {"field": "lt_de_2022", "type": "number", "expect": 1.618, "tol_abs": 0.02},
+    {"field": "lt_de_2023", "type": "number", "expect": 1.255, "tol_abs": 0.02},
+    {"field": "lt_de_2024", "type": "number", "expect": 1.403, "tol_abs": 0.02},
+    {"field": "lt_de_ratio_3yr_avg", "type": "number", "expect": 1.425, "tol_abs": 0.02},
+    {"field": "leverage_classification", "type": "contains_all", "expect": ["moderate"]},
+    {"field": "internal_relationship", "type": "string", "expect": "none"}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["filings", "erp", "docs"]},
+    {"type": "min_calls", "server": "filings", "n": 2},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [
+    {"type": "writes_only", "tables": ["answers"]}
+  ]
+}

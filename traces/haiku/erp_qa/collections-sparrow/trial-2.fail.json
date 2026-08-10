@@ -1,0 +1,219 @@
+{
+ "task": "erp_qa/collections-sparrow",
+ "family": "erp_qa",
+ "agent": "claude",
+ "model": "haiku",
+ "infra_error": false,
+ "trial": 2,
+ "reward": 0,
+ "failed": [
+  "answer:collection_letter_level:missing",
+  "answer:last_payment_date:missing",
+  "answer:last_payment_amount:missing",
+  "answer:open_balance:missing",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp"
+ ],
+ "n_tool_calls": 26,
+ "walk_len": 5,
+ "budget_turns": 24,
+ "num_turns": 25,
+ "agent_error": true,
+ "duration_s": 72.6,
+ "cost_usd": 0.28784969999999993,
+ "final_text": "",
+ "trace": [
+  {
+   "ts": 1786390353.467943,
+   "server": "books",
+   "tool": "list_customers",
+   "args": "{\"query\": \"Sparrow Retail\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390355.479506,
+   "server": "books",
+   "tool": "list_customers",
+   "args": "{\"query\": \"Sparrow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390357.2896,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"Name\": \"Sparrow Retail\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786390359.2784781,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Sparrow Retail\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786390361.625278,
+   "server": "books",
+   "tool": "get_customer",
+   "args": "{\"customer_id\": \"US-008\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390361.8160021,
+   "server": "books",
+   "tool": "query_invoices",
+   "args": "{\"customer_id\": \"US-008\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390364.3487282,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Invoices\", \"filters\": {\"customer_id\": \"US-008\"}}",
+   "ok": false,
+   "note": "KeyError('Invoices')"
+  },
+  {
+   "ts": 1786390367.40382,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustCollectionLetterTable\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": false,
+   "note": "KeyError('CustCollectionLetterTable')"
+  },
+  {
+   "ts": 1786390369.472567,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CollectionLetter\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": false,
+   "note": "KeyError('CollectionLetter')"
+  },
+  {
+   "ts": 1786390373.9716952,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"dunning runbook collections escalation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390377.124832,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"collection letter\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390377.211411,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"sop\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390380.879426,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--collections-dunning-runbook\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390384.827935,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustCollectionLetterLine\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": false,
+   "note": "KeyError('CustCollectionLetterLine')"
+  },
+  {
+   "ts": 1786390386.891913,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustTrans\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": false,
+   "note": "KeyError('CustTrans')"
+  },
+  {
+   "ts": 1786390388.478281,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Payments\"}",
+   "ok": false,
+   "note": "KeyError('Payments')"
+  },
+  {
+   "ts": 1786390393.3584561,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"collection letter customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390393.4038222,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer invoices payments transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786390396.7502599,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CollectionLetters\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786390397.106519,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786390401.9757981,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0080\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786390407.167166,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"invoice\": \"SPINV-001\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786390407.541611,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"invoice\": \"SPINV-002\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786390411.742113,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-008\", \"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786390412.157043,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerSettlements\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786390415.847391,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,52 @@
+{
+ "task": "finance_qa/xom-current-assets",
+ "family": "finance_qa",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 4,
+ "walk_len": 3,
+ "budget_turns": 24,
+ "num_turns": 6,
+ "agent_error": false,
+ "duration_s": 112.6,
+ "cost_usd": 0.7006911,
+ "final_text": "## Answer\n\n**ExxonMobil's GAAP total current assets for FY ended December 31, 2024: $91,990,000,000**\n\n- **Period end:** 2024-12-31\n- **Source form:** 10-K\n- Originally reported in the FY2024 Annual Report (10-K, filed 2025-02-19, accession 0000034088-25-000021), and confirmed unchanged in the subsequent FY2025 10-K's restated comparative balance sheet (filed 2026-02-18, accession 0000034088-26-000015).\n\nSubmitted successfully via `submit_answer`.",
+ "trace": [
+  {
+   "ts": 1786391881.546753,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"ExxonMobil\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391882.172616,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"XOM\", \"concept\": \"AssetsCurrent\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391882.261608,
+   "server": "filings",
+   "tool": "get_submissions",
+   "args": "{\"ticker\": \"XOM\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786391975.9659698,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"current_assets_usd\": 91990000000, \"period_end\": \"2024-12-31\", \"source_form\": \"10-K\"}}",
+   "ok": true
+  }
+ ]
+}
