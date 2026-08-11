@@ -1,0 +1,35 @@
+[
+ {
+  "server": "docs",
+  "tool": "search_documents",
+  "args": {
+   "query": "sampling"
+  }
+ },
+ {
+  "server": "docs",
+  "tool": "get_document",
+  "args": {
+   "doc_id": "sop--audit-sampling-method"
+  }
+ },
+ {
+  "server": "sheets",
+  "tool": "workbook_used_range",
+  "args": {
+   "item": "audit-sample-results-q1.xlsx"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "projected_misstatement": 60000.0,
+    "population_size": 1000,
+    "exceeds_materiality": "yes",
+    "method_used": "ratio projection: sample misstatement x (population size / sample size) = 3,000 x 20"
+   }
+  }
+ }
+]

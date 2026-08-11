@@ -1,0 +1,62 @@
+{
+ "answer_checks": [
+  {
+   "field": "blocked_invoice",
+   "type": "contains_all",
+   "expect": [
+    "TDINV-401"
+   ]
+  },
+  {
+   "field": "blocked_variance",
+   "type": "number",
+   "expect": 40.0,
+   "tol_abs": 0.01
+  },
+  {
+   "field": "passing_invoice",
+   "type": "contains_all",
+   "expect": [
+    "TDINV-402"
+   ]
+  },
+  {
+   "field": "passing_variance",
+   "type": "number",
+   "expect": 315.0,
+   "tol_abs": 0.01
+  },
+  {
+   "field": "blocking_rule",
+   "type": "contains_all",
+   "expect": [
+    "zero"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp",
+    "docs"
+   ]
+  },
+  {
+   "type": "min_calls",
+   "server": "erp",
+   "n": 2
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

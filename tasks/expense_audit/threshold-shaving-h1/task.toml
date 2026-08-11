@@ -1,0 +1,24 @@
+schema_version = "1.4"
+
+[task]
+name = "expense_audit/threshold-shaving-h1"
+version = "0.1.0"
+description = "Detect receipt-threshold shaving: repeated claims just under the receipt limit by one employee over six months."
+authors = ["nario-ai"]
+keywords = ["finance", "expense_audit", "pattern-detection", "fraud"]
+
+[metadata]
+family = "expense_audit"
+origin = "research/external/articles: Oracle Expenses threshold-shaving detector — claims in the 450-499 band against a 500 receipt threshold, more than 5 times in 6 months"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 4
+mechanic = "no single line breaks a rule; only the pattern across the period does"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

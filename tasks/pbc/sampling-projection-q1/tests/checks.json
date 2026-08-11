@@ -1,0 +1,48 @@
+{
+ "answer_checks": [
+  {
+   "field": "projected_misstatement",
+   "type": "number",
+   "expect": 60000.0,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "population_size",
+   "type": "number",
+   "expect": 1000,
+   "tol_abs": 0
+  },
+  {
+   "field": "exceeds_materiality",
+   "type": "string",
+   "expect": "yes"
+  },
+  {
+   "field": "method_used",
+   "type": "contains_all",
+   "expect": [
+    "ratio"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "sheets",
+    "docs"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

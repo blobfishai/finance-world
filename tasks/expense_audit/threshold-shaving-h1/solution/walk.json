@@ -1,0 +1,35 @@
+[
+ {
+  "server": "docs",
+  "tool": "search_documents",
+  "args": {
+   "query": "threshold shaving"
+  }
+ },
+ {
+  "server": "docs",
+  "tool": "get_document",
+  "args": {
+   "doc_id": "policy--expense-audit-detectors"
+  }
+ },
+ {
+  "server": "sheets",
+  "tool": "workbook_used_range",
+  "args": {
+   "item": "expense-extract-6mo.xlsx"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "shaving_employee": "K. Osei",
+    "shaving_claim_count": 6,
+    "shaving_total": 2850.74,
+    "detector_triggered": "yes"
+   }
+  }
+ }
+]

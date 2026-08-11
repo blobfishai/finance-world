@@ -1,0 +1,48 @@
+{
+ "answer_checks": [
+  {
+   "field": "shaving_employee",
+   "type": "contains_all",
+   "expect": [
+    "osei"
+   ]
+  },
+  {
+   "field": "shaving_claim_count",
+   "type": "number",
+   "expect": 6,
+   "tol_abs": 0
+  },
+  {
+   "field": "shaving_total",
+   "type": "number",
+   "expect": 2850.74,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "detector_triggered",
+   "type": "string",
+   "expect": "yes"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "sheets",
+    "docs"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

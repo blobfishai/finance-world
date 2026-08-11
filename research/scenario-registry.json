@@ -589,6 +589,86 @@
       "tasks": [],
       "status": "gap",
       "note": "verifier addition: require a `unit`/`scale` answer field (millions vs units) alongside the number"
+    },
+    {
+      "id": "art.tolerance_dialect",
+      "source": "articles: SAP vs Oracle tolerance defaults",
+      "name": "Inverted tolerance defaults across ledgers (unmaintained=zero vs blank=infinite)",
+      "tasks": [
+        "threeway_match/tolerance-dialect-mar"
+      ]
+    },
+    {
+      "id": "art.threshold_shaving",
+      "source": "articles: Oracle Expenses detectors",
+      "name": "Receipt-threshold shaving detected across a 6-month window",
+      "tasks": [
+        "expense_audit/threshold-shaving-h1"
+      ]
+    },
+    {
+      "id": "art.sampling_projection",
+      "source": "articles: PCAOB AS 2315",
+      "name": "Project sample misstatement to population vs materiality",
+      "tasks": [
+        "pbc/sampling-projection-q1"
+      ]
+    },
+    {
+      "id": "art.positive_pay",
+      "source": "articles: bank positive-pay exceptions",
+      "name": "Positive-pay exception decisioning against same-day cutoffs",
+      "tasks": [],
+      "status": "gap",
+      "note": "needs a bank server with exception queue + cutoff clock (11am/2pm); queued behind the planned `bank` mock"
+    },
+    {
+      "id": "art.deduction_coding",
+      "source": "articles: deduction management",
+      "name": "Deduction reason-coding and routing (7 codes), distinct from unapplied cash",
+      "tasks": [],
+      "status": "gap",
+      "note": "deduction rows exist (erp_cust_trans.deduction); needs a reason-code table + routing policy doc"
+    },
+    {
+      "id": "art.confirmation_control",
+      "source": "articles: PCAOB AS 2310",
+      "name": "Audit confirmation control violations (client must never handle confirmations)",
+      "tasks": [],
+      "status": "gap",
+      "note": "needs a confirmation workflow in the mailbox; pairs with the interactive counterparty mechanic"
+    },
+    {
+      "id": "art.intercompany_tolerance",
+      "source": "articles: Oracle EPM intercompany",
+      "name": "Intercompany tolerance decision (minimum of amount and percent governs)",
+      "tasks": [],
+      "status": "gap",
+      "note": "we decompose the difference today; the decision variant needs tolerance config on the entity pair"
+    },
+    {
+      "id": "art.vendor_dormancy",
+      "source": "articles: vendor master hygiene",
+      "name": "Vendor dormancy / duplicate sweep (12-24 months inactive)",
+      "tasks": [],
+      "status": "gap",
+      "note": "vendor master + transaction history support it; needs a task and a hygiene policy doc"
+    },
+    {
+      "id": "art.credit_check_discrimination",
+      "source": "articles: SAP credit management",
+      "name": "Which of several credit checks fired (a block is not always a limit breach)",
+      "tasks": [],
+      "status": "gap",
+      "note": "needs multiple credit-check types on the customer master, not just credit_max + hold"
+    },
+    {
+      "id": "art.forecast_variance_band",
+      "source": "articles: 13-week forecasting",
+      "name": "Forecast accuracy judged against the 5-10% week-1-4 band",
+      "tasks": [],
+      "status": "gap",
+      "note": "cash_forecast produces the forecast; the accuracy-review variant needs actuals for a prior forecast"
     }
   ]
 }
