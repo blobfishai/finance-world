@@ -1,0 +1,26 @@
+{
+ "email_messages": [
+  {
+   "id": "em-0701",
+   "folder": "inbox",
+   "from_addr": "ar@officesupplies-sim.example",
+   "to_addr": "ap@contoso-sim.example",
+   "subject": "Contoso Office Supplies - statement of account to 28 Feb 2026",
+   "sent_at": "2026-03-02T08:40:00Z",
+   "body": "Hello,\n\nAttached is our statement to 28 February. Please note our records show PO-4471 as settled - we received your payment on 24 February and it has been applied. If you have a second document open against PO-4471 on your side it is the paper copy our warehouse re-sent; please disregard it.\n\nOpen with us: PO-4488 and PO-4510.\n\nIvy Chen, Contoso Office Supplies AR (SIMULATION)",
+   "attachment_name": "cos-statement-feb.txt",
+   "attachment_text": "CONTOSO OFFICE SUPPLIES - STATEMENT TO 2026-02-28 (SIMULATION)\nPO-4471  OSINV-5521  18,400.00  PAID 2026-02-24\nPO-4488  OSINV-5530   6,200.00  OPEN\nPO-4510  OSINV-5555  18,400.00  OPEN\nTotal open: 24,600.00\n"
+  },
+  {
+   "id": "em-0702",
+   "folder": "inbox",
+   "from_addr": "billing@tailspinprint-sim.example",
+   "to_addr": "ap@contoso-sim.example",
+   "subject": "Invoice TPS-11907 - February print services",
+   "sent_at": "2026-03-01T14:05:00Z",
+   "body": "Invoice TPS-11907 for February print services against PO-4502, 9,850.00, net 30.\n\nOmar Haddad, Tailspin Print Services (SIMULATION)",
+   "attachment_name": null,
+   "attachment_text": null
+  }
+ ]
+}

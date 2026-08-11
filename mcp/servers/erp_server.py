@@ -426,7 +426,10 @@ ACTIONS = {
 # Reason codes for the rejected half of a payment run. Vocabulary follows ERPNext's
 # _partition_payable_invoices plus the D365 hold/discount cases (write-surface-spec.md §4).
 REJECT_CODES = {"insufficient_cash", "vendor_on_hold", "awaiting_approval",
-                "discount_window_expired", "disputed", "missing_bank_details", "not_yet_due"}
+                "discount_window_expired", "disputed", "missing_bank_details", "not_yet_due",
+                # ~1.5% of disbursements leak as duplicate payments (research/domain-workflows.md
+                # chaos pattern 8: "INV-5521" vs "5521-OPS"), so the partition needs a code for it.
+                "duplicate"}
 
 PROPOSAL_MAX_LINES = 60   # a payment proposal a human would actually review
 

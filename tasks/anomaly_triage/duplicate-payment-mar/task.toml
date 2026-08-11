@@ -1,0 +1,33 @@
+schema_version = "1.4"
+
+[task]
+name = "anomaly_triage/duplicate-payment-mar"
+version = "0.1.0"
+description = "Screen a fully fundable payment run for a re-keyed duplicate invoice, reject exactly the duplicate, and leave the look-alike with a different PO alone."
+authors = ["nario-ai"]
+keywords = ["finance", "anomaly_triage", "ap", "duplicate-payment", "controls", "write"]
+
+[metadata]
+family = "anomaly_triage"
+origin = "docs/HARD-LAYER-DESIGN.md M1/M3/M4/M5/M7; chaos pattern 8 (near-duplicate invoice numbers, ~1.5% duplicate-payment leakage) in research/domain-workflows.md; disbursement controls in research/external/articles/vendor-master-bec-fraud--afp-truist.md"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+agent_role = "treasury"
+walk_len = 11
+
+# Objective non-collapse (M3). Cash covers every eligible obligation, so the naive run is
+# fully fundable and commits cleanly - it is simply wrong.
+#   naive  (pay every eligible obligation)             = 52,850.00 across 4 invoices
+#   graded (reject the PO-4471 duplicate only)         = 34,450.00 across 3 invoices
+# The over-eager detector that matches on amount alone also fails: it rejects OSINV-5555
+# (same 18,400.00, different PO) and pays only 16,050.00.
+naive_answer = "5521-OPS,OSINV-5530,OSINV-5555,TPS-11907"
+graded_answer = "OSINV-5530,OSINV-5555,TPS-11907"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

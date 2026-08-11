@@ -4,13 +4,30 @@ A simulated corporate-finance environment + benchmark ("world") for evaluating a
 AI agents, built for a frontier-lab finance team. Harbor-packaged, deterministic verifiers,
 no LLM judge in the reward path.
 
-Task families:
-- **erp_qa** — grounded AP/AR questions (balances, aged debt, open invoices, payment terms,
-  cash discounts, collection letters) answered through MCP tools against a mocked ERP.
-- **public_research** — public-company financial figures and ratios with context.
-- **business_brief** — structured company profiles synthesizing public + internal data.
-- **cross_system** — questions whose answer requires joining deliberately fragmented data
-  (ERP + spreadsheets + subsidiary systems).
+Task families — **17**, in two layers:
+
+*Read-and-reconcile* (ask the world a question it will not answer in one place):
+- **erp_qa** / **erp_qa_fb** — grounded AP/AR questions (balances, aged debt, open invoices,
+  payment terms, cash discounts, collection letters) through MCP tools against a mocked ERP;
+  `erp_qa_fb` replays microsoft/FinanceBenchmark questions verbatim with in-world ground truth.
+- **finance_qa** / **business_brief** — public-company figures, ratios, and structured
+  profiles synthesizing public filings with internal AR/AP.
+- **cross_system** · **bank_rec** · **cash_app** · **cash_forecast** · **close_mgmt** ·
+  **pbc** · **expense_audit** · **threeway_match** · **vendor_master** · **payment_proposal**
+  — answers that require joining deliberately fragmented data (ERP + spreadsheets +
+  subsidiary books + email).
+
+*Write-and-approve* (the hard layer — `docs/HARD-LAYER-DESIGN.md`): the agent operates the
+business, and the verifier grades **the world it leaves behind**, not the story it tells.
+- **payment_run** — a Friday run that cannot be fully funded: exclusions first, then discount
+  capture, then oldest past-due, committed as a *total and disjoint* paid/rejected partition.
+  A short run is committed by naming what goes unpaid, never by dropping it.
+- **journal_entry** — accruals computed from the governing contract on the SOP's day-count
+  basis, staged and submitted for approval when they exceed the delegation-of-authority limit
+  (so "posted" is the wrong answer).
+- **anomaly_triage** — duplicate-disbursement screening, where the correct answer sits between
+  paying a duplicate and rejecting a legitimate look-alike.
+- **collections_ops** — dunning letters and credit holds as governed write actions.
 
 Everything is simulation: all companies, balances, and documents in the world are synthetic
 (`SIMULATION ONLY`), grounded in researched-but-fictionalized scenarios.
@@ -36,8 +53,31 @@ Everything is simulation: all companies, balances, and documents in the world ar
   controls), `run_task.py`, `run_batch.py` (flake-scan), `build_reports.py`, `scaffold.py`.
 
 ```bash
+./world/build.sh           # the ONLY supported build: core -> cash -> demo, then validate
 python3 sim/validate.py    # must print "VALIDATION PASSED" before any model run
+python3 sim/refresh_gt.py  # re-derive gt_sql ground truths after a world rebuild (--apply)
+python3 sim/reverify.py    # re-grade stored trials when the VERIFIER changed (--apply)
 ```
+
+`load_core.py` drops and recreates the database, so running it alone silently discards the
+cash and demo layers — always build through `world/build.sh` (`docs/AUDIT.md` A6).
+
+## Honesty machinery (why the numbers can be trusted)
+
+Every difficulty claim this repo makes has survived an audit-before-blame pass, and several
+did not. `docs/AUDIT.md` is the ledger; the load-bearing entries:
+
+| # | What we caught | Why it mattered |
+|---|---|---|
+| A5 | empty-answer traps graded by exact string equality | a correct answer that *explained itself* scored 0 — two "frontier" tasks were false-flaky |
+| A6 | `load_core.py` run alone | zero payments loaded; every balance inflated ~2.5× |
+| A7 | traces outliving the world they measured | a trial recorded `$81,262,127.02` graded **PASS** — correct against the pre-cash-layer world |
+| A8 | the turn budget was a capability cap | models were cut off mid-task at 24 turns and scored as wrong answers |
+
+The pattern: exact-match grading on natural-language fields and a tight clock were
+manufacturing difficulty the world does not have. Fixes shipped as check types (`none_answer`,
+`yes_no`), a `starved` trial class excluded from triage, and a rule that a trace is valid only
+against the current world build.
 - `traces/<model>/<family>/<slug>/trial-N.(pass|fail).json` — real model traces, failures included.
 - `reports/` — `summary.json` + per-model failure reports.
 

@@ -1,0 +1,33 @@
+[
+ {"server": "docs", "tool": "search_documents", "args": {"query": "duplicate"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "duplicate-payment-control"}},
+ {"server": "erp", "tool": "api_invoke_action",
+  "args": {"action": "ContosoPaymentRunPropose",
+           "parameters": {"pay_date": "2026-03-06", "bank_account": "USMF-OPER", "vendor_group": "OFFICE"}}},
+ {"server": "erp", "tool": "data_find_entities_sql",
+  "args": {"sql": "SELECT invoice, po_number, amount, settled, closed, trans_date FROM erp_vend_trans WHERE account IN ('PVEN-21','PVEN-22') AND txn_type='Invoice' ORDER BY po_number, trans_date"}},
+ {"server": "erp", "tool": "data_find_entities_sql",
+  "args": {"sql": "SELECT o.invoice AS open_invoice, o.po_number, o.amount, s.invoice AS settled_invoice, s.trans_date AS settled_date FROM erp_vend_trans o JOIN erp_vend_trans s ON s.account=o.account AND s.po_number=o.po_number AND s.amount=o.amount AND s.closed=1 AND s.txn_type='Invoice' WHERE o.closed=0 AND o.txn_type='Invoice'"}},
+ {"server": "email", "tool": "messages_list", "args": {"q": "statement"}},
+ {"server": "email", "tool": "messages_get", "args": {"id": "em-0701"}},
+ {"server": "email", "tool": "attachments_get", "args": {"message_id": "em-0701"}},
+ {"server": "erp", "tool": "api_invoke_action",
+  "args": {"action": "ContosoPaymentRunCommit",
+           "parameters": {
+             "run_id": "PR-00001",
+             "confirm_token": "CONF-PR-00001-1",
+             "paid": ["OSINV-5530", "OSINV-5555", "TPS-11907"],
+             "rejected": [
+               {"invoice": "5521-OPS", "reason_code": "duplicate",
+                "reason": "Duplicate of OSINV-5521 (PO-4471, 18,400.00), settled 2026-02-24; vendor statement confirms PO-4471 is paid and the second document is their re-sent paper copy. Refer to AP supervisor for credit."}
+             ]}}},
+ {"server": "erp", "tool": "data_find_entities", "args": {"entity": "PaymentRunLines", "filters": {"run_id": "PR-00001"}}},
+ {"server": "harness", "tool": "submit_answer",
+  "args": {"answers": {
+    "run_id": "PR-00001",
+    "duplicate_found": "yes",
+    "duplicate_invoice": "5521-OPS",
+    "duplicate_of": "OSINV-5521",
+    "total_paid": 34450.00,
+    "amount_prevented": 18400.00}}}
+]
