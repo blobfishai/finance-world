@@ -1,0 +1,61 @@
+{
+  "sheet_files": [
+    {"name": "expense-extract-2026-02.xlsx", "owner": "people.ops", "modified_at": "2026-02-27T17:40:00Z",
+     "description": "February 2026 expense report extract - every claim submitted in the period, as keyed by the traveller"}
+  ],
+  "sheet_rows": [
+    {"file": "expense-extract-2026-02.xlsx", "row_no": 1,
+     "cells": ["Line", "Employee", "Trip", "Expense date", "Category", "Description", "Claimed USD", "Receipt", "Submitted", "Notes"]},
+
+    {"file": "expense-extract-2026-02.xlsx", "row_no": 2,
+     "cells": ["EXP-2041", "R. Vale", "Denver client visit", "2026-02-09", "Airfare", "Round trip DEN, economy", 318.00, "yes", "2026-02-13", "coach fare, no upgrade"]},
+    {"file": "expense-extract-2026-02.xlsx", "row_no": 3,
+     "cells": ["EXP-2042", "R. Vale", "Denver client visit", "2026-02-11", "Lodging", "2 nights @ 246.00, Denver CO", 492.00, "yes", "2026-02-13", "room rate includes complimentary hotel breakfast"]},
+    {"file": "expense-extract-2026-02.xlsx", "row_no": 4,
+     "cells": ["EXP-2043", "R. Vale", "Denver client visit", "2026-02-11", "M&IE per diem", "Per diem, Denver CO - departed 2026-02-09, returned 2026-02-11", 240.00, "n/a - per diem", "2026-02-13", "claimed the full daily rate for each of the 3 travel days"]},
+    {"file": "expense-extract-2026-02.xlsx", "row_no": 5,
+     "cells": ["EXP-2044", "R. Vale", "Denver client visit", "2026-02-11", "Ground transport", "Airport taxi, both ends", 54.20, "yes", "2026-02-13", ""]},
+
+    {"file": "expense-extract-2026-02.xlsx", "row_no": 6,
+     "cells": ["EXP-2049", "J. Blake", "GreenLedger Summit", "2026-02-17", "Airfare", "Round trip SFO, economy", 286.00, "yes", "2026-02-20", ""]},
+    {"file": "expense-extract-2026-02.xlsx", "row_no": 7,
+     "cells": ["EXP-2050", "J. Blake", "GreenLedger Summit", "2026-02-19", "Lodging", "2 nights @ 189.00, Oakland CA", 378.00, "yes", "2026-02-20", "stayed in Oakland, cheaper than the venue hotel"]},
+    {"file": "expense-extract-2026-02.xlsx", "row_no": 8,
+     "cells": ["EXP-2051", "J. Blake", "GreenLedger Summit", "2026-02-17", "Conference fee", "GreenLedger Summit registration", 845.00, "yes", "2026-02-20", "registration confirmation is in the mailbox"]},
+    {"file": "expense-extract-2026-02.xlsx", "row_no": 9,
+     "cells": ["EXP-2052", "J. Blake", "GreenLedger Summit", "2026-02-19", "M&IE per diem", "Per diem - departed 2026-02-17, returned 2026-02-19", 222.00, "n/a - per diem", "2026-02-20", "claimed at the Oakland daily rate, where I stayed"]},
+
+    {"file": "expense-extract-2026-02.xlsx", "row_no": 10,
+     "cells": ["EXP-2055", "D. Kim", "Sacramento site day", "2026-02-24", "M&IE per diem", "Per diem, Sacramento CA - no overnight", 55.50, "n/a - per diem", "2026-02-25", "departed 07:10, back at the office 16:40 the same day"]},
+    {"file": "expense-extract-2026-02.xlsx", "row_no": 11,
+     "cells": ["EXP-2056", "D. Kim", "Sacramento site day", "2026-02-24", "Ground transport", "Capitol Corridor rail, round trip", 96.00, "yes", "2026-02-25", ""]},
+    {"file": "expense-extract-2026-02.xlsx", "row_no": 12,
+     "cells": ["EXP-2057", "D. Kim", "Sacramento site day", "2026-02-24", "Incidentals", "Onboard wi-fi day pass", 18.00, "yes", "2026-02-25", "coded to incidentals by the traveller"]},
+
+    {"file": "expense-extract-2026-02.xlsx", "row_no": 13,
+     "cells": ["EXP-2058", "A. Okonkwo", "Chicago client site", "2025-12-08", "Lodging", "2 nights @ 306.20, Chicago IL", 612.40, "yes", "2026-02-19", "business purpose: Northwind onboarding workshops; receipt located late"]},
+    {"file": "expense-extract-2026-02.xlsx", "row_no": 14,
+     "cells": ["EXP-2059", "A. Okonkwo", "", "2026-02-20", "Ground transport", "Rideshare to downtown client meeting", 41.30, "yes", "2026-02-24", "local, no overnight"]}
+  ],
+  "email_messages": [
+    {"id": "em-2201", "folder": "inbox",
+     "from_addr": "registrar@greenledgersummit-sim.example", "to_addr": "j.blake@contoso-sim.example",
+     "subject": "GreenLedger Summit 2026 - registration confirmed (J. Blake)",
+     "sent_at": "2026-01-28T15:02:00Z",
+     "body": "SIMULATION ONLY.\n\nYour registration is confirmed.\n\nVenue: Pier 27 Conference Center, San Francisco, CA\nDates: Tuesday 17 - Thursday 19 February 2026\nRegistration: USD 845.00 (paid)\n\nYour badge includes:\n- all plenary and track sessions, 17-19 February\n- the hosted delegate lunch on Wednesday 18 February, 12:30, Bay Hall\n- morning and afternoon coffee service\n\nNot included: breakfast, dinner, and any evening receptions hosted by exhibitors.\nWe do not arrange accommodation; a list of hotels near the venue is on the event site.",
+     "attachment_name": "", "attachment_text": ""},
+    {"id": "em-2202", "folder": "inbox",
+     "from_addr": "a.okonkwo@contoso-sim.example", "to_addr": "expenses@contoso-sim.example",
+     "subject": "Late receipt - Chicago hotel from December",
+     "sent_at": "2026-02-19T08:31:00Z",
+     "body": "SIMULATION ONLY.\n\nApologies for the delay. The hotel folio for the Chicago trip (checked in 8 December 2025, two nights, USD 612.40) went into the wrong folder and I only found it this week, so it is going on my February report rather than the December one. The stay was for the Northwind onboarding workshops - purpose and dates are on the folio and the rate is inside our nightly cap. Let me know if you need anything else with it.\n\nA. Okonkwo",
+     "attachment_name": "chicago-folio-dec.pdf",
+     "attachment_text": "SIMULATION ONLY. Millrun Suites Chicago. Guest: A. Okonkwo. Check-in 2025-12-08, check-out 2025-12-10. Room 2 nights @ USD 306.20 = USD 612.40. Charged to card ending 4417 on 2025-12-08. Purpose noted at check-in: Northwind onboarding workshops."},
+    {"id": "em-2203", "folder": "inbox",
+     "from_addr": "reservations@millrunsuites-sim.example", "to_addr": "r.vale@contoso-sim.example",
+     "subject": "Your Denver stay - folio and rate summary",
+     "sent_at": "2026-02-11T13:12:00Z",
+     "body": "SIMULATION ONLY.\n\nThank you for staying with us. Folio summary:\n\nCheck-in 2026-02-09, check-out 2026-02-11, 2 nights at USD 246.00 = USD 492.00.\nYour rate is our Bed & Breakfast package: the complimentary hot breakfast buffet in the lobby restaurant is included in the room rate on each morning of the stay at no additional charge.\n\nNo other food and beverage was charged to the room.",
+     "attachment_name": "", "attachment_text": ""}
+  ]
+}

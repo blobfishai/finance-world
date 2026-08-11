@@ -1,0 +1,25 @@
+{
+ "answer_checks": [
+  {"field": "flagged_contracts", "type": "contains_all",
+   "expect": ["CTR-2047", "CTR-2052", "CTR-2055", "CTR-2058"],
+   "forbid": ["CTR-2041", "CTR-2044", "CTR-2061"]},
+  {"field": "amount_exceptions", "type": "contains_all",
+   "expect": ["CTR-2047", "CTR-2052"],
+   "forbid": ["CTR-2041", "CTR-2044", "CTR-2055", "CTR-2058", "CTR-2061"]},
+  {"field": "timing_exceptions", "type": "contains_all",
+   "expect": ["CTR-2055", "CTR-2058"],
+   "forbid": ["CTR-2041", "CTR-2044", "CTR-2047", "CTR-2052", "CTR-2061"]},
+  {"field": "over_recognised_usd", "type": "number", "expect": 7500.0, "tol_abs": 0.05,
+   "gt_sql": "WITH c AS (SELECT json_extract(cells,'$[0]') AS cid, CAST(json_extract(cells,'$[2]') AS REAL) AS val FROM sheet_rows WHERE file='contract-register-fy26.xlsx' AND row_no>1), s AS (SELECT json_extract(cells,'$[0]') AS cid, CAST(json_extract(cells,'$[2]') AS REAL) AS amt FROM sheet_rows WHERE file='revenue-schedule-fy26.xlsx' AND row_no>1), v AS (SELECT c.cid AS cid, c.val AS val, COALESCE((SELECT SUM(amt) FROM s WHERE s.cid=c.cid),0) AS rec FROM c) SELECT ROUND(COALESCE(SUM(rec-val),0),2) FROM v WHERE rec-val > (CASE WHEN val*0.001>100 THEN val*0.001 ELSE 100 END)"},
+  {"field": "under_recognised_usd", "type": "number", "expect": 8000.0, "tol_abs": 0.05,
+   "gt_sql": "WITH c AS (SELECT json_extract(cells,'$[0]') AS cid, CAST(json_extract(cells,'$[2]') AS REAL) AS val FROM sheet_rows WHERE file='contract-register-fy26.xlsx' AND row_no>1), s AS (SELECT json_extract(cells,'$[0]') AS cid, CAST(json_extract(cells,'$[2]') AS REAL) AS amt FROM sheet_rows WHERE file='revenue-schedule-fy26.xlsx' AND row_no>1), v AS (SELECT c.cid AS cid, c.val AS val, COALESCE((SELECT SUM(amt) FROM s WHERE s.cid=c.cid),0) AS rec FROM c) SELECT ROUND(COALESCE(SUM(val-rec),0),2) FROM v WHERE val-rec > (CASE WHEN val*0.001>100 THEN val*0.001 ELSE 100 END)"}
+ ],
+ "trace_checks": [
+  {"type": "required_servers", "servers": ["sheets", "docs"]},
+  {"type": "min_calls", "server": "sheets", "n": 3},
+  {"type": "reads_before_submit"}
+ ],
+ "state_checks": [
+  {"type": "writes_only", "tables": ["answers"]}
+ ]
+}

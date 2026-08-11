@@ -1,0 +1,17 @@
+[
+ {"server": "sheets", "tool": "list_drive_items", "args": {}},
+ {"server": "docs", "tool": "search_documents", "args": {"query": "payroll register review"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "sop--payroll-register-review"}},
+ {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "attendance-export-2026-02-H2.xlsx"}},
+ {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "payroll-register-2026-02-H2.xlsx"}},
+ {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "comp-rate-schedule-2026.xlsx"}},
+ {"server": "sheets", "tool": "get_drive_item", "args": {"item": "comp-rate-schedule-2026.xlsx"}},
+ {"server": "sheets", "tool": "drive_search", "args": {"q": "LOA-2026-014"}},
+ {"server": "harness", "tool": "submit_answer",
+  "args": {"answers": {
+    "discrepancy_employee_ids": "E-1044, E-1045",
+    "overpayment_usd": 129.00,
+    "underpayment_usd": 208.00,
+    "net_variance_usd": -79.00,
+    "underpaid_employee": "E-1045 Aisha Bello"}}}
+]

@@ -1,0 +1,36 @@
+schema_version = "1.4"
+
+[task]
+name = "close_mgmt/revenue-recognition-tieout"
+version = "0.1.0"
+description = "Tie the FY26 contract register to the revenue recognition schedule and split the exceptions into amount discrepancies and term-alignment (timing) discrepancies before the register goes to the auditors."
+authors = ["nario-ai"]
+keywords = ["finance", "close_mgmt", "revenue-recognition", "cut-off", "tie-out", "asc606"]
+
+[metadata]
+family = "close_mgmt"
+origin = "port of research/external/repos/TheAgentCompany/workspaces/tasks/finance-revenue-reconciliation (contracts.xlsx + revenue_schedule.xlsx, flag contracts where recognised revenue misses contract value beyond tolerance OR the schedule does not align with the contract term); the source's LLM-judged RocketChat notification and file-writing checkpoints are dropped for deterministic answer checks, and its single flagged list is split into the two finding classes its own task.md names; docs/HARD-LAYER-DESIGN.md M3 (non-collapse) / M4 (recomputed from the schedule, never read off the register's cached column) / M5 (tolerance and term-alignment rule live only in RAP-04); source checkpoint 1 (asserting the ownCloud path appears in the trajectory) is also dropped as environment-specific - the equivalent here is the required_servers/reads_before_submit trace check"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 9
+mechanic = "the total tying to the cent is not the tie-out; two contracts foot exactly and still land revenue outside their term"
+
+# Objective non-collapse (M3): the naive tie-out - does the recognised total equal the
+# contract value - is the tie-out every close pack actually runs, and it is defensible: it
+# catches CTR-2047 (under by 8,000) and CTR-2052 (over by 7,500) and clears everything else.
+# It misses both timing contracts entirely, because both foot to the cent: CTR-2055 straight-
+# lines 260,000 over 13 periods and trails one month past a term ending 2026-03, and CTR-2058
+# recognises the full 108,000 of a 12-month contract in 8 months. The naive flagged set is a
+# strict subset of the graded one - 2 of 4 findings, and the two that a revenue auditor opens
+# with. Neither path flags CTR-2044 (36.00 of rounding drift, inside RAP-04's band) or the two
+# clean contracts, so over-flagging fails on `forbid` as well.
+naive_answer = "CTR-2047,CTR-2052"
+graded_answer = "CTR-2047,CTR-2052,CTR-2055,CTR-2058"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

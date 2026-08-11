@@ -1,0 +1,90 @@
+{
+ "task": "expense_audit/policy-validation-feb",
+ "family": "expense_audit",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "email",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 9,
+ "walk_len": 9,
+ "budget_turns": 84,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 9}\n",
+ "trace": [
+  {
+   "ts": 1786474542.3518689,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"per diem travel policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786474542.356562,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--travel-perdiem-and-substantiation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786474542.357409,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"reference--gsa-mie-rate-table\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786474542.365759,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786474542.366401,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"expense-extract-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786474542.3786392,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"GreenLedger Summit registration\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786474542.37922,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-2201\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786474542.379647,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-2202\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786474542.381191,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"perdiem_due\": 404.0, \"conference_mie_rate\": 92, \"nonaccountable_amount\": 612.4, \"reimbursable_total\": 2932.5, \"structural_exception_line\": \"EXP-2058\", \"structural_exception_reason\": \"A. Okonkwo's Chicago lodging is inside every per-line limit - receipt attached, business purpose stated",
+   "ok": true
+  }
+ ]
+}

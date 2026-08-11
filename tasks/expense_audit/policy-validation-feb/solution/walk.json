@@ -1,0 +1,18 @@
+[
+ {"server": "docs", "tool": "search_documents", "args": {"query": "per diem travel policy"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "policy--travel-perdiem-and-substantiation"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "reference--gsa-mie-rate-table"}},
+ {"server": "sheets", "tool": "list_drive_items", "args": {}},
+ {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "expense-extract-2026-02.xlsx"}},
+ {"server": "email", "tool": "messages_list", "args": {"q": "GreenLedger Summit registration"}},
+ {"server": "email", "tool": "messages_get", "args": {"id": "em-2201"}},
+ {"server": "email", "tool": "messages_get", "args": {"id": "em-2202"}},
+ {"server": "harness", "tool": "submit_answer",
+  "args": {"answers": {
+    "perdiem_due": 404.00,
+    "conference_mie_rate": 92,
+    "nonaccountable_amount": 612.40,
+    "reimbursable_total": 2932.50,
+    "structural_exception_line": "EXP-2058",
+    "structural_exception_reason": "A. Okonkwo's Chicago lodging is inside every per-line limit - receipt attached, business purpose stated, 306.20 a night against a 350 cap - but it was incurred 2025-12-08 and first substantiated 2026-02-19, 73 days later, outside the 60 day fixed-date safe harbour, so it falls out of the accountable plan and is paid through payroll as W-2 wages rather than reimbursed tax-free."}}}
+]

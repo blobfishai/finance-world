@@ -1,0 +1,26 @@
+{
+ "answer_checks": [
+  {"field": "discrepancy_employee_ids", "type": "contains_all",
+   "expect": ["E-1044", "E-1045"],
+   "forbid": ["E-1041", "E-1042", "E-1043", "E-1046", "E-1047"]},
+  {"field": "overpayment_usd", "type": "number", "expect": 129.0, "tol_abs": 0.05,
+   "gt_sql": "SELECT ROUND(SUM(MAX(p.gross - o.owed, 0)),2) FROM (SELECT json_extract(cells,'$[0]') AS id, json_extract(cells,'$[4]') AS gross FROM sheet_rows WHERE file='payroll-register-2026-02-H2.xlsx' AND json_extract(cells,'$[0]') LIKE 'E-1%') p JOIN (SELECT json_extract(a.cells,'$[0]') AS id, (json_extract(a.cells,'$[3]') + CASE WHEN json_extract(a.cells,'$[5]')='LWOP' THEN 0 ELSE json_extract(a.cells,'$[4]') END) * json_extract(r.cells,'$[3]') AS owed FROM sheet_rows a JOIN sheet_rows r ON json_extract(r.cells,'$[0]')=json_extract(a.cells,'$[0]') WHERE a.file='attendance-export-2026-02-H2.xlsx' AND r.file='comp-rate-schedule-2026.xlsx' AND json_extract(a.cells,'$[0]') LIKE 'E-1%') o ON p.id=o.id"},
+  {"field": "underpayment_usd", "type": "number", "expect": 208.0, "tol_abs": 0.05,
+   "gt_sql": "SELECT ROUND(-SUM(MIN(p.gross - o.owed, 0)),2) FROM (SELECT json_extract(cells,'$[0]') AS id, json_extract(cells,'$[4]') AS gross FROM sheet_rows WHERE file='payroll-register-2026-02-H2.xlsx' AND json_extract(cells,'$[0]') LIKE 'E-1%') p JOIN (SELECT json_extract(a.cells,'$[0]') AS id, (json_extract(a.cells,'$[3]') + CASE WHEN json_extract(a.cells,'$[5]')='LWOP' THEN 0 ELSE json_extract(a.cells,'$[4]') END) * json_extract(r.cells,'$[3]') AS owed FROM sheet_rows a JOIN sheet_rows r ON json_extract(r.cells,'$[0]')=json_extract(a.cells,'$[0]') WHERE a.file='attendance-export-2026-02-H2.xlsx' AND r.file='comp-rate-schedule-2026.xlsx' AND json_extract(a.cells,'$[0]') LIKE 'E-1%') o ON p.id=o.id"},
+  {"field": "net_variance_usd", "type": "number", "expect": -79.0, "tol_abs": 0.05,
+   "gt_sql": "SELECT ROUND(SUM(p.gross - o.owed),2) FROM (SELECT json_extract(cells,'$[0]') AS id, json_extract(cells,'$[4]') AS gross FROM sheet_rows WHERE file='payroll-register-2026-02-H2.xlsx' AND json_extract(cells,'$[0]') LIKE 'E-1%') p JOIN (SELECT json_extract(a.cells,'$[0]') AS id, (json_extract(a.cells,'$[3]') + CASE WHEN json_extract(a.cells,'$[5]')='LWOP' THEN 0 ELSE json_extract(a.cells,'$[4]') END) * json_extract(r.cells,'$[3]') AS owed FROM sheet_rows a JOIN sheet_rows r ON json_extract(r.cells,'$[0]')=json_extract(a.cells,'$[0]') WHERE a.file='attendance-export-2026-02-H2.xlsx' AND r.file='comp-rate-schedule-2026.xlsx' AND json_extract(a.cells,'$[0]') LIKE 'E-1%') o ON p.id=o.id"},
+  {"field": "underpaid_employee", "type": "contains_all",
+   "expect": ["E-1045", "Aisha Bello"],
+   "forbid": ["E-1041", "E-1042", "E-1043", "E-1044", "E-1046", "E-1047",
+              "Devin Okafor", "Tomas Lindqvist", "Meera Raghunathan"]}
+ ],
+ "trace_checks": [
+  {"type": "required_servers", "servers": ["sheets", "docs"]},
+  {"type": "min_calls", "server": "sheets", "n": 3},
+  {"type": "min_calls", "server": "docs", "n": 1},
+  {"type": "reads_before_submit"}
+ ],
+ "state_checks": [
+  {"type": "writes_only", "tables": ["answers"]}
+ ]
+}

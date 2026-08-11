@@ -1,0 +1,89 @@
+{
+ "task": "fpna/payroll-attendance-tieout",
+ "family": "fpna",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 9,
+ "walk_len": 9,
+ "budget_turns": 84,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.1,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 9}\n",
+ "trace": [
+  {
+   "ts": 1786474659.0027661,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786474659.003903,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"payroll register review\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786474659.0042849,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"sop--payroll-register-review\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786474659.004703,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"attendance-export-2026-02-H2.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786474659.0050619,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"payroll-register-2026-02-H2.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786474659.005405,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"comp-rate-schedule-2026.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786474659.0057201,
+   "server": "sheets",
+   "tool": "get_drive_item",
+   "args": "{\"item\": \"comp-rate-schedule-2026.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786474659.006037,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"LOA-2026-014\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786474659.007749,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"discrepancy_employee_ids\": \"E-1044, E-1045\", \"overpayment_usd\": 129.0, \"underpayment_usd\": 208.0, \"net_variance_usd\": -79.0, \"underpaid_employee\": \"E-1045 Aisha Bello\"}}",
+   "ok": true
+  }
+ ]
+}

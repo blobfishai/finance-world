@@ -1,0 +1,16 @@
+[
+ {"server": "docs", "tool": "search_documents", "args": {"query": "FIN-FPA-04"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "policy--fpna-variance-review"}},
+ {"server": "sheets", "tool": "list_drive_items", "args": {}},
+ {"server": "sheets", "tool": "get_drive_item", "args": {"item": "FY26-opex-budget.xlsx"}},
+ {"server": "sheets", "tool": "workbook_worksheets", "args": {"item": "FY26-actuals-jan-feb.xlsx"}},
+ {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "FY26-actuals-jan-feb.xlsx"}},
+ {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "FY26-opex-budget.xlsx"}},
+ {"server": "sheets", "tool": "drive_search", "args": {"q": "Facilities"}},
+ {"server": "docs", "tool": "get_document_metadata", "args": {"doc_id": "policy--fpna-variance-review"}},
+ {"server": "harness", "tool": "submit_answer",
+  "args": {"answers": {
+    "flagged_ids": "Engineering_Software_202602, Sales_Travel_202602, Marketing_Training_202602, Operations_Equipment_202601",
+    "flagged_count": 4,
+    "unfavourable_total_usd": 38515.40}}}
+]

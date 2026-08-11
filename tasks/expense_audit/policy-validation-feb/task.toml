@@ -1,0 +1,53 @@
+schema_version = "1.4"
+
+[task]
+name = "expense_audit/policy-validation-feb"
+version = "0.1.0"
+description = "Reprice February travel claims off the GSA M&IE table and split the file into accountable-plan reimbursement and nonaccountable wages, when no line breaches a per-line limit."
+authors = ["nario-ai"]
+keywords = ["finance", "expense_audit", "per-diem", "accountable-plan", "policy", "payroll"]
+
+[metadata]
+family = "expense_audit"
+origin = """port of TheAgentCompany research/external/repos/TheAgentCompany/workspaces/tasks/finance-expense-validation \
+(expense extract + a rules file, find the mis-stated lines, report a per-category rollup). Kept: the spreadsheet-plus-policy \
+surface and the rollup deliverable. Changed: the source grades keyword-to-category matching over 1,000 synthetic rows, which is \
+arithmetic volume, so the port replaces the volume with one judgement — every one of the 13 lines passes the per-line test and the \
+file is still wrong. Policy limits are grounded in research/external/articles/te-expense-audit--{gsa-mie-breakdown,gsa-perdiem-faq,\
+ecfr-accountable-plan,irs}.md (GSA CONUS M&IE tiers and the 75% first/last-day rule, the 12-hour one-day gate, work-location \
+locality rule, provided-meal exceptions, and the 26 CFR 1.62-2 60-day substantiation safe harbour with W-2 consequence). \
+Differs from expense_audit/te-sample-feb, which tests per-line limits (meal cap, business class, missing receipt) and grades a \
+violation count — here no line breaks a limit; and from expense_audit/threshold-shaving-h1, which grades a cross-period behavioural \
+pattern over compliant claims — here the finding is a single line's date arithmetic and its payroll consequence. \
+docs/HARD-LAYER-DESIGN.md M3 (non-collapse), M4 (money re-derivation off the rate table, never the claimed figure), \
+M5 (the provided meal and the venue city live only in email, not in the extract)."""
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 9
+mechanic = "every line passes every per-line limit; the file is still wrong by 725.90, and one compliant line has to be paid as wages"
+
+# Objective non-collapse (M3): the naive strategy is the one a busy approver actually runs —
+# test each line against the caps (receipt attached, under the nightly cap, economy fare),
+# find nothing, and approve the file as claimed. It produces a specific, defensible, wrong
+# answer: per diem 517.50 (the claimed figures), the Oakland lodging-city rate of 74 for the
+# summit trip, nothing to payroll, and 3,658.40 out the door tax-free.
+# Four independent things move it:
+#   - first/last day pays 75%, not 100% (Vale claimed 3 full days at 80 = 240; due 200)
+#   - locality follows the WORK city, so the summit is San Francisco at 92, not Oakland at 74,
+#     and the registration fee's hosted Wednesday lunch (email only) deducts 26 from day 2
+#     => 69 + 66 + 69 = 204, against 222 claimed
+#   - a 9.5-hour same-day trip is under the 12-hour gate and earns no M&IE at all (0, not 55.50)
+#   - EXP-2058 is inside every dollar limit but was substantiated 73 days after it was incurred,
+#     so it leaves the accountable plan: 612.40 goes to payroll as W-2 wages, not to AP.
+# The complimentary hotel breakfast is the decoy in the other direction - deducting it (2 x 20)
+# is the classic false positive and gives 160 instead of 200 on the Denver trip.
+naive_answer = "perdiem_due=517.50; conference_mie_rate=74; nonaccountable_amount=0.00; reimbursable_total=3658.40"
+graded_answer = "perdiem_due=404.00; conference_mie_rate=92; nonaccountable_amount=612.40; reimbursable_total=2932.50"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

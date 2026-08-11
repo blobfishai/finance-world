@@ -1,0 +1,43 @@
+schema_version = "1.4"
+
+[task]
+name = "fpna/budget-variance-feb"
+version = "0.1.0"
+description = "Build the February operating-review exception page from the FY26 opex budget and the Jan-Feb actuals: flag only variances that clear BOTH the 10% and the USD 5,000 limb, unfavourable only, with the contractually front-loaded category tested against the full-year budget instead of the month."
+authors = ["nario-ai"]
+keywords = ["finance", "fpna", "budget", "variance", "exception-reporting", "seasonality"]
+
+[metadata]
+family = "fpna"
+origin = "port of research/external/repos/TheAgentCompany/workspaces/tasks/finance-budget-variance (task.md + evaluator.py: budget vs actual by department/category/month, variance amount and %, flag >10% AND >$5,000, 'adjust for identified seasonal spending variations', identifiers as Department_Category_YYYYMM); the source's vague seasonality clause is resolved here into FIN-FPA-04 s4; docs/HARD-LAYER-DESIGN.md M3 (dual-limb non-collapse) and M5 (the front-loaded list has no field in either workbook and lives only in the policy document)"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 10
+
+# Objective non-collapse (M3). Three defensible naive strategies, all of which produce a
+# different set from the graded one:
+#
+#   naive A (below, the source evaluator's literal rule): abs(variance) > 10% AND > $5,000,
+#     tested month by month with no seasonality treatment. Picks up 9 items: the 4 real ones,
+#     both January Facilities charges (+103,043.80 Engineering, +184,088.25 Operations - the
+#     annual landlord instalment against one twelfth of the budget), both February Facilities
+#     rows (favourable, because the money was already spent in January), and the 12,513.80
+#     Sales software underspend. Unfavourable total 325,647.45 against 38,515.40.
+#   naive B ("anything more than 10% off budget"): 11 items - adds Marketing_Equipment_202602
+#     (+4,318.60, 47.98%) and HR_Training_202601 (+3,104.50, 51.74%), which fail the dollar limb.
+#   naive C ("anything more than $5,000 off budget"): 11 items - adds
+#     Engineering_Salaries_202602 (+8,903.20, 1.39%) and Sales_Salaries_202601 (+7,502.40,
+#     1.83%), which fail the percentage limb.
+#
+# Both limbs therefore do real work in opposite directions, and the seasonality clause is the
+# difference between a four-line exception page and a thirty-line one.
+naive_answer = "9 flags (adds Engineering_Facilities_202601, Operations_Facilities_202601, Engineering_Facilities_202602, Operations_Facilities_202602, Sales_Software_202602); unfavourable total 325647.45"
+graded_answer = "4 flags (Engineering_Software_202602, Sales_Travel_202602, Marketing_Training_202602, Operations_Equipment_202601); unfavourable total 38515.40"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

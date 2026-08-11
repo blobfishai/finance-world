@@ -1,0 +1,971 @@
+{
+ "sheet_files": [
+  {
+   "name": "contract-register-fy26.xlsx",
+   "owner": "iris.bhatt",
+   "modified_at": "2026-01-15T16:40:00Z",
+   "description": "FY26 contract register - value, term and the linked recognised-to-date column"
+  },
+  {
+   "name": "revenue-schedule-fy26.xlsx",
+   "owner": "iris.bhatt",
+   "modified_at": "2026-02-27T18:05:00Z",
+   "description": "Revenue recognition schedule by contract and period (system of record)"
+  }
+ ],
+ "sheet_rows": [
+  {
+   "file": "contract-register-fy26.xlsx",
+   "row_no": 1,
+   "cells": [
+    "Contract ID",
+    "Customer",
+    "Contract Value USD",
+    "Start Date",
+    "End Date",
+    "Term Months",
+    "Revenue Owner",
+    "Recognised USD (linked)"
+   ]
+  },
+  {
+   "file": "contract-register-fy26.xlsx",
+   "row_no": 2,
+   "cells": [
+    "CTR-2041",
+    "Harbor Point Logistics",
+    240000.0,
+    "2025-01-01",
+    "2025-12-31",
+    12,
+    "M. Okonkwo",
+    {
+     "f": "=SUMIF('revenue-schedule-fy26.xlsx'!A:A,A2,'revenue-schedule-fy26.xlsx'!C:C)",
+     "v": 240000.0
+    }
+   ]
+  },
+  {
+   "file": "contract-register-fy26.xlsx",
+   "row_no": 3,
+   "cells": [
+    "CTR-2044",
+    "Ironvale Foods",
+    180000.0,
+    "2025-01-01",
+    "2025-12-31",
+    12,
+    "M. Okonkwo",
+    {
+     "f": "=SUMIF('revenue-schedule-fy26.xlsx'!A:A,A3,'revenue-schedule-fy26.xlsx'!C:C)",
+     "v": 179964.0
+    }
+   ]
+  },
+  {
+   "file": "contract-register-fy26.xlsx",
+   "row_no": 4,
+   "cells": [
+    "CTR-2047",
+    "Cedar Line Media",
+    96000.0,
+    "2025-01-01",
+    "2025-12-31",
+    12,
+    "R. Vale",
+    {
+     "f": "=SUMIF('revenue-schedule-fy26.xlsx'!A:A,A4,'revenue-schedule-fy26.xlsx'!C:C)",
+     "v": 96000.0
+    }
+   ]
+  },
+  {
+   "file": "contract-register-fy26.xlsx",
+   "row_no": 5,
+   "cells": [
+    "CTR-2052",
+    "Alder & Roe Consulting",
+    150000.0,
+    "2025-01-01",
+    "2025-12-31",
+    12,
+    "R. Vale",
+    {
+     "f": "=SUMIF('revenue-schedule-fy26.xlsx'!A:A,A5,'revenue-schedule-fy26.xlsx'!C:C)",
+     "v": 157500.0
+    }
+   ]
+  },
+  {
+   "file": "contract-register-fy26.xlsx",
+   "row_no": 6,
+   "cells": [
+    "CTR-2055",
+    "Bellhaven Institute",
+    260000.0,
+    "2025-04-01",
+    "2026-03-31",
+    12,
+    "M. Okonkwo",
+    {
+     "f": "=SUMIF('revenue-schedule-fy26.xlsx'!A:A,A6,'revenue-schedule-fy26.xlsx'!C:C)",
+     "v": 260000.0
+    }
+   ]
+  },
+  {
+   "file": "contract-register-fy26.xlsx",
+   "row_no": 7,
+   "cells": [
+    "CTR-2058",
+    "Quill River Media",
+    108000.0,
+    "2025-07-01",
+    "2026-06-30",
+    12,
+    "R. Vale",
+    {
+     "f": "=SUMIF('revenue-schedule-fy26.xlsx'!A:A,A7,'revenue-schedule-fy26.xlsx'!C:C)",
+     "v": 108000.0
+    }
+   ]
+  },
+  {
+   "file": "contract-register-fy26.xlsx",
+   "row_no": 8,
+   "cells": [
+    "CTR-2061",
+    "Sunmarket Retail Group",
+    72000.0,
+    "2025-10-01",
+    "2026-09-30",
+    12,
+    "M. Okonkwo",
+    {
+     "f": "=SUMIF('revenue-schedule-fy26.xlsx'!A:A,A8,'revenue-schedule-fy26.xlsx'!C:C)",
+     "v": 72000.0
+    }
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 1,
+   "cells": [
+    "Contract ID",
+    "Period",
+    "Amount USD",
+    "Journal"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 2,
+   "cells": [
+    "CTR-2041",
+    "2025-01",
+    20000.0,
+    "JE-2025-01-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 3,
+   "cells": [
+    "CTR-2041",
+    "2025-02",
+    20000.0,
+    "JE-2025-02-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 4,
+   "cells": [
+    "CTR-2041",
+    "2025-03",
+    20000.0,
+    "JE-2025-03-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 5,
+   "cells": [
+    "CTR-2041",
+    "2025-04",
+    20000.0,
+    "JE-2025-04-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 6,
+   "cells": [
+    "CTR-2041",
+    "2025-05",
+    20000.0,
+    "JE-2025-05-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 7,
+   "cells": [
+    "CTR-2041",
+    "2025-06",
+    20000.0,
+    "JE-2025-06-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 8,
+   "cells": [
+    "CTR-2041",
+    "2025-07",
+    20000.0,
+    "JE-2025-07-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 9,
+   "cells": [
+    "CTR-2041",
+    "2025-08",
+    20000.0,
+    "JE-2025-08-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 10,
+   "cells": [
+    "CTR-2041",
+    "2025-09",
+    20000.0,
+    "JE-2025-09-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 11,
+   "cells": [
+    "CTR-2041",
+    "2025-10",
+    20000.0,
+    "JE-2025-10-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 12,
+   "cells": [
+    "CTR-2041",
+    "2025-11",
+    20000.0,
+    "JE-2025-11-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 13,
+   "cells": [
+    "CTR-2041",
+    "2025-12",
+    20000.0,
+    "JE-2025-12-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 14,
+   "cells": [
+    "CTR-2044",
+    "2025-01",
+    14997.0,
+    "JE-2025-01-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 15,
+   "cells": [
+    "CTR-2044",
+    "2025-02",
+    14997.0,
+    "JE-2025-02-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 16,
+   "cells": [
+    "CTR-2044",
+    "2025-03",
+    14997.0,
+    "JE-2025-03-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 17,
+   "cells": [
+    "CTR-2044",
+    "2025-04",
+    14997.0,
+    "JE-2025-04-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 18,
+   "cells": [
+    "CTR-2044",
+    "2025-05",
+    14997.0,
+    "JE-2025-05-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 19,
+   "cells": [
+    "CTR-2044",
+    "2025-06",
+    14997.0,
+    "JE-2025-06-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 20,
+   "cells": [
+    "CTR-2044",
+    "2025-07",
+    14997.0,
+    "JE-2025-07-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 21,
+   "cells": [
+    "CTR-2044",
+    "2025-08",
+    14997.0,
+    "JE-2025-08-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 22,
+   "cells": [
+    "CTR-2044",
+    "2025-09",
+    14997.0,
+    "JE-2025-09-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 23,
+   "cells": [
+    "CTR-2044",
+    "2025-10",
+    14997.0,
+    "JE-2025-10-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 24,
+   "cells": [
+    "CTR-2044",
+    "2025-11",
+    14997.0,
+    "JE-2025-11-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 25,
+   "cells": [
+    "CTR-2044",
+    "2025-12",
+    14997.0,
+    "JE-2025-12-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 26,
+   "cells": [
+    "CTR-2047",
+    "2025-01",
+    8000.0,
+    "JE-2025-01-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 27,
+   "cells": [
+    "CTR-2047",
+    "2025-02",
+    8000.0,
+    "JE-2025-02-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 28,
+   "cells": [
+    "CTR-2047",
+    "2025-03",
+    8000.0,
+    "JE-2025-03-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 29,
+   "cells": [
+    "CTR-2047",
+    "2025-04",
+    8000.0,
+    "JE-2025-04-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 30,
+   "cells": [
+    "CTR-2047",
+    "2025-05",
+    8000.0,
+    "JE-2025-05-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 31,
+   "cells": [
+    "CTR-2047",
+    "2025-06",
+    8000.0,
+    "JE-2025-06-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 32,
+   "cells": [
+    "CTR-2047",
+    "2025-07",
+    8000.0,
+    "JE-2025-07-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 33,
+   "cells": [
+    "CTR-2047",
+    "2025-08",
+    8000.0,
+    "JE-2025-08-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 34,
+   "cells": [
+    "CTR-2047",
+    "2025-09",
+    8000.0,
+    "JE-2025-09-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 35,
+   "cells": [
+    "CTR-2047",
+    "2025-10",
+    8000.0,
+    "JE-2025-10-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 36,
+   "cells": [
+    "CTR-2047",
+    "2025-11",
+    4000.0,
+    "JE-2025-11-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 37,
+   "cells": [
+    "CTR-2047",
+    "2025-12",
+    4000.0,
+    "JE-2025-12-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 38,
+   "cells": [
+    "CTR-2052",
+    "2025-01",
+    13125.0,
+    "JE-2025-01-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 39,
+   "cells": [
+    "CTR-2052",
+    "2025-02",
+    13125.0,
+    "JE-2025-02-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 40,
+   "cells": [
+    "CTR-2052",
+    "2025-03",
+    13125.0,
+    "JE-2025-03-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 41,
+   "cells": [
+    "CTR-2052",
+    "2025-04",
+    13125.0,
+    "JE-2025-04-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 42,
+   "cells": [
+    "CTR-2052",
+    "2025-05",
+    13125.0,
+    "JE-2025-05-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 43,
+   "cells": [
+    "CTR-2052",
+    "2025-06",
+    13125.0,
+    "JE-2025-06-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 44,
+   "cells": [
+    "CTR-2052",
+    "2025-07",
+    13125.0,
+    "JE-2025-07-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 45,
+   "cells": [
+    "CTR-2052",
+    "2025-08",
+    13125.0,
+    "JE-2025-08-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 46,
+   "cells": [
+    "CTR-2052",
+    "2025-09",
+    13125.0,
+    "JE-2025-09-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 47,
+   "cells": [
+    "CTR-2052",
+    "2025-10",
+    13125.0,
+    "JE-2025-10-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 48,
+   "cells": [
+    "CTR-2052",
+    "2025-11",
+    13125.0,
+    "JE-2025-11-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 49,
+   "cells": [
+    "CTR-2052",
+    "2025-12",
+    13125.0,
+    "JE-2025-12-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 50,
+   "cells": [
+    "CTR-2055",
+    "2025-04",
+    20000.0,
+    "JE-2025-04-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 51,
+   "cells": [
+    "CTR-2055",
+    "2025-05",
+    20000.0,
+    "JE-2025-05-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 52,
+   "cells": [
+    "CTR-2055",
+    "2025-06",
+    20000.0,
+    "JE-2025-06-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 53,
+   "cells": [
+    "CTR-2055",
+    "2025-07",
+    20000.0,
+    "JE-2025-07-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 54,
+   "cells": [
+    "CTR-2055",
+    "2025-08",
+    20000.0,
+    "JE-2025-08-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 55,
+   "cells": [
+    "CTR-2055",
+    "2025-09",
+    20000.0,
+    "JE-2025-09-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 56,
+   "cells": [
+    "CTR-2055",
+    "2025-10",
+    20000.0,
+    "JE-2025-10-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 57,
+   "cells": [
+    "CTR-2055",
+    "2025-11",
+    20000.0,
+    "JE-2025-11-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 58,
+   "cells": [
+    "CTR-2055",
+    "2025-12",
+    20000.0,
+    "JE-2025-12-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 59,
+   "cells": [
+    "CTR-2055",
+    "2026-01",
+    20000.0,
+    "JE-2026-01-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 60,
+   "cells": [
+    "CTR-2055",
+    "2026-02",
+    20000.0,
+    "JE-2026-02-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 61,
+   "cells": [
+    "CTR-2055",
+    "2026-03",
+    20000.0,
+    "JE-2026-03-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 62,
+   "cells": [
+    "CTR-2055",
+    "2026-04",
+    20000.0,
+    "JE-2026-04-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 63,
+   "cells": [
+    "CTR-2058",
+    "2025-07",
+    13500.0,
+    "JE-2025-07-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 64,
+   "cells": [
+    "CTR-2058",
+    "2025-08",
+    13500.0,
+    "JE-2025-08-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 65,
+   "cells": [
+    "CTR-2058",
+    "2025-09",
+    13500.0,
+    "JE-2025-09-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 66,
+   "cells": [
+    "CTR-2058",
+    "2025-10",
+    13500.0,
+    "JE-2025-10-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 67,
+   "cells": [
+    "CTR-2058",
+    "2025-11",
+    13500.0,
+    "JE-2025-11-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 68,
+   "cells": [
+    "CTR-2058",
+    "2025-12",
+    13500.0,
+    "JE-2025-12-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 69,
+   "cells": [
+    "CTR-2058",
+    "2026-01",
+    13500.0,
+    "JE-2026-01-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 70,
+   "cells": [
+    "CTR-2058",
+    "2026-02",
+    13500.0,
+    "JE-2026-02-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 71,
+   "cells": [
+    "CTR-2061",
+    "2025-10",
+    6000.0,
+    "JE-2025-10-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 72,
+   "cells": [
+    "CTR-2061",
+    "2025-11",
+    6000.0,
+    "JE-2025-11-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 73,
+   "cells": [
+    "CTR-2061",
+    "2025-12",
+    6000.0,
+    "JE-2025-12-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 74,
+   "cells": [
+    "CTR-2061",
+    "2026-01",
+    6000.0,
+    "JE-2026-01-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 75,
+   "cells": [
+    "CTR-2061",
+    "2026-02",
+    6000.0,
+    "JE-2026-02-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 76,
+   "cells": [
+    "CTR-2061",
+    "2026-03",
+    6000.0,
+    "JE-2026-03-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 77,
+   "cells": [
+    "CTR-2061",
+    "2026-04",
+    6000.0,
+    "JE-2026-04-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 78,
+   "cells": [
+    "CTR-2061",
+    "2026-05",
+    6000.0,
+    "JE-2026-05-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 79,
+   "cells": [
+    "CTR-2061",
+    "2026-06",
+    6000.0,
+    "JE-2026-06-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 80,
+   "cells": [
+    "CTR-2061",
+    "2026-07",
+    6000.0,
+    "JE-2026-07-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 81,
+   "cells": [
+    "CTR-2061",
+    "2026-08",
+    6000.0,
+    "JE-2026-08-REV"
+   ]
+  },
+  {
+   "file": "revenue-schedule-fy26.xlsx",
+   "row_no": 82,
+   "cells": [
+    "CTR-2061",
+    "2026-09",
+    6000.0,
+    "JE-2026-09-REV"
+   ]
+  }
+ ]
+}

@@ -695,6 +695,42 @@
     "anomaly_triage/duplicate-payment-mar"
    ],
    "note": "re-keyed invoice (OSINV-5521 / 5521-OPS, same PO and amount) beside a legitimate look-alike (same amount, different PO); both the naive and the over-eager strategy commit successfully and score 0"
+  },
+  {
+   "id": "tac.budget_variance",
+   "source": "TheAgentCompany/workspaces/tasks/finance-budget-variance",
+   "name": "Budget vs actual variance exception page",
+   "tasks": [
+    "fpna/budget-variance-feb"
+   ],
+   "note": "ported onto the sheets surface; the source's seasonality clause is dead text its own evaluator ignores, so the port resolves it into a checkable full-year test that a naive monthly comparison over-flags by 5 lines"
+  },
+  {
+   "id": "tac.revenue_reconciliation",
+   "source": "TheAgentCompany/workspaces/tasks/finance-revenue-reconciliation",
+   "name": "Revenue recognition vs contract value tie-out",
+   "tasks": [
+    "close_mgmt/revenue-recognition-tieout"
+   ],
+   "note": "keeps both source flag criteria; the timing-only contract is invisible to the totals check every close pack actually runs"
+  },
+  {
+   "id": "tac.expense_validation",
+   "source": "TheAgentCompany/workspaces/tasks/finance-expense-validation",
+   "name": "T&E policy validation with an accountable-plan breach",
+   "tasks": [
+    "expense_audit/policy-validation-feb"
+   ],
+   "note": "per-line limits all pass; the file is still wrong by 725.90 because of the 60-day substantiation rule and the GSA first/last-day 75% M&IE rule"
+  },
+  {
+   "id": "tac.payroll_attendance",
+   "source": "TheAgentCompany/workspaces/tasks/finance-check-attendance-payroll",
+   "name": "Attendance vs payroll register tie-out",
+   "tasks": [
+    "fpna/payroll-attendance-tieout"
+   ],
+   "note": "approved LWOP that looks like underpayment and is not; a rate-only error the hours comparison cannot see; period totals tie because the two errors offset"
   }
  ]
 }

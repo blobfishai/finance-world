@@ -1,0 +1,22 @@
+{
+ "answer_checks": [
+  {"field": "perdiem_due", "type": "number", "expect": 404.00, "tol_abs": 0.02},
+  {"field": "conference_mie_rate", "type": "number", "expect": 92, "tol_abs": 0.01},
+  {"field": "nonaccountable_amount", "type": "number", "expect": 612.40, "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(SUM(json_extract(cells,'$[6]')),2) FROM sheet_rows WHERE file='expense-extract-2026-02.xlsx' AND row_no>1 AND julianday(json_extract(cells,'$[8]')) - julianday(json_extract(cells,'$[3]')) > 60"},
+  {"field": "reimbursable_total", "type": "number", "expect": 2932.50, "tol_abs": 0.05},
+  {"field": "structural_exception_line", "type": "contains_all", "expect": ["EXP-2058"],
+   "forbid": ["EXP-2041", "EXP-2042", "EXP-2043", "EXP-2044", "EXP-2049", "EXP-2050",
+              "EXP-2051", "EXP-2052", "EXP-2055", "EXP-2056", "EXP-2057", "EXP-2059"]},
+  {"field": "structural_exception_reason", "type": "contains_all", "expect": ["60"],
+   "forbid": ["duplicate", "missing receipt", "no receipt", "over the cap", "exceeds the cap", "business class"]}
+ ],
+ "trace_checks": [
+  {"type": "required_servers", "servers": ["sheets", "docs", "email"]},
+  {"type": "min_calls", "server": "docs", "n": 2},
+  {"type": "reads_before_submit"}
+ ],
+ "state_checks": [
+  {"type": "writes_only", "tables": ["answers"]}
+ ]
+}

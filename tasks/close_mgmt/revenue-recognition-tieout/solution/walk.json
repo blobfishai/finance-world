@@ -1,0 +1,17 @@
+[
+ {"server": "docs", "tool": "search_documents", "args": {"query": "revenue recognition tie-out"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "policy--revenue-recognition-tieout"}},
+ {"server": "sheets", "tool": "list_drive_items", "args": {}},
+ {"server": "sheets", "tool": "get_drive_item", "args": {"item": "contract-register-fy26.xlsx"}},
+ {"server": "sheets", "tool": "get_drive_item", "args": {"item": "revenue-schedule-fy26.xlsx"}},
+ {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "contract-register-fy26.xlsx"}},
+ {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "revenue-schedule-fy26.xlsx"}},
+ {"server": "sheets", "tool": "workbook_range", "args": {"item": "revenue-schedule-fy26.xlsx", "address": "A50:D70"}},
+ {"server": "harness", "tool": "submit_answer",
+  "args": {"answers": {
+    "flagged_contracts": "CTR-2047, CTR-2052, CTR-2055, CTR-2058",
+    "amount_exceptions": "CTR-2047, CTR-2052",
+    "timing_exceptions": "CTR-2055, CTR-2058",
+    "over_recognised_usd": 7500.00,
+    "under_recognised_usd": 8000.00}}}
+]
