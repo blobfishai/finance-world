@@ -3,6 +3,25 @@
 Lawfirm precedent: exonerate the harness before trusting any score. Every finding here was
 caught by audit-before-blame, not by taking failures at face value.
 
+## World-correctness gate (`python3 sim/validate.py`)
+
+Standing evidence that the world executes correctly — run it before trusting any model
+score, and after any tool/schema change. 10 offline checks per task:
+structure · metadata (incl. `walk_len`, which drives the turn budget) · every walk tool
+exists in a server registry · **prompt↔verifier field agreement** (the A5 drift class) ·
+required servers reachable in the oracle walk · seed tables exist in schema ·
+`prepare()` determinism · oracle scores 1 · **idle run scores 0** (task isn't free) ·
+**walk-without-submit scores 0** (no answer leakage via side effects).
+
+**Status 2026-08-10: PASSED — 21/21 tasks, 10/10 checks each.**
+
+### A5. `walk_len` metadata drift (found by the validator on its first run) — FIXED
+`business_brief/brief-caterpillar` (8 vs 9) and `erp_qa/cash-disc-fourthcoffee-east`
+(5 vs 6) understated their reference walk length. Not cosmetic: `sim/run_task.py` sets
+`maxTurns = max(24, walk_len*3+6)`, so an understated value under-budgets the agent and
+manufactures capability verdicts out of harness caps — exactly what the reference-relative
+budget rule exists to prevent. Both corrected; the check now guards it permanently.
+
 ## 2026-08-10 — wave-0 calibration
 
 ### A1. Session-limit contamination (harness/account, 33/40 runs) — FIXED

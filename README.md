@@ -32,7 +32,12 @@ Everything is simulation: all companies, balances, and documents in the world ar
 - `verifiers/` — deterministic VCode engine (`vcode.py`): answer checks with tolerances,
   trace checks, state-diff anti-hack vetoes. No LLM in the reward path.
 - `sim/` — `prepare.py` (core + task seed → run), `oracle.py` (admission gate),
-  `run_task.py`, `run_batch.py` (flake-scan), `build_reports.py`, `scaffold.py`.
+  `validate.py` (**world-correctness gate**, 10 offline checks/task incl. negative
+  controls), `run_task.py`, `run_batch.py` (flake-scan), `build_reports.py`, `scaffold.py`.
+
+```bash
+python3 sim/validate.py    # must print "VALIDATION PASSED" before any model run
+```
 - `traces/<model>/<family>/<slug>/trial-N.(pass|fail).json` — real model traces, failures included.
 - `reports/` — `summary.json` + per-model failure reports.
 
