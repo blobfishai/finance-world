@@ -1,17 +1,18 @@
 {
  "answer_checks": [
   {
-   "field": "payment_terms",
-   "type": "contains_all",
-   "expect": [
-    "Net15"
-   ]
+   "field": "matching_customer_count",
+   "type": "number",
+   "expect": 2,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE name='Wide World Importers East'"
   },
   {
-   "field": "customer_account",
+   "field": "phone_numbers",
    "type": "contains_all",
    "expect": [
-    "SYNCUS-0082"
+    "405-555-0164",
+    "212-555-0128"
    ]
   }
  ],

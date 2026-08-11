@@ -1,10 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What is the contact information for Adventure Works South for USMF as of March 2, 2026?
+What payment terms are assigned to Adventure Works South (SYNCUS-0030) in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `matching_customer_count` (number)
-- `contact_emails` (text)
+- `payment_terms` (text)
+- `customer_account` (text)

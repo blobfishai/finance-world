@@ -8,11 +8,11 @@
    "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE name='Blue Yonder Central'"
   },
   {
-   "field": "phone_numbers",
+   "field": "contact_emails",
    "type": "contains_all",
    "expect": [
-    "410-555-0149",
-    "402-555-0145"
+    "michael@example.com",
+    "thomas@example.com"
    ]
   }
  ],

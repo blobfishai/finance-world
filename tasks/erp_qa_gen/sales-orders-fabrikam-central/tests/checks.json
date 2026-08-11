@@ -1,15 +1,25 @@
 {
  "answer_checks": [
   {
-   "field": "open_sales_order_count",
+   "field": "order_count",
    "type": "number",
-   "expect": 0,
+   "expect": 1,
    "tol_abs": 0,
-   "gt_sql": "SELECT COUNT(*) FROM erp_sales_orders WHERE account IN ('SYNCUS-0124','SYNCUS-0796') AND status LIKE 'Open%'"
+   "gt_sql": "SELECT COUNT(*) FROM erp_sales_orders WHERE account IN ('SYNCUS-0124','SYNCUS-0796')"
   },
   {
-   "field": "sales_order_id",
-   "type": "none_answer"
+   "field": "largest_sales_order_id",
+   "type": "contains_all",
+   "expect": [
+    "SO-5316"
+   ]
+  },
+  {
+   "field": "largest_order_amount",
+   "type": "number",
+   "expect": 50698.03,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(MAX(amount),2) FROM erp_sales_orders WHERE account IN ('SYNCUS-0124','SYNCUS-0796')"
   }
  ],
  "trace_checks": [

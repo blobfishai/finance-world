@@ -17,19 +17,19 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.4,
+ "duration_s": 0.2,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486074.408608,
+   "ts": 1786487023.3918579,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Proseware West\"}}",
    "ok": true
   },
   {
-   "ts": 1786486074.412601,
+   "ts": 1786487023.393404,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"817-555-0150; 405-555-0187\"}}",

@@ -12,27 +12,34 @@
   "erp",
   "harness"
  ],
- "n_tool_calls": 2,
- "walk_len": 2,
+ "n_tool_calls": 3,
+ "walk_len": 3,
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.2,
+ "duration_s": 0.1,
  "cost_usd": null,
- "final_text": "{\"walk_steps\": 2}\n",
+ "final_text": "{\"walk_steps\": 3}\n",
  "trace": [
   {
-   "ts": 1786486072.060597,
+   "ts": 1786487021.812736,
    "server": "erp",
    "tool": "data_find_entities",
-   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Fourth Coffee South\"}}",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0041\"}}",
    "ok": true
   },
   {
-   "ts": 1786486072.062328,
+   "ts": 1786487021.81338,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net30\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786487021.814976,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"matching_customer_count\": 2, \"contact_emails\": \"james@www.fourthcoffee.com; lisa@www.fourthcoffee.com\"}}",
+   "args": "{\"answers\": {\"payment_terms\": \"Net30\", \"customer_account\": \"SYNCUS-0041\"}}",
    "ok": true
   }
  ]

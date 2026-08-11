@@ -12,34 +12,27 @@
   "erp",
   "harness"
  ],
- "n_tool_calls": 3,
- "walk_len": 3,
+ "n_tool_calls": 2,
+ "walk_len": 2,
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.2,
+ "duration_s": 0.1,
  "cost_usd": null,
- "final_text": "{\"walk_steps\": 3}\n",
+ "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486069.018131,
+   "ts": 1786487019.679451,
    "server": "erp",
    "tool": "data_find_entities",
-   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0061\"}}",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"City Power & Light East\"}}",
    "ok": true
   },
   {
-   "ts": 1786486069.0194051,
-   "server": "erp",
-   "tool": "data_find_entities",
-   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net45\"}}",
-   "ok": true
-  },
-  {
-   "ts": 1786486069.0223098,
+   "ts": 1786487019.680925,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"payment_terms\": \"Net45\", \"customer_account\": \"SYNCUS-0061\"}}",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"702-555-0146; 612-555-0158\"}}",
    "ok": true
   }
  ]

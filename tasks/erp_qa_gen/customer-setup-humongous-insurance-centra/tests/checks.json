@@ -8,11 +8,11 @@
    "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE name='Humongous Insurance Central'"
   },
   {
-   "field": "phone_numbers",
+   "field": "contact_emails",
    "type": "contains_all",
    "expect": [
-    "615-555-0147",
-    "559-555-0177"
+    "elizabeth@www.humongousinsurance.com",
+    "eric@www.humongousinsurance.com"
    ]
   }
  ],

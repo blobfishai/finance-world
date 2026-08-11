@@ -1,11 +1,16 @@
 {
  "answer_checks": [
   {
-   "field": "discount_payment_count",
+   "field": "has_active_cash_discount",
+   "type": "yes_no",
+   "expect": "yes"
+  },
+  {
+   "field": "discounted_open_invoice_count",
    "type": "number",
    "expect": 0,
    "tol_abs": 0,
-   "gt_sql": "SELECT COUNT(*) FROM erp_settlements WHERE side='AR' AND account IN ('SYNCUS-0049') AND cash_disc_taken > 0"
+   "gt_sql": "SELECT COUNT(*) FROM erp_cust_trans WHERE account IN ('SYNCUS-0049') AND txn_type='Invoice' AND closed=0 AND cash_disc_code IS NOT NULL"
   }
  ],
  "trace_checks": [

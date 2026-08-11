@@ -5,7 +5,17 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "name": "Fourth Coffee South"
+    "account": "SYNCUS-0041"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "PaymentTerms",
+   "filters": {
+    "code": "Net30"
    }
   }
  },
@@ -14,8 +24,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "matching_customer_count": 2,
-    "contact_emails": "james@www.fourthcoffee.com; lisa@www.fourthcoffee.com"
+    "payment_terms": "Net30",
+    "customer_account": "SYNCUS-0041"
    }
   }
  }

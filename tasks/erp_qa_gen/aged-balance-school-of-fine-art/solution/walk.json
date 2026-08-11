@@ -1,9 +1,19 @@
 [
  {
   "server": "erp",
-  "tool": "data_find_entities_sql",
+  "tool": "api_find_actions",
   "args": {
-   "sql": "SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_cust_trans WHERE account IN ('SYNCUS-0021') AND txn_type='Invoice' AND closed=0"
+   "query": "aged balances"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "api_invoke_action",
+  "args": {
+   "action": "ContosoCustAgedBalancesLive",
+   "parameters": {
+    "customer_account": "SYNCUS-0021"
+   }
   }
  },
  {
@@ -11,8 +21,9 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "open_invoice_count": 2,
-    "open_balance": 54004.07
+    "total_past_due": 5388.85,
+    "not_yet_due": 48615.22,
+    "over_90_days": 5388.85
    }
   }
  }

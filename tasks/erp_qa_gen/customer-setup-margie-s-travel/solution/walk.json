@@ -5,7 +5,17 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "name": "Margie's Travel"
+    "account": "SYNCUS-0018"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "PaymentTerms",
+   "filters": {
+    "code": "Net15"
    }
   }
  },
@@ -14,7 +24,7 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "phone_number": "702-555-0184",
+    "payment_terms": "Net15",
     "customer_account": "SYNCUS-0018"
    }
   }

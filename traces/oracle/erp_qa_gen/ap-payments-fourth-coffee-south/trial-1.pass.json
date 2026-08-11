@@ -17,19 +17,19 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.2,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486029.017571,
+   "ts": 1786486998.016063,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT voucher, trans_date, txn_type, ROUND(amount,2) AS amount FROM erp_vend_trans WHERE account IN ('SYNVEN-0041','SYNVEN-0713')\"}",
    "ok": true
   },
   {
-   "ts": 1786486029.019132,
+   "ts": 1786486998.018223,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"payment_count\": 4, \"total_paid\": 125245.98}}",

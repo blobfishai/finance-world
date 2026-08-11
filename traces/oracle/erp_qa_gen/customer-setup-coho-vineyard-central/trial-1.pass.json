@@ -22,17 +22,17 @@
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486069.369477,
+   "ts": 1786487019.9980001,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Coho Vineyard Central\"}}",
    "ok": true
   },
   {
-   "ts": 1786486069.3711371,
+   "ts": 1786487019.999733,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"704-555-0138; 502-555-0114\"}}",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"contact_emails\": \"david@www.cohovineyard.com; cynthia@www.cohovineyard.com\"}}",
    "ok": true
   }
  ]

@@ -1,10 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What payment terms are assigned to Margie's Travel East (SYNCUS-0074) in USMF as of March 2, 2026?
+What is the phone number for Margie's Travel East for USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `payment_terms` (text)
-- `customer_account` (text)
+- `matching_customer_count` (number)
+- `phone_numbers` (text)

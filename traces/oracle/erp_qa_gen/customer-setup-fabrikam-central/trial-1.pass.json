@@ -17,22 +17,22 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.1,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486071.50366,
+   "ts": 1786487021.4766562,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Fabrikam Central\"}}",
    "ok": true
   },
   {
-   "ts": 1786486071.506519,
+   "ts": 1786487021.478464,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"216-555-0182; 512-555-0108\"}}",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"contact_emails\": \"andrew@example.com; ruth@example.com\"}}",
    "ok": true
   }
  ]

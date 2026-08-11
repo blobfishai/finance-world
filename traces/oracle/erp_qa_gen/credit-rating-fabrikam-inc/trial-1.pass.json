@@ -17,19 +17,19 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.2,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486065.7508311,
+   "ts": 1786487017.156518,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0012\"}}",
    "ok": true
   },
   {
-   "ts": 1786486065.752823,
+   "ts": 1786487017.159325,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"credit_rating\": \"Poor\", \"customer_account\": \"SYNCUS-0012\"}}",

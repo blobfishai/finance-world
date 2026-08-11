@@ -1,10 +1,12 @@
 **Casey Morgan · AR & Collections · Teams**
 
-How many payments did The Phone Company make in 2017 in USMF as of March 2, 2026?
+What is the largest payment made by The Phone Company as of March 2, 2026 in USMF?
 
 ---
 
 Reply with `submit_answer`:
 
 - `payment_count` (number)
-- `payments` (text)
+- `largest_payment_amount` (number)
+- `largest_payment_voucher` (text)
+- `largest_payment_date` (text)

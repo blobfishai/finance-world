@@ -8,3 +8,4 @@ Reply with `submit_answer`:
 
 - `order_count` (number)
 - `largest_sales_order_id` (text)
+- `largest_order_amount` (number)

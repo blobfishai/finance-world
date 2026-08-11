@@ -5,7 +5,17 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "name": "Tailspin Toys"
+    "account": "SYNCUS-0023"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "PaymentTerms",
+   "filters": {
+    "code": "Net45"
    }
   }
  },
@@ -14,7 +24,7 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "phone_number": "704-555-0159",
+    "payment_terms": "Net45",
     "customer_account": "SYNCUS-0023"
    }
   }

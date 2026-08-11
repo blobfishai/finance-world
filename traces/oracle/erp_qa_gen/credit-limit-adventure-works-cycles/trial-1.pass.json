@@ -17,26 +17,26 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.2,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 3}\n",
  "trace": [
   {
-   "ts": 1786486056.707556,
+   "ts": 1786487011.8504949,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0002\"}}",
    "ok": true
   },
   {
-   "ts": 1786486056.710727,
+   "ts": 1786487011.851912,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_cust_trans WHERE account IN ('SYNCUS-0002') AND closed=0\"}",
    "ok": true
   },
   {
-   "ts": 1786486056.7131588,
+   "ts": 1786487011.85441,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"credit_limit\": 100000.0, \"open_balance\": 94749.19, \"available_credit\": 5250.81}}",

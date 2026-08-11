@@ -22,17 +22,17 @@
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486094.7371478,
+   "ts": 1786487032.018007,
    "server": "erp",
    "tool": "data_find_entities_sql",
-   "args": "{\"sql\": \"SELECT invoice, trans_date, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account IN ('SYNCUS-0081','SYNCUS-0753') AND txn_type='Invoice'\"}",
+   "args": "{\"sql\": \"SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_cust_trans WHERE account IN ('SYNCUS-0081','SYNCUS-0753') AND txn_type='Invoice' AND closed=0\"}",
    "ok": true
   },
   {
-   "ts": 1786486094.740501,
+   "ts": 1786487032.0206451,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"invoice_count\": 10, \"invoiced_total\": 280186.66}}",
+   "args": "{\"answers\": {\"open_invoice_count\": 2, \"open_balance\": 27673.25}}",
    "ok": true
   }
  ]

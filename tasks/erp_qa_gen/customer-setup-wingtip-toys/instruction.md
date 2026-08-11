@@ -1,10 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What is the phone number for Wingtip Toys for USMF as of March 2, 2026?
+What payment terms are assigned to Wingtip Toys (SYNCUS-0027) in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `phone_number` (text)
+- `payment_terms` (text)
 - `customer_account` (text)

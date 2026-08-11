@@ -17,19 +17,19 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.2,
+ "duration_s": 0.1,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486116.007631,
+   "ts": 1786487038.12254,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT voucher, trans_date, ROUND(-amount,2) AS paid FROM erp_cust_trans WHERE account IN ('SYNCUS-0036','SYNCUS-0708') AND txn_type='Payment' ORDER BY paid DESC\"}",
    "ok": true
   },
   {
-   "ts": 1786486116.009996,
+   "ts": 1786487038.124196,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"payment_count\": 3, \"largest_payment_amount\": 37866.24, \"largest_payment_voucher\": \"ARPM001644\", \"largest_payment_date\": \"2026-01-25\"}}",

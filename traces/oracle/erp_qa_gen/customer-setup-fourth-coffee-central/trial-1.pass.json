@@ -22,17 +22,17 @@
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486072.035713,
+   "ts": 1786487021.727607,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Fourth Coffee Central\"}}",
    "ok": true
   },
   {
-   "ts": 1786486072.037795,
+   "ts": 1786487021.729513,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"410-555-0138; 303-555-0109\"}}",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"contact_emails\": \"sarah@www.fourthcoffee.com; john@www.fourthcoffee.com\"}}",
    "ok": true
   }
  ]

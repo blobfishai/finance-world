@@ -5,19 +5,19 @@
    "type": "number",
    "expect": 10000.0,
    "tol_abs": 0.02,
-   "gt_sql": "SELECT credit_max FROM erp_customers WHERE account='SYNCUS-0063'"
+   "gt_sql": "SELECT credit_max FROM erp_customers WHERE account='SYNCUS-0741'"
   },
   {
    "field": "open_balance",
    "type": "number",
-   "expect": 23632.7,
+   "expect": 83929.71,
    "tol_abs": 0.02,
-   "gt_sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_cust_trans WHERE account IN ('SYNCUS-0063') AND closed=0"
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_cust_trans WHERE account IN ('SYNCUS-0741') AND closed=0"
   },
   {
-   "field": "available_credit",
+   "field": "credit_utilisation_pct",
    "type": "number",
-   "expect": -13632.7,
+   "expect": 839.3,
    "tol_abs": 0.02
   }
  ],

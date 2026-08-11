@@ -3,13 +3,16 @@
   {
    "field": "collection_letter_count",
    "type": "number",
-   "expect": 0,
+   "expect": 3,
    "tol_abs": 0,
    "gt_sql": "SELECT COUNT(*) FROM erp_collection_letters WHERE account IN ('SYNCUS-0074')"
   },
   {
-   "field": "collection_letters",
-   "type": "none_answer"
+   "field": "current_letter_level",
+   "type": "contains_all",
+   "expect": [
+    "3"
+   ]
   }
  ],
  "trace_checks": [

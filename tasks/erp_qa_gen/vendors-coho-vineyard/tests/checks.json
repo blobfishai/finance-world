@@ -1,13 +1,18 @@
 {
  "answer_checks": [
   {
-   "field": "offers_discount",
-   "type": "yes_no",
-   "expect": "no"
+   "field": "open_invoice_count",
+   "type": "number",
+   "expect": 2,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_vend_trans WHERE account IN ('SYNVEN-0006') AND txn_type='Invoice' AND closed=0"
   },
   {
-   "field": "discount_code",
-   "type": "none_answer"
+   "field": "ap_balance",
+   "type": "number",
+   "expect": 61468.87,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_vend_trans WHERE account IN ('SYNVEN-0006') AND txn_type='Invoice' AND closed=0"
   }
  ],
  "trace_checks": [

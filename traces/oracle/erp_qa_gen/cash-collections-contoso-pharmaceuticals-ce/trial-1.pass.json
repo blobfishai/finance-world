@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/cash-collections-contoso-pharmaceuticals-ce",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786487000.2336168,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT voucher, trans_date, ROUND(-amount,2) AS received FROM erp_cust_trans WHERE account IN ('SYNCUS-0122') AND txn_type='Payment' AND trans_date >= '2026-01-01'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786487000.235583,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"payment_count_fy\": 1, \"total_collected_fy\": 18781.46}}",
+   "ok": true
+  }
+ ]
+}

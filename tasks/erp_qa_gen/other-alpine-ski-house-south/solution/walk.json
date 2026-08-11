@@ -3,7 +3,7 @@
   "server": "erp",
   "tool": "data_find_entities_sql",
   "args": {
-   "sql": "SELECT txn_type, COUNT(*) AS n FROM erp_vend_trans WHERE account IN ('SYNVEN-0031','SYNVEN-0703') GROUP BY txn_type"
+   "sql": "SELECT invoice, trans_date, ROUND(amount,2) AS amount FROM erp_vend_trans WHERE account IN ('SYNVEN-0031','SYNVEN-0703') AND txn_type='Invoice'"
   }
  },
  {
@@ -11,8 +11,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "debit_notes_exist": "no",
-    "debit_note_count": 0
+    "invoice_count": 2,
+    "total_spend_fy": 45230.08
    }
   }
  }

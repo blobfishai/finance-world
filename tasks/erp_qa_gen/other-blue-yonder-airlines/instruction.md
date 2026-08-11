@@ -1,10 +1,10 @@
 **Priya Shah · AP Manager · Teams**
 
-What credit notes have been received from Blue Yonder Airlines this year in USMF?
+What is the total spend with Blue Yonder Airlines this fiscal year in USMF?
 
 ---
 
 Reply with `submit_answer`:
 
-- `credit_note_count` (number)
-- `credit_notes` (text)
+- `invoice_count` (number)
+- `total_spend_fy` (number)

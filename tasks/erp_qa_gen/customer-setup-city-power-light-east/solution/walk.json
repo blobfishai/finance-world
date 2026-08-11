@@ -5,17 +5,7 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "account": "SYNCUS-0061"
-   }
-  }
- },
- {
-  "server": "erp",
-  "tool": "data_find_entities",
-  "args": {
-   "entity": "PaymentTerms",
-   "filters": {
-    "code": "Net45"
+    "name": "City Power & Light East"
    }
   }
  },
@@ -24,8 +14,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "payment_terms": "Net45",
-    "customer_account": "SYNCUS-0061"
+    "matching_customer_count": 2,
+    "phone_numbers": "702-555-0146; 612-555-0158"
    }
   }
  }

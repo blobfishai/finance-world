@@ -1,19 +1,9 @@
 [
  {
   "server": "erp",
-  "tool": "data_find_entities",
-  "args": {
-   "entity": "Customers",
-   "filters": {
-    "account": "SYNCUS-0025"
-   }
-  }
- },
- {
-  "server": "erp",
   "tool": "data_find_entities_sql",
   "args": {
-   "sql": "SELECT invoice, cash_disc_code FROM erp_cust_trans WHERE account IN ('SYNCUS-0025') AND closed=0"
+   "sql": "SELECT settle_date, ROUND(amount,2) AS settled, ROUND(cash_disc_taken,2) AS discount FROM erp_settlements WHERE side='AR' AND account IN ('SYNCUS-0025')"
   }
  },
  {
@@ -21,8 +11,7 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "has_active_cash_discount": "yes",
-    "discounted_open_invoice_count": 0
+    "discount_payment_count": 1
    }
   }
  }

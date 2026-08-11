@@ -5,7 +5,17 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "name": "Coho Vineyard & Winery South"
+    "account": "SYNCUS-0036"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "PaymentTerms",
+   "filters": {
+    "code": "Net15"
    }
   }
  },
@@ -14,8 +24,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "matching_customer_count": 2,
-    "contact_emails": "matthew@www.cohovineyard.com; kimberly@www.cohovineyard.com"
+    "payment_terms": "Net15",
+    "customer_account": "SYNCUS-0036"
    }
   }
  }

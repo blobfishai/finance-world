@@ -1,12 +1,9 @@
 [
  {
   "server": "erp",
-  "tool": "data_find_entities",
+  "tool": "data_find_entities_sql",
   "args": {
-   "entity": "Vendors",
-   "filters": {
-    "account": "SYNVEN-0006"
-   }
+   "sql": "SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_vend_trans WHERE account IN ('SYNVEN-0006') AND txn_type='Invoice' AND closed=0"
   }
  },
  {
@@ -14,8 +11,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "offers_discount": "no",
-    "discount_code": "none - no cash discount code is set on this vendor"
+    "open_invoice_count": 2,
+    "ap_balance": 61468.87
    }
   }
  }

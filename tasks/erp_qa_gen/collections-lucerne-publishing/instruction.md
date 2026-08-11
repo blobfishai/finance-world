@@ -1,10 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What collection letters have been sent to Lucerne Publishing (SYNCUS-0017) in USMF as of March 2, 2026?
+What is the collection letter level Lucerne Publishing (SYNCUS-0017) is currently at in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
 - `collection_letter_count` (number)
-- `collection_letters` (text)
+- `current_letter_level` (text)

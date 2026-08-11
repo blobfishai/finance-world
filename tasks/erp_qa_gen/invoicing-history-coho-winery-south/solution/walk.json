@@ -3,7 +3,7 @@
   "server": "erp",
   "tool": "data_find_entities_sql",
   "args": {
-   "sql": "SELECT txn_type, invoice, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account IN ('SYNCUS-0035','SYNCUS-0707') ORDER BY amount DESC"
+   "sql": "SELECT invoice, trans_date, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account IN ('SYNCUS-0035','SYNCUS-0707') AND txn_type='Invoice'"
   }
  },
  {
@@ -11,8 +11,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "positive_transaction_count": 5,
-    "positive_transaction_total": 91911.22
+    "invoice_count": 5,
+    "invoiced_total": 91911.22
    }
   }
  }

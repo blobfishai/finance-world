@@ -1,9 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-How many times has Graphic Design Institute East paid within the discount window in the last 12 months (SYNCUS-0070) in USMF as of March 2, 2026?
+Does Graphic Design Institute East have any cash discount terms active on current invoices (SYNCUS-0070) in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `discount_payment_count` (number)
+- `has_active_cash_discount` (text)
+- `discounted_open_invoice_count` (number)

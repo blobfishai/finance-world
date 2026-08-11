@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/sales-orders-the-phone-company-global",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786487045.2390552,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"SalesOrders\", \"filters\": {\"account\": \"SYNCUS-0249\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786487045.240839,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"order_count\": 1, \"largest_sales_order_id\": \"SO-5059\", \"largest_order_amount\": 7917.61}}",
+   "ok": true
+  }
+ ]
+}

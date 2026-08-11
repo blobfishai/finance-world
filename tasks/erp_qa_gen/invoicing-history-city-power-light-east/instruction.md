@@ -1,10 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-Provide a list of the invoices generated for City Power & Light East in USMF as of March 2, 2026
+What is the total amount of unpaid customer receivables for City Power & Light East as of March 2, 2026 in USMF
 
 ---
 
 Reply with `submit_answer`:
 
-- `invoice_count` (number)
-- `invoiced_total` (number)
+- `open_invoice_count` (number)
+- `open_balance` (number)

@@ -17,19 +17,19 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.1,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486070.4381142,
+   "ts": 1786487020.697958,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Consolidated Messenger Pacific\"}}",
    "ok": true
   },
   {
-   "ts": 1786486070.442792,
+   "ts": 1786487020.699601,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"matching_customer_count\": 2, \"contact_emails\": \"dorothy@www.consolidatedmessenger.com; gregory@www.consolidatedmessenger.com\"}}",

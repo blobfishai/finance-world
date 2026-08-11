@@ -12,27 +12,34 @@
   "erp",
   "harness"
  ],
- "n_tool_calls": 2,
- "walk_len": 2,
+ "n_tool_calls": 3,
+ "walk_len": 3,
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.2,
  "cost_usd": null,
- "final_text": "{\"walk_steps\": 2}\n",
+ "final_text": "{\"walk_steps\": 3}\n",
  "trace": [
   {
-   "ts": 1786486069.881236,
+   "ts": 1786487020.366716,
    "server": "erp",
    "tool": "data_find_entities",
-   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Coho Vineyard & Winery South\"}}",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0036\"}}",
    "ok": true
   },
   {
-   "ts": 1786486069.884156,
+   "ts": 1786487020.367251,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786487020.3688178,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"matching_customer_count\": 2, \"contact_emails\": \"matthew@www.cohovineyard.com; kimberly@www.cohovineyard.com\"}}",
+   "args": "{\"answers\": {\"payment_terms\": \"Net15\", \"customer_account\": \"SYNCUS-0036\"}}",
    "ok": true
   }
  ]

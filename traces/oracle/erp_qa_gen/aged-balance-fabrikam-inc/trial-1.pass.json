@@ -17,26 +17,26 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.4,
+ "duration_s": 0.2,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 3}\n",
  "trace": [
   {
-   "ts": 1786486020.24056,
+   "ts": 1786486991.489898,
    "server": "erp",
    "tool": "api_find_actions",
    "args": "{\"query\": \"aged balances\"}",
    "ok": true
   },
   {
-   "ts": 1786486020.242361,
+   "ts": 1786486991.491355,
    "server": "erp",
    "tool": "api_invoke_action",
    "args": "{\"action\": \"ContosoCustAgedBalancesLive\", \"parameters\": {\"customer_account\": \"SYNCUS-0012\"}}",
    "ok": true
   },
   {
-   "ts": 1786486020.244749,
+   "ts": 1786486991.4927602,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"total_past_due\": 36986.78, \"not_yet_due\": 0.0, \"over_90_days\": 36986.78}}",

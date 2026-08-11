@@ -22,17 +22,17 @@
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486068.623772,
+   "ts": 1786487019.343483,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Blue Yonder Central\"}}",
    "ok": true
   },
   {
-   "ts": 1786486068.6268108,
+   "ts": 1786487019.3454158,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"410-555-0149; 402-555-0145\"}}",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"contact_emails\": \"michael@example.com; thomas@example.com\"}}",
    "ok": true
   }
  ]

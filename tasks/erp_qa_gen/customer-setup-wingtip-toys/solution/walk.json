@@ -5,7 +5,17 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "name": "Wingtip Toys"
+    "account": "SYNCUS-0027"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "PaymentTerms",
+   "filters": {
+    "code": "COD"
    }
   }
  },
@@ -14,7 +24,7 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "phone_number": "901-555-0115",
+    "payment_terms": "COD",
     "customer_account": "SYNCUS-0027"
    }
   }

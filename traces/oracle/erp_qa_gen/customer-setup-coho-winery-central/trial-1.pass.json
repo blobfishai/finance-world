@@ -17,22 +17,22 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.2,
+ "duration_s": 0.1,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486070.042238,
+   "ts": 1786487020.383632,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Coho Winery Central\"}}",
    "ok": true
   },
   {
-   "ts": 1786486070.045482,
+   "ts": 1786487020.385835,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"317-555-0161; 206-555-0138\"}}",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"contact_emails\": \"jacob@www.cohowinery.com; debra@www.cohowinery.com\"}}",
    "ok": true
   }
  ]

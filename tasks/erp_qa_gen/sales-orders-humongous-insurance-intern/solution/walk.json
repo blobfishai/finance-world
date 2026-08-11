@@ -1,0 +1,22 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "SalesOrders",
+   "filters": {
+    "account": "SYNCUS-0211"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "open_sales_order_count": 2,
+    "sales_order_id": "SO-5193"
+   }
+  }
+ }
+]

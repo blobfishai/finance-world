@@ -1,17 +1,18 @@
 {
  "answer_checks": [
   {
-   "field": "payment_terms",
-   "type": "contains_all",
-   "expect": [
-    "Net30"
-   ]
+   "field": "matching_customer_count",
+   "type": "number",
+   "expect": 2,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE name='Margie''s Travel East'"
   },
   {
-   "field": "customer_account",
+   "field": "phone_numbers",
    "type": "contains_all",
    "expect": [
-    "SYNCUS-0074"
+    "817-555-0199",
+    "512-555-0190"
    ]
   }
  ],

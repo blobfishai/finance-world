@@ -281,6 +281,37 @@ Deferred only because `world/etl/clone_fb_erp.py` is being edited concurrently b
 push; the fix is a strictness flag on `resolve()` plus a re-run. **Until it lands, every
 FB-cloned task whose question names an entity absent from the ledger is suspect.**
 
+### A11. Nearly half the task tree was answerable without reading anything — FIXED
+Found 2026-08-11 by measuring the shipped checks, not by reading code. Immediately after
+scaling the tree to 1,523 tasks:
+
+**688 of 1,523 (45%) could be answered "0 / none / no" with no successful tool call.**
+
+Cause: seven tables the ERP handlers query were empty or near-empty —
+`erp_collection_letters` 0 · `erp_product_receipts` 0 · `erp_customer_pool` 0 ·
+`erp_payment_runs` 0 · `erp_purch_orders` 1 · `erp_activities` 2 · `erp_sales_orders` 3 ·
+open AR invoices carrying a cash-discount code 0. An empty table does not make a task hard,
+it makes it **free**: "which customers are on the collections worklist?" grades as "none",
+and a model that never opens the ERP scores 1. The cloner was working correctly; the world
+had nothing for it to ask about. The entity sweep then multiplied the defect 1,320-fold.
+
+**Fix, in two parts.**
+1. `world/etl/load_activity.py` (build stage 4) gives the operational tables a life,
+   deterministically and derived from the ledger that already exists: 1,147 collection
+   letters on customers who are genuinely past due, 600 pool assignments, 260 worklist
+   activities, 380 sales orders (12% on hold), 300 POs with 300 receipts (28% deliberately
+   short or over — real match exceptions), and cash-discount codes on 240 open AR invoices.
+2. The sweep now judges **the emitted checks**, not its own field dict, and drops any
+   instance where every graded check is satisfied by "0/none/no". The two disagreed on
+   list-valued answers; the gate that matters is the one a model actually faces.
+
+**Result: 45% → 3%**, and 0 of 1,026 generated instances are null-answerable. The gate
+rejected 3,728 candidates to get there — the drop rate is the point, not a cost.
+
+**Lesson worth keeping:** the 10x looked like progress and was partly defect multiplication.
+Counting tasks measured nothing; measuring what a *null-answering* model would score measured
+the thing that matters. Any future generator ships with this check or it does not ship.
+
 ### A4. `--max-turns` not strictly enforced by observed runs — WATCH
 haiku's ap-overdue run recorded `num_turns=36` against `--max-turns 24`. Budget overruns
 currently can't masquerade as passes (verification is answer-based), but turn accounting

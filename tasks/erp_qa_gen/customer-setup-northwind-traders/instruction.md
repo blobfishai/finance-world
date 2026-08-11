@@ -1,10 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What is the phone number for Northwind Traders for USMF as of March 2, 2026?
+What payment terms are assigned to Northwind Traders (SYNCUS-0019) in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `matching_customer_count` (number)
-- `phone_numbers` (text)
+- `payment_terms` (text)
+- `customer_account` (text)

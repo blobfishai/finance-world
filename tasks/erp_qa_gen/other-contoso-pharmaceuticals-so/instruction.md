@@ -1,10 +1,10 @@
 **Priya Shah · AP Manager · Teams**
 
-Are there any debit notes issued to Contoso Pharmaceuticals South in USMF?
+What is the total spend with Contoso Pharmaceuticals South this fiscal year in USMF?
 
 ---
 
 Reply with `submit_answer`:
 
-- `debit_notes_exist` (text)
-- `debit_note_count` (number)
+- `invoice_count` (number)
+- `total_spend_fy` (number)

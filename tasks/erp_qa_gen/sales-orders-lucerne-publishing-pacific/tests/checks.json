@@ -1,15 +1,18 @@
 {
  "answer_checks": [
   {
-   "field": "order_count",
+   "field": "open_sales_order_count",
    "type": "number",
-   "expect": 0,
+   "expect": 1,
    "tol_abs": 0,
-   "gt_sql": "SELECT COUNT(*) FROM erp_sales_orders WHERE account IN ('SYNCUS-0157','SYNCUS-0829')"
+   "gt_sql": "SELECT COUNT(*) FROM erp_sales_orders WHERE account IN ('SYNCUS-0157','SYNCUS-0829') AND status LIKE 'Open%'"
   },
   {
-   "field": "largest_sales_order_id",
-   "type": "none_answer"
+   "field": "sales_order_id",
+   "type": "contains_all",
+   "expect": [
+    "SO-5086"
+   ]
   }
  ],
  "trace_checks": [

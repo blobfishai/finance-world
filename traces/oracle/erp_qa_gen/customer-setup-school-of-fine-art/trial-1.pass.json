@@ -12,27 +12,34 @@
   "erp",
   "harness"
  ],
- "n_tool_calls": 2,
- "walk_len": 2,
+ "n_tool_calls": 3,
+ "walk_len": 3,
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.1,
  "cost_usd": null,
- "final_text": "{\"walk_steps\": 2}\n",
+ "final_text": "{\"walk_steps\": 3}\n",
  "trace": [
   {
-   "ts": 1786486074.422992,
+   "ts": 1786487023.394091,
    "server": "erp",
    "tool": "data_find_entities",
-   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"School of Fine Art\"}}",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0021\"}}",
    "ok": true
   },
   {
-   "ts": 1786486074.4337049,
+   "ts": 1786487023.394779,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net45\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786487023.396277,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"phone_number\": \"901-555-0104\", \"customer_account\": \"SYNCUS-0021\"}}",
+   "args": "{\"answers\": {\"payment_terms\": \"Net45\", \"customer_account\": \"SYNCUS-0021\"}}",
    "ok": true
   }
  ]

@@ -3,7 +3,7 @@
   "server": "erp",
   "tool": "data_find_entities_sql",
   "args": {
-   "sql": "SELECT txn_type, COUNT(*) AS n FROM erp_vend_trans WHERE account IN ('SYNVEN-0044','SYNVEN-0716') GROUP BY txn_type"
+   "sql": "SELECT invoice, trans_date, ROUND(amount,2) AS amount FROM erp_vend_trans WHERE account IN ('SYNVEN-0044','SYNVEN-0716') AND txn_type='Invoice'"
   }
  },
  {
@@ -11,8 +11,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "credit_note_count": 0,
-    "credit_notes": "none - no credit note from this vendor is posted in 2026"
+    "invoice_count": 2,
+    "total_spend_fy": 21827.0
    }
   }
  }

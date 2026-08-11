@@ -17,19 +17,19 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.1,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486112.0265222,
+   "ts": 1786487036.218413,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_cust_trans WHERE account IN ('SYNCUS-0037','SYNCUS-0709') AND txn_type='Invoice' AND closed=0\"}",
    "ok": true
   },
   {
-   "ts": 1786486112.0281742,
+   "ts": 1786487036.220075,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"unpaid_invoice_count\": 4, \"unpaid_total\": 112326.68}}",

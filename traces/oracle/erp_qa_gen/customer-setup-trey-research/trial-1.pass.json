@@ -12,27 +12,34 @@
   "erp",
   "harness"
  ],
- "n_tool_calls": 2,
- "walk_len": 2,
+ "n_tool_calls": 3,
+ "walk_len": 3,
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
  "duration_s": 0.2,
  "cost_usd": null,
- "final_text": "{\"walk_steps\": 2}\n",
+ "final_text": "{\"walk_steps\": 3}\n",
  "trace": [
   {
-   "ts": 1786486075.8650382,
+   "ts": 1786487024.445706,
    "server": "erp",
    "tool": "data_find_entities",
-   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Trey Research\"}}",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0024\"}}",
    "ok": true
   },
   {
-   "ts": 1786486075.8676648,
+   "ts": 1786487024.446334,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net45\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786487024.4480221,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"phone_number\": \"614-555-0182\", \"customer_account\": \"SYNCUS-0024\"}}",
+   "args": "{\"answers\": {\"payment_terms\": \"Net45\", \"customer_account\": \"SYNCUS-0024\"}}",
    "ok": true
   }
  ]

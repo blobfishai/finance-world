@@ -22,17 +22,17 @@
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486121.013772,
+   "ts": 1786487040.029939,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"SalesOrders\", \"filters\": {\"account\": \"SYNCUS-0114\"}}",
    "ok": true
   },
   {
-   "ts": 1786486121.0153441,
+   "ts": 1786487040.031764,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"open_sales_order_count\": 0, \"sales_order_id\": \"none - this customer has no open sales orders\"}}",
+   "args": "{\"answers\": {\"order_count\": 1, \"largest_sales_order_id\": \"SO-5123\", \"largest_order_amount\": 88419.94}}",
    "ok": true
   }
  ]

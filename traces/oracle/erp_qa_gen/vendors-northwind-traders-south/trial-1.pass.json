@@ -22,17 +22,17 @@
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486134.614978,
+   "ts": 1786487048.587231,
    "server": "erp",
-   "tool": "data_find_entities",
-   "args": "{\"entity\": \"Vendors\", \"filters\": {\"account\": \"SYNVEN-0047\"}}",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_vend_trans WHERE account IN ('SYNVEN-0047','SYNVEN-0719') AND txn_type='Invoice' AND closed=0\"}",
    "ok": true
   },
   {
-   "ts": 1786486134.616566,
+   "ts": 1786487048.589833,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"offers_discount\": \"no\", \"discount_code\": \"none - no cash discount code is set on this vendor\"}}",
+   "args": "{\"answers\": {\"open_invoice_count\": 3, \"ap_balance\": 96659.72}}",
    "ok": true
   }
  ]

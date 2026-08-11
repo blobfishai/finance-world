@@ -3,12 +3,12 @@
   {
    "field": "has_active_cash_discount",
    "type": "yes_no",
-   "expect": "no"
+   "expect": "yes"
   },
   {
    "field": "discounted_open_invoice_count",
    "type": "number",
-   "expect": 0,
+   "expect": 1,
    "tol_abs": 0,
    "gt_sql": "SELECT COUNT(*) FROM erp_cust_trans WHERE account IN ('SYNCUS-0023') AND txn_type='Invoice' AND closed=0 AND cash_disc_code IS NOT NULL"
   }

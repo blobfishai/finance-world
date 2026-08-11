@@ -1,10 +1,11 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What is the total unpaid customer balance for Lucerne Publishing in USMF as of March 2, 2026?
+Show me the aging breakdown for Lucerne Publishing in USMF as of March 2, 2026: current, 1–30, 31–60, 61–90, 90+ days as of March 2, 2026
 
 ---
 
 Reply with `submit_answer`:
 
-- `open_invoice_count` (number)
-- `open_balance` (number)
+- `total_past_due` (number)
+- `not_yet_due` (number)
+- `over_90_days` (number)

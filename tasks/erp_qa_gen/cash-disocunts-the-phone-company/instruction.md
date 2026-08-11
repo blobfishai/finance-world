@@ -1,10 +1,9 @@
 **Casey Morgan · AR & Collections · Teams**
 
-Does The Phone Company have any cash discount terms active on current invoices (SYNCUS-0025) in USMF as of March 2, 2026?
+How many times has The Phone Company paid within the discount window in the last 12 months (SYNCUS-0025) in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `has_active_cash_discount` (text)
-- `discounted_open_invoice_count` (number)
+- `discount_payment_count` (number)

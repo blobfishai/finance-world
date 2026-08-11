@@ -5,7 +5,17 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "name": "Graphic Design Institute South"
+    "account": "SYNCUS-0042"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "PaymentTerms",
+   "filters": {
+    "code": "COD"
    }
   }
  },
@@ -14,8 +24,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "matching_customer_count": 2,
-    "contact_emails": "sharon@www.graphicdesigninstitute.com; susan@www.graphicdesigninstitute.com"
+    "payment_terms": "COD",
+    "customer_account": "SYNCUS-0042"
    }
   }
  }

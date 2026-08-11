@@ -17,26 +17,26 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.2,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 3}\n",
  "trace": [
   {
-   "ts": 1786486071.7825751,
+   "ts": 1786487021.626047,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0012\"}}",
    "ok": true
   },
   {
-   "ts": 1786486071.78311,
+   "ts": 1786487021.6267562,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"COD\"}}",
    "ok": true
   },
   {
-   "ts": 1786486071.785303,
+   "ts": 1786487021.628762,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"payment_terms\": \"COD\", \"customer_account\": \"SYNCUS-0012\"}}",

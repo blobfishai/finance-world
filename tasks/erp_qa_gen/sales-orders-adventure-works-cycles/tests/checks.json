@@ -3,13 +3,16 @@
   {
    "field": "order_count",
    "type": "number",
-   "expect": 0,
+   "expect": 1,
    "tol_abs": 0,
    "gt_sql": "SELECT COUNT(*) FROM erp_sales_orders WHERE account IN ('SYNCUS-0002')"
   },
   {
    "field": "sales_order_id",
-   "type": "none_answer"
+   "type": "contains_all",
+   "expect": [
+    "SO-5024"
+   ]
   }
  ],
  "trace_checks": [

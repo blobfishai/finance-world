@@ -8,11 +8,11 @@
    "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE name='Coho Vineyard Central'"
   },
   {
-   "field": "phone_numbers",
+   "field": "contact_emails",
    "type": "contains_all",
    "expect": [
-    "704-555-0138",
-    "502-555-0114"
+    "david@www.cohovineyard.com",
+    "cynthia@www.cohovineyard.com"
    ]
   }
  ],

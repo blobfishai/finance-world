@@ -17,22 +17,22 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.2,
+ "duration_s": 0.1,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486127.085314,
+   "ts": 1786487044.295655,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"SalesOrders\", \"filters\": {\"account\": \"SYNCUS-0048\"}}",
    "ok": true
   },
   {
-   "ts": 1786486127.089046,
+   "ts": 1786487044.297845,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"order_count\": 0, \"sales_order_id\": \"none - this customer has no sales orders in USMF\"}}",
+   "args": "{\"answers\": {\"order_count\": 1, \"sales_order_id\": \"SO-5100\"}}",
    "ok": true
   }
  ]

@@ -1,6 +1,6 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What percentage of School of Fine Art SYNCUS-0741's credit limit is currently utilised (SYNCUS-0021) in USMF as of March 2, 2026?
+What is the credit limit and available credit for School of Fine Art (SYNCUS-0021) in USMF as of March 2, 2026?
 
 ---
 
@@ -8,4 +8,4 @@ Reply with `submit_answer`:
 
 - `credit_limit` (number)
 - `open_balance` (number)
-- `credit_utilisation_pct` (number)
+- `available_credit` (number)

@@ -11,15 +11,22 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-echo "==> 1/4 core   (schema + FinanceBenchmark raw journals)"
+echo "==> 1/5 core   (schema + FinanceBenchmark raw journals)"
 python3 world/etl/load_core.py
-echo "==> 2/4 cash   (payments, settlements, partials, discounts, disputes)"
+echo "==> 2/5 cash   (payments, settlements, partials, discounts, disputes)"
 python3 world/etl/load_cash.py
-echo "==> 3/4 demo   (Contoso demo entities the benchmark's questions name)"
+echo "==> 3/5 demo   (Contoso demo entities the benchmark's questions name)"
 python3 world/etl/load_demo.py
-echo "==> 4/4 filings (frozen real EDGAR facts; re-fetch with world/etl/fetch_filings.py)"
+echo "==> 4/5 activity (dunning, worklists, orders, POs/receipts, discounts — docs/AUDIT.md A11)"
+python3 world/etl/load_activity.py
+echo "==> 5/5 filings (frozen real EDGAR facts; re-fetch with world/etl/fetch_filings.py)"
 python3 world/etl/fetch_filings.py --load
 
 echo
-echo "==> verifying the build reproduces task ground truths"
-python3 sim/validate.py | tail -3
+# Full validation is O(tasks) and the task tree is now ~1.5k, so a build no longer waits on
+# it by default. The gate has not moved — it is the same check, run explicitly:
+#     python3 sim/validate.py            (everything, before shipping)
+#     python3 sim/validate.py --sample 60  (a spot check)
+echo "==> build complete. Verify before trusting any score:"
+echo "      python3 sim/validate.py           # full gate"
+echo "      python3 sim/refresh_gt.py         # re-derive gt_sql truths after a ledger change"

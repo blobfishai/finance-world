@@ -12,27 +12,34 @@
   "erp",
   "harness"
  ],
- "n_tool_calls": 2,
- "walk_len": 2,
+ "n_tool_calls": 3,
+ "walk_len": 3,
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.2,
  "cost_usd": null,
- "final_text": "{\"walk_steps\": 2}\n",
+ "final_text": "{\"walk_steps\": 3}\n",
  "trace": [
   {
-   "ts": 1786486073.9355772,
+   "ts": 1786487023.03467,
    "server": "erp",
    "tool": "data_find_entities",
-   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Northwind Traders\"}}",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0019\"}}",
    "ok": true
   },
   {
-   "ts": 1786486073.937759,
+   "ts": 1786487023.0372531,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net45\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786487023.067921,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"408-555-0101; 555-0100\"}}",
+   "args": "{\"answers\": {\"payment_terms\": \"Net45\", \"customer_account\": \"SYNCUS-0019\"}}",
    "ok": true
   }
  ]

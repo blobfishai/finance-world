@@ -55,6 +55,25 @@ def eligible(cx, side, limit=400):
     return out
 
 
+def _all_null_checks(task_dir):
+    """True when every answer check is satisfied without reading anything."""
+    try:
+        ac = json.loads((task_dir / "tests/checks.json").read_text()).get("answer_checks", [])
+    except Exception:
+        return False
+    if not ac: return True
+    def nul(c):
+        k = c.get("type", "string")
+        if k == "none_answer": return True
+        if k == "number": return float(c.get("expect", 0) or 0) == 0
+        if k == "yes_no": return str(c.get("expect", "")).lower() == "no"
+        if k == "contains_all":
+            e = [str(x).strip().lower() for x in (c.get("expect") or [])]
+            return all(x in ("0", "none", "no", "n/a", "") for x in e)
+        return str(c.get("expect", "")).strip().lower() in ("0", "none", "no", "")
+    return all(nul(c) for c in ac)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--per-pattern", type=int, default=6)
@@ -71,7 +90,7 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
 
     pool = {"cust": eligible(cx, "cust"), "vend": eligible(cx, "vend")}
-    made, per_pattern, skipped = 0, {}, 0
+    made, per_pattern, skipped, degenerate = 0, {}, 0, 0
 
     for t in erp:
         sc, seg, q = t.get("scenario"), t.get("segment"), t["query"]
@@ -103,6 +122,17 @@ def main():
             fields, steps = res[0], res[1]
             sqls = res[2] if len(res) > 2 and isinstance(res[2], dict) else {}
             if not fields: skipped += 1; continue
+            # Reject instances whose graded answer is entirely null. Eligibility is measured
+            # on open invoices, but a pattern like "letters sent" or "open sales orders" asks
+            # about a different table — pairing it with an entity that has no rows there
+            # produces a task answerable with "0/none" and no reading at all. An empty table
+            # does not make a task hard, it makes it free (docs/AUDIT.md A11).
+            def _null(v, kind):
+                if kind == "number": return float(v or 0) == 0
+                s = str(v).strip().lower()
+                return s in ("", "none", "no", "n/a", "0", "[]")
+            if all(_null(v, k) for v, k in fields.values()):
+                degenerate += 1; continue
             slug = f"{C.slug(sc)}-{C.slug(name2)[:26]}"
             if (out_dir / slug).exists(): continue
             if a.dry_run:
@@ -111,10 +141,17 @@ def main():
                 C.emit(out_dir, slug, q2, sc, seg, fields, steps, sqls)
             except Exception:
                 skipped += 1; continue
+            # Judge the EMITTED checks, not the handler's field dict. The two disagreed on
+            # list-valued answers, and the gate that matters is the one a model actually
+            # faces: if every graded check is satisfied by "0 / none / no", the task is free.
+            if _all_null_checks(out_dir / slug):
+                import shutil as _sh; _sh.rmtree(out_dir / slug)
+                degenerate += 1; continue
             made += 1; per_pattern[key] = per_pattern.get(key, 0) + 1
 
     print(f"generated {made} instances across {len(per_pattern)} patterns "
-          f"({skipped} candidates dropped: no qualifying data or handler declined)")
+          f"({skipped} dropped: handler declined · {degenerate} dropped: answer would be "
+          f"entirely null, i.e. free to a model that never reads)")
     for k, v in sorted(per_pattern.items()): print(f"   {v:3}  {k}")
 
 

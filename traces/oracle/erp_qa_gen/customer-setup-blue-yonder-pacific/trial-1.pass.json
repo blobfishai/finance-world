@@ -17,19 +17,19 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.2,
+ "duration_s": 0.1,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486068.642259,
+   "ts": 1786487019.477109,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Blue Yonder Pacific\"}}",
    "ok": true
   },
   {
-   "ts": 1786486068.6451101,
+   "ts": 1786487019.479053,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"matching_customer_count\": 2, \"contact_emails\": \"christopher@example.com; stephanie@example.com\"}}",

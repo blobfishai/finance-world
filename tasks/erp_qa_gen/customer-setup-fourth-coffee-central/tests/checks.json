@@ -8,11 +8,11 @@
    "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE name='Fourth Coffee Central'"
   },
   {
-   "field": "phone_numbers",
+   "field": "contact_emails",
    "type": "contains_all",
    "expect": [
-    "410-555-0138",
-    "303-555-0109"
+    "sarah@www.fourthcoffee.com",
+    "john@www.fourthcoffee.com"
    ]
   }
  ],

@@ -1,10 +1,11 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What are the open sales orders for Fabrikam Central in USMF as of March 2, 2026?
+What are the 5 largest sales orders for Fabrikam Central  in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `open_sales_order_count` (number)
-- `sales_order_id` (text)
+- `order_count` (number)
+- `largest_sales_order_id` (text)
+- `largest_order_amount` (number)

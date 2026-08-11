@@ -5,7 +5,17 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "name": "Lucerne Publishing"
+    "account": "SYNCUS-0017"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "PaymentTerms",
+   "filters": {
+    "code": "Net15"
    }
   }
  },
@@ -14,7 +24,7 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "phone_number": "816-555-0182",
+    "payment_terms": "Net15",
     "customer_account": "SYNCUS-0017"
    }
   }

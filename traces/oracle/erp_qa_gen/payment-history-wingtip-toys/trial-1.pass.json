@@ -12,34 +12,27 @@
   "erp",
   "harness"
  ],
- "n_tool_calls": 3,
- "walk_len": 3,
+ "n_tool_calls": 2,
+ "walk_len": 2,
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.2,
+ "duration_s": 0.1,
  "cost_usd": null,
- "final_text": "{\"walk_steps\": 3}\n",
+ "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486120.1671512,
+   "ts": 1786487039.706495,
    "server": "erp",
    "tool": "data_find_entities_sql",
-   "args": "{\"sql\": \"SELECT MIN(trans_date) AS earliest, MAX(trans_date) AS latest FROM erp_cust_trans WHERE account IN ('SYNCUS-0027')\"}",
+   "args": "{\"sql\": \"SELECT voucher, trans_date, ROUND(-amount,2) AS paid FROM erp_cust_trans WHERE account IN ('SYNCUS-0027') AND txn_type='Payment' ORDER BY paid DESC\"}",
    "ok": true
   },
   {
-   "ts": 1786486120.169587,
-   "server": "erp",
-   "tool": "data_find_entities_sql",
-   "args": "{\"sql\": \"SELECT voucher, trans_date FROM erp_cust_trans WHERE account IN ('SYNCUS-0027') AND txn_type='Payment' AND trans_date LIKE '2017-%'\"}",
-   "ok": true
-  },
-  {
-   "ts": 1786486120.173056,
+   "ts": 1786487039.708713,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"payment_count\": 0, \"payments\": \"none - the AR subledger holds no payment for this customer in 2017\"}}",
+   "args": "{\"answers\": {\"payment_count\": 1, \"largest_payment_amount\": 20175.05, \"largest_payment_voucher\": \"ARPM000065\", \"largest_payment_date\": \"2026-02-21\"}}",
    "ok": true
   }
  ]

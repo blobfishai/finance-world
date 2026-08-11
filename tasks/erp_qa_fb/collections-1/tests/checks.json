@@ -3,7 +3,7 @@
   {
    "field": "unassigned_customer_count",
    "type": "number",
-   "expect": 1007,
+   "expect": 407,
    "tol_abs": 0,
    "gt_sql": "SELECT (SELECT COUNT(*) FROM erp_customers) - (SELECT COUNT(*) FROM erp_customer_pool)"
   }

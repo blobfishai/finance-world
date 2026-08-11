@@ -17,19 +17,19 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.2,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486073.474772,
+   "ts": 1786487022.81141,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Margie's Travel Pacific\"}}",
    "ok": true
   },
   {
-   "ts": 1786486073.4766378,
+   "ts": 1786487022.814076,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"matching_customer_count\": 2, \"contact_emails\": \"stephen@www.margiestravel.com; deborah@www.margiestravel.com\"}}",

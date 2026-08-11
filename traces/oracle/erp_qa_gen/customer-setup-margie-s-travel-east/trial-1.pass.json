@@ -12,34 +12,27 @@
   "erp",
   "harness"
  ],
- "n_tool_calls": 3,
- "walk_len": 3,
+ "n_tool_calls": 2,
+ "walk_len": 2,
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.1,
  "cost_usd": null,
- "final_text": "{\"walk_steps\": 3}\n",
+ "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486073.4374452,
+   "ts": 1786487022.742817,
    "server": "erp",
    "tool": "data_find_entities",
-   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0074\"}}",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Margie's Travel East\"}}",
    "ok": true
   },
   {
-   "ts": 1786486073.438006,
-   "server": "erp",
-   "tool": "data_find_entities",
-   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net30\"}}",
-   "ok": true
-  },
-  {
-   "ts": 1786486073.440655,
+   "ts": 1786487022.74457,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"payment_terms\": \"Net30\", \"customer_account\": \"SYNCUS-0074\"}}",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"817-555-0199; 512-555-0190\"}}",
    "ok": true
   }
  ]

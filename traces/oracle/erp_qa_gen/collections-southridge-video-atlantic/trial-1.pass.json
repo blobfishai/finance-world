@@ -1,0 +1,46 @@
+{
+ "task": "erp_qa_gen/collections-southridge-video-atlantic",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 3}\n",
+ "trace": [
+  {
+   "ts": 1786487008.387467,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CollectionLetters\", \"filters\": {\"account\": \"SYNCUS-0190\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786487008.388439,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT letter_code, letter_date, status FROM erp_collection_letters WHERE account IN ('SYNCUS-0190')\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786487008.390311,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"collection_letter_count\": 3, \"collection_letters\": \"3\"}}",
+   "ok": true
+  }
+ ]
+}

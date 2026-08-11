@@ -3,13 +3,23 @@
   {
    "field": "order_count",
    "type": "number",
-   "expect": 0,
+   "expect": 1,
    "tol_abs": 0,
    "gt_sql": "SELECT COUNT(*) FROM erp_sales_orders WHERE account IN ('SYNCUS-0149','SYNCUS-0821')"
   },
   {
    "field": "largest_sales_order_id",
-   "type": "none_answer"
+   "type": "contains_all",
+   "expect": [
+    "SO-5178"
+   ]
+  },
+  {
+   "field": "largest_order_amount",
+   "type": "number",
+   "expect": 25095.09,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(MAX(amount),2) FROM erp_sales_orders WHERE account IN ('SYNCUS-0149','SYNCUS-0821')"
   }
  ],
  "trace_checks": [

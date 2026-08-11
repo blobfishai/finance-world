@@ -1,0 +1,44 @@
+{
+ "answer_checks": [
+  {
+   "field": "order_count",
+   "type": "number",
+   "expect": 1,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_sales_orders WHERE account IN ('SYNCUS-0212','SYNCUS-0884')"
+  },
+  {
+   "field": "largest_sales_order_id",
+   "type": "contains_all",
+   "expect": [
+    "SO-5078"
+   ]
+  },
+  {
+   "field": "largest_order_amount",
+   "type": "number",
+   "expect": 41245.89,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(MAX(amount),2) FROM erp_sales_orders WHERE account IN ('SYNCUS-0212','SYNCUS-0884')"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

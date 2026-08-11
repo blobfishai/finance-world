@@ -66,6 +66,14 @@ def main():
     tools = server_tools()
     tables = schema_tables()
     tasks = sorted(p for p in ROOT.glob("tasks/*/*") if (p / "task.toml").exists())
+    import argparse as _ap
+    _a, _ = _ap.ArgumentParser(add_help=False).parse_known_args()
+    import sys as _sys
+    if "--sample" in _sys.argv:
+        import random as _rnd
+        n = int(_sys.argv[_sys.argv.index("--sample") + 1])
+        _rnd.Random(0).shuffle(tasks); tasks = sorted(tasks[:n])
+        print(f"(sampling {len(tasks)} tasks — full gate is `python3 sim/validate.py`)")
     print(f"validating {len(tasks)} tasks against {sum(len(v) for v in tools.values())} tools "
           f"in {len(tools)} servers, {len(tables)} tables\n")
 

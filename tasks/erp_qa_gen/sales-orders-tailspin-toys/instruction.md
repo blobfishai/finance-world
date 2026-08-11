@@ -1,10 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What are the open sales orders for Tailspin Toys in USMF as of March 2, 2026?
+How many sales orders does Tailspin Toys have in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `open_sales_order_count` (number)
+- `order_count` (number)
 - `sales_order_id` (text)

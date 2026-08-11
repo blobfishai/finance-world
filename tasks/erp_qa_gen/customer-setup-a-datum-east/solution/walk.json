@@ -5,17 +5,7 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "account": "SYNCUS-0057"
-   }
-  }
- },
- {
-  "server": "erp",
-  "tool": "data_find_entities",
-  "args": {
-   "entity": "PaymentTerms",
-   "filters": {
-    "code": "COD"
+    "name": "A. Datum East"
    }
   }
  },
@@ -24,8 +14,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "payment_terms": "COD",
-    "customer_account": "SYNCUS-0057"
+    "matching_customer_count": 2,
+    "phone_numbers": "303-555-0150; 412-555-0122"
    }
   }
  }

@@ -1,10 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What payment terms are assigned to The Phone Company East (SYNCUS-0081) in USMF as of March 2, 2026?
+What is the phone number for The Phone Company East for USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `payment_terms` (text)
-- `customer_account` (text)
+- `matching_customer_count` (number)
+- `phone_numbers` (text)

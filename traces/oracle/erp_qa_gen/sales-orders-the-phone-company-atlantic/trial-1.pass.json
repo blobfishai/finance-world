@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/sales-orders-the-phone-company-atlantic",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786487045.059718,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"SalesOrders\", \"filters\": {\"account\": \"SYNCUS-0193\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786487045.070347,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"open_sales_order_count\": 1, \"sales_order_id\": \"SO-5144\"}}",
+   "ok": true
+  }
+ ]
+}

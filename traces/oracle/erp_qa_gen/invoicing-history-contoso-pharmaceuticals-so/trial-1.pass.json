@@ -17,22 +17,22 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.5,
+ "duration_s": 0.2,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486087.842892,
+   "ts": 1786487028.8801348,
    "server": "erp",
    "tool": "data_find_entities_sql",
-   "args": "{\"sql\": \"SELECT txn_type, invoice, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account IN ('SYNCUS-0038','SYNCUS-0710') ORDER BY amount DESC\"}",
+   "args": "{\"sql\": \"SELECT invoice, trans_date, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account IN ('SYNCUS-0038','SYNCUS-0710') AND txn_type='Invoice'\"}",
    "ok": true
   },
   {
-   "ts": 1786486087.844791,
+   "ts": 1786487028.883779,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"positive_transaction_count\": 6, \"positive_transaction_total\": 146724.84}}",
+   "args": "{\"answers\": {\"invoice_count\": 6, \"invoiced_total\": 146724.84}}",
    "ok": true
   }
  ]

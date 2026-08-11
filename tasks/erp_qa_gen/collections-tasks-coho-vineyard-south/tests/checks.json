@@ -3,13 +3,16 @@
   {
    "field": "open_activity_count",
    "type": "number",
-   "expect": 0,
+   "expect": 2,
    "tol_abs": 0,
    "gt_sql": "SELECT COUNT(*) FROM erp_activities WHERE account IN ('SYNCUS-0034','SYNCUS-0706') AND closed=0"
   },
   {
    "field": "open_activity_purpose",
-   "type": "none_answer"
+   "type": "contains_all",
+   "expect": [
+    "Payment plan discussion"
+   ]
   }
  ],
  "trace_checks": [

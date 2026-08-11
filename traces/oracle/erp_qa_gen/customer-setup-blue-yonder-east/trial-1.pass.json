@@ -12,34 +12,27 @@
   "erp",
   "harness"
  ],
- "n_tool_calls": 3,
- "walk_len": 3,
+ "n_tool_calls": 2,
+ "walk_len": 2,
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
  "duration_s": 0.2,
  "cost_usd": null,
- "final_text": "{\"walk_steps\": 3}\n",
+ "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486068.660129,
+   "ts": 1786487019.363604,
    "server": "erp",
    "tool": "data_find_entities",
-   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0060\"}}",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Blue Yonder East\"}}",
    "ok": true
   },
   {
-   "ts": 1786486068.660654,
-   "server": "erp",
-   "tool": "data_find_entities",
-   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"COD\"}}",
-   "ok": true
-  },
-  {
-   "ts": 1786486068.662142,
+   "ts": 1786487019.3666492,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"payment_terms\": \"COD\", \"customer_account\": \"SYNCUS-0060\"}}",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"214-555-0113; 503-555-0155\"}}",
    "ok": true
   }
  ]

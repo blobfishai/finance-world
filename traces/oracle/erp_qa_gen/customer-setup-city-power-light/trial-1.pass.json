@@ -17,26 +17,26 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.2,
+ "duration_s": 0.1,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 3}\n",
  "trace": [
   {
-   "ts": 1786486068.97211,
+   "ts": 1786487019.668677,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0005\"}}",
    "ok": true
   },
   {
-   "ts": 1786486068.9726431,
+   "ts": 1786487019.669191,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net15\"}}",
    "ok": true
   },
   {
-   "ts": 1786486068.974249,
+   "ts": 1786487019.670472,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"payment_terms\": \"Net15\", \"customer_account\": \"SYNCUS-0005\"}}",

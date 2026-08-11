@@ -1,10 +1,10 @@
 **Priya Shah · AP Manager · Teams**
 
-Does Consolidated Messenger vendor in USMF offer early payment discounts and what is the discount percentage?
+What is the total outstanding balance owed to Consolidated Messenger in USMF?
 
 ---
 
 Reply with `submit_answer`:
 
-- `offers_discount` (text)
-- `discount_code` (text)
+- `open_invoice_count` (number)
+- `ap_balance` (number)

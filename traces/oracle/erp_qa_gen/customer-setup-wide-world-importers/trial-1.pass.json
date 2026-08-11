@@ -12,27 +12,34 @@
   "erp",
   "harness"
  ],
- "n_tool_calls": 2,
- "walk_len": 2,
+ "n_tool_calls": 3,
+ "walk_len": 3,
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
  "duration_s": 0.2,
  "cost_usd": null,
- "final_text": "{\"walk_steps\": 2}\n",
+ "final_text": "{\"walk_steps\": 3}\n",
  "trace": [
   {
-   "ts": 1786486076.161779,
+   "ts": 1786487024.676167,
    "server": "erp",
    "tool": "data_find_entities",
-   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Wide World Importers\"}}",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0026\"}}",
    "ok": true
   },
   {
-   "ts": 1786486076.1633222,
+   "ts": 1786487024.677595,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786487024.68101,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"phone_number\": \"602-555-0155\", \"customer_account\": \"SYNCUS-0026\"}}",
+   "args": "{\"answers\": {\"payment_terms\": \"Net15\", \"customer_account\": \"SYNCUS-0026\"}}",
    "ok": true
   }
  ]

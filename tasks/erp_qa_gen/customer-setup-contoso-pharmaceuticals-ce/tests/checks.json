@@ -8,11 +8,11 @@
    "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE name='Contoso Pharmaceuticals Central'"
   },
   {
-   "field": "phone_numbers",
+   "field": "contact_emails",
    "type": "contains_all",
    "expect": [
-    "813-555-0142",
-    "702-555-0139"
+    "timothy@www.contoso.com",
+    "maria@www.contoso.com"
    ]
   }
  ],

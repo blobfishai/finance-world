@@ -17,19 +17,19 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.2,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486035.7566578,
+   "ts": 1786487000.1988502,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT voucher, trans_date, ROUND(-amount,2) AS received FROM erp_cust_trans WHERE account IN ('SYNCUS-0036') AND txn_type='Payment' AND trans_date >= '2026-01-01'\"}",
    "ok": true
   },
   {
-   "ts": 1786486035.765007,
+   "ts": 1786487000.201772,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"payment_count_fy\": 1, \"total_collected_fy\": 33268.92}}",

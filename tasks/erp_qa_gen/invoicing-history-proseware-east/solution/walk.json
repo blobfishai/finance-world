@@ -3,7 +3,7 @@
   "server": "erp",
   "tool": "data_find_entities_sql",
   "args": {
-   "sql": "SELECT invoice, trans_date, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account IN ('SYNCUS-0076','SYNCUS-0748') AND txn_type='Invoice'"
+   "sql": "SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_cust_trans WHERE account IN ('SYNCUS-0076','SYNCUS-0748') AND txn_type='Invoice' AND closed=0"
   }
  },
  {
@@ -11,8 +11,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "invoice_count": 5,
-    "invoiced_total": 107348.2
+    "open_invoice_count": 2,
+    "open_balance": 11245.3
    }
   }
  }

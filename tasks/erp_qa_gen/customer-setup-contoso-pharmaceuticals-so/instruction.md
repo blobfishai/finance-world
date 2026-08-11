@@ -1,10 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What is the contact information for Contoso Pharmaceuticals South for USMF as of March 2, 2026?
+What payment terms are assigned to Contoso Pharmaceuticals South (SYNCUS-0038) in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `matching_customer_count` (number)
-- `contact_emails` (text)
+- `payment_terms` (text)
+- `customer_account` (text)

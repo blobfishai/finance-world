@@ -5,17 +5,7 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "account": "SYNCUS-0077"
-   }
-  }
- },
- {
-  "server": "erp",
-  "tool": "data_find_entities",
-  "args": {
-   "entity": "PaymentTerms",
-   "filters": {
-    "code": "Net15"
+    "name": "School of Fine Art East"
    }
   }
  },
@@ -24,8 +14,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "payment_terms": "Net15",
-    "customer_account": "SYNCUS-0077"
+    "matching_customer_count": 2,
+    "phone_numbers": "559-555-0170; 617-555-0103"
    }
   }
  }

@@ -17,22 +17,22 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.2,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486074.533807,
+   "ts": 1786487023.399572,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"School of Fine Art Central\"}}",
    "ok": true
   },
   {
-   "ts": 1786486074.5390909,
+   "ts": 1786487023.4013891,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"904-555-0196; 916-555-0183\"}}",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"contact_emails\": \"cynthia@www.fineartschool.net; carolyn@www.fineartschool.net\"}}",
    "ok": true
   }
  ]

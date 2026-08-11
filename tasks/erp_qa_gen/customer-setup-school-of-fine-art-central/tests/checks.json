@@ -8,11 +8,11 @@
    "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE name='School of Fine Art Central'"
   },
   {
-   "field": "phone_numbers",
+   "field": "contact_emails",
    "type": "contains_all",
    "expect": [
-    "904-555-0196",
-    "916-555-0183"
+    "cynthia@www.fineartschool.net",
+    "carolyn@www.fineartschool.net"
    ]
   }
  ],

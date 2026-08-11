@@ -1,0 +1,23 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "SalesOrders",
+   "filters": {
+    "account": "SYNCUS-0231"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "order_count": 1,
+    "largest_sales_order_id": "SO-5246",
+    "largest_order_amount": 38849.5
+   }
+  }
+ }
+]

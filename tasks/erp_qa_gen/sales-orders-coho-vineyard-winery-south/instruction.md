@@ -1,10 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What are the 5 largest sales orders for Coho Vineyard & Winery South  in USMF as of March 2, 2026?
+How many sales orders does Coho Vineyard & Winery South have in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
 - `order_count` (number)
-- `largest_sales_order_id` (text)
+- `sales_order_id` (text)

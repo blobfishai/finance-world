@@ -12,34 +12,27 @@
   "erp",
   "harness"
  ],
- "n_tool_calls": 3,
- "walk_len": 3,
+ "n_tool_calls": 2,
+ "walk_len": 2,
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
  "duration_s": 0.2,
  "cost_usd": null,
- "final_text": "{\"walk_steps\": 3}\n",
+ "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486070.0641332,
+   "ts": 1786487020.478091,
    "server": "erp",
    "tool": "data_find_entities",
-   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0063\"}}",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Coho Winery East\"}}",
    "ok": true
   },
   {
-   "ts": 1786486070.06461,
-   "server": "erp",
-   "tool": "data_find_entities",
-   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net45\"}}",
-   "ok": true
-  },
-  {
-   "ts": 1786486070.06976,
+   "ts": 1786487020.479692,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"payment_terms\": \"Net45\", \"customer_account\": \"SYNCUS-0063\"}}",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"502-555-0128; 212-555-0190\"}}",
    "ok": true
   }
  ]

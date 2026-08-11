@@ -5,17 +5,7 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "account": "SYNCUS-0062"
-   }
-  }
- },
- {
-  "server": "erp",
-  "tool": "data_find_entities",
-  "args": {
-   "entity": "PaymentTerms",
-   "filters": {
-    "code": "Net15"
+    "name": "Coho Vineyard East"
    }
   }
  },
@@ -24,8 +14,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "payment_terms": "Net15",
-    "customer_account": "SYNCUS-0062"
+    "matching_customer_count": 2,
+    "phone_numbers": "904-555-0123; 617-555-0162"
    }
   }
  }

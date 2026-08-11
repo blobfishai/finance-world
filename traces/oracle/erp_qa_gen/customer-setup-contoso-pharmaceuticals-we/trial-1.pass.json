@@ -17,19 +17,19 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.2,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486071.484443,
+   "ts": 1786487021.35058,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Contoso Pharmaceuticals West\"}}",
    "ok": true
   },
   {
-   "ts": 1786486071.4886742,
+   "ts": 1786487021.352499,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"305-555-0107; 919-555-0199\"}}",

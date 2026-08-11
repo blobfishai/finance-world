@@ -12,34 +12,27 @@
   "erp",
   "harness"
  ],
- "n_tool_calls": 3,
- "walk_len": 3,
+ "n_tool_calls": 2,
+ "walk_len": 2,
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.2,
+ "duration_s": 0.1,
  "cost_usd": null,
- "final_text": "{\"walk_steps\": 3}\n",
+ "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486073.2560692,
+   "ts": 1786487022.6398048,
    "server": "erp",
    "tool": "data_find_entities",
-   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0073\"}}",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Lucerne Publishing East\"}}",
    "ok": true
   },
   {
-   "ts": 1786486073.256576,
-   "server": "erp",
-   "tool": "data_find_entities",
-   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"COD\"}}",
-   "ok": true
-  },
-  {
-   "ts": 1786486073.258046,
+   "ts": 1786487022.6416278,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"payment_terms\": \"COD\", \"customer_account\": \"SYNCUS-0073\"}}",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"303-555-0130; 404-555-0101\"}}",
    "ok": true
   }
  ]

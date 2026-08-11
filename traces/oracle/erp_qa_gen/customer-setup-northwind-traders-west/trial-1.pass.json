@@ -17,19 +17,19 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.2,
+ "duration_s": 0.1,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486073.949216,
+   "ts": 1786487023.0735092,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Northwind Traders West\"}}",
    "ok": true
   },
   {
-   "ts": 1786486073.9526021,
+   "ts": 1786487023.075139,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"904-555-0116; 615-555-0191\"}}",

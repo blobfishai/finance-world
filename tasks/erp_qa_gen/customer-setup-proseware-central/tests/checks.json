@@ -8,11 +8,11 @@
    "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE name='Proseware Central'"
   },
   {
-   "field": "phone_numbers",
+   "field": "contact_emails",
    "type": "contains_all",
    "expect": [
-    "615-555-0175",
-    "617-555-0157"
+    "elizabeth@example.com",
+    "joseph@example.com"
    ]
   }
  ],

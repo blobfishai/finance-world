@@ -8,11 +8,11 @@
    "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE name='Fabrikam Central'"
   },
   {
-   "field": "phone_numbers",
+   "field": "contact_emails",
    "type": "contains_all",
    "expect": [
-    "216-555-0182",
-    "512-555-0108"
+    "andrew@example.com",
+    "ruth@example.com"
    ]
   }
  ],

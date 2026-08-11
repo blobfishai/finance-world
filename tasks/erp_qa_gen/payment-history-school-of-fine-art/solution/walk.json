@@ -3,14 +3,7 @@
   "server": "erp",
   "tool": "data_find_entities_sql",
   "args": {
-   "sql": "SELECT MIN(trans_date) AS earliest, MAX(trans_date) AS latest FROM erp_cust_trans WHERE account IN ('SYNCUS-0021')"
-  }
- },
- {
-  "server": "erp",
-  "tool": "data_find_entities_sql",
-  "args": {
-   "sql": "SELECT voucher, trans_date FROM erp_cust_trans WHERE account IN ('SYNCUS-0021') AND txn_type='Payment' AND trans_date LIKE '2017-%'"
+   "sql": "SELECT voucher, trans_date, ROUND(-amount,2) AS paid FROM erp_cust_trans WHERE account IN ('SYNCUS-0021') AND txn_type='Payment' ORDER BY paid DESC"
   }
  },
  {
@@ -18,8 +11,10 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "payment_count": 0,
-    "payments": "none - the AR subledger holds no payment for this customer in 2017"
+    "payment_count": 2,
+    "largest_payment_amount": 46662.48,
+    "largest_payment_voucher": "ARPM000051",
+    "largest_payment_date": "2025-07-27"
    }
   }
  }

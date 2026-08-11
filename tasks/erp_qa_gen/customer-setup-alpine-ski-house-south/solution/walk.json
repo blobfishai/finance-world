@@ -5,7 +5,17 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "name": "Alpine Ski House South"
+    "account": "SYNCUS-0031"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "PaymentTerms",
+   "filters": {
+    "code": "Net45"
    }
   }
  },
@@ -14,8 +24,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "matching_customer_count": 2,
-    "contact_emails": "sarah@www.alpineskihouse.com; stephen@www.alpineskihouse.com"
+    "payment_terms": "Net45",
+    "customer_account": "SYNCUS-0031"
    }
   }
  }

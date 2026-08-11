@@ -5,17 +5,7 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "account": "SYNCUS-0060"
-   }
-  }
- },
- {
-  "server": "erp",
-  "tool": "data_find_entities",
-  "args": {
-   "entity": "PaymentTerms",
-   "filters": {
-    "code": "COD"
+    "name": "Blue Yonder East"
    }
   }
  },
@@ -24,8 +14,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "payment_terms": "COD",
-    "customer_account": "SYNCUS-0060"
+    "matching_customer_count": 2,
+    "phone_numbers": "214-555-0113; 503-555-0155"
    }
   }
  }

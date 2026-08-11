@@ -12,34 +12,27 @@
   "erp",
   "harness"
  ],
- "n_tool_calls": 3,
- "walk_len": 3,
+ "n_tool_calls": 2,
+ "walk_len": 2,
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.2,
  "cost_usd": null,
- "final_text": "{\"walk_steps\": 3}\n",
+ "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486019.170584,
+   "ts": 1786486990.827395,
    "server": "erp",
-   "tool": "api_find_actions",
-   "args": "{\"query\": \"aged balances\"}",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_cust_trans WHERE account IN ('SYNCUS-0065','SYNCUS-0737') AND txn_type='Invoice' AND closed=0\"}",
    "ok": true
   },
   {
-   "ts": 1786486019.171886,
-   "server": "erp",
-   "tool": "api_invoke_action",
-   "args": "{\"action\": \"ContosoCustAgedBalancesLive\", \"parameters\": {\"customer_account\": \"SYNCUS-0065\"}}",
-   "ok": true
-  },
-  {
-   "ts": 1786486019.173692,
+   "ts": 1786486990.830444,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"total_past_due\": 26160.69, \"not_yet_due\": 42642.76, \"over_90_days\": 0.0}}",
+   "args": "{\"answers\": {\"open_invoice_count\": 3, \"open_balance\": 68803.45}}",
    "ok": true
   }
  ]

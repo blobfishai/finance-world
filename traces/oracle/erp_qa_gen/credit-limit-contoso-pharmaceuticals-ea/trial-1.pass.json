@@ -17,29 +17,29 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.1,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 3}\n",
  "trace": [
   {
-   "ts": 1786486059.58263,
+   "ts": 1786487013.212954,
    "server": "erp",
    "tool": "data_find_entities",
-   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0066\"}}",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
    "ok": true
   },
   {
-   "ts": 1786486059.584202,
+   "ts": 1786487013.214504,
    "server": "erp",
    "tool": "data_find_entities_sql",
-   "args": "{\"sql\": \"SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_cust_trans WHERE account IN ('SYNCUS-0066') AND closed=0\"}",
+   "args": "{\"sql\": \"SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_cust_trans WHERE account IN ('SYNCUS-0741') AND closed=0\"}",
    "ok": true
   },
   {
-   "ts": 1786486059.586626,
+   "ts": 1786487013.216525,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"credit_limit\": 500000.0, \"open_balance\": 93888.24, \"available_credit\": 406111.76}}",
+   "args": "{\"answers\": {\"credit_limit\": 10000.0, \"open_balance\": 83929.71, \"credit_utilisation_pct\": 839.3}}",
    "ok": true
   }
  ]

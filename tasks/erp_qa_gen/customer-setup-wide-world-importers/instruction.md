@@ -1,10 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What is the phone number for Wide World Importers for USMF as of March 2, 2026?
+What payment terms are assigned to Wide World Importers (SYNCUS-0026) in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `phone_number` (text)
+- `payment_terms` (text)
 - `customer_account` (text)

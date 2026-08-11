@@ -1,10 +1,10 @@
 **Priya Shah · AP Manager · Teams**
 
-Are there any debit notes issued to Alpine Ski House South in USMF?
+What is the total spend with Alpine Ski House South this fiscal year in USMF?
 
 ---
 
 Reply with `submit_answer`:
 
-- `debit_notes_exist` (text)
-- `debit_note_count` (number)
+- `invoice_count` (number)
+- `total_spend_fy` (number)

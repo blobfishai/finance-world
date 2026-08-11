@@ -1,18 +1,17 @@
 {
  "answer_checks": [
   {
-   "field": "matching_customer_count",
-   "type": "number",
-   "expect": 2,
-   "tol_abs": 0,
-   "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE name='Graphic Design Institute South'"
-  },
-  {
-   "field": "contact_emails",
+   "field": "payment_terms",
    "type": "contains_all",
    "expect": [
-    "sharon@www.graphicdesigninstitute.com",
-    "susan@www.graphicdesigninstitute.com"
+    "COD"
+   ]
+  },
+  {
+   "field": "customer_account",
+   "type": "contains_all",
+   "expect": [
+    "SYNCUS-0042"
    ]
   }
  ],

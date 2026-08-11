@@ -1,18 +1,18 @@
 {
  "answer_checks": [
   {
-   "field": "open_invoice_count",
+   "field": "invoice_count",
    "type": "number",
-   "expect": 1,
+   "expect": 3,
    "tol_abs": 0,
-   "gt_sql": "SELECT COUNT(*) FROM erp_cust_trans WHERE account IN ('SYNCUS-0028') AND txn_type='Invoice' AND closed=0"
+   "gt_sql": "SELECT COUNT(*) FROM erp_cust_trans WHERE account IN ('SYNCUS-0028') AND txn_type='Invoice'"
   },
   {
-   "field": "open_balance",
+   "field": "invoiced_total",
    "type": "number",
-   "expect": 24403.93,
+   "expect": 86607.6,
    "tol_abs": 0.02,
-   "gt_sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_cust_trans WHERE account IN ('SYNCUS-0028') AND txn_type='Invoice' AND closed=0"
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(amount),0),2) FROM erp_cust_trans WHERE account IN ('SYNCUS-0028') AND txn_type='Invoice'"
   }
  ],
  "trace_checks": [

@@ -17,19 +17,19 @@
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.2,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486069.463943,
+   "ts": 1786487020.137326,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Coho Vineyard West\"}}",
    "ok": true
   },
   {
-   "ts": 1786486069.468662,
+   "ts": 1786487020.1391811,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"415-555-0160; 617-555-0149\"}}",

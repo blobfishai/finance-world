@@ -3,7 +3,7 @@
   {
    "field": "order_count",
    "type": "number",
-   "expect": 1,
+   "expect": 50,
    "tol_abs": 0,
    "gt_sql": "SELECT COUNT(*) FROM erp_sales_orders WHERE hold_code='Do not process'"
   },

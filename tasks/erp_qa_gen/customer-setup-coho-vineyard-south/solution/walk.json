@@ -5,7 +5,17 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "name": "Coho Vineyard South"
+    "account": "SYNCUS-0034"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "PaymentTerms",
+   "filters": {
+    "code": "Net30"
    }
   }
  },
@@ -14,8 +24,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "matching_customer_count": 2,
-    "contact_emails": "samantha@www.cohovineyard.com; pamela@www.cohovineyard.com"
+    "payment_terms": "Net30",
+    "customer_account": "SYNCUS-0034"
    }
   }
  }

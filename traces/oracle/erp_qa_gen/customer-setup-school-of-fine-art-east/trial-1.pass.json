@@ -12,34 +12,27 @@
   "erp",
   "harness"
  ],
- "n_tool_calls": 3,
- "walk_len": 3,
+ "n_tool_calls": 2,
+ "walk_len": 2,
  "budget_turns": 40,
  "num_turns": null,
  "agent_error": false,
  "duration_s": 0.2,
  "cost_usd": null,
- "final_text": "{\"walk_steps\": 3}\n",
+ "final_text": "{\"walk_steps\": 2}\n",
  "trace": [
   {
-   "ts": 1786486074.563584,
+   "ts": 1786487023.4087622,
    "server": "erp",
    "tool": "data_find_entities",
-   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0077\"}}",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"School of Fine Art East\"}}",
    "ok": true
   },
   {
-   "ts": 1786486074.564112,
-   "server": "erp",
-   "tool": "data_find_entities",
-   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net15\"}}",
-   "ok": true
-  },
-  {
-   "ts": 1786486074.5654762,
+   "ts": 1786487023.410503,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"payment_terms\": \"Net15\", \"customer_account\": \"SYNCUS-0077\"}}",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"559-555-0170; 617-555-0103\"}}",
    "ok": true
   }
  ]

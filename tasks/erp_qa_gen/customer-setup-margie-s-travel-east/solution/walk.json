@@ -5,17 +5,7 @@
   "args": {
    "entity": "Customers",
    "filters": {
-    "account": "SYNCUS-0074"
-   }
-  }
- },
- {
-  "server": "erp",
-  "tool": "data_find_entities",
-  "args": {
-   "entity": "PaymentTerms",
-   "filters": {
-    "code": "Net30"
+    "name": "Margie's Travel East"
    }
   }
  },
@@ -24,8 +14,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "payment_terms": "Net30",
-    "customer_account": "SYNCUS-0074"
+    "matching_customer_count": 2,
+    "phone_numbers": "817-555-0199; 512-555-0190"
    }
   }
  }
