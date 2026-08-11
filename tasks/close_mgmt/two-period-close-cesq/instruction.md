@@ -1,13 +1,13 @@
-You are closing the books for legal entity **CESQ** (CES Quarterly Services LLC).
-Today is March 2, 2026.
+**Sam Rivera · Controller · Teams 08:00**
 
-**January close first.** Tie the AP subledger in the ERP to the January close workbook on
-the shared drive (balances as of 2026-01-31) and report the variance.
+CESQ books need catching up. Do January first — AP against the close workbook — then I'll have you carry on into February.
 
-Submit via harness `submit_answer`:
+---
 
-- `jan_erp_ap` (number, USD — CESQ open AP per the ERP as of 2026-01-31)
-- `jan_workbook_ap` (number, USD — per the January workbook)
-- `jan_variance` (number, USD)
+Reply with `submit_answer`:
 
-Stay in this session — February close follows.
+- `jan_erp_ap` (number)
+- `jan_workbook_ap` (number)
+- `jan_variance` (number)
+
+_(stay in this conversation — there's a follow-up)_

@@ -11,7 +11,7 @@ computed from SQLite at call time. SIMULATION ONLY.
 
 **Prompt (excerpt)**
 
-> You are a finance analyst at Contoso Entertainment System USA (company USMF). Today is March 2, 2026. > What is the credit limit for SYNCUS-0001 USMF as of March 2, 2026? Ground every figure in ERP tool calls. Submit via harness `submit_answer` with exactly these fields: If something does not exist, submit the string "none" for that field.
+> **Casey Morgan · AR & Collections · Teams** What is the credit limit for SYNCUS-0001 USMF as of March 2, 2026? Reply with `submit_answer`:
 
 **Tool calls and real responses**
 
@@ -35,7 +35,7 @@ computed from SQLite at call time. SIMULATION ONLY.
 
 **Prompt (excerpt)**
 
-> You are assisting the collections analyst at Contoso Entertainment System USA (company USMF). Today is March 2, 2026. Which collection letter level is customer **Sparrow Retail** currently at? And have they paid us recently — if so, when and how much was the most recent payment, and what remains open on their account? The team's dunning runbook is in the internal docs library if you need the escal
+> **Casey Morgan · AR & Collections · Teams 16:40** Sparrow Retail is on tomorrow's agenda. Where are we with them, and have they paid us anything lately? Reply with `submit_answer`:
 
 **Tool calls and real responses**
 
@@ -67,7 +67,7 @@ computed from SQLite at call time. SIMULATION ONLY.
 
 **Prompt (excerpt)**
 
-> You are the collections coordinator at Contoso (USMF). Today is March 2, 2026. Process today's scheduled collections review for **Sparrow Retail (US-008)** and take the actions the dunning runbook (docs library) prescribes for their current position — no more, no less. Your role has access to the collections actions in the ERP. When done, report what you did. Submit via harness `submit_answer`:
+> **Casey Morgan · AR & Collections · Teams 09:00** Sparrow Retail's review is due today. Take whatever action the runbook calls for at their position — nothing more — and tell me what you did and why. Reply with `submit_answer`:
 
 **Tool calls and real responses**
 
@@ -101,7 +101,7 @@ computed from SQLite at call time. SIMULATION ONLY.
 
 **Prompt (excerpt)**
 
-> You are assisting the controller at Contoso (USMF). Today is March 2, 2026. The CFO quotes a number from the **AR watchlist tracker** on the shared drive and the AR analyst says it "feels low." Audit the tracker: does its TOTAL cell agree with its own rows? Do the row balances agree with the live ERP? Give the number the CFO should actually use. Submit via harness `submit_answer`:
+> **Sam Rivera · Controller · Teams 08:31** The CFO quoted a watchlist number this morning and Casey says it feels low. Can you check it before I reply to him? Tell me what the number should be. Reply with `submit_answer`:
 
 **Tool calls and real responses**
 
@@ -133,7 +133,7 @@ computed from SQLite at call time. SIMULATION ONLY.
 
 **Prompt (excerpt)**
 
-> You are the AP specialist at Contoso (USMF). Today is March 2, 2026. Invoice **TWINV-303** from Wingtip Logistics is stuck: it arrived without a purchase order reference, so it cannot be matched or scheduled. The vendor's AP contact is on the ERP vendor master. Get the PO number from them, then confirm that PO exists in our ERP and report what it was raised for. You have a working mailbox — you ca
+> **Priya Shah · AP Manager · Teams 09:22** TWINV-303 from Wingtip has no PO reference on it so it won't match or schedule. Can you sort it out and confirm the PO is real on our side? Reply with `submit_answer`:
 
 **Tool calls and real responses**
 
@@ -167,7 +167,7 @@ computed from SQLite at call time. SIMULATION ONLY.
 
 **Prompt (excerpt)**
 
-> You are the AR analyst at Contoso (USMF). Today is March 2, 2026. The March 1 bank file (shared drive) contains an **ACH return**. Work out what it undoes: which customer payment came back, which invoice consequently goes back to open, and what the customer's true open balance is once the return is recognised. The ERP has not yet processed the return. Submit via harness `submit_answer`:
+> **Robin Vale · Treasury · Teams 07:48** There's a return on this morning's bank file for Lamna. What does it undo, and what do they actually owe us now? The ERP hasn't caught up yet. Reply with `submit_answer`:
 
 **Tool calls and real responses**
 
@@ -199,7 +199,7 @@ computed from SQLite at call time. SIMULATION ONLY.
 
 **Prompt (excerpt)**
 
-> You are the AP specialist at Contoso (USMF). Today is March 2, 2026. Two invoices are sitting in the match queue with price variances against their purchase orders: **TDINV-401** (legacy ledger) and **TDINV-402** (new ledger). Both ledgers report "no tolerance value configured" for the relevant key — but the two systems mean opposite things by that. The AP tolerance policy in the docs library spel
+> **Priya Shah · AP Manager · Teams 11:02** TDINV-401 and TDINV-402 both came back with price variances, and both ledgers are telling me no tolerance is configured. Which one can I release and which do I have to hold? Reply with `submit_answer`:
 
 **Tool calls and real responses**
 
@@ -232,7 +232,7 @@ computed from SQLite at call time. SIMULATION ONLY.
 
 **Prompt (excerpt)**
 
-> You are a credit analyst on the Contoso finance team. Today is March 2, 2026. What was **Tesla's GAAP operating margin for the quarter ended September 30, 2025**? Use the filings tools. Operating margin = operating income / total revenue for that quarter (not year-to-date). Report as a **percentage rounded to two decimal places**, and give the two inputs you used. Submit via harness `submit_answer
+> **Dana Kim · Credit Manager · Teams 15:11** What was Tesla's GAAP operating margin in the September 2025 quarter? Percent to two decimals, plus the two inputs. Reply with `submit_answer`:
 
 **Tool calls and real responses**
 
@@ -261,7 +261,7 @@ computed from SQLite at call time. SIMULATION ONLY.
 
 **Prompt (excerpt)**
 
-> You are closing the books for legal entity **CESQ** (CES Quarterly Services LLC). Today is March 2, 2026. **January close first.** Tie the AP subledger in the ERP to the January close workbook on the shared drive (balances as of 2026-01-31) and report the variance. Submit via harness `submit_answer`: Stay in this session — February close follows.
+> **Sam Rivera · Controller · Teams 08:00** CESQ books need catching up. Do January first — AP against the close workbook — then I'll have you carry on into February. Reply with `submit_answer`: _(stay in this conversation — there's a follow-up)_
 
 **Tool calls and real responses**
 

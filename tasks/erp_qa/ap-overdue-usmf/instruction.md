@@ -1,12 +1,10 @@
-You are assisting the AP manager at Contoso Entertainment System USA (company USMF).
+**Robin Vale · Treasury · Teams 08:52**
 
-What is the **total overdue accounts payable balance** in USMF as of March 2, 2026?
+Cash call at 11. How much of our AP in USMF is actually overdue as of today? I need the number, not a range.
 
-Overdue means posted, unsettled vendor invoices whose due date is before March 2, 2026.
-Ground the figure in ERP tool calls (the AP subledger has thousands of lines — aggregate,
-don't sample). Submit via harness `submit_answer` with fields:
+---
 
-- `total_overdue_ap` (number, USD)
-- `as_of_date` (string, YYYY-MM-DD)
+Reply with `submit_answer`:
 
-If something does not exist, submit the string "none" for that field.
+- `total_overdue_ap` (number)
+- `as_of_date` (text)

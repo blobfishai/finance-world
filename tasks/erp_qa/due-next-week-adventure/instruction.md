@@ -1,11 +1,10 @@
-You are assisting the AR analyst at Contoso Entertainment System USA (company USMF).
+**Casey Morgan · AR & Collections · Teams 09:30**
 
-Which open invoices for customer **Adventure Works Cycles (SYNCUS-0002)** fall due in the
-next 7 days — i.e., due dates after March 2, 2026 and on or before March 9, 2026?
+Building next week's call list. Anything of Adventure Works Cycles' (SYNCUS-0002) falling due in the next seven days?
 
-Ground the answer in ERP tool calls, then submit via harness `submit_answer` with fields:
+---
 
-- `invoice_count` (number of open invoices due in that window)
-- `invoice_numbers` (string — comma-separated invoice numbers, or the string "none")
+Reply with `submit_answer`:
 
-Report only what the ERP actually shows.
+- `invoice_count` (number)
+- `invoice_numbers` (text)

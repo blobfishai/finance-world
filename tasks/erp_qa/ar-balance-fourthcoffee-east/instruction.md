@@ -1,14 +1,11 @@
-You are assisting the AR analyst at Contoso Entertainment System USA (company USMF).
+**Casey Morgan · AR & Collections · Teams 09:14**
 
-What is the outstanding receivables balance for the customer **Fourth Coffee East** as of
-March 2, 2026? Be careful to pick the right customer — several accounts share similar names.
+Fourth Coffee East just called about their account. What are we carrying on them right now?
 
-Outstanding balance means the open (unsettled) amount on posted customer transactions.
+---
 
-Ground every figure in ERP tool calls, then submit via harness `submit_answer` with fields:
+Reply with `submit_answer`:
 
-- `customer_account` (string — the account id you resolved)
-- `outstanding_balance` (number, USD)
-- `open_invoice_count` (number of open invoices making up that balance)
-
-If something does not exist, submit the string "none" for that field.
+- `customer_account` (text)
+- `outstanding_balance` (number)
+- `open_invoice_count` (number)

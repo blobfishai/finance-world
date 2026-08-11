@@ -1,10 +1,9 @@
-You are a finance analyst at Contoso Entertainment System USA (company USMF).
-Today is March 2, 2026.
+**Casey Morgan · AR & Collections · Teams**
 
-> What is the collection letter level Birch Company (US-027) is currently at in USMF as of March 2, 2026?
+What is the collection letter level Birch Company (US-027) is currently at in USMF as of March 2, 2026?
 
-Ground every figure in ERP tool calls. Submit via harness `submit_answer` with exactly these fields:
+---
+
+Reply with `submit_answer`:
 
 - `unassigned_customer_count` (number)
-
-If something does not exist, submit the string "none" for that field.

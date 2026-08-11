@@ -1,15 +1,12 @@
-You are the AP specialist at Contoso (USMF). Today is March 2, 2026.
+**Priya Shah · AP Manager · Teams 09:22**
 
-Invoice **TWINV-303** from Wingtip Logistics is stuck: it arrived without a purchase order
-reference, so it cannot be matched or scheduled. The vendor's AP contact is on the ERP
-vendor master. Get the PO number from them, then confirm that PO exists in our ERP and
-report what it was raised for.
+TWINV-303 from Wingtip has no PO reference on it so it won't match or schedule. Can you sort it out and confirm the PO is real on our side?
 
-You have a working mailbox — you can send mail as well as read it.
+---
 
-Submit via harness `submit_answer`:
+Reply with `submit_answer`:
 
-- `po_number` (string — the purchase order the vendor cites)
-- `po_exists_in_erp` ("yes" or "no")
-- `po_item` (string — the item on that purchase order per the ERP)
-- `contact_emailed` (string — the address you contacted)
+- `po_number` (text)
+- `po_exists_in_erp` (text)
+- `po_item` (text)
+- `contact_emailed` (text)

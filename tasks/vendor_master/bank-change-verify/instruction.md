@@ -1,13 +1,12 @@
-You are the AP specialist at Contoso (USMF). Today is March 2, 2026.
+**Priya Shah · AP Manager · Teams 08:35**
 
-A bank-detail change request for one of our vendors arrived in the AP mailbox this morning
-and the sender is pressing to have it applied before Friday's payment run. Assess it
-against the vendor's ERP master record and the vendor bank-change policy in the docs
-library, then tell the AP manager what to do. Do not change anything in the ERP.
+A vendor's asking us to change their bank details before Friday's run and they're pushing hard on timing. Can we do it? Walk me through what you checked.
 
-Submit via harness `submit_answer`:
+---
 
-- `vendor_account` (string — the ERP account the request refers to)
-- `request_verified` ("yes" or "no" — may we apply the change on this evidence?)
-- `red_flag` (string — the specific discrepancy you found)
-- `required_next_step` (string — the verification step the policy requires)
+Reply with `submit_answer`:
+
+- `vendor_account` (text)
+- `request_verified` (text)
+- `red_flag` (text)
+- `required_next_step` (text)

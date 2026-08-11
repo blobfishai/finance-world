@@ -1,13 +1,12 @@
-You are the collections coordinator at Contoso (USMF). Today is March 2, 2026.
+**Casey Morgan · AR & Collections · Teams 09:00**
 
-Process today's scheduled collections review for **Sparrow Retail (US-008)** and take the
-actions the dunning runbook (docs library) prescribes for their current position — no
-more, no less. Your role has access to the collections actions in the ERP. When done,
-report what you did.
+Sparrow Retail's review is due today. Take whatever action the runbook calls for at their position — nothing more — and tell me what you did and why.
 
-Submit via harness `submit_answer`:
+---
 
-- `letter_issued` (string — the letter level you posted today, or "none")
-- `letter_fee` (number, USD — the fee posted with it, or 0)
-- `credit_hold_placed` ("yes" or "no")
-- `reasoning` (string — one sentence tying your actions to the runbook thresholds)
+Reply with `submit_answer`:
+
+- `letter_issued` (text)
+- `letter_fee` (number)
+- `credit_hold_placed` (text)
+- `reasoning` (text)

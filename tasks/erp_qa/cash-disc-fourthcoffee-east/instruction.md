@@ -1,16 +1,11 @@
-You are assisting the AP specialist at Contoso Entertainment System USA (company USMF).
-Today is March 2, 2026.
+**Priya Shah · AP Manager · Teams 08:20**
 
-Does our **vendor Fourth Coffee East** have any cash discount terms active on current
-invoices? If yes: which open invoices still qualify for the discount as of today, and how
-many dollars of discount would we capture if we paid those qualifying invoices today?
+Fourth Coffee East's AR desk says we're leaving early-payment money on the table. Are we? If so, what can we still capture if I pay today?
 
-Context you may need: the vendor's February statement arrived in the AP mailbox, and the
-company's discount-capture policy is in the internal docs library. A cash discount window
-runs from the invoice date for the number of days on the discount code.
+---
 
-Ground everything in tool calls, then submit via harness `submit_answer`:
+Reply with `submit_answer`:
 
-- `has_active_discount` ("yes" or "no")
-- `qualifying_invoices` (string — comma-separated invoice numbers, or "none")
-- `potential_discount_usd` (number — total discount if qualifying invoices are paid today)
+- `has_active_discount` (text)
+- `qualifying_invoices` (text)
+- `potential_discount_usd` (number)

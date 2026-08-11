@@ -1,14 +1,12 @@
-You are a credit analyst on the Contoso finance team. Today is March 2, 2026.
+**Dana Kim · Credit Manager · Teams 09:48**
 
-For the treasury committee's counterparty screen: compare **ExxonMobil and Caterpillar on GAAP total
-current assets for fiscal year 2024** (both December year-ends).
+Screening Exxon and Caterpillar side by side. At FY2024, who's carrying more current assets and by how much?
 
-Use the filings tools — the frames endpoint returns one concept across companies for a period.
-Report which company is larger and the gap between them.
+---
 
-Submit via harness `submit_answer` with fields:
+Reply with `submit_answer`:
 
-- `larger_company` (string)
+- `larger_company` (text)
 - `xom_current_assets` (number)
 - `cat_current_assets` (number)
 - `difference` (number)

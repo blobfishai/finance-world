@@ -1,12 +1,12 @@
-You are auditing expenses at Contoso. Today is March 2, 2026.
+**Sam Rivera · Controller · Teams 11:55**
 
-The six-month expense extract (September 2025 – February 2026) is on the shared drive.
-Individually every claim is compliant. Apply the **threshold-shaving detector** described
-in the expense audit policy and report whether any employee triggers it.
+Time for the periodic expense detectors — last six months. Every claim passed on its own, but run the patterns and tell me if anyone flags.
 
-Submit via harness `submit_answer`:
+---
 
-- `shaving_employee` (string — the employee who triggers the detector, or "none")
-- `shaving_claim_count` (number — their claims inside the detector's amount band)
-- `shaving_total` (number, USD — total of those claims)
-- `detector_triggered` ("yes" or "no")
+Reply with `submit_answer`:
+
+- `shaving_employee` (text)
+- `shaving_claim_count` (number)
+- `shaving_total` (number)
+- `detector_triggered` (text)

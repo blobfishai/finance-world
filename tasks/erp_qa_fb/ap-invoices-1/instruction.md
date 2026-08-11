@@ -1,11 +1,10 @@
-You are a finance analyst at Contoso Entertainment System USA (company USMF).
-Today is March 2, 2026.
+**Priya Shah · AP Manager · Teams**
 
-> What invoices are pending approval for Lande Packaging Supplies in USMF?
+What invoices are pending approval for Lande Packaging Supplies in USMF?
 
-Ground every figure in ERP tool calls. Submit via harness `submit_answer` with exactly these fields:
+---
+
+Reply with `submit_answer`:
 
 - `open_invoice_count` (number)
-- `open_invoice_total` (string)
-
-If something does not exist, submit the string "none" for that field.
+- `open_invoice_total` (text)

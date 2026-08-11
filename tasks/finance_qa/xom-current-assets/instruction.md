@@ -1,11 +1,11 @@
-You are assisting a credit analyst on the Contoso finance team.
+**Dana Kim · Credit Manager · Teams 11:20**
 
-What was **ExxonMobil's GAAP total current assets** for the fiscal year ended
-December 31, 2024? Use the filings tools (frozen EDGAR snapshot) — do not answer from
-memory, and cite the reporting form the figure comes from.
+For the counterparty pack: ExxonMobil's total current assets at FY2024 year end. Tell me where it comes from so I can footnote it.
 
-Submit via harness `submit_answer` with fields:
+---
 
-- `current_assets_usd` (number, USD — the reported XBRL value)
-- `period_end` (string, YYYY-MM-DD)
-- `source_form` (string — e.g. the SEC form type)
+Reply with `submit_answer`:
+
+- `current_assets_usd` (number)
+- `period_end` (text)
+- `source_form` (text)

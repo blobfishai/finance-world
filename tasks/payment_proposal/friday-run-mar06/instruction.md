@@ -1,14 +1,13 @@
-You are the AP specialist at Contoso (USMF). Today is Monday, March 2, 2026.
+**Priya Shah · AP Manager · Teams 09:10**
 
-Assemble the **payment proposal for Friday's run (payment date 2026-03-06)** following the
-payment-run SOP in the docs library. In scope: the PPINV-prefixed invoice batch posted
-last week. The SOP defines which invoices to include (due items and economically
-favorable discounts) and which vendors must be excluded. You are proposing, not posting.
+Build me Friday's payment proposal (pay date 6 March) for the PPINV batch. I'll review and post it — just tell me what's in, what's out, and what it costs us net.
 
-Submit via harness `submit_answer`:
+---
 
-- `proposal_invoices` (string — comma-separated invoice numbers to pay Friday)
-- `excluded_invoice` (string — invoice left out despite being due, or "none")
-- `exclusion_reason` (string)
-- `discount_captured` (number, USD — total early-pay discount the proposal captures)
-- `net_payment_total` (number, USD — total cash out after discounts)
+Reply with `submit_answer`:
+
+- `proposal_invoices` (text)
+- `excluded_invoice` (text)
+- `exclusion_reason` (text)
+- `discount_captured` (number)
+- `net_payment_total` (number)

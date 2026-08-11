@@ -1,12 +1,10 @@
-You are a credit analyst on the Contoso finance team. Today is March 2, 2026.
+**Dana Kim · Credit Manager · Teams 14:05**
 
-What was **Walmart's inventory turnover ratio** for the fiscal year ended January 31, 2025?
+Committee wants Walmart's inventory turnover for the year ended 31 January 2025, to two decimals. Show me the inputs you used.
 
-Use the filings tools (frozen EDGAR snapshot). Compute turnover as cost of revenue divided by
-**average** inventory (beginning + ending, divided by two) — the convention the treasury committee
-expects. Report the ratio to two decimals.
+---
 
-Submit via harness `submit_answer` with fields:
+Reply with `submit_answer`:
 
 - `inventory_turnover` (number)
 - `cost_of_revenue` (number)
