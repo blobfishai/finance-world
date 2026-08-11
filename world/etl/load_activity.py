@@ -26,6 +26,12 @@ DB = ROOT / "world/build/core.sqlite"
 EPOCH = "2026-03-02"
 SEED = 20260302
 
+# Generated identifiers live in a reserved 6-digit range so they can never collide with the
+# hand-authored ids a task seeds. They did once: this layer minted PO-7000..PO-7299 while
+# threeway_match/ppinv-exceptions-mar seeds PO-7001..PO-7003, and prepare() died on a UNIQUE
+# constraint for every task in the tree (docs/AUDIT.md A14).
+ID_RANGES = {"purchase_order": "PO-6xxxxx", "sales_order": "SO-5xxxxx"}
+
 LETTER_FEE = {"1": 0.0, "2": 25.0, "3": 40.0}
 POOLS = [("POOL-HIGH", "High balance > 100k"), ("POOL-AGED", "Aged over 90 days"),
          ("POOL-WATCH", "Watchlist"), ("POOL-STD", "Standard follow-up")]
@@ -96,7 +102,7 @@ def main():
         hold = "Do not process" if rng.random() < 0.12 else None
         cx.execute("INSERT INTO erp_sales_orders(sales_id,dataareaid,account,customer_name,"
                    "order_date,status,hold_code,responsible,amount) VALUES(?,'USMF',?,?,?,?,?,?,?)",
-                   (f"SO-{5000+i}", c["account"], c["name"], d(EPOCH, -rng.randrange(1, 120)),
+                   (f"SO-{500000+i}", c["account"], c["name"], d(EPOCH, -rng.randrange(1, 120)),
                     rng.choice(["Open order", "Open order", "Delivered", "Invoiced"]), hold,
                     rng.choice(["kim.abel", "sam.rivera", "priya.shah"]),
                     round(rng.uniform(1200, 90000), 2)))
@@ -106,7 +112,7 @@ def main():
     vends = cx.execute("SELECT account, name FROM erp_vendors ORDER BY account LIMIT 900").fetchall()
     n_po = n_rc = 0
     for i, v in enumerate(rng.sample(list(vends), 300)):
-        po = f"PO-{7000+i}"
+        po = f"PO-{600000+i}"      # reserved generated range, see ID_RANGES
         qty = rng.randrange(10, 400)
         price = round(rng.uniform(4, 900), 2)
         cx.execute("INSERT INTO erp_purch_orders(po_number,line,dataareaid,vendor,item,description,"

@@ -353,6 +353,22 @@ pre-episode world. That holds for every read task and for none of the write task
 tool that trusts its own inputs is a corruption tool with good intentions — and this one was
 built earlier the same day to fix a different integrity bug.
 
+### A14. Generated world data collided with hand-authored task ids — FIXED
+2026-08-11, one command after A13. `world/etl/load_activity.py` mints purchase orders
+`PO-7000..PO-7299`; `threeway_match/ppinv-exceptions-mar` seeds `PO-7001..PO-7003` by hand.
+`prepare()` runs the task seed on top of the built world, hit a UNIQUE constraint on
+`erp_purch_orders(po_number, line)`, and **every task in the tree became unpreparable** — the
+refresh crashed on the first one it reached.
+
+Generated identifiers now live in a reserved range (`PO-6xxxxx`, `SO-5xxxxx`) recorded as
+`ID_RANGES` in the loader, so a hand-authored id and a generated one cannot occupy the same
+namespace.
+
+Same family as A6 (task seeds may not repurpose an existing account's identity) and A10.3 (a
+question may not be rebound to a near neighbour), now from the other direction: **the world
+generator may not squat on identifiers a task already owns.** Three variants of one rule, all
+found the hard way, all cheap to prevent once stated.
+
 ### A4. `--max-turns` not strictly enforced by observed runs — WATCH
 haiku's ap-overdue run recorded `num_turns=36` against `--max-turns 24`. Budget overruns
 currently can't masquerade as passes (verification is answer-based), but turn accounting
