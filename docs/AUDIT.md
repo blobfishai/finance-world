@@ -312,6 +312,21 @@ rejected 3,728 candidates to get there — the drop rate is the point, not a cos
 Counting tasks measured nothing; measuring what a *null-answering* model would score measured
 the thing that matters. Any future generator ships with this check or it does not ship.
 
+### A12. Scaling the task tree filled the disk — FIXED
+2026-08-11. `sim/prepare.py` copies the whole built world (~3 MB) into a per-task run
+directory. That is fine at 60 tasks and fatal at 1,200: `sim/refresh_gt.py` prepares every
+task once (~3.6 GB) and `sim/validate.py` prepares every task **three** times (a, b, oracle
+— ~11 GB), on top of `.runs/<model>/` from every scan. It exhausted a 42 GB disk mid-refresh,
+and the tooling then could not run at all.
+
+**Fix:** both now delete each task's run directory as soon as they are done reading it. The
+copies are scratch the moment their `gt_sql` has been evaluated or their oracle has replayed.
+`.runs/` was already gitignored, so nothing was lost — but "gitignored" is not "free".
+
+**The pattern, again:** a mechanism that is correct at small N and unaffordable at large N.
+The 10x multiplied the per-task cost as faithfully as it multiplied the tasks. Anything that
+scales with the tree now has to state its cost per task before it runs.
+
 ### A4. `--max-turns` not strictly enforced by observed runs — WATCH
 haiku's ap-overdue run recorded `num_turns=36` against `--max-turns 24`. Budget overruns
 currently can't masquerade as passes (verification is answer-based), but turn accounting

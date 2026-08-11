@@ -20,7 +20,7 @@ Checks per task (all deterministic, all offline):
                     [answer must come from the agent, not from side effects]
 Exit 0 iff every check passes. Run before trusting any model score.
 """
-import importlib.util, json, sqlite3, subprocess, sys, tomllib
+import importlib.util, json, shutil, sqlite3, subprocess, sys, tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -163,6 +163,9 @@ def main():
                 check(abs(float(live) - float(c["expect"])) <= tol, name, "S11",
                       f"stale ground truth for {c['field']}: expects {c['expect']}, world says {live}")
         cxv.close()
+        # the three world copies this task just used are scratch; at ~1.2k tasks keeping
+        # them costs several GB (docs/AUDIT.md A12)
+        shutil.rmtree(ROOT / ".runs/validate" / t.name, ignore_errors=True)
 
         # S9 negative control: idle run must fail
         run_n = ROOT / ".runs/validate" / t.name / "idle"

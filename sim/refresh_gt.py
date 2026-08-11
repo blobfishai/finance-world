@@ -13,7 +13,7 @@ re-derivable. Everything else is authored truth and is left alone.
     python3 sim/refresh_gt.py            # dry run — report drift
     python3 sim/refresh_gt.py --apply    # rewrite the stale expectations
 """
-import json, sqlite3, sys
+import json, shutil, sqlite3, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -68,6 +68,10 @@ def main(apply=False):
             if dirty:
                 cp.write_text(json.dumps(checks, indent=1) + "\n")
         cx.close()
+        # prepare() copies the whole world per task (~3 MB). At 1,200+ tasks that is several
+        # GB of transient disk, which is how this filled a 42 GB disk mid-run. The copy is
+        # scratch the moment its gt_sql has been read.
+        shutil.rmtree(run, ignore_errors=True)
 
     if not drift:
         print("no ground-truth drift — every gt_sql check matches the world")
