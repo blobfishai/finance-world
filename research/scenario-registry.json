@@ -17,9 +17,9 @@
       "id": "fb.erp.credit_rating",
       "source": "microsoft/FinanceBenchmark erp_qa",
       "name": "Credit rating lookup",
-      "tasks": [
-        "erp_qa_fb/credit-rating-1"
-      ]
+      "tasks": [],
+      "status": "gap",
+      "note": "no benchmark question for this scenario survives the intent gate against the current ledger (either its wording asks something the handler doesn't compute, or the named entity now has no qualifying rows); needs a dedicated handler"
     },
     {
       "id": "fb.erp.customer_setup",
@@ -35,8 +35,6 @@
       "name": "Aged balance / top-N past due by group",
       "tasks": [
         "erp_qa_fb/aged-balance-1",
-        "erp_qa_fb/aged-balance-2",
-        "erp_qa_fb/aged-balance-3",
         "erp_qa/ar-balance-fourthcoffee-east"
       ]
     },
@@ -44,9 +42,9 @@
       "id": "fb.erp.outstanding_balance",
       "source": "microsoft/FinanceBenchmark erp_qa",
       "name": "Unpaid invoices for a customer",
-      "tasks": [
-        "erp_qa_fb/outstanding-balance-1"
-      ]
+      "tasks": [],
+      "status": "gap",
+      "note": "no benchmark question for this scenario survives the intent gate against the current ledger (either its wording asks something the handler doesn't compute, or the named entity now has no qualifying rows); needs a dedicated handler"
     },
     {
       "id": "fb.erp.payment_history",
@@ -54,9 +52,7 @@
       "name": "Payment history / largest payment",
       "tasks": [
         "erp_qa_fb/payment-history-1",
-        "erp_qa_fb/payment-history-2",
-        "erp_qa_fb/payment-history-3",
-        "erp_qa_fb/payment-history-4"
+        "erp_qa_fb/payment-history-2"
       ]
     },
     {
@@ -97,8 +93,7 @@
       "source": "microsoft/FinanceBenchmark erp_qa",
       "name": "Open collections activities",
       "tasks": [
-        "erp_qa_fb/collections-tasks-1",
-        "erp_qa_fb/collections-tasks-2"
+        "erp_qa_fb/collections-tasks-1"
       ]
     },
     {
@@ -159,7 +154,6 @@
       "source": "microsoft/FinanceBenchmark erp_qa",
       "name": "Open / pending AP invoices",
       "tasks": [
-        "erp_qa_fb/ap-invoices-1",
         "erp_qa/ap-overdue-usmf"
       ]
     },
@@ -175,17 +169,17 @@
       "id": "fb.erp.ap_purchase_orders",
       "source": "microsoft/FinanceBenchmark erp_qa",
       "name": "Open purchase orders for a vendor",
-      "tasks": [
-        "erp_qa_fb/ap-purchase-orders-1"
-      ]
+      "tasks": [],
+      "status": "gap",
+      "note": "no benchmark question for this scenario survives the intent gate against the current ledger (either its wording asks something the handler doesn't compute, or the named entity now has no qualifying rows); needs a dedicated handler"
     },
     {
       "id": "fb.erp.vendors_discount",
       "source": "microsoft/FinanceBenchmark erp_qa",
       "name": "Vendor early-payment discount terms",
-      "tasks": [
-        "erp_qa_fb/vendors-1"
-      ]
+      "tasks": [],
+      "status": "gap",
+      "note": "no benchmark question for this scenario survives the intent gate against the current ledger (either its wording asks something the handler doesn't compute, or the named entity now has no qualifying rows); needs a dedicated handler"
     },
     {
       "id": "fb.erp.empty_answer_trap",
