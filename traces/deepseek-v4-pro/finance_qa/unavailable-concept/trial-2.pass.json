@@ -1,0 +1,153 @@
+{
+ "task": "finance_qa/unavailable-concept",
+ "family": "finance_qa",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "email",
+  "filings",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 17,
+ "walk_len": 4,
+ "budget_turns": 44,
+ "num_turns": 10,
+ "agent_error": false,
+ "duration_s": 41.2,
+ "cost_usd": null,
+ "final_text": "Here's what I found, Dana:\n\n---\n\n**Figure available: No.** Walmart's R&D expense for the year ended 31 January 2025 is **not available** in the systems I can access.\n\n### What I checked:\n\n| Source | What I tried | Result |\n|---|---|---|\n| **XBRL snapshot (WMT)** | `list_available_concepts` \u2014 only `InventoryNet` and `CostOfRevenue` exist for WMT. | R&D not present |\n| **XBRL concept lookups** | `ResearchAndDevelopmentExpense`, `ResearchAndDevelopment`, `ResearchExpense`, `DevelopmentExpense` \u2014 all returned \"concept not in snapshot for this company.\" | None available |\n| **XBRL frames** | `ResearchAndDevelopmentExpense` across all companies for FY2025 \u2014 \"no facts for that concept/period in snapshot.\" | No cross-company data either |\n| **SEC full-text search** | \"research and development\" and \"Walmart research and development expense 2025\" \u2014 zero hits. | Nothing |\n| **Email** | Searched inbox for Walmart R&D correspondence \u2014 empty. | Nothing |\n| **Docs / Sheets** | Searched policies and drive for R&D-related documents \u2014 none found. | Nothing |\n\nWalmart does have a 10-K filed 2025-03-14 (accession 0000104169-25-000012), but the XBRL tag coverage in this snapshot is limited to `InventoryNet` ($56.4B) and `CostOfRevenue` ($511.8B). The R&D line item simply isn't tagged in the data we have.",
+ "trace": [
+  {
+   "ts": 1786483417.039756,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"Walmart\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483419.6421509,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"WMT\", \"concept\": \"ResearchAndDevelopmentExpense\"}",
+   "ok": false,
+   "note": "concept not in snapshot for this company"
+  },
+  {
+   "ts": 1786483419.6426601,
+   "server": "filings",
+   "tool": "list_available_concepts",
+   "args": "{\"ticker\": \"WMT\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483423.129183,
+   "server": "filings",
+   "tool": "get_company_facts",
+   "args": "{\"ticker\": \"WMT\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483423.130495,
+   "server": "filings",
+   "tool": "get_xbrl_frames",
+   "args": "{\"concept\": \"ResearchAndDevelopmentExpense\", \"fy\": \"2025\", \"unit\": \"USD\"}",
+   "ok": false,
+   "note": "no facts for that concept/period in snapshot"
+  },
+  {
+   "ts": 1786483426.535279,
+   "server": "filings",
+   "tool": "full_text_search",
+   "args": "{\"q\": \"Walmart research and development expense 2025\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483426.535949,
+   "server": "filings",
+   "tool": "get_submissions",
+   "args": "{\"ticker\": \"WMT\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483430.644918,
+   "server": "filings",
+   "tool": "full_text_search",
+   "args": "{\"q\": \"research and development\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483430.646368,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"research and development R&D\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483433.665586,
+   "server": "filings",
+   "tool": "get_xbrl_frames",
+   "args": "{\"fy\": \"2025\", \"unit\": \"USD\", \"concept\": \"ResearchAndDevelopment\"}",
+   "ok": false,
+   "note": "no facts for that concept/period in snapshot"
+  },
+  {
+   "ts": 1786483433.666168,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"WMT\", \"concept\": \"ResearchAndDevelopment\"}",
+   "ok": false,
+   "note": "concept not in snapshot for this company"
+  },
+  {
+   "ts": 1786483438.2081668,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"concept\": \"ResearchExpense\", \"ticker\": \"WMT\"}",
+   "ok": false,
+   "note": "concept not in snapshot for this company"
+  },
+  {
+   "ts": 1786483438.2093172,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"concept\": \"DevelopmentExpense\", \"ticker\": \"WMT\"}",
+   "ok": false,
+   "note": "concept not in snapshot for this company"
+  },
+  {
+   "ts": 1786483438.210433,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Walmart R&D research development expense\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483442.3521411,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"Walmart R&D research development\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483442.35362,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"statement\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483447.605664,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"figure_available\": \"no\", \"rd_expense\": \"none\", \"concepts_checked\": \"ResearchAndDevelopmentExpense (not in WMT snapshot); ResearchAndDevelopment (not in WMT snapshot); ResearchExpense (not in WMT snapshot); DevelopmentExpense (not in WMT snapshot). The XBRL snapshot for WMT only contain",
+   "ok": true
+  }
+ ]
+}

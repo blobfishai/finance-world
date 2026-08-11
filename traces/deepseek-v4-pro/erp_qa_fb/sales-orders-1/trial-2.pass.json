@@ -1,0 +1,69 @@
+{
+ "task": "erp_qa_fb/sales-orders-1",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 6,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 6,
+ "agent_error": false,
+ "duration_s": 14.9,
+ "cost_usd": null,
+ "final_text": "**Summary:** As of March 2, 2026, there is exactly **1** sales order in USMF marked \"Do not process\":\n\n| Field | Value |\n|---|---|\n| **Sales Order ID** | 724 |\n| **Customer** | Birch Company (US-027) |\n| **Order Date** | 2026-02-18 |\n| **Status** | Open order |\n| **Hold Code** | Do not process |\n| **Responsible** | Karl Bystrom |\n| **Amount** | $15,400.00 |",
+ "trace": [
+  {
+   "ts": 1786483015.6079009,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"sales orders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483015.608911,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"do not process sales order\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483017.708061,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"SalesOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483019.970647,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_salesorders WHERE dataareaid = 'USMF' AND hold_code = 'Do not process'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_salesorders')"
+  },
+  {
+   "ts": 1786483022.041952,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"SalesOrders\", \"filters\": {\"dataareaid\": \"USMF\", \"hold_code\": \"Do not process\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786483024.588544,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"order_count\": 1, \"sales_order_id\": \"724\"}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,226 @@
+{
+ "task": "erp_qa/due-next-week-adventure",
+ "family": "erp_qa",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 27,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 20,
+ "agent_error": false,
+ "duration_s": 83.2,
+ "cost_usd": null,
+ "final_text": "**Summary:** Adventure Works Cycles (SYNCUS-0002) has two open invoices \u2014 CIV-000006 (due April 11, 2025) and CIV-000007 (due August 4, 2025) \u2014 but both are already past due and sitting in the 90+ day bucket. Nothing falls due in the next seven days.\n\n| Field | Value |\n|---|---|\n| `invoice_count` | 0 |\n| `invoice_numbers` | none |",
+ "trace": [
+  {
+   "ts": 1786482320.2570162,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer WHERE customer_code LIKE '%SYNCUS%' OR name LIKE '%Adventure%Works%'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer')"
+  },
+  {
+   "ts": 1786482320.257803,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Adventure Works%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482320.258291,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"collections call list AR aging\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482323.2612648,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482323.2625449,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Adventure%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482323.262711,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482326.280088,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"customer_account\": \"SYNCUS-0002\"}}",
+   "ok": false,
+   "note": "unknown field customer_account"
+  },
+  {
+   "ts": 1786482326.281473,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE Id = 'SYNCUS-0002'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482328.203073,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0002\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482328.204295,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure Works\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482331.603945,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482335.136422,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM CustomerTransactions WHERE account = 'SYNCUS-0002' ORDER BY due_date DESC LIMIT 50\"}",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786482337.410913,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0002' ORDER BY due_date DESC LIMIT 50\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786482339.6694589,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%customer%'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786482341.649065,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0002\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482347.598698,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0002\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482347.599709,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE CustomerRef = 'SYNCUS-0002'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482358.290347,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account = 'SYNCUS-0002'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786482360.5413382,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482366.136649,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0002'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786482368.0379899,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions WHERE account = 'SYNCUS-0002'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786482371.159094,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransaction WHERE account = 'SYNCUS-0002'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransaction')"
+  },
+  {
+   "ts": 1786482376.29185,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE DocNumber LIKE '%CIV-000006%' OR DocNumber LIKE '%CIV-000007%'\"}",
+   "ok": false,
+   "note": "QueryParserError: unsupported syntax. Use SELECT * FROM <Entity> [WHERE <Field> = '<value>'] with entities Customer, Invoice, CreditMemo, Payment"
+  },
+  {
+   "ts": 1786482376.293217,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Adventure Works Cycles%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482383.832097,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0002\"}, \"entity\": \"CustomerTransactions\", \"page\": 1}",
+   "ok": true
+  },
+  {
+   "ts": 1786482388.924631,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482392.935217,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"invoice_count\": 0, \"invoice_numbers\": \"none\"}}",
+   "ok": true
+  }
+ ]
+}

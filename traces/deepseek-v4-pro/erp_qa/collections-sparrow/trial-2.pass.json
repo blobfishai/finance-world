@@ -1,0 +1,274 @@
+{
+ "task": "erp_qa/collections-sparrow",
+ "family": "erp_qa",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 34,
+ "walk_len": 5,
+ "budget_turns": 52,
+ "num_turns": 18,
+ "agent_error": false,
+ "duration_s": 79.5,
+ "cost_usd": null,
+ "final_text": "Here's the full picture for Casey:\n\n---\n\n**Sparrow Retail \u00b7 US-008**  \nSeattle, WA | Net30 | $75K credit limit | Rating: Fair | Robin (206-555-0142)\n\n### Open Balance: **$28,450.00**\n\n| Invoice | Date | Due | Amount | Status |\n|---|---|---|---|---|\n| SPINV-002 | 2025-12-15 | 2026-01-14 | $18,650.00 | **Open** \u2014 47 days past due (31\u201360 bucket) |\n| SPINV-003 | 2026-02-10 | 2026-03-12 | $9,800.00 | **Open** \u2014 not yet due |\n| SPINV-001 | 2025-11-10 | 2025-12-10 | $22,400.00 | Fully settled |\n\n### Last Payment\n**$22,400.00 on 2026-02-20** (SPPAY-001) \u2014 cleared the oldest invoice (SPINV-001).\n\n### Collection Status: **Letter 2**\n- **Letter 1** sent 2026-01-25 (SPINV-001 was 46 days past due)\n- **Letter 2** sent 2026-02-16 ($25 fee, per the escalation runbook)\n- The account hasn't reset because SPINV-002 and SPINV-003 remain open. Next milestone would be Letter 3 if SPINV-002 stays unpaid 14+ days after Letter 2, which puts us around early March.",
+ "trace": [
+  {
+   "ts": 1786482253.387959,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482253.3890822,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Sparrow Retail'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482253.389736,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Sparrow Retail collections\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482256.0123389,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Sparrow\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482256.012838,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--collections-dunning-runbook\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482260.229973,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482260.230844,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CollectionLetters\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482260.231222,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE CustomerRef IN (SELECT Id FROM Customer WHERE DisplayName LIKE 'Sparrow%')\"}",
+   "ok": false,
+   "note": "QueryParserError: unsupported syntax. Use SELECT * FROM <Entity> [WHERE <Field> = '<value>'] with entities Customer, Invoice, CreditMemo, Payment"
+  },
+  {
+   "ts": 1786482265.6761951,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'US-008' ORDER BY trans_date DESC\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786482265.676797,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customersettlements WHERE account = 'US-008' ORDER BY settlement_date DESC LIMIT 25\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customersettlements')"
+  },
+  {
+   "ts": 1786482268.30236,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions WHERE account = 'US-008' ORDER BY trans_date DESC\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786482268.304706,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482276.469048,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Sparrow%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482276.469742,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'US-008' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786482276.471746,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"voucher\": \"SPINV-001\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482279.773182,
+   "server": "books",
+   "tool": "get_invoice",
+   "args": "{\"invoice\": \"SPINV-001\"}",
+   "ok": false,
+   "note": "Object Not Found: Invoice SPINV-001"
+  },
+  {
+   "ts": 1786482279.7736902,
+   "server": "books",
+   "tool": "get_invoice",
+   "args": "{\"invoice\": \"SPINV-002\"}",
+   "ok": false,
+   "note": "Object Not Found: Invoice SPINV-002"
+  },
+  {
+   "ts": 1786482279.774285,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Payment\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482284.391964,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions_v WHERE account = 'US-008'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions_v')"
+  },
+  {
+   "ts": 1786482284.392894,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_collectionletters WHERE account = 'US-008'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_collectionletters')"
+  },
+  {
+   "ts": 1786482284.393337,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Activities\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482287.972269,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482287.973204,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482290.806033,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482290.819275,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482295.357857,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerSettlements\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482295.3581629,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"Sparrow Retail\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482298.66801,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482301.4365,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Sparrow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482304.830354,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 1008}",
+   "ok": true
+  },
+  {
+   "ts": 1786482307.848379,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"OpenTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482307.8526971,
+   "server": "erp",
+   "tool": "form_open_or_close_tab",
+   "args": "{\"form_id\": \"fh-1\", \"tab\": \"Credit and collections\", \"open\": true}",
+   "ok": true
+  },
+  {
+   "ts": 1786482315.8690891,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"control\": \"AgedBalances\", \"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482319.357585,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"collection_letter_level\": \"2\", \"last_payment_date\": \"2026-02-20\", \"last_payment_amount\": 22400.0, \"open_balance\": 28450.0}}",
+   "ok": true
+  }
+ ]
+}

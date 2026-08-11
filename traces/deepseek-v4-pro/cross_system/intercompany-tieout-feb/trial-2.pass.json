@@ -1,0 +1,141 @@
+{
+ "task": "cross_system/intercompany-tieout-feb",
+ "family": "cross_system",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 16,
+ "walk_len": 5,
+ "budget_turns": 52,
+ "num_turns": 7,
+ "agent_error": false,
+ "duration_s": 36.1,
+ "cost_usd": null,
+ "final_text": "All four answers submitted:\n\n- **parent_ar_balance**: $76,500\n- **sub_recorded_balance**: $54,000\n- **difference**: $22,500\n- **difference_cause**: Timing difference \u2014 ICINV-03 (February management fee, $22,500) was dated Feb 27 by parent but arrived at CES Direct on Mar 1, after their February close.",
+ "trace": [
+  {
+   "ts": 1786481767.461665,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"intercompany CES Direct\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481767.461973,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"intercompany\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481767.462412,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"intercompany policy reconciliation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481770.608969,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"CES Direct\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786481770.6094642,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481770.6098602,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"intercompany\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481775.853513,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions WHERE account = 'IC-001' ORDER BY trans_date DESC\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786481775.854162,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786481775.854796,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"CES Direct intercompany February\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481775.855325,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Companies\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786481781.009006,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"CES-intercompany-schedule-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481781.0400069,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"IC-001\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786481781.040698,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"intercompany CES\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481787.2806048,
+   "server": "email",
+   "tool": "threads_get",
+   "args": "{\"id\": \"t_b409dc26f9\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481787.2818282,
+   "server": "sheets",
+   "tool": "get_drive_item",
+   "args": "{\"item\": \"CES-intercompany-schedule-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481796.138605,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"parent_ar_balance\": 76500, \"sub_recorded_balance\": 54000, \"difference\": 22500, \"difference_cause\": \"Timing difference: ICINV-03 (February management fee, $22,500) was dated 2026-02-27 by parent but arrived at CES Direct on 2026-03-01, after their February close. CES will book it in Mar",
+   "ok": true
+  }
+ ]
+}

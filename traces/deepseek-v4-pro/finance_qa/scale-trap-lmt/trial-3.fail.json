@@ -1,0 +1,93 @@
+{
+ "task": "finance_qa/scale-trap-lmt",
+ "family": "finance_qa",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 3,
+ "reward": 0,
+ "failed": [
+  "answer:revenue:scale_error(got=71.043, want=71043.0, off by /1000)",
+  "answer:revenue_scale:wrong_scale(got=billions, want=millions)"
+ ],
+ "servers_used": [
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 9,
+ "walk_len": 6,
+ "budget_turns": 60,
+ "num_turns": 7,
+ "agent_error": false,
+ "duration_s": 33.7,
+ "cost_usd": null,
+ "final_text": "Done. Here's the summary:\n\n| Field | Value | Source |\n|---|---|---|\n| **revenue** | 71.043 | LMT FY2024 10-K, XBRL `Revenues` |\n| **revenue_scale** | billions | \u2014 |\n| **revenue_usd** | $71,043,000,000 | Same figure in absolute dollars |\n| **operating_margin_pct** | 9.87% | $7,013M OpInc / $71,043M Net Sales |\n| **source_form** | 10-K | Filed 2025-01-28, accession 0000936468-25-000011 |\n\nUnits are explicit: the 71.043 is in **billions**, and the absolute-dollar figure is also provided so the committee can't misread it.",
+ "trace": [
+  {
+   "ts": 1786483373.0224588,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"Lockheed Martin\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483375.764792,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"LMT\", \"concept\": \"Revenues\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483375.76528,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"LMT\", \"concept\": \"OperatingIncomeLoss\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483381.315298,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"LMT\", \"concept\": \"SalesRevenueNet\"}",
+   "ok": false,
+   "note": "concept not in snapshot for this company"
+  },
+  {
+   "ts": 1786483381.315923,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"LMT\", \"concept\": \"RevenueFromContractWithCustomerExcludingAssessedTax\"}",
+   "ok": false,
+   "note": "concept not in snapshot for this company"
+  },
+  {
+   "ts": 1786483381.316392,
+   "server": "filings",
+   "tool": "get_submissions",
+   "args": "{\"ticker\": \"LMT\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483383.98082,
+   "server": "filings",
+   "tool": "list_available_concepts",
+   "args": "{\"ticker\": \"LMT\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483391.1701472,
+   "server": "filings",
+   "tool": "full_text_search",
+   "args": "{\"q\": \"Lockheed Martin net sales 2024\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483398.3828611,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"revenue\": 71.043, \"revenue_scale\": \"billions\", \"revenue_usd\": 71043000000, \"operating_margin_pct\": 9.87, \"source_form\": \"10-K\"}}",
+   "ok": true
+  }
+ ]
+}

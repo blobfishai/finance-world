@@ -1,0 +1,122 @@
+{
+ "task": "erp_qa_fb/credit-limit-4",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 13,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 9,
+ "agent_error": false,
+ "duration_s": 39.4,
+ "cost_usd": null,
+ "final_text": "The answer has been submitted:\n\n- **credit_limit:** $10,000.00\n- **customer_name:** Fourth Coffee East\n- **percentage_utilised:** 839.30%\n\nFourth Coffee East has significantly exceeded their credit limit, with $83,929.71 in open invoices against a $10,000.00 credit line as of March 2, 2026.",
+ "trace": [
+  {
+   "ts": 1786482707.739939,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerV3\", \"filters\": {\"customerAccount\": \"SYNCUS-0741\"}}",
+   "ok": false,
+   "note": "unknown entity type 'CustomerV3'"
+  },
+  {
+   "ts": 1786482707.7402189,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerV3\"}",
+   "ok": false,
+   "note": "unknown entity type 'CustomerV3'"
+  },
+  {
+   "ts": 1786482709.928573,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482709.929124,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"customerAccount\": \"SYNCUS-0741\"}}",
+   "ok": false,
+   "note": "unknown field customerAccount"
+  },
+  {
+   "ts": 1786482712.268733,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482715.568413,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482715.56911,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482718.650254,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0741' AND dataareaid = 'USMF' ORDER BY trans_date DESC LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786482718.650847,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account = 'SYNCUS-0741' AND dataareaid = 'USMF' ORDER BY as_of DESC LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786482721.0565681,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0741\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482721.058686,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0741\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482731.683865,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit utilisation percentage calculation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482738.370054,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 10000.0, \"customer_name\": \"Fourth Coffee East\", \"percentage_utilised\": 839.3}}",
+   "ok": true
+  }
+ ]
+}

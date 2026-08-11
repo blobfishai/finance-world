@@ -1,0 +1,70 @@
+{
+ "task": "erp_qa_fb/customer-setup-1",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 6,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 7,
+ "agent_error": false,
+ "duration_s": 20.8,
+ "cost_usd": null,
+ "final_text": "**Answer submitted:**\n\n- **Payment terms:** `COD` (Cash on delivery \u2014 0 days)\n- **Customer account:** `SYNCUS-0652`\n\nThe customer record for **Coho Vineyard & Winery Premium** in the **USMF** legal entity shows `COD` as the assigned payment term, meaning payment is due immediately upon delivery.",
+ "trace": [
+  {
+   "ts": 1786482756.7762392,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customer\", \"filters\": {\"customer_account\": \"SYNCUS-0652\"}}",
+   "ok": false,
+   "note": "unknown entity type 'Customer'"
+  },
+  {
+   "ts": 1786482758.923164,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"customer_account\": \"SYNCUS-0652\"}}",
+   "ok": false,
+   "note": "unknown field customer_account"
+  },
+  {
+   "ts": 1786482760.794817,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0652\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482767.144141,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"payment_term\": \"COD\"}}",
+   "ok": false,
+   "note": "unknown field payment_term"
+  },
+  {
+   "ts": 1786482769.3205209,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"COD\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482771.5574179,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"payment_terms\": \"COD\", \"customer_account\": \"SYNCUS-0652\"}}",
+   "ok": true
+  }
+ ]
+}

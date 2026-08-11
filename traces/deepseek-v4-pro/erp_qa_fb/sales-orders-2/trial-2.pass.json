@@ -1,0 +1,67 @@
+{
+ "task": "erp_qa_fb/sales-orders-2",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 6,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 5,
+ "agent_error": false,
+ "duration_s": 13.6,
+ "cost_usd": null,
+ "final_text": "**Answer:**\n\n- **order_count**: 1\n- **sales_order_id**: 724\n\nBirch Company (account US-027) has a single sales order in USMF as of March 2, 2026 \u2014 order #724, dated February 18, 2026, for $15,400 (status: \"Open order,\" currently on hold with \"Do not process\").",
+ "trace": [
+  {
+   "ts": 1786483049.654001,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"sales orders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483049.654464,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483052.192878,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"SalesOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483052.193852,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Birch\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786483054.418206,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"SalesOrders\", \"filters\": {\"account\": \"US-027\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786483056.6241012,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"order_count\": 1, \"sales_order_id\": \"724\"}}",
+   "ok": true
+  }
+ ]
+}

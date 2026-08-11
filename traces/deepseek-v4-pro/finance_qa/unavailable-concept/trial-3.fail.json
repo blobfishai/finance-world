@@ -1,0 +1,124 @@
+{
+ "task": "finance_qa/unavailable-concept",
+ "family": "finance_qa",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 3,
+ "reward": 0,
+ "failed": [
+  "answer:rd_expense:expected_none(got=not separately reported. walmart, as a retailer, does not br)"
+ ],
+ "servers_used": [
+  "docs",
+  "filings",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 13,
+ "walk_len": 4,
+ "budget_turns": 44,
+ "num_turns": 8,
+ "agent_error": false,
+ "duration_s": 38.1,
+ "cost_usd": null,
+ "final_text": "Here's what I found for Dana:\n\n---\n\n**Figure available?** No \u2014 Walmart does not separately disclose an R&D expense line item in its financial statements. As a retailer, it's not a material breakout for them; technology and innovation costs are rolled into SG&A / operating expenses.\n\n**What I checked:**\n\n| Source | Result |\n|---|---|\n| `filings__get_company_facts` (WMT) | Snapshot contains only `CostOfRevenue` and `InventoryNet` \u2014 no R&D concept |\n| `ResearchAndDevelopmentExpense` | Not in snapshot for WMT |\n| `ResearchAndDevelopment` | Not in snapshot for WMT |\n| `ResearchAndDevelopmentCosts` | Not in snapshot for WMT |\n| `filings__get_xbrl_frames` for R&D FY2025 | No facts at all |\n| `filings__full_text_search` | Zero hits |\n| `sheets__drive_search` | No trackers found |\n\nThe only filing in the snapshot is WMT's 10-K for the year ended 31 January 2025 (filed 14 March 2025), and it simply doesn't carry R&D as a separate XBRL-tagged line.",
+ "trace": [
+  {
+   "ts": 1786483423.246731,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"Walmart\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483423.2480252,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"R&D research development expense policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483426.083009,
+   "server": "filings",
+   "tool": "list_available_concepts",
+   "args": "{\"ticker\": \"WMT\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483428.8907468,
+   "server": "filings",
+   "tool": "get_company_facts",
+   "args": "{\"ticker\": \"WMT\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483428.891284,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"WMT\", \"concept\": \"ResearchAndDevelopmentExpense\"}",
+   "ok": false,
+   "note": "concept not in snapshot for this company"
+  },
+  {
+   "ts": 1786483432.867519,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"WMT\", \"concept\": \"ResearchAndDevelopment\"}",
+   "ok": false,
+   "note": "concept not in snapshot for this company"
+  },
+  {
+   "ts": 1786483432.8702888,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"WMT\", \"concept\": \"ResearchAndDevelopmentCosts\"}",
+   "ok": false,
+   "note": "concept not in snapshot for this company"
+  },
+  {
+   "ts": 1786483432.8721,
+   "server": "filings",
+   "tool": "full_text_search",
+   "args": "{\"q\": \"Walmart research and development expense 2025\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483437.1539829,
+   "server": "filings",
+   "tool": "get_xbrl_frames",
+   "args": "{\"concept\": \"ResearchAndDevelopmentExpense\", \"fy\": \"2025\", \"unit\": \"USD\"}",
+   "ok": false,
+   "note": "no facts for that concept/period in snapshot"
+  },
+  {
+   "ts": 1786483437.155339,
+   "server": "filings",
+   "tool": "get_submissions",
+   "args": "{\"ticker\": \"WMT\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483444.6071281,
+   "server": "filings",
+   "tool": "full_text_search",
+   "args": "{\"q\": \"research development WMT\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483444.607918,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"Walmart R&D research development\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483450.715355,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"figure_available\": \"No \\u2014 Walmart does not separately disclose R&D expense in its financial statements\", \"rd_expense\": \"Not separately reported. Walmart, as a retailer, does not break out R&D as a material line item; technology and innovation costs are embedded within SG&A/operatin",
+   "ok": true
+  }
+ ]
+}

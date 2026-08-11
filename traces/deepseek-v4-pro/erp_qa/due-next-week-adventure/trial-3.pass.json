@@ -1,0 +1,164 @@
+{
+ "task": "erp_qa/due-next-week-adventure",
+ "family": "erp_qa",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 3,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 19,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 16,
+ "agent_error": false,
+ "duration_s": 65.9,
+ "cost_usd": null,
+ "final_text": "**Summary:** Adventure Works Cycles (SYNCUS-0002) has **0 invoices falling due in the next seven days**. Their two open invoices \u2014 CIV-000006 and CIV-000007 \u2014 are both from 2025 and already deep in the 90+ past-due bucket. Nothing new is coming due for them this week.",
+ "trace": [
+  {
+   "ts": 1786482330.5858848,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE customer_id LIKE '%SYNCUS-0002%' OR name LIKE '%Adventure Works%'\"}",
+   "ok": false,
+   "note": "OperationalError('no such column: customer_id')"
+  },
+  {
+   "ts": 1786482330.586282,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482332.425333,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482334.6168041,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE account LIKE '%SYNCUS-0002%' OR name LIKE '%Adventure Works%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482337.915384,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482341.1205099,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0002' AND closed = 0 ORDER BY due_date ASC\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786482343.803791,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0002\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482353.1162398,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0002'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786482353.1164658,
+   "server": "books",
+   "tool": "get_company_info",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786482355.81147,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM CustomerTransactions WHERE account = 'SYNCUS-0002'\"}",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786482358.085013,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions WHERE account = 'SYNCUS-0002'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786482362.939799,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customer transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482362.9401338,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"date\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482364.855245,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Customer transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482371.200018,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"account\", \"value\": \"SYNCUS-0002\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482375.482337,
+   "server": "erp",
+   "tool": "api_invoke_action",
+   "args": "{\"action\": \"ContosoCustAgedBalancesLive\", \"parameters\": {\"customer_account\": \"SYNCUS-0002\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482375.4836638,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482384.735436,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0002\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482389.6575701,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"invoice_count\": 0, \"invoice_numbers\": \"none\"}}",
+   "ok": true
+  }
+ ]
+}

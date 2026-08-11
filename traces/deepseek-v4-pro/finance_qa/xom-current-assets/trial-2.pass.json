@@ -1,0 +1,53 @@
+{
+ "task": "finance_qa/xom-current-assets",
+ "family": "finance_qa",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 4,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 5,
+ "agent_error": false,
+ "duration_s": 12.5,
+ "cost_usd": null,
+ "final_text": "Here you go, Dana:\n\n- **ExxonMobil Total Current Assets (FY2024)**: **$91,990,000,000** (USD)\n- **Period End**: 2024-12-31\n- **Source**: 10-K filed 2026-02-18 (accession 0000034088-26-000015), drawn from the XBRL-tagged us-gaap `AssetsCurrent` concept via SEC EDGAR.",
+ "trace": [
+  {
+   "ts": 1786483457.078474,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"ExxonMobil\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483458.48835,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"Exxon\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483460.566585,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"XOM\", \"concept\": \"AssetsCurrent\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483463.514178,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"current_assets_usd\": 91990000000, \"period_end\": \"2024-12-31\", \"source_form\": \"10-K\"}}",
+   "ok": true
+  }
+ ]
+}

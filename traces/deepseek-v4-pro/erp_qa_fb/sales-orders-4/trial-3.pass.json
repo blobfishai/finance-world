@@ -1,0 +1,98 @@
+{
+ "task": "erp_qa_fb/sales-orders-4",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 3,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 10,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 11,
+ "agent_error": false,
+ "duration_s": 29.0,
+ "cost_usd": null,
+ "final_text": "The data is clear. In USMF as of March 2, 2026, there are only three sales orders with statuses \"Open order\" (724, 725) and \"Delivered\" (726). None have a \"returned\" status.\n\n**Results submitted:**\n\n- **order_count**: `0`\n- **sales_order_id**: `none`",
+ "trace": [
+  {
+   "ts": 1786483124.050765,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"sales orders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483125.8172958,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"SalesOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483128.2959309,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"SalesOrders\", \"filters\": {\"dataareaid\": \"USMF\", \"status\": \"returned\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786483130.7212632,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM SalesOrders WHERE dataareaid = 'USMF' LIMIT 200\"}",
+   "ok": false,
+   "note": "ValueError('table SalesOrders is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786483132.622813,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_SalesOrders WHERE dataareaid = 'USMF' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_SalesOrders')"
+  },
+  {
+   "ts": 1786483134.690757,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"SalesOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483136.755605,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT DISTINCT status FROM erp_SalesOrders\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_SalesOrders')"
+  },
+  {
+   "ts": 1786483139.099901,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"SalesOrders\", \"filters\": {}, \"page\": 1}",
+   "ok": true
+  },
+  {
+   "ts": 1786483142.870454,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"return orders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483146.931662,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"order_count\": 0, \"sales_order_id\": \"none\"}}",
+   "ok": true
+  }
+ ]
+}

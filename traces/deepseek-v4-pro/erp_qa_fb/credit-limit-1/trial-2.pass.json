@@ -1,0 +1,70 @@
+{
+ "task": "erp_qa_fb/credit-limit-1",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 6,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 6,
+ "agent_error": false,
+ "duration_s": 17.4,
+ "cost_usd": null,
+ "final_text": "**Answer submitted:**\n\n- **Credit Limit:** $25,000.00\n- **Customer Name:** A. Datum Corporation\n\nThe customer record for SYNCUS-0001 (USMF) shows a `credit_max` of 25,000.00, with the customer name \"A. Datum Corporation.\"",
+ "trace": [
+  {
+   "ts": 1786482643.027401,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482643.028521,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer WHERE customer_account LIKE 'SYNCUS-0001%'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer')"
+  },
+  {
+   "ts": 1786482645.449825,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"customer_account\": \"SYNCUS-0001\"}}",
+   "ok": false,
+   "note": "unknown field customer_account"
+  },
+  {
+   "ts": 1786482647.727032,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0001\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482651.848015,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482654.573226,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 25000.0, \"customer_name\": \"A. Datum Corporation\"}}",
+   "ok": true
+  }
+ ]
+}

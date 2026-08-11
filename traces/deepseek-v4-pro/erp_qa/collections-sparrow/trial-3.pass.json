@@ -1,0 +1,164 @@
+{
+ "task": "erp_qa/collections-sparrow",
+ "family": "erp_qa",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 3,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 19,
+ "walk_len": 5,
+ "budget_turns": 52,
+ "num_turns": 11,
+ "agent_error": false,
+ "duration_s": 61.5,
+ "cost_usd": null,
+ "final_text": "Here's the rundown on **Sparrow Retail (US-008)** for tomorrow:\n\n---\n\n**Open balance:** **$28,450.00** \u2014 two open invoices:\n\n| Invoice | Description | Date | Due | Amount |\n|---|---|---|---|---|\n| SPINV-002 | January replenishment order | 2025-12-15 | 2026-01-14 | $18,650.00 |\n| SPINV-003 | Spring pre-order deposit | 2026-02-10 | 2026-03-12 | $9,800.00 |\n\n**Last payment:** **$22,400.00** on **2026-02-20** \u2014 check #4471, cleared SPINV-001 (the holiday season order). That was their only payment recently.\n\n**Collection letter level:** **2** \u2014 \n- Letter 1 sent 2026-01-25 (SPINV-001 was 46 days past due)\n- Letter 2 sent 2026-02-16 (escalation covering both SPINV-001 and SPINV-002)\n\nThey did finally pay SPINV-001 four days after Letter 2 went out, but SPINV-002 is now ~44 days past due and SPINV-003 is heading toward its due date. Per the runbook, Letter 3 would be eligible \u226514 days after Letter 2 (around March 2nd) if the remaining invoices stay unpaid.",
+ "trace": [
+  {
+   "ts": 1786482256.536444,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Sparrow%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482256.536797,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482256.537289,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"collection letter policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482259.95133,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--collections-dunning-runbook\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482259.952399,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Sparrow\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482259.9528809,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Sparrow%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482265.7525089,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CollectionLetters\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482265.756018,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482271.360485,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'US-008' AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786482271.36113,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'US-008' AND txn_type = 'Payment' ORDER BY trans_date DESC LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786482271.361702,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'US-008' ORDER BY trans_date DESC LIMIT 50\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786482273.700141,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482281.401002,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"page\": 2, \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482287.689717,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"page\": 3, \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482287.6961868,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"invoice\": \"SPINV\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482293.0068219,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"page\": 4, \"filters\": {\"account\": \"US-008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482298.46165,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Sparrow%' OR CompanyName LIKE '%Sparrow%'\"}",
+   "ok": false,
+   "note": "QueryParserError: unsupported syntax. Use SELECT * FROM <Entity> [WHERE <Field> = '<value>'] with entities Customer, Invoice, CreditMemo, Payment"
+  },
+  {
+   "ts": 1786482298.462482,
+   "server": "books",
+   "tool": "report_customer_balance",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786482308.331537,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"collection_letter_level\": \"2\", \"last_payment_date\": \"2026-02-20\", \"last_payment_amount\": 22400.0, \"open_balance\": 28450.0}}",
+   "ok": true
+  }
+ ]
+}

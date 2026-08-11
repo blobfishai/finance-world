@@ -1,0 +1,92 @@
+{
+ "task": "finance_qa/scale-trap-lmt",
+ "family": "finance_qa",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 0,
+ "failed": [
+  "answer:revenue:scale_error(got=71.043, want=71043.0, off by /1000)",
+  "answer:revenue_scale:wrong_scale(got=billions, want=millions)"
+ ],
+ "servers_used": [
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 9,
+ "walk_len": 6,
+ "budget_turns": 60,
+ "num_turns": 7,
+ "agent_error": false,
+ "duration_s": 31.6,
+ "cost_usd": null,
+ "final_text": "All set, Dana. Here's the summary:\n\n| Field | Value | Notes |\n|---|---|---|\n| **Revenue** | **71.043** | billions |\n| **Revenue (USD)** | **$71,043,000,000** | absolute dollars |\n| **Operating Margin** | **9.87%** | $7.013B op income \u00f7 $71.043B net sales |\n| **Source** | **10-K** | FY2024, filed 2025-01-28 |\n\nBoth figures (Revenues and Operating Income) come from the same 10-K filing, so the margin is self-consistent \u2014 no cross-filing mismatch. Units are stated explicitly this time.",
+ "trace": [
+  {
+   "ts": 1786483368.446581,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"Lockheed Martin\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483371.211549,
+   "server": "filings",
+   "tool": "get_company_facts",
+   "args": "{\"ticker\": \"LMT\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483371.21201,
+   "server": "filings",
+   "tool": "get_submissions",
+   "args": "{\"ticker\": \"LMT\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483375.770964,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"LMT\", \"concept\": \"SalesRevenueNet\"}",
+   "ok": false,
+   "note": "concept not in snapshot for this company"
+  },
+  {
+   "ts": 1786483375.771461,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"LMT\", \"concept\": \"Revenues\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483375.772012,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"LMT\", \"concept\": \"OperatingIncomeLoss\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483378.238005,
+   "server": "filings",
+   "tool": "list_available_concepts",
+   "args": "{\"ticker\": \"LMT\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483385.0461068,
+   "server": "filings",
+   "tool": "full_text_search",
+   "args": "{\"q\": \"Lockheed Martin net sales 2024\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483392.339595,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"revenue\": 71.043, \"revenue_scale\": \"billions\", \"revenue_usd\": 71043000000, \"operating_margin_pct\": 9.87, \"source_form\": \"10-K\"}}",
+   "ok": true
+  }
+ ]
+}

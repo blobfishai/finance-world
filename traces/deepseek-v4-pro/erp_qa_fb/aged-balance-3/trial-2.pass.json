@@ -1,0 +1,103 @@
+{
+ "task": "erp_qa_fb/aged-balance-3",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 11,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 9,
+ "agent_error": false,
+ "duration_s": 45.5,
+ "cost_usd": null,
+ "final_text": "Done. Here's the summary for **Birch Company (US-027) in USMF** as of **March 2, 2026**:\n\n| Field | Amount |\n|---|---|\n| **Not yet due** | $376.41 |\n| **Total past due** | $1,084.11 |\n| **Over 90 days** | $0.00 |\n\nThe past-due balance breaks down as: 1\u201330 days ($369.03), 31\u201360 days ($361.79), and 61\u201390 days ($353.29). No invoices were over 90 days past due.",
+ "trace": [
+  {
+   "ts": 1786482397.628363,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482397.628665,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"aged balance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482400.67077,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Birch\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482400.6715362,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482403.991404,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account = 'US-027' AND dataareaid = 'USMF' ORDER BY as_of DESC LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786482406.2347462,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"US-027\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482410.202932,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"name\": \"Birch\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482410.203955,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"US-027\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482413.6746602,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482416.648247,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-027\", \"dataareaid\": \"USMF\", \"closed\": \"0\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482432.6464279,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_past_due\": 1084.11, \"not_yet_due\": 376.41, \"over_90_days\": 0}}",
+   "ok": true
+  }
+ ]
+}

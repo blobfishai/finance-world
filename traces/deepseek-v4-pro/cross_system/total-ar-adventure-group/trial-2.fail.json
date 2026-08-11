@@ -1,0 +1,201 @@
+{
+ "task": "cross_system/total-ar-adventure-group",
+ "family": "cross_system",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 0,
+ "failed": [
+  "answer:erp_open_balance:off(got=1060156.1)",
+  "answer:combined_exposure:off(got=1079206.1)"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 24,
+ "walk_len": 6,
+ "budget_turns": 60,
+ "num_turns": 16,
+ "agent_error": false,
+ "duration_s": 136.2,
+ "cost_usd": null,
+ "final_text": "Here's the breakdown, Sam:\n\n---\n\n**ERP (Aged Balances, as of 2026-03-01):**  \nAcross 36 Adventure Works entities in USMF, 26 have open balances. Summing `not_due` + `total_due` for all of them:\n\n| | |\n|---|---|\n| **ERP open balance** | **$1,060,156.10** |\n\n**Subsidiary (QBO):**  \nOne entity \u2014 \"Adventure Works Cycles - Direct\" (BC-114, ERP ref: SYNCUS-0002). Gross balance $22,200 less $3,150 in unapplied credits:\n\n| | |\n|---|---|\n| **Subsidiary net balance** | **$19,050.00** |\n\n---\n\n| | |\n|---|---|\n| **Combined group exposure** | **$1,079,206.10** |\n\nThat's the one number \u2014 $1,079,206.10 \u2014 treasury can defend: ERP AR subledger open ($1,060,156.10) plus QBO subsidiary net ($19,050.00). No intercompany eliminations needed; the subsidiary balance represents a separate legal entity's exposure to the same counterparty.",
+ "trace": [
+  {
+   "ts": 1786481804.330826,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481804.3317592,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Adventure Works'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481804.332293,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Adventure Works exposure\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481806.88848,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure Works\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786481806.889098,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Adventure%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481815.786119,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"page\": 2, \"filters\": {\"name\": \"Adventure Works\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786481815.787072,
+   "server": "books",
+   "tool": "get_customer",
+   "args": "{\"customer_id\": \"BC-114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481821.187569,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT c.account, c.name, \\n  COALESCE(SUM(ct.amount - ct.settled), 0) AS open_balance\\nFROM Customers c\\nLEFT JOIN CustomerTransactions ct ON c.account = ct.account AND ct.closed = 0\\nWHERE c.name LIKE 'Adventure Works%'\\nGROUP BY c.account, c.name\\nORDER BY c.account\"}",
+   "ok": false,
+   "note": "ValueError('table Customers is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786481823.409305,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481825.762547,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT ct.account, \\n  SUM(ct.amount - ct.settled) AS open_balance\\nFROM erp_customertransactions ct\\nWHERE ct.account LIKE 'SYNCUS-%' AND ct.closed = 0\\nGROUP BY ct.account\\nORDER BY ct.account\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786481828.000818,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786481832.4919071,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481834.7951932,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"name\": \"Adventure Works\"}, \"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481840.949646,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"page\": 2, \"filters\": {\"name\": \"Adventure Works\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786481857.115131,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0058\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786481857.118903,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0086\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786481857.120714,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0198\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786481860.884979,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0646\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481860.8876102,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0674\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481860.8899982,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0702\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481906.452845,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0422\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481906.4557812,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0618\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481915.4728892,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"group exposure consolidation subsidiary\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481925.675485,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"erp_open_balance\": 1060156.1, \"subsidiary_net_balance\": 19050.0, \"combined_exposure\": 1079206.1}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,67 @@
+{
+ "task": "erp_qa_fb/sales-orders-2",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 3,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 6,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 5,
+ "agent_error": false,
+ "duration_s": 13.7,
+ "cost_usd": null,
+ "final_text": "Done. The submission is recorded:\n\n- **order_count**: 1\n- **sales_order_id**: 724",
+ "trace": [
+  {
+   "ts": 1786483063.341666,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"sales orders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483063.3419251,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483065.358519,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"SalesOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483065.359596,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Birch\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786483068.202189,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"SalesOrders\", \"filters\": {\"account\": \"US-027\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786483071.6766772,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"order_count\": 1, \"sales_order_id\": \"724\"}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,126 @@
+{
+ "task": "erp_qa_fb/outstanding-balance-1",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 3,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 14,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 14,
+ "agent_error": false,
+ "duration_s": 45.9,
+ "cost_usd": null,
+ "final_text": "**Summary for Birch Company (US-027, USMF) as of March 2, 2026:**\n\n| Invoice | Date | Due Date | Open Amount |\n|---------|------|----------|-------------|\n| 000105  | 2025-11-14 | 2025-12-14 | $353.29 |\n| 000110  | 2025-12-05 | 2026-01-04 | $361.79 |\n| 000115  | 2026-01-09 | 2026-02-08 | $369.03 |\n| 000120  | 2026-02-06 | 2026-03-08 | $376.41 |\n\n- **Unpaid invoice count:** 4\n- **Unpaid total:** $1,460.52",
+ "trace": [
+  {
+   "ts": 1786482879.2323909,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482879.233734,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Birch%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482881.472089,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Birch\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482884.000753,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482886.870854,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM CustomerTransactions WHERE account = 'US-027' AND dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786482889.005426,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-027\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482895.407658,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions WHERE account = 'US-027' AND dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786482897.6090848,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482899.5965178,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482902.031549,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Birch\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482905.102753,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 1006}",
+   "ok": true
+  },
+  {
+   "ts": 1786482908.482574,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"OpenTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482913.966122,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482916.471595,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"unpaid_invoice_count\": 4, \"unpaid_total\": 1460.52}}",
+   "ok": true
+  }
+ ]
+}

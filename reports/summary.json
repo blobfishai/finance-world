@@ -2,20 +2,30 @@
  "deepseek-v4-pro": {
   "anomaly_triage/duplicate-payment-mar": {
    "rewards": [
-    1
+    1,
+    1,
+    0
    ],
    "failed": [
-    []
+    [],
+    [],
+    [
+     "trace:required_servers_missing(['email'])"
+    ]
    ],
    "infra_trials": 0,
    "starved_trials": 0,
-   "class": "solidPass"
+   "class": "flaky"
   },
   "bank_rec/ach-return-mar": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -24,9 +34,13 @@
   },
   "bank_rec/statement-divergence-feb": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -35,9 +49,13 @@
   },
   "business_brief/brief-caterpillar": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -46,9 +64,13 @@
   },
   "business_brief/brief-caterpillar-v2": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -57,9 +79,19 @@
   },
   "cash_app/deduction-coding-mar": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "answer:cinv701_reason:missing_terms(['pricing_variance'])",
+     "answer:cinv701_reason:forbidden_terms(['unauthorized'])"
+    ],
+    [
+     "answer:cinv701_reason:missing_terms(['pricing_variance'])",
+     "answer:cinv701_reason:forbidden_terms(['unauthorized'])"
+    ],
     [
      "answer:cinv701_reason:missing_terms(['pricing_variance'])",
      "answer:cinv701_reason:forbidden_terms(['unauthorized'])"
@@ -71,9 +103,13 @@
   },
   "cash_app/remittance-batch-mar02": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -82,9 +118,13 @@
   },
   "cash_forecast/cesp-four-week": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -93,9 +133,13 @@
   },
   "close_mgmt/period-lock-correction": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -104,9 +148,13 @@
   },
   "close_mgmt/revenue-recognition-tieout": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -115,9 +163,13 @@
   },
   "close_mgmt/subledger-tieout-feb": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -126,9 +178,23 @@
   },
   "close_mgmt/two-period-close-cesq": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "02:answer:feb_erp_ap:missing",
+     "02:answer:feb_workbook_ap:missing",
+     "02:answer:feb_variance:missing",
+     "02:answer:jan_item_resolved:missing"
+    ],
+    [
+     "02:answer:feb_erp_ap:missing",
+     "02:answer:feb_workbook_ap:missing",
+     "02:answer:feb_variance:missing",
+     "02:answer:jan_item_resolved:missing"
+    ],
     [
      "02:answer:feb_erp_ap:missing",
      "02:answer:feb_workbook_ap:missing",
@@ -142,20 +208,33 @@
   },
   "collections_ops/escalate-sparrow-letter3": {
    "rewards": [
-    1
+    1,
+    1,
+    0
    ],
    "failed": [
-    []
+    [],
+    [],
+    [
+     "answer:credit_hold_placed:wrong_polarity(got=yes, want=no)",
+     "answer:reasoning:missing_terms(['75'])",
+     "state:off_task_writes(['erp_customers'])",
+     "state:cell_equals(no_credit_hold: got 'Yes', want 'Open')"
+    ]
    ],
    "infra_trials": 0,
    "starved_trials": 0,
-   "class": "solidPass"
+   "class": "flaky"
   },
   "cross_system/email-invoice-meadow": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -164,9 +243,13 @@
   },
   "cross_system/intercompany-tieout-feb": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -175,9 +258,19 @@
   },
   "cross_system/total-ar-adventure-group": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "answer:erp_open_balance:off(got=1060156.1)",
+     "answer:combined_exposure:off(got=1079206.1)"
+    ],
+    [
+     "answer:erp_open_balance:off(got=1060156.1)",
+     "answer:combined_exposure:off(got=1079206.1)"
+    ],
     [
      "answer:erp_open_balance:off(got=1060156.1)",
      "answer:combined_exposure:off(got=1079206.1)"
@@ -189,12 +282,22 @@
   },
   "cross_system/total-ar-adventure-group-v2": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
     [
      "answer:erp_open_balance:off(got=755828.79)",
      "answer:combined_exposure:off(got=781078.79)"
+    ],
+    [
+     "answer:erp_open_balance:off(got=1058187.97)",
+     "answer:combined_exposure:off(got=1083437.97)"
+    ],
+    [
+     "answer:erp_open_balance:off(got=1058187.97)",
+     "answer:combined_exposure:off(got=1083437.97)"
     ]
    ],
    "infra_trials": 0,
@@ -203,9 +306,17 @@
   },
   "cross_system/tracker-formula-drift": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "answer:erp_live_total:off(got=238195.17)"
+    ],
+    [
+     "answer:erp_live_total:off(got=238195.17)"
+    ],
     [
      "answer:erp_live_total:off(got=238195.17)"
     ]
@@ -218,14 +329,18 @@
    "rewards": [],
    "failed": [],
    "infra_trials": 0,
-   "starved_trials": 1,
+   "starved_trials": 3,
    "class": "infra_only"
   },
   "erp_qa/ar-balance-fourthcoffee-east": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -234,9 +349,13 @@
   },
   "erp_qa/cash-disc-fourthcoffee-east": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -245,9 +364,13 @@
   },
   "erp_qa/collections-sparrow": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -256,9 +379,13 @@
   },
   "erp_qa/credit-limit-adatum": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -267,9 +394,13 @@
   },
   "erp_qa/due-next-week-adventure": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -278,9 +409,13 @@
   },
   "erp_qa_fb/aged-balance-1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -289,9 +424,13 @@
   },
   "erp_qa_fb/aged-balance-2": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -300,9 +439,13 @@
   },
   "erp_qa_fb/aged-balance-3": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -311,9 +454,17 @@
   },
   "erp_qa_fb/ap-invoices-1": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "answer:open_invoice_total:mismatch(got=$0.00)"
+    ],
+    [
+     "answer:open_invoice_total:mismatch(got=$0.00)"
+    ],
     [
      "answer:open_invoice_total:mismatch(got=$0.00)"
     ]
@@ -324,9 +475,13 @@
   },
   "erp_qa_fb/ap-payments-1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -335,9 +490,13 @@
   },
   "erp_qa_fb/ap-purchase-orders-1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -346,9 +505,17 @@
   },
   "erp_qa_fb/cash-collections-1": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "answer:total_collected_fy:mismatch(got=$0.00)"
+    ],
+    [
+     "answer:total_collected_fy:mismatch(got=$0.00)"
+    ],
     [
      "answer:total_collected_fy:mismatch(got=$0.00)"
     ]
@@ -359,9 +526,13 @@
   },
   "erp_qa_fb/cash-disocunts-1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -370,9 +541,13 @@
   },
   "erp_qa_fb/collections-1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -381,9 +556,13 @@
   },
   "erp_qa_fb/collections-tasks-1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -392,9 +571,13 @@
   },
   "erp_qa_fb/collections-tasks-2": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -403,9 +586,13 @@
   },
   "erp_qa_fb/credit-limit-1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -414,9 +601,13 @@
   },
   "erp_qa_fb/credit-limit-2": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -425,9 +616,17 @@
   },
   "erp_qa_fb/credit-limit-3": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "answer:credit_limit:not_numeric"
+    ],
+    [
+     "answer:credit_limit:not_numeric"
+    ],
     [
      "answer:credit_limit:not_numeric"
     ]
@@ -438,9 +637,13 @@
   },
   "erp_qa_fb/credit-limit-4": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -449,9 +652,17 @@
   },
   "erp_qa_fb/credit-notes-1": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "answer:unapplied_credit_total:mismatch(got=$0.00)"
+    ],
+    [
+     "answer:unapplied_credit_total:mismatch(got=$0.00)"
+    ],
     [
      "answer:unapplied_credit_total:mismatch(got=$0.00)"
     ]
@@ -462,9 +673,13 @@
   },
   "erp_qa_fb/credit-rating-1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -473,9 +688,13 @@
   },
   "erp_qa_fb/customer-setup-1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -484,9 +703,17 @@
   },
   "erp_qa_fb/discounts-1": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "answer:open_deduction_total:mismatch(got=$0.00)"
+    ],
+    [
+     "answer:open_deduction_total:mismatch(got=$0.00)"
+    ],
     [
      "answer:open_deduction_total:mismatch(got=$0.00)"
     ]
@@ -497,9 +724,13 @@
   },
   "erp_qa_fb/dispute-1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -508,12 +739,22 @@
   },
   "erp_qa_fb/invoicing-history-1": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
     [
      "answer:invoice_count:off(got=3.0)",
      "answer:invoiced_total:off(got=669832.5)"
+    ],
+    [
+     "answer:invoice_count:off(got=9.0)",
+     "answer:invoiced_total:off(got=807303.22)"
+    ],
+    [
+     "answer:invoice_count:off(got=9.0)",
+     "answer:invoiced_total:off(got=807303.22)"
     ]
    ],
    "infra_trials": 0,
@@ -522,9 +763,13 @@
   },
   "erp_qa_fb/outstanding-balance-1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -533,9 +778,13 @@
   },
   "erp_qa_fb/payment-history-1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -544,34 +793,49 @@
   },
   "erp_qa_fb/payment-history-2": {
    "rewards": [
-    0
+    0,
+    1,
+    1
    ],
    "failed": [
     [
      "answer:largest_payment_amount:mismatch(got=46415.07)",
      "answer:largest_payment_voucher:mismatch(got=arpm000669)"
-    ]
-   ],
-   "infra_trials": 0,
-   "starved_trials": 0,
-   "class": "solidFail"
-  },
-  "erp_qa_fb/payment-history-3": {
-   "rewards": [
-    1
-   ],
-   "failed": [
+    ],
+    [],
     []
    ],
    "infra_trials": 0,
    "starved_trials": 0,
-   "class": "solidPass"
+   "class": "flaky"
+  },
+  "erp_qa_fb/payment-history-3": {
+   "rewards": [
+    1,
+    1,
+    0
+   ],
+   "failed": [
+    [],
+    [],
+    [
+     "answer:largest_payment_amount:mismatch(got=$49,574.78)",
+     "answer:largest_payment_voucher:mismatch(got=arpm000094)"
+    ]
+   ],
+   "infra_trials": 0,
+   "starved_trials": 0,
+   "class": "flaky"
   },
   "erp_qa_fb/payment-history-4": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -580,9 +844,13 @@
   },
   "erp_qa_fb/sales-orders-1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -591,9 +859,13 @@
   },
   "erp_qa_fb/sales-orders-2": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -602,9 +874,19 @@
   },
   "erp_qa_fb/sales-orders-3": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "answer:order_count:off(got=1.0)",
+     "answer:sales_order_id:mismatch(got=724)"
+    ],
+    [
+     "answer:order_count:off(got=1.0)",
+     "answer:sales_order_id:mismatch(got=724)"
+    ],
     [
      "answer:order_count:off(got=1.0)",
      "answer:sales_order_id:mismatch(got=724)"
@@ -616,9 +898,13 @@
   },
   "erp_qa_fb/sales-orders-4": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -627,9 +913,13 @@
   },
   "erp_qa_fb/sales-orders-5": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -638,9 +928,13 @@
   },
   "erp_qa_fb/sales-orders-6": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -649,9 +943,13 @@
   },
   "erp_qa_fb/vendor-balance-1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -662,25 +960,37 @@
    "rewards": [],
    "failed": [],
    "infra_trials": 0,
-   "starved_trials": 1,
+   "starved_trials": 3,
    "class": "infra_only"
   },
   "erp_qa_fb/vendors-1": {
    "rewards": [
-    1
+    1,
+    0,
+    0
    ],
    "failed": [
-    []
+    [],
+    [
+     "answer:offers_discount:mismatch(got=yes, acme office supplies offers an early payment discount)"
+    ],
+    [
+     "answer:offers_discount:mismatch(got=yes, acme office supplies offers an early payment discount o)"
+    ]
    ],
    "infra_trials": 0,
    "starved_trials": 0,
-   "class": "solidPass"
+   "class": "flaky"
   },
   "expense_audit/policy-validation-feb": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -689,9 +999,13 @@
   },
   "expense_audit/te-sample-feb": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -700,9 +1014,17 @@
   },
   "expense_audit/threshold-shaving-h1": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "answer:detector_triggered:unparseable_yes_no(got=threshold shaving)"
+    ],
+    [
+     "answer:detector_triggered:unparseable_yes_no(got=threshold_shaving)"
+    ],
     [
      "answer:detector_triggered:unparseable_yes_no(got=threshold shaving)"
     ]
@@ -713,9 +1035,19 @@
   },
   "finance_qa/scale-trap-lmt": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "answer:revenue:scale_error(got=71.043, want=71043.0, off by /1000)",
+     "answer:revenue_scale:wrong_scale(got=billions, want=millions)"
+    ],
+    [
+     "answer:revenue:scale_error(got=71.043, want=71043.0, off by /1000)",
+     "answer:revenue_scale:wrong_scale(got=billions, want=millions)"
+    ],
     [
      "answer:revenue:scale_error(got=71.043, want=71043.0, off by /1000)",
      "answer:revenue_scale:wrong_scale(got=billions, want=millions)"
@@ -727,9 +1059,13 @@
   },
   "finance_qa/tsla-operating-margin-q3": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -738,20 +1074,30 @@
   },
   "finance_qa/unavailable-concept": {
    "rewards": [
-    1
+    1,
+    1,
+    0
    ],
    "failed": [
-    []
+    [],
+    [],
+    [
+     "answer:rd_expense:expected_none(got=not separately reported. walmart, as a retailer, does not br)"
+    ]
    ],
    "infra_trials": 0,
    "starved_trials": 0,
-   "class": "solidPass"
+   "class": "flaky"
   },
   "finance_qa/wmt-inventory-turnover": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -760,9 +1106,17 @@
   },
   "finance_qa/xom-cat-liquidity-compare": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "answer:larger_company:missing_terms(['ExxonMobil'])"
+    ],
+    [
+     "answer:larger_company:missing_terms(['ExxonMobil'])"
+    ],
     [
      "answer:larger_company:missing_terms(['ExxonMobil'])"
     ]
@@ -773,9 +1127,13 @@
   },
   "finance_qa/xom-current-assets": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -784,9 +1142,19 @@
   },
   "finance_qa/xom-current-assets-followup": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "02:answer:current_assets_2023:missing",
+     "02:answer:pct_change:missing"
+    ],
+    [
+     "02:answer:current_assets_2023:missing",
+     "02:answer:pct_change:missing"
+    ],
     [
      "02:answer:current_assets_2023:missing",
      "02:answer:pct_change:missing"
@@ -798,9 +1166,13 @@
   },
   "fpna/budget-variance-feb": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -809,9 +1181,13 @@
   },
   "fpna/payroll-attendance-tieout": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -820,9 +1196,13 @@
   },
   "journal_entry/feb-saas-accrual": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -831,9 +1211,13 @@
   },
   "payment_proposal/friday-run-mar06": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -842,9 +1226,19 @@
   },
   "payment_run/shortfall-mar06": {
    "rewards": [
+    0,
+    0,
     0
    ],
    "failed": [
+    [
+     "answer:shortfall:off(got=62800.0)"
+    ],
+    [
+     "answer:shortfall:off(got=87800.0)",
+     "state:sql(dispute_reason: got insufficient_cash, want disputed)",
+     "state:sql(cash_deferrals: got pinv-102,pinv-104,pinv-107, want pinv-102,pinv-107)"
+    ],
     [
      "answer:shortfall:off(got=62800.0)"
     ]
@@ -855,9 +1249,13 @@
   },
   "payment_run/withholding-mar13": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -866,9 +1264,13 @@
   },
   "pbc/approval-evidence-q1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -877,9 +1279,13 @@
   },
   "pbc/sampling-projection-q1": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -888,9 +1294,13 @@
   },
   "threeway_match/ppinv-exceptions-mar": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -899,9 +1309,13 @@
   },
   "threeway_match/tolerance-dialect-mar": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -910,20 +1324,30 @@
   },
   "vendor_master/bank-change-verify": {
    "rewards": [
-    1
+    1,
+    1,
+    0
    ],
    "failed": [
-    []
+    [],
+    [],
+    [
+     "answer:request_verified:unparseable_yes_no(got=failed \u2014 sender domain 'acme-officesupplies-remit.example' d)"
+    ]
    ],
    "infra_trials": 0,
    "starved_trials": 0,
-   "class": "solidPass"
+   "class": "flaky"
   },
   "vendor_master/dormant-vendor-review": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,
@@ -932,22 +1356,30 @@
   },
   "vendor_master/dormant-vendor-review-v2": {
    "rewards": [
-    0
+    0,
+    1,
+    1
    ],
    "failed": [
     [
      "answer:cutoff_date:missing_terms(['2025-03-02'])"
-    ]
+    ],
+    [],
+    []
    ],
    "infra_trials": 0,
    "starved_trials": 0,
-   "class": "solidFail"
+   "class": "flaky"
   },
   "vendor_master/missing-po-inquiry": {
    "rewards": [
+    1,
+    1,
     1
    ],
    "failed": [
+    [],
+    [],
     []
    ],
    "infra_trials": 0,

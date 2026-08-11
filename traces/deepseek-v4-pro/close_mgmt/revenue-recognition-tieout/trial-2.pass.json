@@ -1,0 +1,75 @@
+{
+ "task": "close_mgmt/revenue-recognition-tieout",
+ "family": "close_mgmt",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 7,
+ "walk_len": 9,
+ "budget_turns": 84,
+ "num_turns": 4,
+ "agent_error": false,
+ "duration_s": 45.5,
+ "cost_usd": null,
+ "final_text": "All fields submitted. Here's the final tie-out to RAP-04:\n\n| Field | Value |\n|---|---|\n| **flagged_contracts** | CTR-2047, CTR-2052, CTR-2055, CTR-2058 |\n| **amount_exceptions** | CTR-2047, CTR-2052 |\n| **timing_exceptions** | CTR-2055, CTR-2058 |\n| **over_recognised_usd** | $7,500 (CTR-2052: $157,500 recognised vs $150,000 contract) |\n| **under_recognised_usd** | $8,000 (CTR-2047: $88,000 recognised vs $96,000 contract) |\n\n---\n\n**What the auditors will see:**\n\n- **CTR-2052 (Alder & Roe)** \u2014 12 \u00d7 $13,125 = $157,500 against a $150,000 contract. The schedule was built on the wrong monthly amount; $7,500 over-recognised is a restatement risk.\n\n- **CTR-2047 (Cedar Line Media)** \u2014 Nov/Dec drop from $8,000 to $4,000, leaving $8,000 on the table. That's a cut-off risk.\n\n- **CTR-2055 (Bellhaven)** \u2014 13 periods on a 12-month contract (trails into April 2026). Total ties to the cent but one extra month is still a recognition error.\n\n- **CTR-2058 (Quill River)** \u2014 8 periods on a 12-month contract; $108,000 crammed into 8 months instead of 12. Total ties but the acceleration is a timing exception same as Bellhaven.\n\nThe register's linked column (stale from Jan 15) matches the schedule in every case \u2014 the problems are in the schedules themselves, which is exactly what the auditors found last year.",
+ "trace": [
+  {
+   "ts": 1786481587.162893,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"RAP-04 revenue recognition\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481587.163423,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786481587.163818,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481590.735233,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--revenue-recognition-tieout\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481590.735795,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"contract-register-fy26.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481590.736432,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"revenue-schedule-fy26.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481615.8852532,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"flagged_contracts\": \"CTR-2047, CTR-2052, CTR-2055, CTR-2058\", \"amount_exceptions\": \"CTR-2047, CTR-2052\", \"timing_exceptions\": \"CTR-2055, CTR-2058\", \"over_recognised_usd\": 7500, \"under_recognised_usd\": 8000}}",
+   "ok": true
+  }
+ ]
+}

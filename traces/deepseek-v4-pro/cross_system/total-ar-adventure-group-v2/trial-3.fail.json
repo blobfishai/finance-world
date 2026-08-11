@@ -1,0 +1,491 @@
+{
+ "task": "cross_system/total-ar-adventure-group-v2",
+ "family": "cross_system",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 3,
+ "reward": 0,
+ "failed": [
+  "answer:erp_open_balance:off(got=1058187.97)",
+  "answer:combined_exposure:off(got=1083437.97)"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 65,
+ "walk_len": 10,
+ "budget_turns": 92,
+ "num_turns": 21,
+ "agent_error": false,
+ "duration_s": 137.4,
+ "cost_usd": null,
+ "final_text": "Here's the breakdown:\n\n**ERP Open Balance: $1,058,187.97**\nSum of open amounts (amount \u2212 settled, closed=0) across all 36 Adventure Works entities in USMF. The largest exposures are Adventure Works Services ($107,988), Adventure Works Americas ($112,202), and Adventure Works Cycles ($94,749).\n\n**Subsidiary Net Balance: $19,050.00**\nQBO customer \"Adventure Works Cycles - Direct\" (BC-114, ERP ref SYNCUS-0002): gross invoices CD-1041 ($14,900) + CD-1055 ($7,300) = $22,200, less unapplied credit memo CM-2007 ($3,150). These are distinct direct-channel invoices not in ERP.\n\n**Off-Book Invoice: $6,200.00**\nCES-SIDE-009 from the CES-migration-side-log.xlsx \u2014 issued 2026-02-14 to Adventure Works Cycles during the CES cutover, confirmed by Dana Kim's email. Tracked in neither ERP nor QBO. The other entry in that log (Tailspin Toys CES-SIDE-010) is already recorded \u2014 explicitly noted \"do not double count.\"\n\n**Combined Exposure: $1,083,437.97**\nNo overlap detected: ERP invoices (AWC-series), QBO invoices (CD-series), and the off-book CES invoice are all separate. The stale AR-summary-2026-01.xlsx was excluded per its own warning.",
+ "trace": [
+  {
+   "ts": 1786481846.638242,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481846.639241,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Adventure Works\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481846.639918,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Adventure Works\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481846.6405702,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Adventure Works'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481849.6789079,
+   "server": "email",
+   "tool": "threads_get",
+   "args": "{\"id\": \"t_ee3f0d6819\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481849.680056,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786481849.6806898,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Adventure'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481854.837364,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"CES-migration-side-log\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481854.838393,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT SUM(amount - settled) as open_balance FROM erp_customertransactions WHERE dataareaid = 'USMF' AND closed = 0 AND customer_account IN (SELECT account FROM erp_customers WHERE name LIKE 'Adventure Works%' AND dataareaid = 'USMF')\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786481854.8388531,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE CompanyName LIKE 'Adventure%'\"}",
+   "ok": false,
+   "note": "Invalid property 'CompanyName' for Customer"
+  },
+  {
+   "ts": 1786481854.839256,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"CES cutover exposure group\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481858.202958,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481858.2034519,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"CES migration side log\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481858.20385,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786481858.2043252,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Works'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481861.482477,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"CES-migration-side-log.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481861.4844391,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786481861.486517,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481867.01456,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0002\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786481867.0151281,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"group exposure calculation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481867.0156002,
+   "server": "books",
+   "tool": "get_customer",
+   "args": "{\"customer_id\": \"BC-114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481867.016021,
+   "server": "sheets",
+   "tool": "get_drive_item",
+   "args": "{\"item\": \"AR-summary-2026-01.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481874.511286,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT ct.account, ct.invoice, ct.amount, ct.settled, ct.amount - ct.settled as open_amt, ct.closed FROM CustomerTransactions ct WHERE ct.dataareaid = 'USMF' AND ct.closed = 0 AND ct.account IN ('SYNCUS-0002','SYNCUS-0030','SYNCUS-0058','SYNCUS-0086','SYNCUS-0114','SYNCUS-0142','SYNCUS-0170",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786481879.8889081,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481890.2673979,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0030\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481890.270209,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0058\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481890.272459,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0086\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481890.274702,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0114\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481890.276963,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0142\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481895.331428,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0170\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481895.333288,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0198\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481895.335115,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0226\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481895.336994,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0254\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481895.338832,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0282\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481900.260375,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0310\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481900.262367,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0338\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481900.2642062,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0366\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481900.265984,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0394\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481900.268064,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0422\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481905.659998,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0450\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481905.662142,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0478\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481905.664053,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0506\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481905.665993,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0534\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481905.667846,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0562\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481910.456335,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0590\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481910.4619951,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0618\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481910.4674208,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0646\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481910.469358,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0674\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481929.857843,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE CustomerRef = 'BC-114'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481929.858599,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"exposure calculation policy consolidation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481929.859005,
+   "server": "books",
+   "tool": "report_customer_balance",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786481936.359017,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"page\": 2, \"filters\": {\"name\": \"Adventure\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786481943.876364,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0702\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481943.878428,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0730\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481943.8804789,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0758\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481943.882487,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0786\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481943.884418,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0814\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481949.298559,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0842\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481949.3004239,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0870\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481949.3022342,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0898\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481949.303982,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0926\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481949.305731,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0954\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481951.9463522,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0982\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481963.088829,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM CreditMemo WHERE CustomerRef = 'BC-114'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481972.3560221,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"erp_open_balance\": 1058187.97, \"subsidiary_net_balance\": 19050.0, \"offbook_invoice_amount\": 6200.0, \"combined_exposure\": 1083437.97}}",
+   "ok": true
+  }
+ ]
+}

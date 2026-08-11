@@ -1,0 +1,53 @@
+{
+ "task": "erp_qa_fb/credit-limit-1",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 3,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 4,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 5,
+ "agent_error": false,
+ "duration_s": 13.7,
+ "cost_usd": null,
+ "final_text": "**Submitted:**\n\n| Field | Value |\n|---|---|\n| `credit_limit` | 25,000.00 |\n| `customer_name` | A. Datum Corporation |\n\nThe credit limit for SYNCUS-0001 (USMF) is **$25,000.00**, as recorded in the customer master.",
+ "trace": [
+  {
+   "ts": 1786482648.214417,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482650.461754,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482652.992867,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0001\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482656.888171,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 25000.0, \"customer_name\": \"A. Datum Corporation\"}}",
+   "ok": true
+  }
+ ]
+}

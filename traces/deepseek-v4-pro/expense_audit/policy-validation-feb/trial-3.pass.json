@@ -1,0 +1,98 @@
+{
+ "task": "expense_audit/policy-validation-feb",
+ "family": "expense_audit",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 3,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "email",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 10,
+ "walk_len": 9,
+ "budget_turns": 84,
+ "num_turns": 7,
+ "agent_error": false,
+ "duration_s": 80.0,
+ "cost_usd": null,
+ "final_text": "All fields submitted. Here's the summary for Dev:\n\n| Field | Value |\n|---|---|\n| **Per diem due** | $404.00 (Denver $200 + Summit $204 + Sacramento $0) |\n| **Conference M&IE rate** | $92.00 (San Francisco) |\n| **Nonaccountable (W-2)** | $612.40 |\n| **Reimbursable (AP)** | $2,932.50 |\n| **Structural exception** | EXP-2058 \u2014 Okonkwo's Chicago lodging, 73 days late, forced to payroll |\n\nThe big ticket to flag: EXP-2058 passes every per-line check (lodging under cap, receipt attached, clear business purpose) but was incurred in December and not submitted until mid-February \u2014 well past the 60-day safe harbour. It has to go through payroll as taxable wages, not through AP tax-free.",
+ "trace": [
+  {
+   "ts": 1786483293.724768,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786483293.7255008,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"FIN-POL-022\"}",
+   "ok": false,
+   "note": "not found"
+  },
+  {
+   "ts": 1786483295.9602098,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"expense-extract-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483295.962295,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"FIN-POL-022\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483299.169535,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--travel-perdiem-and-substantiation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483299.170624,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"reference--gsa-mie-rate-table\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483320.244211,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"GreenLedger Summit registration\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483320.245088,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"EXP-2051\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483322.1401348,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-2201\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786483363.728487,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"perdiem_due\": 404.0, \"conference_mie_rate\": 92.0, \"nonaccountable_amount\": 612.4, \"reimbursable_total\": 2932.5, \"structural_exception_line\": \"EXP-2058\", \"structural_exception_reason\": \"Lodging incurred 2025-12-08 but first submitted 2026-02-19 (73 days), exceeding the 60-day accountabl",
+   "ok": true
+  }
+ ]
+}

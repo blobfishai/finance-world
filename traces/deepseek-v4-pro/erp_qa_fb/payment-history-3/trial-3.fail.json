@@ -1,0 +1,120 @@
+{
+ "task": "erp_qa_fb/payment-history-3",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 3,
+ "reward": 0,
+ "failed": [
+  "answer:largest_payment_amount:mismatch(got=$49,574.78)",
+  "answer:largest_payment_voucher:mismatch(got=arpm000094)"
+ ],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 13,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 11,
+ "agent_error": false,
+ "duration_s": 49.7,
+ "cost_usd": null,
+ "final_text": "**Summary:**\n\n- **Largest payment amount:** $49,574.78\n- **Largest payment voucher:** ARPM000094\n\nCave Wholesales (customer US-004, synced as SYNCUS-0040) made two payments in USMF as of March 2, 2026:\n\n| Voucher | Date | Amount | Method |\n|---------|------|--------|--------|\n| ARPM000094 | 2025-04-28 | $49,574.78 | CHECK |\n| ARPM000095 | 2025-07-10 | $6,422.89 | ELECTRONIC |\n\nThe larger payment, ARPM000094 for $49,574.78, settled their Annual Subscription invoice (CIV-000137).",
+ "trace": [
+  {
+   "ts": 1786482967.28934,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor payment journal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482967.289719,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer payment\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482967.28989,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482971.078082,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Cave\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482971.079262,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Vendors\", \"filters\": {\"name\": \"Cave\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482974.48298,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482977.23195,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM CustomerTransactions WHERE account = 'US-004' AND trans_date <= '2026-03-02' ORDER BY amount DESC\"}",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786482979.144371,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-004\"}, \"page\": 1}",
+   "ok": true
+  },
+  {
+   "ts": 1786482983.2473369,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"US-004\"}, \"entity\": \"CustomerTransactions\", \"page\": 2}",
+   "ok": true
+  },
+  {
+   "ts": 1786482990.345552,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"US-004\"}, \"entity\": \"CustomerTransactions\", \"page\": 3}",
+   "ok": true
+  },
+  {
+   "ts": 1786482994.3651671,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0040\", \"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482998.944961,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-004\", \"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786483005.796382,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"largest_payment_amount\": \"$49,574.78\", \"largest_payment_voucher\": \"ARPM000094\"}}",
+   "ok": true
+  }
+ ]
+}

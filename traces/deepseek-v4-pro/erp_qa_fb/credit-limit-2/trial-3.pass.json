@@ -1,0 +1,92 @@
+{
+ "task": "erp_qa_fb/credit-limit-2",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 3,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 9,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 8,
+ "agent_error": false,
+ "duration_s": 45.8,
+ "cost_usd": null,
+ "final_text": "Done. The submission recorded:\n\n- **credit_limit**: `25000.00` (USD)\n- **customer_name**: `Humongous Insurance International`\n\nFor context, the available credit as of March 2, 2026 would be **\u2212$22,897.88** (credit limit of $25,000 less the one open invoice CIV-003050 for $47,897.88, which is over 90 days past due per the March 1, 2026 aging snapshot).",
+ "trace": [
+  {
+   "ts": 1786482659.4070861,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482661.646541,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"CustomerAccount\": \"SYNCUS-0883\"}}",
+   "ok": false,
+   "note": "unknown field CustomerAccount"
+  },
+  {
+   "ts": 1786482664.3837361,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0883\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482670.545965,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"customer_account\": \"SYNCUS-0883\", \"dataareaid\": \"USMF\", \"closed\": false}, \"entity\": \"CustomerTransactions\"}",
+   "ok": false,
+   "note": "unknown field customer_account"
+  },
+  {
+   "ts": 1786482670.546633,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"customer_account\": \"SYNCUS-0883\", \"dataareaid\": \"USMF\"}, \"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": false,
+   "note": "unknown field customer_account"
+  },
+  {
+   "ts": 1786482673.870524,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0883\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482673.872213,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0883\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482692.37601,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0883' AND dataareaid = 'USMF' AND trans_date = '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786482696.700754,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 25000.0, \"customer_name\": \"Humongous Insurance International\"}}",
+   "ok": true
+  }
+ ]
+}

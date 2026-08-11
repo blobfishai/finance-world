@@ -1,0 +1,452 @@
+{
+ "task": "erp_qa/ap-overdue-usmf",
+ "family": "erp_qa",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": true,
+ "trial": 2,
+ "reward": 0,
+ "failed": [
+  "answer:total_overdue_ap:missing",
+  "answer:as_of_date:missing",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp",
+  "sheets"
+ ],
+ "n_tool_calls": 58,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 40,
+ "agent_error": false,
+ "duration_s": 204.8,
+ "cost_usd": null,
+ "final_text": "",
+ "trace": [
+  {
+   "ts": 1786481996.602368,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice accounts payable overdue\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481996.6027641,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"payment terms due date\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481999.52419,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786481999.52447,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"legal entity company USMF\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482003.99764,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions WHERE dataareaid = 'USMF' AND closed = 0 LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786482007.225674,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482013.9885209,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786482013.988862,
+   "server": "books",
+   "tool": "get_company_info",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786482018.190518,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM VendorTransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "ValueError('table VendorTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786482021.8941061,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'erp_%'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786482028.049089,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 2}",
+   "ok": true
+  },
+  {
+   "ts": 1786482028.050099,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ExchangeRates\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482034.207916,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482034.209295,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"BankAccounts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482039.403198,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_VendorTransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_VendorTransactions')"
+  },
+  {
+   "ts": 1786482042.595815,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786482047.0874822,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"aged payables overdue AP\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482047.120988,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Vendor transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482055.3986418,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"USMF\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482060.076406,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"closed\", \"value\": \"0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482063.9463549,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor_transactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_transactions')"
+  },
+  {
+   "ts": 1786482066.451853,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM \\\"erp_VendorTransactions\\\" LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_VendorTransactions')"
+  },
+  {
+   "ts": 1786482071.5516539,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482076.883352,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 3, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482076.893844,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 4, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482076.904652,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 5, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482084.471652,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"aged payables vendor aging AP overdue\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482084.476918,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"AP aged vendor invoice overdue\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482088.079222,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Bill\"}",
+   "ok": false,
+   "note": "Invalid entity. Entities: Customer, Invoice, CreditMemo, Payment"
+  },
+  {
+   "ts": 1786482092.001268,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Vendor transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482095.99364,
+   "server": "erp",
+   "tool": "form_find_controls",
+   "args": "{\"form_id\": \"fh-1\", \"search\": \"company\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482103.5703092,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Companies\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482108.6907861,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"0.0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482114.4022431,
+   "server": "erp",
+   "tool": "form_sort_grid_column",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"due_date\", \"direction\": \"asc\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482125.9370828,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Vendor transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482131.6951098,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions WHERE dataareaid = 'USMF' AND closed = 0 AND due_date < '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786482135.1475048,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM \\\"erp_vendor_transactions\\\" WHERE dataareaid = 'USMF' AND closed = 0 AND due_date < '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_transactions')"
+  },
+  {
+   "ts": 1786482137.697147,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_VendorTransactions WHERE dataareaid = 'USMF' AND closed = 0 AND due_date < '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_VendorTransactions')"
+  },
+  {
+   "ts": 1786482144.834473,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"AP overdue aged payables USMF\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482144.836629,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"accounts payable overdue policy aging\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482149.592143,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-2\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482154.7418659,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 6, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482154.749673,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 7, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482154.7572548,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 8, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482154.7668889,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 9, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482154.7749188,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 10, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482162.0978382,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_VendorTransaction WHERE dataareaid = 'USMF' AND closed = 0 AND due_date < '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_VendorTransaction')"
+  },
+  {
+   "ts": 1786482167.1336691,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor_transaction WHERE dataareaid = 'USMF' AND closed = 0 AND due_date < '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_transaction')"
+  },
+  {
+   "ts": 1786482172.4418812,
+   "server": "erp",
+   "tool": "form_sort_grid_column",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"due_date\", \"direction\": \"desc\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482177.870872,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Vendor transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482184.254634,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-2\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482187.9223921,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786482190.922543,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786482196.847786,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 11, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482196.855551,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 12, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482196.863555,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 13, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482196.8716002,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 14, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482196.879324,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 15, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  }
+ ]
+}

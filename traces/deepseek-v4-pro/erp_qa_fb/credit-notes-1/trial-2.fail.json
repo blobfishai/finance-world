@@ -1,0 +1,245 @@
+{
+ "task": "erp_qa_fb/credit-notes-1",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 0,
+ "failed": [
+  "answer:unapplied_credit_total:mismatch(got=$0.00)"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 30,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 15,
+ "agent_error": false,
+ "duration_s": 76.5,
+ "cost_usd": null,
+ "final_text": "**Summary:**\n\nFor **Litware Asia** (account **SYNCUS-0352**) in **USMF** as of March 2, 2026:\n\n- **Unapplied credit note count: 0**\n- **Unapplied credit total: $0.00**\n\nLitware Asia has 5 customer transactions on file \u2014 4 invoices (3 open, 1 settled) and 1 settled payment \u2014 but no credit notes of any kind. Across the entire USMF company, only 7 credit notes exist, and none belong to SYNCUS-0352.",
+ "trace": [
+  {
+   "ts": 1786482713.2967901,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0352\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482713.297149,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer credit notes\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482713.297251,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customer\", \"filters\": {\"name\": \"Liteware Asia\"}}",
+   "ok": false,
+   "note": "unknown entity type 'Customer'"
+  },
+  {
+   "ts": 1786482715.9340632,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Liteware Asia\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482715.934564,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"0352\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482715.934954,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482719.5130181,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"name\": \"Liteware\"}, \"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482719.513844,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"sop\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482719.514556,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482722.954892,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE name LIKE '%Liteware%' OR name LIKE '%liteware%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482722.9556081,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers LIMIT 20\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482722.956084,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"template\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482725.479328,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers LIMIT 200 OFFSET 20\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482730.075254,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE LOWER(name) LIKE '%asia%' OR LOWER(name) LIKE '%lite%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482730.076339,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, name FROM erp_customers ORDER BY account LIMIT 200\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482737.082985,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0352' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786482737.0836911,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT DISTINCT txn_type FROM erp_customertransactions WHERE dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786482740.044991,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0352\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482740.045237,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT DISTINCT txn_type FROM CustomerTransactions WHERE dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786482749.136359,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT DISTINCT txn_type FROM erp_customertransactions\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786482749.1498828,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"txn_type\": \"Credit\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482753.404046,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0352\", \"txn_type\": \"CreditNote\"}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482753.4058502,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"txn_type\": \"CreditNote\"}, \"entity\": \"CustomerTransactions\", \"page\": 1}",
+   "ok": true
+  },
+  {
+   "ts": 1786482760.374707,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Litware%' OR DisplayName LIKE '%Liteware%'\"}",
+   "ok": false,
+   "note": "QueryParserError: unsupported syntax. Use SELECT * FROM <Entity> [WHERE <Field> = '<value>'] with entities Customer, Invoice, CreditMemo, Payment"
+  },
+  {
+   "ts": 1786482760.377841,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"txn_type\": \"CreditMemo\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482763.783046,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName = 'Litware Asia'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482763.784085,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM CreditMemo\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482774.67799,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0352\"}, \"entity\": \"CustomerTransactions\", \"page\": 1}",
+   "ok": true
+  },
+  {
+   "ts": 1786482774.711523,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {}, \"entity\": \"CustomerTransactions\", \"page\": 0}",
+   "ok": true
+  },
+  {
+   "ts": 1786482780.6439092,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"unapplied_credit_note_count\": 0, \"unapplied_credit_total\": \"$0.00\"}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,149 @@
+{
+ "task": "erp_qa_fb/credit-limit-3",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 0,
+ "failed": [
+  "answer:credit_limit:not_numeric"
+ ],
+ "servers_used": [
+  "docs",
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 17,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 15,
+ "agent_error": false,
+ "duration_s": 51.1,
+ "cost_usd": null,
+ "final_text": "The customer **\"Contoso Retail San Diego\"** does not exist in USMF. I searched across:\n\n- **ERP Customers (USMF)**: No customer with that exact name. The closest Contoso entities in San Diego are \"Contoso Pharmaceuticals USA\" and \"Contoso Pharmaceuticals Plus.\" The only \"Contoso Retail\" variants are in Louisville, KY and Detroit, MI.\n- **Documents, spreadsheets, and emails**: No references found.\n\n**Submitted:**\n- `credit_limit`: none (customer does not exist)\n- `customer_name`: Contoso Retail San Diego",
+ "trace": [
+  {
+   "ts": 1786482660.447073,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482662.811409,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482665.231698,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Contoso Retail San Diego\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482668.534621,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Contoso\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786482671.897057,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE name LIKE '%Retail%' AND dataareaid = 'USMF'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482674.5832179,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE name LIKE '%San Diego%' AND dataareaid = 'USMF'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482677.967644,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE name LIKE '%Contoso%' AND city LIKE '%San Diego%' AND dataareaid = 'USMF'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482677.968375,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Contoso Retail San Diego\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482681.441601,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE dataareaid = 'USMF' AND (name LIKE '%Contoso Retail%' OR (name LIKE '%Contoso%' AND name LIKE '%Retail%'))\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482684.58889,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE city = 'San Diego' AND dataareaid = 'USMF'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482689.335639,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482691.355318,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482693.393674,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Contoso Retail San Diego\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482697.026614,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482697.0273228,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"Contoso Retail San Diego\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482697.0279942,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Contoso Retail San Diego\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786482703.490131,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": \"none\", \"customer_name\": \"Contoso Retail San Diego\"}}",
+   "ok": true
+  }
+ ]
+}
