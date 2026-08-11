@@ -11,12 +11,14 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-echo "==> 1/3 core   (schema + FinanceBenchmark raw journals)"
+echo "==> 1/4 core   (schema + FinanceBenchmark raw journals)"
 python3 world/etl/load_core.py
-echo "==> 2/3 cash   (payments, settlements, partials, discounts, disputes)"
+echo "==> 2/4 cash   (payments, settlements, partials, discounts, disputes)"
 python3 world/etl/load_cash.py
-echo "==> 3/3 demo   (Contoso demo entities the benchmark's questions name)"
+echo "==> 3/4 demo   (Contoso demo entities the benchmark's questions name)"
 python3 world/etl/load_demo.py
+echo "==> 4/4 filings (frozen real EDGAR facts; re-fetch with world/etl/fetch_filings.py)"
+python3 world/etl/fetch_filings.py --load
 
 echo
 echo "==> verifying the build reproduces task ground truths"

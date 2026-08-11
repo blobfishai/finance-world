@@ -18,7 +18,7 @@ the live world, and prints this. Re-run it; do not edit it.
 ```
 microsoft/FinanceBenchmark — 251 items
    class      : verbatim_gt 100 · not_agentic 90 · recomputable 36 · judgement_port 25
-   addressable: 161      binding: bound 130 · absent_entity 31      runs here: 35  (22%)
+   addressable: 161      binding: bound 161                        runs here: 35  (22%)
 TheAgentCompany — 12 items
    class      : judgement_port 12
    addressable: 12       binding: bound 12                          runs here: 8   (67%)
@@ -42,13 +42,15 @@ Addressable = `verbatim_gt` + `recomputable` + `judgement_port`. Against that, c
 | blocker | items | what unblocks it |
 |---|---|---|
 | FB `erp_qa` questions not yet emitted by the cloner | 65 | handlers for the rejected intent classes (in flight) |
-| FB items naming companies absent from the shared world | 31 | a frozen filings snapshot covering WMT (17), KO (16), XOM (14), CAT (8), CVX (8), MSFT (6), AAPL/AMZN/PFE/BA (4 each), TSLA/INTC (3) |
+| ~~FB items naming companies absent from the shared world~~ | ~~31~~ **0** | **CLOSED** — `world/etl/fetch_filings.py` freezes real SEC XBRL facts for the 14 companies the questions name; 4,342 annual facts, every value carrying its accession |
 | FB `business_brief` | 25 | a brief emitter grading required fields per-section |
 | TAC finance remaining | 4 | the porting pattern is proven; 8 of 12 done |
 
-The 31 unbindable items are a *useful* failure: filings are seeded per task, so the binder
-correctly reports those companies absent from the shared world and names exactly which
-snapshot to build. That is a build list, not a shrug.
+The 31 unbindable items were a *useful* failure: filings had been seeded per task, so the
+binder correctly reported those companies absent from the shared world and named exactly
+which snapshot to build. That build is done — **161 of 161 addressable FB items now bind** —
+which is the pipeline working as intended: the ledger produced a build list, the build closed
+it, and re-running the ledger proved it rather than asserting it.
 
 ## Why the gap exists, without excuses
 

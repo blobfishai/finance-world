@@ -26,10 +26,13 @@ class World:
                 for acct, name in cx.execute(f"SELECT account, name FROM {tbl}"):
                     self.parties.setdefault(_norm(name), []).append((side, acct))
                     self.accounts[acct.upper()] = name
+        # index by BOTH ticker and name: adapters legitimately reference either, and a
+        # ticker-only reference must not read as "this world does not have that company".
         self.filings = {}
         if "filings_companies" in self.tables:
             for tk, nm in cx.execute("SELECT ticker, name FROM filings_companies"):
                 self.filings[_norm(nm)] = tk
+                self.filings[_norm(tk)] = tk
         cx.close()
         self.servers = {p.stem.replace("_server", "")
                         for p in (ROOT / "mcp/servers").glob("*_server.py")}

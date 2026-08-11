@@ -5,7 +5,7 @@
  "model": null,
  "infra_error": false,
  "budget_exhausted": false,
- "trial": 1,
+ "trial": 3,
  "reward": 1,
  "failed": [],
  "servers_used": [
@@ -23,91 +23,91 @@
  "final_text": "{\"walk_steps\": 13}\n",
  "trace": [
   {
-   "ts": 1786484798.397404,
+   "ts": 1786484798.8862898,
    "server": "docs",
    "tool": "search_documents",
    "args": "{\"query\": \"external company financial summaries basis\"}",
    "ok": true
   },
   {
-   "ts": 1786484798.397978,
+   "ts": 1786484798.886915,
    "server": "docs",
    "tool": "get_document",
    "args": "{\"doc_id\": \"policy--external-reporting-basis\"}",
    "ok": true
   },
   {
-   "ts": 1786484798.398654,
+   "ts": 1786484798.887747,
    "server": "filings",
    "tool": "lookup_company",
    "args": "{\"query\": \"Calderwood\"}",
    "ok": true
   },
   {
-   "ts": 1786484798.399116,
+   "ts": 1786484798.8882968,
    "server": "filings",
    "tool": "get_submissions",
    "args": "{\"ticker\": \"CLWS\"}",
    "ok": true
   },
   {
-   "ts": 1786484798.399574,
+   "ts": 1786484798.888698,
    "server": "filings",
    "tool": "full_text_search",
    "args": "{\"q\": \"discontinued operations\"}",
    "ok": true
   },
   {
-   "ts": 1786484798.400219,
+   "ts": 1786484798.8890681,
    "server": "filings",
    "tool": "list_available_concepts",
    "args": "{\"ticker\": \"CLWS\"}",
    "ok": true
   },
   {
-   "ts": 1786484798.400702,
+   "ts": 1786484798.889447,
    "server": "filings",
    "tool": "get_company_concept",
    "args": "{\"ticker\": \"CLWS\", \"concept\": \"Revenues\"}",
    "ok": true
   },
   {
-   "ts": 1786484798.401407,
+   "ts": 1786484798.8898182,
    "server": "filings",
    "tool": "get_company_concept",
    "args": "{\"ticker\": \"CLWS\", \"concept\": \"CostOfRevenue\"}",
    "ok": true
   },
   {
-   "ts": 1786484798.4018319,
+   "ts": 1786484798.8901892,
    "server": "filings",
    "tool": "get_company_concept",
    "args": "{\"ticker\": \"CLWS\", \"concept\": \"GrossProfit\"}",
    "ok": true
   },
   {
-   "ts": 1786484798.402248,
+   "ts": 1786484798.890715,
    "server": "filings",
    "tool": "get_company_concept",
    "args": "{\"ticker\": \"CLWS\", \"concept\": \"OperatingIncomeLoss\"}",
    "ok": true
   },
   {
-   "ts": 1786484798.402682,
+   "ts": 1786484798.8911948,
    "server": "filings",
    "tool": "get_company_concept",
    "args": "{\"ticker\": \"CLWS\", \"concept\": \"ProfitLoss\"}",
    "ok": true
   },
   {
-   "ts": 1786484798.403255,
+   "ts": 1786484798.891784,
    "server": "filings",
    "tool": "get_company_concept",
    "args": "{\"ticker\": \"CLWS\", \"concept\": \"NetIncomeLoss\"}",
    "ok": true
   },
   {
-   "ts": 1786484798.405081,
+   "ts": 1786484798.893683,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"revenue\": 1482000000, \"cost_of_revenue\": 642000000, \"gross_profit\": 840000000, \"operating_income\": 313000000, \"net_income\": 412000000, \"operating_margin_pct\": 21.12, \"revenue_growth_pct\": 14.35, \"source_form\": \"10-K for fiscal year 2025, accession 0009900413-26-000007, Item 8\"}}",
