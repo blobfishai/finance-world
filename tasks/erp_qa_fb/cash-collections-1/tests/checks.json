@@ -1,14 +1,15 @@
 {
  "answer_checks": [
   {
-   "field": "largest_payment_amount",
+   "field": "total_collected_fy",
    "type": "string",
    "expect": "none"
   },
   {
-   "field": "largest_payment_voucher",
-   "type": "string",
-   "expect": "none"
+   "field": "payment_count_fy",
+   "type": "number",
+   "expect": 0,
+   "tol_abs": 0
   }
  ],
  "trace_checks": [

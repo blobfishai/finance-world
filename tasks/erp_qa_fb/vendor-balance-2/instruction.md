@@ -1,6 +1,6 @@
 **Priya Shah · AP Manager · Teams**
 
-What is the total overdue AP balance in USMF?
+What is the total AP liability by vendor group in USMF?
 
 ---
 

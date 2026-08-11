@@ -1,11 +1,11 @@
 **Casey Morgan · AR & Collections · Teams**
 
-Which transactions for Humongous Insurance Europe are coming due in the next 7 days (SYNCUS-0659) in USMF as of March 2, 2026?
+Show me the aging breakdown for Graphic Design Institute North in USMF as of March 2, 2026: current, 1–30, 31–60, 61–90, 90+ days as of March 2, 2026
 
 ---
 
 Reply with `submit_answer`:
 
-- `top_customer_account` (text)
-- `top_customer_past_due` (number)
-- `customers_listed` (number)
+- `total_past_due` (number)
+- `not_yet_due` (number)
+- `over_90_days` (number)

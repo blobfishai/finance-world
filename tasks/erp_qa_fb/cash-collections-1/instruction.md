@@ -6,5 +6,5 @@ What is the total amount collected from Proseware wholesale in the current fisca
 
 Reply with `submit_answer`:
 
-- `largest_payment_amount` (text)
-- `largest_payment_voucher` (text)
+- `total_collected_fy` (text)
+- `payment_count_fy` (number)

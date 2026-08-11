@@ -1,11 +1,11 @@
 **Casey Morgan · AR & Collections · Teams**
 
-Could you provide the breakdown of overdue receivables for Birch Company in USMF as of March 2, 2026?
+What is the aged balance for Birch Company in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `top_customer_account` (text)
-- `top_customer_past_due` (number)
-- `customers_listed` (number)
+- `total_past_due` (number)
+- `not_yet_due` (number)
+- `over_90_days` (number)

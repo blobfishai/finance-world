@@ -1,9 +1,19 @@
 [
  {
   "server": "erp",
-  "tool": "data_find_entities_sql",
+  "tool": "api_find_actions",
   "args": {
-   "sql": "SELECT c.name, t.account, ROUND(SUM(t.amount-t.settled),2) AS past_due FROM erp_cust_trans t JOIN erp_customers c ON c.account=t.account WHERE t.txn_type='Invoice' AND t.closed=0 AND t.due_date < '2026-03-02' AND t.account='US-027' GROUP BY t.account ORDER BY past_due DESC LIMIT 10"
+   "query": "aged balances"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "api_invoke_action",
+  "args": {
+   "action": "ContosoCustAgedBalancesLive",
+   "parameters": {
+    "customer_account": "US-027"
+   }
   }
  },
  {
@@ -11,9 +21,9 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "top_customer_account": "US-027",
-    "top_customer_past_due": 1084.11,
-    "customers_listed": 1
+    "total_past_due": 1084.11,
+    "not_yet_due": 376.41,
+    "over_90_days": 0.0
    }
   }
  }

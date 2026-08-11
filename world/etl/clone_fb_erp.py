@@ -64,6 +64,23 @@ def h_outstanding(cx, acct, name, side, q):
 
 def h_aged_balance(cx, acct, name, side, q):
     grp = re.search(r"[Gg]roup (\d+)", q)
+    if acct and not grp and not re.search(r"top \d+", q, re.I):
+        # "aging breakdown / aged balance for <customer>" -> the customer's buckets
+        import datetime as _dt
+        rows = cx.execute("""SELECT due_date, amount-settled AS open FROM erp_cust_trans
+                             WHERE account=? AND txn_type='Invoice' AND closed=0""", (acct,)).fetchall()
+        b = {"not_due": 0.0, "b1_30": 0.0, "b31_60": 0.0, "b61_90": 0.0, "b90_plus": 0.0}
+        for due, open_amt in rows:
+            d = (_dt.date.fromisoformat(EPOCH) - _dt.date.fromisoformat(due)).days
+            k = "not_due" if d <= 0 else "b1_30" if d <= 30 else "b31_60" if d <= 60 else "b61_90" if d <= 90 else "b90_plus"
+            b[k] = round(b[k] + open_amt, 2)
+        past_due = round(b["b1_30"] + b["b31_60"] + b["b61_90"] + b["b90_plus"], 2)
+        return ({"total_past_due": (past_due, "number"),
+                 "not_yet_due": (round(b["not_due"], 2), "number"),
+                 "over_90_days": (b["b90_plus"], "number")},
+                [("api_find_actions", {"query": "aged balances"}),
+                 ("api_invoke_action", {"action": "ContosoCustAgedBalancesLive",
+                                        "parameters": {"customer_account": acct}})])
     topn = int((re.search(r"top (\d+)", q, re.I) or [0, 10])[1]) if re.search(r"top (\d+)", q, re.I) else 10
     days = 90 if "90" in q else 0
     where = "t.txn_type='Invoice' AND t.closed=0"
@@ -129,6 +146,16 @@ def h_cash_discounts(cx, acct, name, side, q):
     return ({"discount_payment_count": (n, "number")},
             [("data_find_entities_sql", {"sql": f"SELECT COUNT(*) AS n FROM erp_settlements WHERE account='{acct}' AND cash_disc_taken > 0"})])
 
+def h_cash_collections(cx, acct, name, side, q):
+    """Total cash collected from a customer in the current fiscal year (calendar FY here)."""
+    t = round(one(cx, """SELECT SUM(-amount) FROM erp_cust_trans WHERE account=? AND txn_type='Payment'
+                         AND trans_date >= ?""", (acct, EPOCH[:4] + "-01-01")), 2)
+    n = one(cx, """SELECT COUNT(*) FROM erp_cust_trans WHERE account=? AND txn_type='Payment'
+                   AND trans_date >= ?""", (acct, EPOCH[:4] + "-01-01"))
+    return ({"total_collected_fy": (t if n else "none", "number" if n else "string"),
+             "payment_count_fy": (n, "number")},
+            [("data_find_entities_sql", {"sql": f"SELECT voucher, trans_date, ROUND(-amount,2) AS received FROM erp_cust_trans WHERE account='{acct}' AND txn_type='Payment' AND trans_date >= '{EPOCH[:4]}-01-01'"})])
+
 def h_credit_notes(cx, acct, name, side, q):
     n = one(cx, "SELECT COUNT(*) FROM erp_cust_trans WHERE account=? AND txn_type='CreditNote' AND closed=0", (acct,))
     t = round(one(cx, "SELECT SUM(-amount) FROM erp_cust_trans WHERE account=? AND txn_type='CreditNote' AND closed=0", (acct,)), 2)
@@ -186,13 +213,40 @@ def h_ap_payments(cx, acct, name, side, q):
                 [("data_find_entities", {"entity": "MethodsOfPayment", "filters": {"side": "vend"}})])
     return None
 
+# A question only routes to a handler if its text really asks that question. FB's
+# `scenario` label is coarse (e.g. "Aged Balance" also carries "coming due in 7 days"
+# questions), and a mismatched route yields a task whose graded fields don't answer the
+# prompt — prompt/verifier drift that field-name checks cannot see.
+INTENT = {
+    "Credit Limit": ["credit limit"],
+    "Credit Rating": ["credit rating"],
+    "Customer Setup": ["payment term", "terms are assigned", "terms assigned"],
+    "Outstanding Balance": ["unpaid", "outstanding"],
+    "Aged Balance": ["past due", "aged", "aging"],
+    "Payment History": ["largest payment", "payment history", "payments made", "payment made"],
+    "Cash Collections": ["collected", "collection"],
+    "Invoicing History": ["invoices generated", "list of the invoices", "invoicing"],
+    "Vendor Balance": ["vendor balance", "ap liability", "balance for transactions"],
+    "Vendors": ["discount"],
+    "AP Invoices": ["pending approval", "open invoices", "invoices are pending"],
+    "Cash Disocunts": ["discount window", "within the discount"],
+    "Credit Notes": ["credit note"],
+    "Dispute": ["dispute"],
+    "Discounts": ["deduction"],
+    "Collections": ["pool", "unassigned"],
+    "Collections Tasks": ["activit", "open task"],
+    "Sales Orders": ["sales order"],
+    "AP Purchase Orders": ["purchase order"],
+    "AP Payments": ["method of payment", "methods of payment", "payment account"],
+}
+
 HANDLERS = {
     "Credit Limit": h_credit_limit, "Credit Rating": h_credit_rating,
     "Customer Setup": h_customer_setup, "Outstanding Balance": h_outstanding,
     "Aged Balance": h_aged_balance, "Payment History": h_payment_history,
     "Invoicing History": h_invoicing_history, "Vendor Balance": h_vendor_balance,
     "Vendors": h_vendors_discount, "AP Invoices": h_ap_invoices,
-    "Cash Disocunts": h_cash_discounts, "Cash Collections": h_payment_history,
+    "Cash Disocunts": h_cash_discounts, "Cash Collections": h_cash_collections,
     "Credit Notes": h_credit_notes, "Dispute": h_dispute, "Discounts": h_deductions,
     "Collections": h_collections_pool, "Collections Tasks": h_collections_tasks,
     "Sales Orders": h_sales_orders, "AP Purchase Orders": h_purchase_orders,
@@ -221,15 +275,12 @@ def emit(out_dir, name, query, scenario, segment, fields, steps):
             checks["answer_checks"].append({"field": k, "type": "string", "expect": str(v)})
     (d / "tests/checks.json").write_text(json.dumps(checks, indent=1) + "\n")
 
-    lines = [f"You are a finance analyst at Contoso Entertainment System USA (company USMF).",
-             f"Today is March 2, 2026.", "",
-             f"> {query.strip()}", "",
-             "Ground every figure in ERP tool calls. Submit via harness `submit_answer` with "
-             "exactly these fields:", ""]
+    who = "Priya Shah · AP Manager" if segment == "AP" else "Casey Morgan · AR & Collections"
+    lines = [f"**{who} · Teams**", "", query.strip(), "", "---", "",
+             "Reply with `submit_answer`:", ""]
     for k, (v, kind) in fields.items():
-        t = "number" if kind == "number" else "string"
-        lines.append(f"- `{k}` ({t})")
-    lines += ["", 'If something does not exist, submit the string "none" for that field.', ""]
+        lines.append(f"- `{k}` ({'number' if kind == 'number' else 'text'})")
+    lines.append("")
     (d / "instruction.md").write_text("\n".join(lines))
 
     (d / "task.toml").write_text(f'''schema_version = "1.4"
@@ -267,11 +318,14 @@ def main():
     erp = [t for t in data if t.get("plugin") == "erp_qa"]
     cx = sqlite3.connect(DB)
     out_dir = ROOT / a.out
-    made, per, skipped = 0, {}, {}
+    made, per, skipped, mismatched = 0, {}, {}, {}
     for t in erp:
         sc, seg, q = t.get("scenario"), t.get("segment"), t["query"]
         h = HANDLERS.get(sc)
         if not h: skipped[sc] = skipped.get(sc, 0) + 1; continue
+        want = INTENT.get(sc, [])
+        if want and not any(k in q.lower() for k in want):
+            mismatched[sc] = mismatched.get(sc, 0) + 1; continue
         if per.get(sc, 0) >= a.per_scenario: continue
         acct, name, side = resolve(cx, q, seg)
         if not acct and sc not in ("Collections", "AP Payments", "Sales Orders", "Vendor Balance"):
@@ -286,6 +340,7 @@ def main():
     print(f"generated {made} tasks into {a.out}")
     for k, v in sorted(per.items()): print(f"   {k}: {v}")
     if skipped: print("skipped (unresolvable/unsupported):", dict(sorted(skipped.items())))
+    if mismatched: print("skipped (question intent != scenario label):", dict(sorted(mismatched.items())))
 
 if __name__ == "__main__":
     main()

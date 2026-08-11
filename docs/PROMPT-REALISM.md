@@ -60,6 +60,22 @@ do have reporting conventions.
 All 82 were rewritten this way; the 47 benchmark clones keep Microsoft's question verbatim
 and simply lose my wrapper, arriving as a Teams ping from the AP or AR lead.
 
+## A defect the rewrite exposed: question ↔ graded-field mismatch
+
+Reading the rewritten prompts side by side with their checks surfaced a generator bug that
+no automated check could see. The cloner dispatched on FinanceBenchmark's `scenario`
+label, which is coarse: "Aged Balance" also carries *"which transactions are coming due in
+the next 7 days?"* and *"show me the aging breakdown for X"*. Those routed to the top-N
+past-due handler, producing tasks whose graded fields **did not answer the question asked**
+— prompt/verifier drift that field-name checking (S4) can never catch, because the
+contract block is generated from the checks themselves.
+
+Fixes: an intent gate (a question only routes to a handler if its text really asks that
+question — 45 questions were dropped rather than mis-graded), a per-customer aging branch
+that returns buckets instead of a ranking, and a real cash-collections handler. The clone
+count fell from 47 to 33, which is the honest number: **fewer tasks, all of which actually
+ask what they grade.**
+
 ## Residual realism gaps (honest list)
 
 1. **Field names still carry structure.** `subsidiary_net_balance` tells the agent a
