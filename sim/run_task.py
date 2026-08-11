@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "sim")); sys.path.insert(0, str(ROOT / "verifiers"))
 from prepare import prepare
-from vcode import verify
+from vcode import verify_all as verify, steps_of
 
 ALLOWED = "mcp__erp,mcp__books,mcp__sheets,mcp__email,mcp__filings,mcp__docs,mcp__harness"
 DISALLOWED = "Bash,Edit,Write,Read,Glob,Grep,WebSearch,WebFetch,NotebookEdit,Task"
@@ -29,6 +29,9 @@ def run_trial(task_dir, agent="oracle", model=None, trial=1, _attempt=1):
     prepare(task_dir, run_dir)
 
     walk_len = len(json.loads((task_dir / "solution/walk.json").read_text()))
+    for _sd in steps_of(task_dir):
+        if (_sd / "walk.json").exists():
+            walk_len += len(json.loads((_sd / "walk.json").read_text()))
     budget = max(24, walk_len * 3 + 6)   # reference-relative turn budget, never a capability cap
     t0, final_text, num_turns, cost = time.time(), "", None, None
 
@@ -56,6 +59,25 @@ def run_trial(task_dir, agent="oracle", model=None, trial=1, _attempt=1):
                 final_text = (p.stdout + p.stderr)[-2000:]; agent_error = p.returncode != 0
         except subprocess.TimeoutExpired:
             final_text, agent_error = "AGENT_TIMEOUT(900s)", True
+        # multi-turn: later steps resume the SAME session against the SAME world state
+        sid = None
+        try: sid = json.loads(p.stdout.strip().splitlines()[-1]).get("session_id")
+        except Exception: pass
+        for sd in steps_of(task_dir):
+            si = sd / "instruction.md"
+            if not si.exists() or not sid: break
+            follow = ["claude", "-p", "--resume", sid, si.read_text(),
+                      "--mcp-config", str(run_dir / ".mcp.json"), "--strict-mcp-config",
+                      "--model", model, "--max-turns", str(budget), "--output-format", "json",
+                      "--allowedTools", ALLOWED, "--disallowedTools", DISALLOWED]
+            try:
+                pf = subprocess.run(follow, capture_output=True, text=True, timeout=900,
+                                    cwd=run_dir / "workdir")
+                out = json.loads(pf.stdout.strip().splitlines()[-1])
+                final_text += "\n\n[step " + sd.name + "] " + str(out.get("result", ""))[:800]
+                sid = out.get("session_id", sid)
+            except Exception as e:
+                final_text += f"\n\n[step {sd.name}] follow-up failed: {e!r}"; break
 
     v = verify(task_dir, run_dir)
     trace = [json.loads(l) for l in (run_dir / "trace.jsonl").read_text().splitlines() if l.strip()]

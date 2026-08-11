@@ -22,7 +22,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "sim")); sys.path.insert(0, str(ROOT / "verifiers"))
 from prepare import prepare
-from vcode import verify, table_hashes
+from vcode import verify_all as verify, table_hashes, steps_of
 
 FAIL = []
 def check(ok, task, code, msg):
@@ -79,6 +79,8 @@ def main():
         check(meta.get("family") == t.parent.name, name, "S2", "metadata.family != directory")
         check(bool(meta.get("acceptance_label")), name, "S2", "missing acceptance_label")
         walk = json.loads((t / "solution/walk.json").read_text())
+        for sd in steps_of(t):
+            if (sd / "walk.json").exists(): walk += json.loads((sd / "walk.json").read_text())
         check(meta.get("walk_len") == len(walk), name, "S2",
               f"walk_len={meta.get('walk_len')} != actual {len(walk)}")
 
@@ -94,6 +96,13 @@ def main():
         for c in checks.get("answer_checks", []):
             check(c["field"].lower() in instr, name, "S4",
                   f"answer field {c['field']!r} never mentioned in instruction.md")
+        for sd in steps_of(t):                      # each later turn states its own fields
+            sc = json.loads((sd / "checks.json").read_text())
+            si = (sd / "instruction.md").read_text().lower() if (sd / "instruction.md").exists() else ""
+            for c in sc.get("answer_checks", []):
+                check(c["field"].lower() in si, name, "S4",
+                      f"step {sd.name}: field {c['field']!r} not in its instruction.md")
+            checks.setdefault("trace_checks", []).extend(sc.get("trace_checks", []))
         walk_servers = {s["server"] for s in walk}
         for c in checks.get("trace_checks", []):
             if c["type"] == "required_servers":

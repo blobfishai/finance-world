@@ -1,0 +1,36 @@
+{
+ "answer_checks": [
+  {
+   "field": "feb_erp_ap",
+   "type": "number",
+   "expect": 17000.0,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "feb_workbook_ap",
+   "type": "number",
+   "expect": 13800.0,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "feb_variance",
+   "type": "number",
+   "expect": 3200.0,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "jan_item_resolved",
+   "type": "string",
+   "expect": "yes"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp",
+    "sheets"
+   ]
+  }
+ ]
+}

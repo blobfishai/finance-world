@@ -1,0 +1,53 @@
+{
+ "answer_checks": [
+  {
+   "field": "larger_company",
+   "type": "contains_all",
+   "expect": [
+    "ExxonMobil"
+   ]
+  },
+  {
+   "field": "xom_current_assets",
+   "type": "number",
+   "expect": 91990000000,
+   "tol_rel": 0.001
+  },
+  {
+   "field": "cat_current_assets",
+   "type": "number",
+   "expect": 45682000000,
+   "tol_rel": 0.001
+  },
+  {
+   "field": "difference",
+   "type": "number",
+   "expect": 46308000000,
+   "tol_rel": 0.001
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "filings"
+   ]
+  },
+  {
+   "type": "min_calls",
+   "server": "filings",
+   "n": 2
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

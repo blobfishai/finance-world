@@ -1,0 +1,521 @@
+{
+  "_comment": "Every use-case scenario harvested from our sources, mapped to the task that runs it. sim/coverage.py verifies each mapping against the validated task set and writes docs/COVERAGE.md. status: covered | gap | out_of_scope (with reason).",
+  "scenarios": [
+    {
+      "id": "fb.erp.credit_limit",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Credit limit lookup",
+      "tasks": [
+        "erp_qa/credit-limit-adatum",
+        "erp_qa_fb/credit-limit-1",
+        "erp_qa_fb/credit-limit-2",
+        "erp_qa_fb/credit-limit-3",
+        "erp_qa_fb/credit-limit-4"
+      ]
+    },
+    {
+      "id": "fb.erp.credit_rating",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Credit rating lookup",
+      "tasks": [
+        "erp_qa_fb/credit-rating-1"
+      ]
+    },
+    {
+      "id": "fb.erp.customer_setup",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Customer setup / payment terms",
+      "tasks": [
+        "erp_qa_fb/customer-setup-1",
+        "erp_qa_fb/customer-setup-2",
+        "erp_qa_fb/customer-setup-3"
+      ]
+    },
+    {
+      "id": "fb.erp.aged_balance",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Aged balance / top-N past due by group",
+      "tasks": [
+        "erp_qa_fb/aged-balance-1",
+        "erp_qa_fb/aged-balance-2",
+        "erp_qa_fb/aged-balance-3",
+        "erp_qa_fb/aged-balance-4",
+        "erp_qa/ar-balance-fourthcoffee-east"
+      ]
+    },
+    {
+      "id": "fb.erp.outstanding_balance",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Unpaid invoices for a customer",
+      "tasks": [
+        "erp_qa_fb/outstanding-balance-1"
+      ]
+    },
+    {
+      "id": "fb.erp.payment_history",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Payment history / largest payment",
+      "tasks": [
+        "erp_qa_fb/payment-history-1",
+        "erp_qa_fb/payment-history-2",
+        "erp_qa_fb/payment-history-3",
+        "erp_qa_fb/payment-history-4"
+      ]
+    },
+    {
+      "id": "fb.erp.cash_collections",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Cash collected in period",
+      "tasks": [
+        "erp_qa_fb/cash-collections-1"
+      ]
+    },
+    {
+      "id": "fb.erp.invoicing_history",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Invoicing history / totals",
+      "tasks": [
+        "erp_qa_fb/invoicing-history-1",
+        "erp_qa_fb/invoicing-history-2",
+        "erp_qa_fb/invoicing-history-3",
+        "erp_qa_fb/invoicing-history-4"
+      ]
+    },
+    {
+      "id": "fb.erp.cash_discounts",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Cash discount capture / discount-window payments",
+      "tasks": [
+        "erp_qa_fb/cash-disocunts-1",
+        "erp_qa_fb/cash-disocunts-2",
+        "erp_qa/cash-disc-fourthcoffee-east"
+      ]
+    },
+    {
+      "id": "fb.erp.collections",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Collections pools / unassigned customers",
+      "tasks": [
+        "erp_qa_fb/collections-1",
+        "erp_qa_fb/collections-2",
+        "erp_qa_fb/collections-3",
+        "erp_qa_fb/collections-4"
+      ]
+    },
+    {
+      "id": "fb.erp.collections_tasks",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Open collections activities",
+      "tasks": [
+        "erp_qa_fb/collections-tasks-1",
+        "erp_qa_fb/collections-tasks-2",
+        "erp_qa_fb/collections-tasks-3"
+      ]
+    },
+    {
+      "id": "fb.erp.collection_letters",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Collection letter level + recent payment",
+      "tasks": [
+        "erp_qa/collections-sparrow",
+        "collections_ops/escalate-sparrow-letter3"
+      ]
+    },
+    {
+      "id": "fb.erp.credit_notes",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Unapplied credit notes",
+      "tasks": [
+        "erp_qa_fb/credit-notes-1"
+      ]
+    },
+    {
+      "id": "fb.erp.dispute",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Disputed transactions",
+      "tasks": [
+        "erp_qa_fb/dispute-1"
+      ]
+    },
+    {
+      "id": "fb.erp.deductions",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Open deductions",
+      "tasks": [
+        "erp_qa_fb/discounts-1"
+      ]
+    },
+    {
+      "id": "fb.erp.sales_orders",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Sales orders / hold codes",
+      "tasks": [
+        "erp_qa_fb/sales-orders-1",
+        "erp_qa_fb/sales-orders-2",
+        "erp_qa_fb/sales-orders-3",
+        "erp_qa_fb/sales-orders-4"
+      ]
+    },
+    {
+      "id": "fb.erp.vendor_balance",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Vendor balance (by vendor / currency)",
+      "tasks": [
+        "erp_qa_fb/vendor-balance-1",
+        "erp_qa_fb/vendor-balance-2",
+        "erp_qa_fb/vendor-balance-3",
+        "erp_qa_fb/vendor-balance-4"
+      ]
+    },
+    {
+      "id": "fb.erp.ap_invoices",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Open / pending AP invoices",
+      "tasks": [
+        "erp_qa_fb/ap-invoices-1",
+        "erp_qa/ap-overdue-usmf"
+      ]
+    },
+    {
+      "id": "fb.erp.ap_payments",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Methods of payment / payment accounts",
+      "tasks": [
+        "erp_qa_fb/ap-payments-1"
+      ]
+    },
+    {
+      "id": "fb.erp.ap_purchase_orders",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Open purchase orders for a vendor",
+      "tasks": [
+        "erp_qa_fb/ap-purchase-orders-1"
+      ]
+    },
+    {
+      "id": "fb.erp.vendors_discount",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Vendor early-payment discount terms",
+      "tasks": [
+        "erp_qa_fb/vendors-1",
+        "erp_qa_fb/vendors-2"
+      ]
+    },
+    {
+      "id": "fb.erp.empty_answer_trap",
+      "source": "microsoft/FinanceBenchmark erp_qa",
+      "name": "Deliberately-empty ground truth (hallucination trap)",
+      "tasks": [
+        "erp_qa/due-next-week-adventure"
+      ]
+    },
+    {
+      "id": "fb.fin.single_figure",
+      "source": "microsoft/FinanceBenchmark finance_qa",
+      "name": "Single reported GAAP figure",
+      "tasks": [
+        "finance_qa/xom-current-assets"
+      ]
+    },
+    {
+      "id": "fb.fin.ratio",
+      "source": "microsoft/FinanceBenchmark finance_qa",
+      "name": "Derived ratio (multi-concept, averaging convention)",
+      "tasks": [
+        "finance_qa/wmt-inventory-turnover",
+        "business_brief/brief-caterpillar"
+      ]
+    },
+    {
+      "id": "fb.fin.quarterly",
+      "source": "microsoft/FinanceBenchmark finance_qa",
+      "name": "Quarterly figure with format constraint",
+      "tasks": [
+        "finance_qa/tsla-operating-margin-q3"
+      ]
+    },
+    {
+      "id": "fb.fin.multi_company",
+      "source": "microsoft/FinanceBenchmark finance_qa",
+      "name": "Multi-company composite comparison",
+      "tasks": [
+        "finance_qa/xom-cat-liquidity-compare"
+      ]
+    },
+    {
+      "id": "fb.fin.trend",
+      "source": "microsoft/FinanceBenchmark finance_qa",
+      "name": "Multi-year trend / N-year average",
+      "tasks": [
+        "business_brief/brief-caterpillar-v2"
+      ]
+    },
+    {
+      "id": "fb.brief",
+      "source": "microsoft/FinanceBenchmark business_brief",
+      "name": "Structured company brief incl. internal AR/AP section",
+      "tasks": [
+        "business_brief/brief-caterpillar",
+        "business_brief/brief-caterpillar-v2"
+      ]
+    },
+    {
+      "id": "wf.01.bank_rec",
+      "source": "research/finance-agent-workflows.md",
+      "name": "Bank reconciliation",
+      "tasks": [
+        "bank_rec/statement-divergence-feb"
+      ]
+    },
+    {
+      "id": "wf.02.close",
+      "source": "research/finance-agent-workflows.md",
+      "name": "Month-end close & subledger tie-out",
+      "tasks": [
+        "close_mgmt/subledger-tieout-feb"
+      ]
+    },
+    {
+      "id": "wf.03.payment_run",
+      "source": "research/finance-agent-workflows.md",
+      "name": "Payment run / proposal assembly",
+      "tasks": [
+        "payment_proposal/friday-run-mar06"
+      ]
+    },
+    {
+      "id": "wf.04.cash_app",
+      "source": "research/finance-agent-workflows.md",
+      "name": "Cash application from remittance",
+      "tasks": [
+        "cash_app/remittance-batch-mar02"
+      ]
+    },
+    {
+      "id": "wf.05.vendor_master",
+      "source": "research/finance-agent-workflows.md",
+      "name": "Vendor master / bank-change fraud check",
+      "tasks": [
+        "vendor_master/bank-change-verify"
+      ]
+    },
+    {
+      "id": "wf.06.three_way_match",
+      "source": "research/finance-agent-workflows.md",
+      "name": "3-way match exception handling",
+      "tasks": [
+        "threeway_match/ppinv-exceptions-mar"
+      ]
+    },
+    {
+      "id": "wf.07.intercompany",
+      "source": "research/finance-agent-workflows.md",
+      "name": "Intercompany reconciliation",
+      "tasks": [
+        "cross_system/intercompany-tieout-feb"
+      ]
+    },
+    {
+      "id": "wf.08.cash_forecast",
+      "source": "research/finance-agent-workflows.md",
+      "name": "Direct-method cash forecast",
+      "tasks": [
+        "cash_forecast/cesp-four-week"
+      ]
+    },
+    {
+      "id": "wf.09.pbc",
+      "source": "research/finance-agent-workflows.md",
+      "name": "Audit PBC evidence gathering",
+      "tasks": [
+        "pbc/approval-evidence-q1"
+      ]
+    },
+    {
+      "id": "wf.10.credit_ops",
+      "source": "research/finance-agent-workflows.md",
+      "name": "Credit review / collections escalation & holds",
+      "tasks": [
+        "collections_ops/escalate-sparrow-letter3",
+        "business_brief/brief-caterpillar-v2"
+      ]
+    },
+    {
+      "id": "wf.11.expense_audit",
+      "source": "research/finance-agent-workflows.md",
+      "name": "T&E policy audit",
+      "tasks": [
+        "expense_audit/te-sample-feb"
+      ]
+    },
+    {
+      "id": "wf.12.reporting_tieout",
+      "source": "research/finance-agent-workflows.md",
+      "name": "External reporting tie-out (public vs internal)",
+      "tasks": [
+        "business_brief/brief-caterpillar",
+        "finance_qa/xom-cat-liquidity-compare"
+      ]
+    },
+    {
+      "id": "chaos.01.email_only_invoice",
+      "source": "research/domain-workflows.md \u00a73",
+      "name": "Invoice exists only in email",
+      "tasks": [
+        "cross_system/email-invoice-meadow"
+      ]
+    },
+    {
+      "id": "chaos.02.subsidiary_system",
+      "source": "research/domain-workflows.md \u00a73",
+      "name": "Balances split across a second accounting system",
+      "tasks": [
+        "cross_system/total-ar-adventure-group",
+        "cross_system/total-ar-adventure-group-v2"
+      ]
+    },
+    {
+      "id": "chaos.03.credit_memo_elsewhere",
+      "source": "research/domain-workflows.md \u00a73",
+      "name": "Credit memo only in the subsidiary system",
+      "tasks": [
+        "cross_system/total-ar-adventure-group"
+      ]
+    },
+    {
+      "id": "chaos.04.spreadsheet_only",
+      "source": "research/domain-workflows.md \u00a73",
+      "name": "Records kept only in a shadow spreadsheet",
+      "tasks": [
+        "cross_system/total-ar-adventure-group-v2",
+        "cross_system/email-invoice-meadow"
+      ]
+    },
+    {
+      "id": "chaos.05.version_drift",
+      "source": "research/domain-workflows.md \u00a73",
+      "name": "Stale tracker vs live system",
+      "tasks": [
+        "cross_system/tracker-formula-drift"
+      ]
+    },
+    {
+      "id": "chaos.06.formula_drift",
+      "source": "research/domain-workflows.md \u00a73",
+      "name": "Cached spreadsheet formula disagrees with its rows",
+      "tasks": [
+        "cross_system/tracker-formula-drift"
+      ]
+    },
+    {
+      "id": "chaos.07.timing_gap",
+      "source": "research/domain-workflows.md \u00a73",
+      "name": "Bank-cleared but unposted / in-transit item",
+      "tasks": [
+        "bank_rec/statement-divergence-feb",
+        "cross_system/intercompany-tieout-feb"
+      ]
+    },
+    {
+      "id": "chaos.08.unapplied_cash",
+      "source": "research/domain-workflows.md \u00a73",
+      "name": "Payment with no remittance advice",
+      "tasks": [
+        "cash_app/remittance-batch-mar02"
+      ]
+    },
+    {
+      "id": "chaos.09.approval_in_email",
+      "source": "research/domain-workflows.md \u00a73",
+      "name": "Approval evidence only in a mail thread",
+      "tasks": [
+        "pbc/approval-evidence-q1"
+      ]
+    },
+    {
+      "id": "chaos.10.workbook_vs_erp",
+      "source": "research/domain-workflows.md \u00a73",
+      "name": "Close workbook disagrees with the subledger",
+      "tasks": [
+        "close_mgmt/subledger-tieout-feb"
+      ]
+    },
+    {
+      "id": "chaos.11.near_duplicate",
+      "source": "research/domain-workflows.md \u00a73",
+      "name": "Near-duplicate invoice / lookalike identifiers",
+      "tasks": [
+        "erp_qa/ar-balance-fourthcoffee-east"
+      ]
+    },
+    {
+      "id": "chaos.12.bec_lookalike_domain",
+      "source": "research/domain-workflows.md \u00a73",
+      "name": "Business email compromise via lookalike domain",
+      "tasks": [
+        "vendor_master/bank-change-verify"
+      ]
+    },
+    {
+      "id": "ext.tau_bench.policy_ops",
+      "source": "tau-bench",
+      "name": "Policy-constrained operation with state-diff grading",
+      "tasks": [
+        "collections_ops/escalate-sparrow-letter3",
+        "payment_proposal/friday-run-mar06"
+      ]
+    },
+    {
+      "id": "ext.agentcompany.invoice_match",
+      "source": "TheAgentCompany",
+      "name": "Invoice matching against source documents",
+      "tasks": [
+        "threeway_match/ppinv-exceptions-mar"
+      ]
+    },
+    {
+      "id": "ext.financebench.filing_qa",
+      "source": "Patronus FinanceBench",
+      "name": "Filing-grounded QA with evidence",
+      "tasks": [
+        "finance_qa/xom-current-assets",
+        "finance_qa/wmt-inventory-turnover"
+      ]
+    },
+    {
+      "id": "ext.finqa.numeric_program",
+      "source": "FinQA / TAT-QA",
+      "name": "Multi-step numeric reasoning over filing data",
+      "tasks": [
+        "finance_qa/wmt-inventory-turnover",
+        "finance_qa/tsla-operating-margin-q3",
+        "business_brief/brief-caterpillar-v2"
+      ]
+    },
+    {
+      "id": "ext.accountingbench.long_horizon",
+      "source": "AccountingBench-class",
+      "name": "Long-horizon close with state carried across steps",
+      "tasks": [
+        "close_mgmt/two-period-close-cesq",
+        "close_mgmt/subledger-tieout-feb"
+      ]
+    },
+    {
+      "id": "ext.convfinqa.multi_turn",
+      "source": "ConvFinQA",
+      "name": "Multi-turn follow-up questioning",
+      "tasks": [
+        "finance_qa/xom-current-assets-followup"
+      ]
+    },
+    {
+      "id": "ext.crmarena.crm",
+      "source": "CRMArena",
+      "name": "CRM sales-ops scenarios",
+      "tasks": [],
+      "status": "out_of_scope",
+      "note": "sales domain, not finance \u2014 belongs to the sales world (docs/TOOL-CENSUS.md exclusion rule)"
+    }
+  ]
+}

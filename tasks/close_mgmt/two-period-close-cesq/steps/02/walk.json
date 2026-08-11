@@ -1,0 +1,28 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT invoice, trans_date, ROUND(amount-settled,2) AS open FROM erp_vend_trans WHERE dataareaid='CESQ' AND txn_type='Invoice' AND closed=0 AND trans_date <= '2026-02-28'"
+  }
+ },
+ {
+  "server": "sheets",
+  "tool": "workbook_used_range",
+  "args": {
+   "item": "CESQ-close-workbook-2026-02.xlsx"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "feb_erp_ap": 17000.0,
+    "feb_workbook_ap": 13800.0,
+    "feb_variance": 3200.0,
+    "jan_item_resolved": "yes"
+   }
+  }
+ }
+]

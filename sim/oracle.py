@@ -16,6 +16,10 @@ def replay(task_dir, run_dir):
     env = json.loads((Path(run_dir) / ".mcp.json").read_text())["mcpServers"]["erp"]["env"]
     os.environ.update(env)
     walk = json.loads((Path(task_dir) / "solution/walk.json").read_text())
+    steps_dir = Path(task_dir) / "steps"
+    if steps_dir.is_dir():
+        for sd in sorted(p for p in steps_dir.glob("*") if (p / "walk.json").exists()):
+            walk += json.loads((sd / "walk.json").read_text())
     servers = {}
     for i, step in enumerate(walk):
         s = step["server"]

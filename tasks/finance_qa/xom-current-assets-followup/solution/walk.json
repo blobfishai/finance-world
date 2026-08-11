@@ -1,0 +1,27 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "ExxonMobil"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "XOM",
+   "concept": "AssetsCurrent"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "current_assets_2024": 91990000000,
+    "source_form": "10-K"
+   }
+  }
+ }
+]

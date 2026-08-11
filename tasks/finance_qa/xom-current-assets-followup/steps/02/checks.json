@@ -1,0 +1,24 @@
+{
+ "answer_checks": [
+  {
+   "field": "current_assets_2023",
+   "type": "number",
+   "expect": 96609000000,
+   "tol_rel": 0.001
+  },
+  {
+   "field": "pct_change",
+   "type": "number",
+   "expect": -4.78,
+   "tol_abs": 0.02
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "filings"
+   ]
+  }
+ ]
+}

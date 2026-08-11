@@ -1,0 +1,20 @@
+[
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "XOM",
+   "concept": "AssetsCurrent"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "current_assets_2023": 96609000000,
+    "pct_change": -4.78
+   }
+  }
+ }
+]

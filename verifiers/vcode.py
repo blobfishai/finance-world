@@ -37,7 +37,9 @@ def parse_number(v):
 def norm(v): return re.sub(r"\s+", " ", str(v)).strip().lower()
 
 def verify(task_dir, run_dir):
-    checks = json.loads((Path(task_dir) / "tests/checks.json").read_text())
+    """Verify one step. `task_dir` is a task root (tests/checks.json) or a step dir (checks.json)."""
+    p = Path(task_dir) / "tests/checks.json"
+    checks = json.loads((p if p.exists() else Path(task_dir) / "checks.json").read_text())
     db = Path(run_dir) / "world.sqlite"
     failed = []
 
@@ -113,9 +115,27 @@ def verify(task_dir, run_dir):
             "n_tool_calls": len(trace),
             "servers_used": sorted({r['server'] for r in trace})}
 
+def steps_of(task_dir):
+    """Multi-step tasks (Harbor [[steps]] shape): steps/NN/{instruction.md,checks.json,walk.json}.
+    Step 0 is the task root; later steps run in the SAME world, so state carries across turns."""
+    d = Path(task_dir) / "steps"
+    return sorted(p for p in d.glob("*") if (p / "checks.json").exists()) if d.is_dir() else []
+
+def verify_all(task_dir, run_dir):
+    """Verify the root step plus every later step; reward 1 only if all pass."""
+    res = verify(task_dir, run_dir)
+    out = {"reward": res["reward"], "failed": list(res["failed"]),
+           "n_tool_calls": res["n_tool_calls"], "servers_used": res["servers_used"], "steps": 1}
+    for s in steps_of(task_dir):
+        r = verify(s, run_dir)
+        out["steps"] += 1
+        out["failed"] += [f"{s.name}:{f}" for f in r["failed"]]
+        out["reward"] = min(out["reward"], r["reward"])
+    return out
+
 if __name__ == "__main__":
     import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument("--task-dir", required=True); ap.add_argument("--run-dir", required=True)
     a = ap.parse_args()
-    print(json.dumps(verify(a.task_dir, a.run_dir)))
+    print(json.dumps(verify_all(a.task_dir, a.run_dir)))

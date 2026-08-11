@@ -1,0 +1,36 @@
+{
+ "answer_checks": [
+  {
+   "field": "current_assets_2024",
+   "type": "number",
+   "expect": 91990000000,
+   "tol_rel": 0.001
+  },
+  {
+   "field": "source_form",
+   "type": "contains_all",
+   "expect": [
+    "10-K"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "filings"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

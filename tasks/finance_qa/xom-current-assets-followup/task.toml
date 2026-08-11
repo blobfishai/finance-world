@@ -1,0 +1,24 @@
+schema_version = "1.4"
+
+[task]
+name = "finance_qa/xom-current-assets-followup"
+version = "0.1.0"
+description = "Multi-turn: a reported figure, then a follow-up that depends on the first answer (ConvFinQA-class conversational reasoning)."
+authors = ["nario-ai"]
+keywords = ["finance", "finance_qa", "multi-turn", "convfinqa"]
+
+[metadata]
+family = "finance_qa"
+origin = "ConvFinQA-class multi-turn follow-up (research/evals-and-benchmarks.md); closes coverage gap ext.convfinqa.multi_turn"
+difficulty = "medium"
+acceptance_label = "pending_calibration"
+walk_len = 5
+multi_turn = true
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

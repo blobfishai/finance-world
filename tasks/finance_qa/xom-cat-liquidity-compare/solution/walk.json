@@ -1,0 +1,38 @@
+[
+ {
+  "server": "filings",
+  "tool": "get_xbrl_frames",
+  "args": {
+   "concept": "AssetsCurrent",
+   "fy": "2024"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "XOM",
+   "concept": "AssetsCurrent"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "CAT",
+   "concept": "AssetsCurrent"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "larger_company": "ExxonMobil",
+    "xom_current_assets": 91990000000,
+    "cat_current_assets": 45682000000,
+    "difference": 46308000000
+   }
+  }
+ }
+]

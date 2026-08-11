@@ -1,0 +1,23 @@
+schema_version = "1.4"
+
+[task]
+name = "finance_qa/xom-cat-liquidity-compare"
+version = "0.1.0"
+description = "Multi-company comparison across the snapshot with a computed gap (FinanceBenchmark finance_qa multi-company segment)."
+authors = ["nario-ai"]
+keywords = ["finance", "finance_qa", "multi-company", "frames"]
+
+[metadata]
+family = "finance_qa"
+origin = "financebenchmark finance_qa (multi-company composite segment); exercises get_xbrl_frames across companies"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 4
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024
