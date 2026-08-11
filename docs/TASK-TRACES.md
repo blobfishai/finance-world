@@ -106,14 +106,14 @@ computed from SQLite at call time. SIMULATION ONLY.
 **Tool calls and real responses**
 
 1. **`sheets.get_drive_item`** `{"item": "AR-watchlist-tracker.xlsx"}`
-   → `{"id": "AR-watchlist-tracker.xlsx", "name": "AR-watchlist-tracker.xlsx", "lastModifiedDateTime": "2026-02-22T15:10:00Z", "createdBy": {"user": {"displayName": "casey.morgan"}}, "description": "High-risk AR watchlist reviewed in the weekly credit meeting", "rowCount": 5}`
+   → `{"id": "AR-watchlist-tracker.xlsx", "name": "AR-watchlist-tracker.xlsx", "lastModifiedDateTime": "2026-02-22T15:10:00Z", "createdBy": {"user": {"displayName": "casey.morgan"}}, "description": "High-risk AR watchlist reviewed in the weekly credit meeting", "rowCount": 10}`
 2. **`sheets.workbook_used_range`** `{"item": "AR-watchlist-tracker.xlsx"}`
-   → `{"address": "Sheet1!A1:E5", "addressLocal": "Sheet1!A1:E5", "rowCount": 5, "columnCount": 5, "cellCount": 25, "rowIndex": 0, "columnIndex": 0, "values": [["Customer", "Account", "Open balance USD", "Last reviewed", "Notes"], ["Northwind Field Services", "US-031", 52300.0, "2026-02-22", "payment plan discussed"], ["Tail …`
+   → `{"address": "Sheet1!A1:E10", "addressLocal": "Sheet1!A1:E10", "rowCount": 10, "columnCount": 5, "cellCount": 50, "rowIndex": 0, "columnIndex": 0, "values": [["Customer", "Account", "Open balance USD", "Last reviewed", "Notes"], ["Northwind Field Services", "US-031", 52300.0, "2026-02-22", "payment plan discussed"], ["T …`
 3. **`erp.data_find_entities_sql`** `{"sql": "SELECT c.name, ROUND(SUM(t.amount - t.settled), 2) AS open FROM erp_cust_trans t JOIN erp_customers c ON c.account = t.account WHERE t.account IN ('US-031','US-0 …`
    → `{"@odata.context": "$metadata#sql", "value": [{"name": "Northwind Field Services", "open": 52300.0}, {"name": "Ostara Labs", "open": 33500.0}, {"name": "Tailwind Bikes", "open": 41650.0}], "@odata.count": 3, "truncated_at": 200}`
 4. **`erp.data_find_entities_sql`** `{"sql": "SELECT ROUND(SUM(amount - settled), 2) AS total FROM erp_cust_trans WHERE account IN ('US-031','US-032','US-033') AND txn_type='Invoice' AND closed=0"}`
    → `{"@odata.context": "$metadata#sql", "value": [{"total": 127450.0}], "@odata.count": 1, "truncated_at": 200}`
-5. **`harness.submit_answer`** `{"answers": {"tracker_cached_total": 118400.0, "tracker_rows_sum": 121900.0, "erp_live_total": 127450.0, "stale_customers": "Tailwind Bikes, Ostara Labs"}}`
+5. **`harness.submit_answer`** `{"answers": {"tracker_cached_total": 118400.0, "tracker_rows_sum": 228138.01, "erp_live_total": 127450.0, "stale_customers": "Tailwind Bikes, Ostara Labs"}}`
    → `{"recorded_fields": ["erp_live_total", "stale_customers", "tracker_cached_total", "tracker_rows_sum"]}`
 
 **Verifier**
@@ -121,7 +121,7 @@ computed from SQLite at call time. SIMULATION ONLY.
 | field | expected | submitted | |
 |---|---|---|---|
 | `tracker_cached_total` | 118400.0 | 118400.0 | PASS |
-| `tracker_rows_sum` | 121900.0 | 121900.0 | PASS |
+| `tracker_rows_sum` | 228138.01 | 228138.01 | PASS |
 | `erp_live_total` | 127450.0 | 127450.0 | PASS |
 | `stale_customers` | ["tailwind", "ostara"] | "Tailwind Bikes, Ostara Labs" | PASS |
 

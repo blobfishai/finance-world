@@ -43,7 +43,8 @@ def one(cx, sql, args=()):
 def h_credit_limit(cx, acct, name, side, q):
     v = one(cx, "SELECT credit_max FROM erp_customers WHERE account=?", (acct,))
     return ({"credit_limit": (v, "number"), "customer_name": (name, "contains")},
-            [("data_find_entities", {"entity": "Customers", "filters": {"account": acct}})])
+            [("data_find_entities", {"entity": "Customers", "filters": {"account": acct}})],
+            {"credit_limit": f"SELECT credit_max FROM erp_customers WHERE account='{acct}'"})
 
 def h_credit_rating(cx, acct, name, side, q):
     v = cx.execute("SELECT credit_rating FROM erp_customers WHERE account=?", (acct,)).fetchone()[0]
@@ -59,8 +60,11 @@ def h_customer_setup(cx, acct, name, side, q):
 def h_outstanding(cx, acct, name, side, q):
     n = one(cx, "SELECT COUNT(*) FROM erp_cust_trans WHERE account=? AND txn_type='Invoice' AND closed=0", (acct,))
     t = round(one(cx, "SELECT SUM(amount-settled) FROM erp_cust_trans WHERE account=? AND txn_type='Invoice' AND closed=0", (acct,)), 2)
+    _w = f"account='{acct}' AND txn_type='Invoice' AND closed=0"
     return ({"unpaid_invoice_count": (n, "number"), "unpaid_total": (t, "number")},
-            [("data_find_entities_sql", {"sql": f"SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_cust_trans WHERE account='{acct}' AND txn_type='Invoice' AND closed=0"})])
+            [("data_find_entities_sql", {"sql": f"SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_cust_trans WHERE {_w}"})],
+            {"unpaid_invoice_count": f"SELECT COUNT(*) FROM erp_cust_trans WHERE {_w}",
+             "unpaid_total": f"SELECT ROUND(SUM(amount-settled),2) FROM erp_cust_trans WHERE {_w}"})
 
 def h_aged_balance(cx, acct, name, side, q):
     grp = re.search(r"[Gg]roup (\d+)", q)
@@ -111,7 +115,9 @@ def h_invoicing_history(cx, acct, name, side, q):
     n = one(cx, "SELECT COUNT(*) FROM erp_cust_trans WHERE account=? AND txn_type='Invoice'", (acct,))
     t = round(one(cx, "SELECT SUM(amount) FROM erp_cust_trans WHERE account=? AND txn_type='Invoice'", (acct,)), 2)
     return ({"invoice_count": (n, "number"), "invoiced_total": (t, "number")},
-            [("data_find_entities_sql", {"sql": f"SELECT COUNT(*) AS n, ROUND(SUM(amount),2) AS total FROM erp_cust_trans WHERE account='{acct}' AND txn_type='Invoice'"})])
+            [("data_find_entities_sql", {"sql": f"SELECT COUNT(*) AS n, ROUND(SUM(amount),2) AS total FROM erp_cust_trans WHERE account='{acct}' AND txn_type='Invoice'"})],
+            {"invoice_count": f"SELECT COUNT(*) FROM erp_cust_trans WHERE account='{acct}' AND txn_type='Invoice'",
+             "invoiced_total": f"SELECT ROUND(SUM(amount),2) FROM erp_cust_trans WHERE account='{acct}' AND txn_type='Invoice'"})
 
 def h_vendor_balance(cx, acct, name, side, q):
     cur = "EUR" if "eur" in q.lower() else ("USD" if "usd" in q.lower() else None)
@@ -121,7 +127,8 @@ def h_vendor_balance(cx, acct, name, side, q):
                 [("data_find_entities_sql", {"sql": f"SELECT ROUND(SUM(amount-settled),2) AS ap_balance FROM erp_vend_trans WHERE currency='{cur}' AND txn_type='Invoice' AND closed=0"})])
     t = round(one(cx, "SELECT SUM(amount-settled) FROM erp_vend_trans WHERE account=? AND txn_type='Invoice' AND closed=0", (acct,)), 2)
     return ({"ap_balance": (t, "number"), "vendor_account": (acct, "contains")},
-            [("data_find_entities_sql", {"sql": f"SELECT ROUND(SUM(amount-settled),2) AS ap_balance FROM erp_vend_trans WHERE account='{acct}' AND txn_type='Invoice' AND closed=0"})])
+            [("data_find_entities_sql", {"sql": f"SELECT ROUND(SUM(amount-settled),2) AS ap_balance FROM erp_vend_trans WHERE account='{acct}' AND txn_type='Invoice' AND closed=0"})],
+            {"ap_balance": f"SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_vend_trans WHERE account='{acct}' AND txn_type='Invoice' AND closed=0"})
 
 def h_vendors_discount(cx, acct, name, side, q):
     code = cx.execute("SELECT cash_disc_code FROM erp_vendors WHERE account=?", (acct,)).fetchone()[0]
@@ -166,7 +173,8 @@ def h_credit_notes(cx, acct, name, side, q):
 def h_dispute(cx, acct, name, side, q):
     n = one(cx, "SELECT COUNT(*) FROM erp_cust_trans WHERE account=? AND disputed=1", (acct,))
     return ({"disputed_transaction_count": (n, "number")},
-            [("data_find_entities_sql", {"sql": f"SELECT invoice, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account='{acct}' AND disputed=1"})])
+            [("data_find_entities_sql", {"sql": f"SELECT invoice, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account='{acct}' AND disputed=1"})],
+            {"disputed_transaction_count": f"SELECT COUNT(*) FROM erp_cust_trans WHERE account='{acct}' AND disputed=1"})
 
 def h_deductions(cx, acct, name, side, q):
     n = one(cx, "SELECT COUNT(*) FROM erp_cust_trans WHERE account=? AND deduction=1 AND closed=0", (acct,))
@@ -253,7 +261,8 @@ HANDLERS = {
     "AP Payments": h_ap_payments,
 }
 
-def emit(out_dir, name, query, scenario, segment, fields, steps):
+def emit(out_dir, name, query, scenario, segment, fields, steps, sqls=None):
+    sqls = sqls or {}
     d = out_dir / name
     (d / "tests").mkdir(parents=True, exist_ok=True)
     (d / "solution").mkdir(parents=True, exist_ok=True)
@@ -267,8 +276,10 @@ def emit(out_dir, name, query, scenario, segment, fields, steps):
         "state_checks": [{"type": "writes_only", "tables": ["answers"]}]}
     for k, (v, kind) in fields.items():
         if kind == "number":
-            checks["answer_checks"].append({"field": k, "type": "number", "expect": v,
-                                            "tol_abs": 0.02 if isinstance(v, float) else 0})
+            ac = {"field": k, "type": "number", "expect": v,
+                  "tol_abs": 0.02 if isinstance(v, float) else 0}
+            if k in sqls: ac["gt_sql"] = sqls[k]
+            checks["answer_checks"].append(ac)
         elif kind == "contains":
             checks["answer_checks"].append({"field": k, "type": "contains_all", "expect": [str(v)]})
         else:
@@ -333,9 +344,9 @@ def main():
         try: res = h(cx, acct, name, side, q)
         except Exception as e: skipped[sc] = skipped.get(sc, 0) + 1; continue
         if not res: skipped[sc] = skipped.get(sc, 0) + 1; continue
-        fields, steps = res
+        fields, steps, sqls = (res + (None,))[:3] if len(res) < 3 else res
         per[sc] = per.get(sc, 0) + 1
-        emit(out_dir, f"{slug(sc)}-{per[sc]}", q, sc, seg, fields, steps)
+        emit(out_dir, f"{slug(sc)}-{per[sc]}", q, sc, seg, fields, steps, sqls)
         made += 1
     print(f"generated {made} tasks into {a.out}")
     for k, v in sorted(per.items()): print(f"   {k}: {v}")

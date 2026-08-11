@@ -78,15 +78,23 @@ ask what they grade.**
 
 ## Residual realism gaps (honest list)
 
-1. **Field names still carry structure.** `subsidiary_net_balance` tells the agent a
+1. **Task truth is now task-owned where it can be.** Entity-specific tasks seed (and where
+   needed clear) their own counterparty rows, so regenerating the shared ledger cannot
+   silently gut a task — the failure mode that turned Fourth Coffee East's balance to zero.
+   World-wide questions (total overdue AP) can't do this and are protected by `gt_sql`/S11
+   instead.
+2. **Field names still carry structure.** `subsidiary_net_balance` tells the agent a
    subsidiary exists; `tracker_cached_total` hints the tracker is stale. A harder variant
    would ask for one number and grade the reasoning trace instead.
-2. **The core ledger has almost no cash** — 3,467 invoices, 2 payments, 0 settlements. No
-   partial settlements, no payment history, no closed-by-cash invoices. This is the single
-   biggest realism defect in the world and it makes several cloned answers trivially zero.
-3. **Signal-to-noise is too high** — 14-row expense extracts where real ones run to
-   thousands; the pattern is visible by eye rather than by aggregation.
-4. **72% of tasks are ≤4 tool calls** — authentic questions, but lookup-shaped work. The
+3. ~~The core ledger has almost no cash~~ — **FIXED** by `world/etl/load_cash.py`: the
+   ledger now carries 2,182 invoices closed by cash against 1,277 open, 146 partially
+   settled short-pays, 4,337 settlements, 107 with the discount taken, and payment
+   behaviour that varies by credit rating.
+4. ~~Signal-to-noise is too high~~ — **IMPROVED**: the six-month expense extract is 66 rows
+   (the six banded claims must be found by aggregation, not by eye), the bank statement 21,
+   the lockbox 15, the AR watchlist 10. Real extracts are larger still, but the findings no
+   longer sit in a hand-sized list.
+5. **Most clone tasks are ≤4 tool calls** — authentic questions, but lookup-shaped work. The
    realistic *work* lives in the ~15 hand-authored workflow tasks.
-5. **Everything happens on one frozen day, in one sitting**, and the scripted counterparty
+6. **Everything happens on one frozen day, in one sitting**, and the scripted counterparty
    always replies immediately and helpfully.

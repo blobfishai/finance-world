@@ -4,7 +4,8 @@
    "field": "credit_limit",
    "type": "number",
    "expect": 10000.0,
-   "tol_abs": 0.02
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT credit_max FROM erp_customers WHERE account='SYNCUS-0741'"
   },
   {
    "field": "customer_name",

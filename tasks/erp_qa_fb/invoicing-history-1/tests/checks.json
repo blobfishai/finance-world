@@ -4,13 +4,15 @@
    "field": "invoice_count",
    "type": "number",
    "expect": 2,
-   "tol_abs": 0
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_cust_trans WHERE account='SYNCUS-0317' AND txn_type='Invoice'"
   },
   {
    "field": "invoiced_total",
    "type": "number",
    "expect": 38185.41,
-   "tol_abs": 0.02
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(SUM(amount),2) FROM erp_cust_trans WHERE account='SYNCUS-0317' AND txn_type='Invoice'"
   }
  ],
  "trace_checks": [

@@ -4,7 +4,8 @@
    "field": "disputed_transaction_count",
    "type": "number",
    "expect": 0,
-   "tol_abs": 0
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_cust_trans WHERE account='SYNCUS-0238' AND disputed=1"
   }
  ],
  "trace_checks": [

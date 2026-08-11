@@ -1,13 +1,50 @@
 {
-  "answer_checks": [
-    {"field": "tracker_cached_total", "type": "number", "expect": 118400.00, "tol_abs": 0.02},
-    {"field": "tracker_rows_sum", "type": "number", "expect": 121900.00, "tol_abs": 0.02},
-    {"field": "erp_live_total", "type": "number", "expect": 127450.00, "tol_abs": 0.02},
-    {"field": "stale_customers", "type": "contains_all", "expect": ["tailwind", "ostara"]}
-  ],
-  "trace_checks": [
-    {"type": "required_servers", "servers": ["erp", "sheets"]},
-    {"type": "reads_before_submit"}
-  ],
-  "state_checks": [{"type": "writes_only", "tables": ["answers"]}]
+ "answer_checks": [
+  {
+   "field": "tracker_cached_total",
+   "type": "number",
+   "expect": 118400.0,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "tracker_rows_sum",
+   "type": "number",
+   "expect": 228138.01,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "erp_live_total",
+   "type": "number",
+   "expect": 127450.0,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "stale_customers",
+   "type": "contains_all",
+   "expect": [
+    "tailwind",
+    "ostara"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp",
+    "sheets"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
 }
