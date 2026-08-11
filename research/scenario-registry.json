@@ -580,9 +580,10 @@
    "id": "tatqa.scale_unit",
    "source": "TAT-QA (repo sweep)",
    "name": "Scale/unit graded as its own field",
-   "tasks": [],
-   "status": "gap",
-   "note": "verifier addition: require a `unit`/`scale` answer field (millions vs units) alongside the number"
+   "tasks": [
+    "finance_qa/scale-trap-lmt"
+   ],
+   "note": "closed 2026-08-11: verifiers/vcode.py gained a `scale` check type (units/thousands/millions/billions/percent with synonyms) and now reports `scale_error` on ANY numeric check when the answer is a clean 1e3/1e6/1e9 multiple of the truth, so a unit slip is named rather than filed as ordinary arithmetic drift"
   },
   {
    "id": "art.tolerance_dialect",

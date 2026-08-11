@@ -1,0 +1,67 @@
+{
+ "task": "finance_qa/scale-trap-lmt",
+ "family": "finance_qa",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 6,
+ "walk_len": 6,
+ "budget_turns": 60,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.1,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 6}\n",
+ "trace": [
+  {
+   "ts": 1786472743.507421,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"Lockheed Martin\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786472743.5078819,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"LMT\", \"concept\": \"Revenues\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786472743.508379,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"LMT\", \"concept\": \"OperatingIncomeLoss\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786472743.5089438,
+   "server": "filings",
+   "tool": "full_text_search",
+   "args": "{\"q\": \"in millions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786472743.5094678,
+   "server": "filings",
+   "tool": "get_submissions",
+   "args": "{\"ticker\": \"LMT\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786472743.5115242,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"revenue\": 71043, \"revenue_scale\": \"millions\", \"revenue_usd\": 71043000000, \"operating_margin_pct\": 9.87, \"source_form\": \"10-K\"}}",
+   "ok": true
+  }
+ ]
+}

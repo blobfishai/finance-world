@@ -1,0 +1,30 @@
+schema_version = "1.4"
+
+[task]
+name = "finance_qa/scale-trap-lmt"
+version = "0.1.0"
+description = "Report FY2024 net sales with its scale stated explicitly, reconcile the millions-denominated statement table against absolute-dollar XBRL, and compute the margin."
+authors = ["nario-ai"]
+keywords = ["finance", "finance_qa", "filings", "scale", "units"]
+
+[metadata]
+family = "finance_qa"
+origin = "closes tracked coverage gap tatqa.scale_unit (sim/coverage.py); NExTplusplus/TAT-QA grades `scale` (thousand/million/billion/percent) as a separately annotated field — research/evals-and-benchmarks.md; round-2 ledger row 28 (add a scale/unit field rather than widening tolerances until units stop mattering)"
+difficulty = "medium"
+acceptance_label = "pending_calibration"
+walk_len = 6
+
+# Objective non-collapse (M3): the statement table in the 10-K excerpt reads 71,043 and the
+# XBRL fact reads 71,043,000,000. Copying either one into the wrong field is the failure the
+# credit manager is describing, and the verifier now names it `scale_error` rather than
+# filing it as ordinary arithmetic drift.
+naive_answer = "71043"
+graded_answer = "71043000000"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

@@ -10,6 +10,10 @@ checks.json:
               max(tol_abs, |expect|*tol_rel); default exact to 0.01.
       string: case/space-insensitive equality.
       contains_all: every listed substring appears (case-insensitive) in the value.
+      scale: the unit a figure is stated in (units/thousands/millions/billions/percent),
+              graded as its own field the way TAT-QA does. Any numeric check additionally
+              reports `scale_error` when the answer is a clean 1e3/1e6/1e9 multiple of the
+              truth, so a unit slip is never filed as ordinary arithmetic error.
       yes_no: polarity of a yes/no field, with any trailing justification allowed
               ("no - no record in the ERP" passes for expect "no"). Same lesson as
               none_answer: grade the finding, not the prose.
@@ -59,6 +63,39 @@ NEG_RE = re.compile(r"^(none|no|n/?a|nil|nothing|zero|not\s+(found|applicable|av
 YES_RE = re.compile(r"^(yes|y|true|correct|confirmed|affirmative)\b")
 NO_RE  = re.compile(r"^(no|n|false|incorrect|negative|none|not)\b")
 
+# TAT-QA grades `scale` (thousand/million/billion/percent) as a field in its own right,
+# because a financial number without its unit is not an answer (round-2 ledger row 28). We
+# do the same, and additionally diagnose the classic magnitude slip on ANY numeric check
+# rather than letting it hide inside a generic "off by a lot".
+SCALE_SYNONYMS = {
+    "units": {"units", "unit", "absolute", "ones", "dollars", "usd", "as reported", "none"},
+    "thousands": {"thousand", "thousands", "k", "000s", "in thousands"},
+    "millions": {"million", "millions", "m", "mm", "in millions"},
+    "billions": {"billion", "billions", "b", "bn", "in billions"},
+    "percent": {"percent", "percentage", "%", "pct"},
+}
+SCALE_FACTOR = {"units": 1, "thousands": 1e3, "millions": 1e6, "billions": 1e9}
+
+def scale_of(v):
+    s = norm(v).replace("(", " ").replace(")", " ").strip(" .")
+    for canon, words in SCALE_SYNONYMS.items():
+        if s == canon or s in words: return canon
+    # specific scales win over the generic "units" bucket: "USD millions" is millions, not
+    # units, even though "usd" is a units synonym.
+    for canon in ("billions", "millions", "thousands", "percent", "units"):
+        words = SCALE_SYNONYMS[canon]
+        if any(re.search(rf"\b{re.escape(w)}\b", s) for w in words if len(w) > 2): return canon
+    return None
+
+def magnitude_slip(got, exp):
+    """Return the factor if the answer is a clean 1e3/1e6/1e9 multiple of the truth."""
+    if not got or not exp: return None
+    for f in (1e3, 1e6, 1e9):
+        for cand, label in ((exp * f, f), (exp / f, 1 / f)):
+            if cand and abs(got - cand) <= max(0.01, abs(cand) * 1e-4):
+                return label
+    return None
+
 def polarity(v):
     s = norm(v)
     if YES_RE.match(s): return "yes"
@@ -87,7 +124,17 @@ def verify(task_dir, run_dir):
             if g is None: failed.append(name + ":not_numeric"); continue
             exp = float(c["expect"])
             tol = max(float(c.get("tol_abs", 0.01)), abs(exp) * float(c.get("tol_rel", 0)))
-            if abs(g - exp) > tol: failed.append(name + f":off(got={g})")
+            if abs(g - exp) > tol:
+                slip = magnitude_slip(g, exp)
+                if slip:
+                    # reported in the wrong unit rather than computed wrongly: a different
+                    # failure mode, and one worth naming separately in the reports.
+                    scale = {1e3: "thousands", 1e6: "millions", 1e9: "billions"}.get(slip)
+                    failed.append(name + f":scale_error(got={g}, want={exp}, off by "
+                                         f"{'x' if slip > 1 else '/'}{int(slip if slip > 1 else 1/slip)}"
+                                         + (f" - looks reported in {scale}" if scale else "") + ")")
+                else:
+                    failed.append(name + f":off(got={g})")
         elif typ == "none_answer":
             g = norm(got)
             if not NEG_RE.match(g):
@@ -97,6 +144,13 @@ def verify(task_dir, run_dir):
                 # is a harder failure than being wrong, and is what the trap exists to catch.
                 bad = [s for s in c.get("forbid", []) if norm(s) in g]
                 if bad: failed.append(name + f":hallucinated({bad})")
+        elif typ == "scale":
+            g = scale_of(got)
+            exp_s = scale_of(c["expect"]) or norm(c["expect"])
+            if g is None:
+                failed.append(name + f":unparseable_scale(got={norm(got)[:40]})")
+            elif g != exp_s:
+                failed.append(name + f":wrong_scale(got={g}, want={exp_s})")
         elif typ == "yes_no":
             got_p, exp_p = polarity(got), norm(c["expect"])
             if got_p is None:

@@ -1,0 +1,17 @@
+{
+ "answer_checks": [
+  {"field": "revenue", "type": "number", "expect": 71043, "tol_rel": 0.001},
+  {"field": "revenue_scale", "type": "scale", "expect": "millions"},
+  {"field": "revenue_usd", "type": "number", "expect": 71043000000, "tol_rel": 0.001},
+  {"field": "operating_margin_pct", "type": "number", "expect": 9.8715, "tol_abs": 0.02},
+  {"field": "source_form", "type": "contains_all", "expect": ["10-K"]}
+ ],
+ "trace_checks": [
+  {"type": "required_servers", "servers": ["filings"]},
+  {"type": "min_calls", "server": "filings", "n": 2},
+  {"type": "reads_before_submit"}
+ ],
+ "state_checks": [
+  {"type": "writes_only", "tables": ["answers"]}
+ ]
+}

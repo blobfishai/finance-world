@@ -1,0 +1,52 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "Lockheed Martin"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "LMT",
+   "concept": "Revenues"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "LMT",
+   "concept": "OperatingIncomeLoss"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "full_text_search",
+  "args": {
+   "q": "in millions"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_submissions",
+  "args": {
+   "ticker": "LMT"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "revenue": 71043,
+    "revenue_scale": "millions",
+    "revenue_usd": 71043000000,
+    "operating_margin_pct": 9.87,
+    "source_form": "10-K"
+   }
+  }
+ }
+]
