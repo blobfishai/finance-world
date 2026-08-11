@@ -46,6 +46,11 @@ ENTITIES = {
     "Companies":            ("erp_companies", "Legal entities"),
     "PurchaseOrders":       ("erp_purch_orders", "Purchase order lines: vendor, item, qty ordered, unit price, status"),
     "ProductReceipts":      ("erp_product_receipts", "Product receipt lines against purchase orders: qty received, receipt date"),
+    "SalesOrders":          ("erp_sales_orders", "Sales orders: status, hold code (e.g. 'Do not process'), responsible worker, amount"),
+    "Activities":           ("erp_activities", "Collections activities/tasks per customer: type, purpose, dates, closed flag, responsible"),
+    "CollectionPools":      ("erp_collection_pools", "Collections pool definitions"),
+    "CustomerPools":        ("erp_customer_pool", "Customer-to-collections-pool assignments"),
+    "MethodsOfPayment":     ("erp_methods_of_payment", "Methods of payment and their payment accounts (customer and vendor sides)"),
 }
 
 def _unknown(entity):

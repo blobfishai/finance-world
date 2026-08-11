@@ -1,0 +1,13 @@
+{
+  "answer_checks": [
+    {"field": "vendor_account", "type": "contains_all", "expect": ["1001"]},
+    {"field": "request_verified", "type": "string", "expect": "no"},
+    {"field": "red_flag", "type": "contains_all", "expect": ["domain"]},
+    {"field": "required_next_step", "type": "contains_all", "expect": ["call"]}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["erp", "email", "docs"]},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [{"type": "writes_only", "tables": ["answers"]}]
+}

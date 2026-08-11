@@ -1,0 +1,8 @@
+[
+  {"server": "docs", "tool": "search_documents", "args": {"query": "close checklist"}},
+  {"server": "docs", "tool": "get_document", "args": {"doc_id": "sop--month-end-close-checklist"}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT ROUND(SUM(amount - settled), 2) AS ar FROM erp_cust_trans WHERE dataareaid='CESP' AND txn_type='Invoice' AND closed=0"}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT ROUND(SUM(amount - settled), 2) AS ap FROM erp_vend_trans WHERE dataareaid='CESP' AND txn_type='Invoice' AND closed=0"}},
+  {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "CESP-close-recon-2026-02.xlsx"}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"erp_ar_balance": 128500.00, "erp_ap_balance": 80500.00, "unreconciled_subledger": "AP", "variance_amount": 2500.00, "blocking_task_owner": "Jordan Blake"}}}
+]

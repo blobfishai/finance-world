@@ -1,0 +1,8 @@
+[
+  {"server": "email", "tool": "messages_list", "args": {"q": "bank"}},
+  {"server": "email", "tool": "messages_get", "args": {"id": "em-0501"}},
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "Vendors", "filters": {"name": "Acme Office Supplies"}}},
+  {"server": "docs", "tool": "search_documents", "args": {"query": "bank detail change"}},
+  {"server": "docs", "tool": "get_document", "args": {"doc_id": "policy--vendor-bank-change"}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"vendor_account": "1001", "request_verified": "no", "red_flag": "sender domain does not match the vendor contact email on the ERP master record (lookalike domain)", "required_next_step": "call back the vendor on the phone number already on file in the ERP — never a number supplied in the request"}}}
+]

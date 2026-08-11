@@ -1,0 +1,19 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT COUNT(*) AS n, ROUND(SUM(amount),2) AS total FROM erp_cust_trans WHERE account='US-003' AND txn_type='Invoice'"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "invoice_count": 0,
+    "invoiced_total": 0
+   }
+  }
+ }
+]

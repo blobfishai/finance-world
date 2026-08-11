@@ -1,0 +1,33 @@
+{
+ "answer_checks": [
+  {
+   "field": "largest_payment_amount",
+   "type": "string",
+   "expect": "none"
+  },
+  {
+   "field": "largest_payment_voucher",
+   "type": "string",
+   "expect": "none"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,6 @@
+[
+  {"server": "docs", "tool": "search_documents", "args": {"query": "travel expense policy"}},
+  {"server": "docs", "tool": "get_document", "args": {"doc_id": "policy--travel-and-expense"}},
+  {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "expense-export-2026-02.xlsx"}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"violation_count": 3, "violating_report_ids": "EXP-1042, EXP-1047, EXP-1051", "out_of_policy_amount": 1512.40, "worst_violation_rule": "business class airfare requires VP pre-approval; economy is the standard"}}}
+]

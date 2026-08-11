@@ -1,0 +1,14 @@
+{
+  "answer_checks": [
+    {"field": "erp_ar_balance", "type": "number", "expect": 128500.00, "tol_abs": 0.02},
+    {"field": "erp_ap_balance", "type": "number", "expect": 80500.00, "tol_abs": 0.02},
+    {"field": "unreconciled_subledger", "type": "contains_all", "expect": ["AP"]},
+    {"field": "variance_amount", "type": "number", "expect": 2500.00, "tol_abs": 0.02},
+    {"field": "blocking_task_owner", "type": "contains_all", "expect": ["jordan"]}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["erp", "sheets", "docs"]},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [{"type": "writes_only", "tables": ["answers"]}]
+}

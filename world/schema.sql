@@ -20,7 +20,8 @@ CREATE TABLE erp_vendors(
 CREATE TABLE erp_cust_trans(
   id INTEGER PRIMARY KEY, dataareaid TEXT, account TEXT, voucher TEXT, invoice TEXT,
   txn_type TEXT, description TEXT, trans_date TEXT, due_date TEXT, currency TEXT,
-  amount REAL, settled REAL DEFAULT 0, closed INTEGER DEFAULT 0, cash_disc_code TEXT);
+  amount REAL, settled REAL DEFAULT 0, closed INTEGER DEFAULT 0, cash_disc_code TEXT,
+  disputed INTEGER DEFAULT 0, deduction INTEGER DEFAULT 0, payment_method TEXT);
 CREATE TABLE erp_vend_trans(
   id INTEGER PRIMARY KEY, dataareaid TEXT, account TEXT, voucher TEXT, invoice TEXT,
   txn_type TEXT, description TEXT, trans_date TEXT, due_date TEXT, currency TEXT,
@@ -41,6 +42,20 @@ CREATE TABLE erp_settlements(
 CREATE TABLE erp_collection_letters(
   id INTEGER PRIMARY KEY, dataareaid TEXT, account TEXT, letter_code TEXT,
   letter_date TEXT, status TEXT, fee REAL, note TEXT);
+-- Sales orders (SalesTable): status, hold codes, responsible worker.
+CREATE TABLE erp_sales_orders(
+  sales_id TEXT PRIMARY KEY, dataareaid TEXT, account TEXT, customer_name TEXT,
+  order_date TEXT, status TEXT, hold_code TEXT, responsible TEXT, amount REAL);
+-- Collections activities/tasks (SmmActivities) and collections pools (CustPool).
+CREATE TABLE erp_activities(
+  activity_id TEXT PRIMARY KEY, dataareaid TEXT, account TEXT, activity_type TEXT,
+  purpose TEXT, start_date TEXT, end_date TEXT, closed INTEGER DEFAULT 0, responsible TEXT);
+CREATE TABLE erp_collection_pools(pool_id TEXT PRIMARY KEY, name TEXT, criteria TEXT);
+CREATE TABLE erp_customer_pool(account TEXT PRIMARY KEY, pool_id TEXT);
+-- Methods of payment (CustPaymModeTable/VendPaymModeTable) and their payment accounts.
+CREATE TABLE erp_methods_of_payment(
+  method TEXT, side TEXT, dataareaid TEXT, description TEXT, payment_account TEXT,
+  PRIMARY KEY(method, side));
 -- Form-tool runtime state (mirrors the real server's per-session view models; SQL-backed).
 CREATE TABLE erp_form_sessions(form_id TEXT PRIMARY KEY, form TEXT, state TEXT);
 -- Batch aging snapshot (the "second truth"; may lawfully diverge from live bucketing).

@@ -1,0 +1,24 @@
+schema_version = "1.4"
+
+[task]
+name = "vendor_master/bank-change-verify"
+version = "0.1.0"
+description = "Vendor master fraud check: an emailed bank-detail change request that fails verification against the ERP record and policy."
+authors = ["nario-ai"]
+keywords = ["finance", "vendor_master", "fraud", "ap"]
+
+[metadata]
+family = "vendor_master"
+origin = "research/finance-agent-workflows.md wf#5 (vendor onboarding/master data + bank-detail fraud checks)"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 6
+trap = "the request is plausible and urgent; approving it (or 'verifying' by replying to the same thread) is the failure mode"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

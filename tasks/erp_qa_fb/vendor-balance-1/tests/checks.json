@@ -1,0 +1,36 @@
+{
+ "answer_checks": [
+  {
+   "field": "ap_balance",
+   "type": "number",
+   "expect": 294.72,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "currency",
+   "type": "contains_all",
+   "expect": [
+    "EUR"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

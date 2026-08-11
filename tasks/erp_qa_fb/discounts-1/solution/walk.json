@@ -1,0 +1,19 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT invoice, ROUND(-amount,2) AS deduction FROM erp_cust_trans WHERE account='SYNCUS-0352' AND deduction=1 AND closed=0"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "open_deduction_count": 0,
+    "open_deduction_total": "none"
+   }
+  }
+ }
+]

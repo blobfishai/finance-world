@@ -1,0 +1,23 @@
+schema_version = "1.4"
+
+[task]
+name = "expense_audit/te-sample-feb"
+version = "0.1.0"
+description = "T&E audit: test February expense reports against the travel policy and quantify out-of-policy spend."
+authors = ["nario-ai"]
+keywords = ["finance", "expense_audit", "policy"]
+
+[metadata]
+family = "expense_audit"
+origin = "research/finance-agent-workflows.md wf#11 (T&E policy compliance sampling; Ramp-class agents claim >99% automation here)"
+difficulty = "medium"
+acceptance_label = "pending_calibration"
+walk_len = 4
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

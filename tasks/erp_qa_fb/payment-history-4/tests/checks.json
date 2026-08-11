@@ -1,0 +1,43 @@
+{
+ "answer_checks": [
+  {
+   "field": "largest_payment_amount",
+   "type": "number",
+   "expect": 187707.98,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "largest_payment_voucher",
+   "type": "contains_all",
+   "expect": [
+    "ARPM000080"
+   ]
+  },
+  {
+   "field": "largest_payment_date",
+   "type": "contains_all",
+   "expect": [
+    "2025-04-28"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

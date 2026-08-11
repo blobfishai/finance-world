@@ -1,0 +1,13 @@
+{
+  "answer_checks": [
+    {"field": "violation_count", "type": "number", "expect": 3, "tol_abs": 0},
+    {"field": "violating_report_ids", "type": "contains_all", "expect": ["EXP-1042", "EXP-1047", "EXP-1051"]},
+    {"field": "out_of_policy_amount", "type": "number", "expect": 1512.40, "tol_abs": 0.02},
+    {"field": "worst_violation_rule", "type": "contains_all", "expect": ["business class"]}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["sheets", "docs"]},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [{"type": "writes_only", "tables": ["answers"]}]
+}
