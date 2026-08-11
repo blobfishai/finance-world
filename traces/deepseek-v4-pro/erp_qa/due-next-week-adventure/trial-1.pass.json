@@ -1,0 +1,149 @@
+{
+ "task": "erp_qa/due-next-week-adventure",
+ "family": "erp_qa",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 17,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 13,
+ "agent_error": false,
+ "duration_s": 62.0,
+ "cost_usd": null,
+ "final_text": "Here's what I found for **Adventure Works Cycles (SYNCUS-0002)**:\n\n- **CIV-000006** \u2014 $45,062.55, due **2025-04-11** (Support Services)\n- **CIV-000007** \u2014 $49,686.64, due **2025-08-04** (License Fee)\n\nBoth are open but long past due \u2014 the most recent aging snapshot (March 1, 2026) shows the full $94,749.19 sitting in the 90+ days bucket. Nothing falls due in the next seven days.\n\n**Answer: 0 invoices, none.**",
+ "trace": [
+  {
+   "ts": 1786479847.856828,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479847.858211,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Adventure Works Cycles'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479850.481566,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"customer_account\": \"SYNCUS-0002\"}}",
+   "ok": false,
+   "note": "unknown field customer_account"
+  },
+  {
+   "ts": 1786479850.482133,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479852.3617752,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure Works Cycles\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479857.4549818,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0002' AND txn_type = 'Invoice' AND closed = 0 ORDER BY due_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786479859.450242,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0002\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479867.2984068,
+   "server": "books",
+   "tool": "get_company_info",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786479867.300399,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479876.32725,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customer transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479878.758571,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Customer transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479886.4745212,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE DocNumber LIKE 'CIV-000006' OR DocNumber LIKE 'CIV-000007'\"}",
+   "ok": false,
+   "note": "QueryParserError: unsupported syntax. Use SELECT * FROM <Entity> [WHERE <Field> = '<value>'] with entities Customer, Invoice, CreditMemo, Payment"
+  },
+  {
+   "ts": 1786479886.476104,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0002\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479892.5851688,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Adventure%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479892.585827,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE DocNumber = 'CIV-000006'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479897.1206322,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479900.517743,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"invoice_count\": 0, \"invoice_numbers\": \"none\"}}",
+   "ok": true
+  }
+ ]
+}

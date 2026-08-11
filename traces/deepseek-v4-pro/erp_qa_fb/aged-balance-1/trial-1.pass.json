@@ -1,0 +1,126 @@
+{
+ "task": "erp_qa_fb/aged-balance-1",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 14,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 10,
+ "agent_error": false,
+ "duration_s": 42.5,
+ "cost_usd": null,
+ "final_text": "Here's the aging breakdown for **Graphic Design Institute North** (account SYNCUS-0686, USMF) as of March 2, 2026:\n\n| Aging Bucket | Amount |\n|---|---|\n| Not yet due (current) | $0.00 |\n| 1\u201330 days past due | $0.00 |\n| 31\u201360 days past due | $0.00 |\n| 61\u201390 days past due | $0.00 |\n| **90+ days past due** | **$0.00** |\n| **Total past due** | **$0.00** |\n\nThe customer has no outstanding balance. All three historical invoices have been fully settled and closed \u2014 the most recent payment (ARPM001603) cleared the last invoice on February 21, 2026.",
+ "trace": [
+  {
+   "ts": 1786479848.412831,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer aging\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479848.413122,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479852.590461,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Graphic Design Institute North\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479852.590614,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"Aged Balances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479856.623379,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Customer aged balances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479856.6241379,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479858.893513,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Graphic Design Institute North\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479864.270047,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account = 'SYNCUS-0686'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786479864.2706409,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0686' AND dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786479867.159858,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0686\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479867.162095,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0686\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479873.49746,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0686' AND dataareaid = 'USMF' AND closed = 0 LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786479876.668524,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0686\", \"dataareaid\": \"USMF\", \"closed\": 0}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479881.367351,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_past_due\": 0, \"not_yet_due\": 0, \"over_90_days\": 0}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,380 @@
+{
+ "task": "erp_qa/ap-overdue-usmf",
+ "family": "erp_qa",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": true,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:total_overdue_ap:missing",
+  "answer:as_of_date:missing",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [
+  "erp"
+ ],
+ "n_tool_calls": 47,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 40,
+ "agent_error": false,
+ "duration_s": 166.0,
+ "cost_usd": null,
+ "final_text": "",
+ "trace": [
+  {
+   "ts": 1786479849.2857118,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"accounts payable vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479849.286035,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"legal entity\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479851.863578,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479851.864693,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Companies\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479860.7873049,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions WHERE dataareaid = 'USMF' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786479863.260938,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"dataareaid\": \"USMF\"}, \"page\": 1}",
+   "ok": true
+  },
+  {
+   "ts": 1786479871.612084,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM vendor_transactions WHERE dataareaid = 'USMF' AND closed = 0 LIMIT 200\"}",
+   "ok": false,
+   "note": "ValueError('table vendor_transactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786479871.613861,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT CURRENT_DATE as today FROM erp_companies LIMIT 1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479875.1023371,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions WHERE dataareaid = 'USMF' AND closed = 0 AND due_date < '2026-08-11' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786479877.78949,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%vendor%'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786479879.842737,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor')"
+  },
+  {
+   "ts": 1786479882.651925,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM VendorTransactions WHERE dataareaid = 'USMF' AND closed = 0 AND due_date < '2026-08-11' LIMIT 200\"}",
+   "ok": false,
+   "note": "ValueError('table VendorTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786479884.916228,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_companies LIMIT 1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479887.1636832,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor_transactions WHERE dataareaid = 'USMF' AND closed = 0 AND due_date < '2026-08-11' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_transactions')"
+  },
+  {
+   "ts": 1786479890.0714061,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786479892.6236029,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_VendorTransactionsV2 LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_VendorTransactionsV2')"
+  },
+  {
+   "ts": 1786479896.537716,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 1}",
+   "ok": true
+  },
+  {
+   "ts": 1786479900.540558,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactionsv2 LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactionsv2')"
+  },
+  {
+   "ts": 1786479904.747233,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479907.5248692,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Vendor transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479914.504023,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"erp table names\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479917.54252,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendtrans LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendtrans')"
+  },
+  {
+   "ts": 1786479920.184919,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"closed\", \"value\": \"0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479925.0969589,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479929.134045,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM \\\"VendorTransactions\\\" WHERE dataareaid = 'USMF' AND closed = 0 AND due_date < '2026-08-11' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: VendorTransactions')"
+  },
+  {
+   "ts": 1786479938.3561652,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 2}",
+   "ok": true
+  },
+  {
+   "ts": 1786479942.518761,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"vendor overdue AP aging\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479946.629966,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor aging\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479949.491426,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortrans UNION ALL SELECT * FROM erp_vendor_trans LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_trans')"
+  },
+  {
+   "ts": 1786479953.773062,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_VendorTransactions WHERE dataareaid = 'USMF' AND closed = 0 AND due_date < '2026-08-11'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_VendorTransactions')"
+  },
+  {
+   "ts": 1786479956.802707,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786479959.1724532,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_companies LIMIT 1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479959.172996,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786479961.7988129,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendors LIMIT 1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479961.7997088,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_bankaccounts LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_bankaccounts')"
+  },
+  {
+   "ts": 1786479964.4471092,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendtransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendtransactions')"
+  },
+  {
+   "ts": 1786479968.614881,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendorinvoice LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendorinvoice')"
+  },
+  {
+   "ts": 1786479968.615985,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_aptransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_aptransactions')"
+  },
+  {
+   "ts": 1786479971.5526998,
+   "server": "erp",
+   "tool": "form_find_controls",
+   "args": "{\"form_id\": \"fh-1\", \"search\": \"filter\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479979.227672,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 3, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479979.233948,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 4, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479984.1330712,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM erp_sqlite_master WHERE type='table'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_sqlite_master')"
+  },
+  {
+   "ts": 1786479988.3458712,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor_trans LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_trans')"
+  },
+  {
+   "ts": 1786479991.866424,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendtrans LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendtrans')"
+  },
+  {
+   "ts": 1786479997.5642738,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}, \"page\": 57, \"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786480003.7858372,
+   "server": "erp",
+   "tool": "form_sort_grid_column",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"due_date\", \"direction\": \"desc\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786480010.031745,
+   "server": "erp",
+   "tool": "form_find_controls",
+   "args": "{\"form_id\": \"fh-1\", \"search\": \"total\"}",
+   "ok": true
+  }
+ ]
+}

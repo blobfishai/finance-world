@@ -215,19 +215,11 @@
    "class": "solidFail"
   },
   "erp_qa/ap-overdue-usmf": {
-   "rewards": [
-    0
-   ],
-   "failed": [
-    [
-     "answer:total_overdue_ap:missing",
-     "answer:as_of_date:missing",
-     "trace:no_reads_before_submit"
-    ]
-   ],
+   "rewards": [],
+   "failed": [],
    "infra_trials": 0,
-   "starved_trials": 0,
-   "class": "solidFail"
+   "starved_trials": 1,
+   "class": "infra_only"
   },
   "erp_qa/ar-balance-fourthcoffee-east": {
    "rewards": [
@@ -275,50 +267,36 @@
   },
   "erp_qa/due-next-week-adventure": {
    "rewards": [
-    0
+    1
    ],
    "failed": [
-    [
-     "answer:invoice_count:missing",
-     "answer:invoice_numbers:missing",
-     "trace:no_reads_before_submit"
-    ]
+    []
    ],
    "infra_trials": 0,
    "starved_trials": 0,
-   "class": "solidFail"
+   "class": "solidPass"
   },
   "erp_qa_fb/aged-balance-1": {
    "rewards": [
-    0
+    1
    ],
    "failed": [
-    [
-     "answer:total_past_due:missing",
-     "answer:not_yet_due:missing",
-     "answer:over_90_days:missing",
-     "trace:no_reads_before_submit"
-    ]
+    []
    ],
    "infra_trials": 0,
    "starved_trials": 0,
-   "class": "solidFail"
+   "class": "solidPass"
   },
   "erp_qa_fb/aged-balance-2": {
    "rewards": [
-    0
+    1
    ],
    "failed": [
-    [
-     "answer:total_past_due:missing",
-     "answer:not_yet_due:missing",
-     "answer:over_90_days:missing",
-     "trace:no_reads_before_submit"
-    ]
+    []
    ],
    "infra_trials": 0,
    "starved_trials": 0,
-   "class": "solidFail"
+   "class": "solidPass"
   },
   "erp_qa_fb/aged-balance-3": {
    "rewards": [
@@ -579,11 +557,15 @@
    "class": "solidFail"
   },
   "erp_qa_fb/payment-history-3": {
-   "rewards": [],
-   "failed": [],
+   "rewards": [
+    1
+   ],
+   "failed": [
+    []
+   ],
    "infra_trials": 0,
-   "starved_trials": 1,
-   "class": "infra_only"
+   "starved_trials": 0,
+   "class": "solidPass"
   },
   "erp_qa_fb/payment-history-4": {
    "rewards": [

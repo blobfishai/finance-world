@@ -1,0 +1,209 @@
+{
+ "task": "erp_qa_fb/aged-balance-2",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 25,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 17,
+ "agent_error": false,
+ "duration_s": 64.9,
+ "cost_usd": null,
+ "final_text": "**Summary for Forest Wholesales (US-003):**\n\n| Metric | Amount |\n|---|---|\n| **Total Past Due** | $0.00 |\n| **Not Yet Due** | $0.00 |\n| **Over 90 Days** | $0.00 |\n\nForest Wholesales has no aged receivable balance. The only open item on their account is a credit note (FOR-CN-001) for -$3,400.00, which represents a credit \u2014 not an amount owed. The AgedBalances view confirmed zero rows.",
+ "trace": [
+  {
+   "ts": 1786479848.548886,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Forest Wholesales'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479848.549197,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer aged balance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479851.71645,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Forest Wholesales\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479851.71716,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Forest%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479855.5557828,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"customer_account\": \"US-003\"}}",
+   "ok": false,
+   "note": "unknown field customer_account"
+  },
+  {
+   "ts": 1786479855.5562508,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"customer_account\": \"US-003\", \"closed\": false}}",
+   "ok": false,
+   "note": "unknown field customer_account"
+  },
+  {
+   "ts": 1786479858.902171,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"US-003\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479858.904049,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-003\", \"closed\": false}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479863.269799,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"US-003\"}, \"page\": 2, \"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479863.271489,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"US-003\", \"closed\": false}, \"page\": 2, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479867.5165381,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'US-003' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786479867.518005,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account = 'US-003' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786479870.251473,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM CustomerTransactions WHERE account = 'US-003'\"}",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786479870.253067,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM AgedBalancesSnapshot WHERE account = 'US-003'\"}",
+   "ok": false,
+   "note": "ValueError('table AgedBalancesSnapshot is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786479873.222671,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479873.224071,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479881.930418,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account LIKE '%003%' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786479881.930938,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account LIKE '%003%' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786479884.786985,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479886.967676,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479889.436546,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Forest Wholesales\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479892.068896,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 1001}",
+   "ok": true
+  },
+  {
+   "ts": 1786479894.191124,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"control\": \"AgedBalances\", \"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479897.0288372,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"control\": \"OpenTransactions\", \"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479903.941324,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_past_due\": 0, \"not_yet_due\": 0, \"over_90_days\": 0}}",
+   "ok": true
+  }
+ ]
+}
