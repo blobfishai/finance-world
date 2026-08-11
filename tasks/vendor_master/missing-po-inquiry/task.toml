@@ -1,0 +1,24 @@
+schema_version = "1.4"
+
+[task]
+name = "vendor_master/missing-po-inquiry"
+version = "0.1.0"
+description = "Blocking fact is held by a counterparty: the agent must email the vendor to obtain the PO number, then verify it against the ERP."
+authors = ["nario-ai"]
+keywords = ["finance", "vendor_master", "interactive", "ap"]
+
+[metadata]
+family = "vendor_master"
+origin = "TheAgentCompany finance suite pattern: agent must message an NPC for a blocking fact (research/external/repos/INDEX.md); enabled by email.send_message + scripted counterparties"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 6
+mechanic = "no amount of reading answers it — the PO number exists only in the vendor's reply"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

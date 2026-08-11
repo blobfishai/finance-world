@@ -1,0 +1,24 @@
+schema_version = "1.4"
+
+[task]
+name = "finance_qa/unavailable-concept"
+version = "0.1.0"
+description = "Unanswerable-from-sources: the requested concept is absent from the snapshot; the correct behaviour is a grounded refusal, not a plausible number."
+authors = ["nario-ai"]
+keywords = ["finance", "finance_qa", "refusal", "hallucination-trap"]
+
+[metadata]
+family = "finance_qa"
+origin = "FinanceBench pattern found in repo sweep: refusal scored separately from a wrong answer (research/external/repos/INDEX.md)"
+difficulty = "medium"
+acceptance_label = "pending_calibration"
+walk_len = 4
+trap = "R&D expense is not in the snapshot for this company; inventing or substituting a nearby concept fails"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

@@ -1,0 +1,45 @@
+{
+ "answer_checks": [
+  {
+   "field": "figure_available",
+   "type": "string",
+   "expect": "no"
+  },
+  {
+   "field": "rd_expense",
+   "type": "string",
+   "expect": "none"
+  },
+  {
+   "field": "concepts_checked",
+   "type": "contains_all",
+   "expect": [
+    "inventory"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "filings"
+   ]
+  },
+  {
+   "type": "min_calls",
+   "server": "filings",
+   "n": 2
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

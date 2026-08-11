@@ -516,6 +516,79 @@
       "tasks": [],
       "status": "out_of_scope",
       "note": "sales domain, not finance \u2014 belongs to the sales world (docs/TOOL-CENSUS.md exclusion rule)"
+    },
+    {
+      "id": "ext.agentcompany.interactive_npc",
+      "source": "TheAgentCompany finance suite (repo sweep)",
+      "name": "Blocking fact held by a counterparty \u2014 agent must ask",
+      "tasks": [
+        "vendor_master/missing-po-inquiry"
+      ]
+    },
+    {
+      "id": "ext.ach_return",
+      "source": "repo sweep gap: payment failure after settlement",
+      "name": "ACH return / reversal of a settled payment",
+      "tasks": [
+        "bank_rec/ach-return-mar"
+      ]
+    },
+    {
+      "id": "ext.financebench.refusal",
+      "source": "Patronus FinanceBench (repo sweep)",
+      "name": "Grounded refusal when the source lacks the figure",
+      "tasks": [
+        "finance_qa/unavailable-concept",
+        "erp_qa/due-next-week-adventure"
+      ]
+    },
+    {
+      "id": "erpnext.withholding_tax",
+      "source": "frappe/erpnext (repo sweep)",
+      "name": "Withholding-tax thresholds on vendor payments",
+      "tasks": [],
+      "status": "gap",
+      "note": "needs a tax-withholding category table + rate thresholds on the vendor master"
+    },
+    {
+      "id": "erpnext.fx_revaluation",
+      "source": "frappe/erpnext (repo sweep)",
+      "name": "FX revaluation of open foreign-currency balances",
+      "tasks": [],
+      "status": "gap",
+      "note": "EUR balances exist (Contoso Europe, Fabrikam) but there is no FX rate table or revaluation action yet"
+    },
+    {
+      "id": "erpnext.period_close_lock",
+      "source": "frappe/erpnext (repo sweep)",
+      "name": "Posting into a locked/closed period",
+      "tasks": [],
+      "status": "gap",
+      "note": "needs a period-status table so writes into a closed period are refused \u2014 pairs naturally with collections_ops writes"
+    },
+    {
+      "id": "erpnext.unreconciliation",
+      "source": "frappe/erpnext (repo sweep)",
+      "name": "Un-reconciling a wrongly applied payment",
+      "tasks": [],
+      "status": "gap",
+      "note": "needs an unsettle action on the collections/AR write role"
+    },
+    {
+      "id": "tau2.retrieval_modes",
+      "source": "tau2-bench (repo sweep)",
+      "name": "Knowledge-access mode as a difficulty lever",
+      "tasks": [],
+      "status": "gap",
+      "note": "harness feature: swap how policy docs are reachable (in-prompt / searchable / absent) to re-grade an existing task without re-authoring \u2014 cheapest escalation lever for too_easy tasks"
+    },
+    {
+      "id": "tatqa.scale_unit",
+      "source": "TAT-QA (repo sweep)",
+      "name": "Scale/unit graded as its own field",
+      "tasks": [],
+      "status": "gap",
+      "note": "verifier addition: require a `unit`/`scale` answer field (millions vs units) alongside the number"
     }
   ]
 }

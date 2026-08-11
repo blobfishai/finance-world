@@ -85,6 +85,11 @@ CREATE TABLE email_messages(
   id TEXT PRIMARY KEY, folder TEXT, from_addr TEXT, to_addr TEXT, subject TEXT,
   sent_at TEXT, body TEXT, attachment_name TEXT, attachment_text TEXT);
 
+-- Scripted counterparties: deterministic replies when the agent sends mail.
+CREATE TABLE email_npc_scripts(
+  id TEXT PRIMARY KEY, match_to TEXT, match_keywords TEXT, reply_from TEXT,
+  reply_subject TEXT, reply_body TEXT, attachment_name TEXT, attachment_text TEXT);
+
 -- ============ Filings (SEC-EDGAR-shaped frozen snapshots) ============
 CREATE TABLE filings_companies(cik TEXT PRIMARY KEY, ticker TEXT, name TEXT);
 CREATE TABLE filings_facts(

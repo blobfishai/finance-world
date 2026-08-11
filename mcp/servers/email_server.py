@@ -82,5 +82,34 @@ def attachments_get(message_id):
     return {"attachmentId": f"att_{message_id}", "filename": r["attachment_name"],
             "size": len(r["attachment_text"] or ""), "data": r["attachment_text"]}
 
+@S.tool("send_message", "Send a message from the shared finance mailbox (users.messages.send shape). "
+        "Counterparties reply on their own schedule; a reply, if any, lands in the inbox and is returned here.",
+        {"to": {"type": "string"}, "subject": {"type": "string"}, "body": {"type": "string"}},
+        ["to", "subject", "body"])
+def send_message(to, subject, body):
+    cx = S.db()
+    n = cx.execute("SELECT COUNT(*) FROM email_messages WHERE folder='sent'").fetchone()[0] + 1
+    sid = f"em-sent-{n:03d}"
+    cx.execute("""INSERT INTO email_messages(id, folder, from_addr, to_addr, subject, sent_at, body,
+                  attachment_name, attachment_text) VALUES(?,'sent','ap@contoso-sim.example',?,?,?,?,NULL,NULL)""",
+               (sid, to, subject, S.now, body))
+    hay = f"{to} {subject} {body}".lower()
+    replies = []
+    for r in cx.execute("SELECT * FROM email_npc_scripts"):
+        if r["match_to"] and r["match_to"].lower() not in to.lower(): continue
+        kws = [k.strip().lower() for k in (r["match_keywords"] or "").split(",") if k.strip()]
+        if kws and not any(k in hay for k in kws): continue
+        rid = f"em-reply-{r['id']}"
+        if cx.execute("SELECT 1 FROM email_messages WHERE id=?", (rid,)).fetchone(): continue
+        cx.execute("""INSERT INTO email_messages(id, folder, from_addr, to_addr, subject, sent_at, body,
+                      attachment_name, attachment_text) VALUES(?,'inbox',?,'ap@contoso-sim.example',?,?,?,?,?)""",
+                   (rid, r["reply_from"], r["reply_subject"], S.now, r["reply_body"],
+                    r["attachment_name"], r["attachment_text"]))
+        replies.append({"id": rid, "from": r["reply_from"], "subject": r["reply_subject"], "body": r["reply_body"]})
+    cx.commit()
+    return {"id": sid, "labelIds": ["SENT"], "threadId": _thread_id(subject),
+            "replies_received": replies,
+            "note": "no reply yet — the counterparty may not respond to this request" if not replies else None}
+
 if __name__ == "__main__":
     S.run()

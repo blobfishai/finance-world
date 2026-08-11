@@ -1,0 +1,35 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "Walmart"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "list_available_concepts",
+  "args": {
+   "ticker": "WMT"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "WMT",
+   "concept": "ResearchAndDevelopmentExpense"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "figure_available": "no",
+    "rd_expense": "none",
+    "concepts_checked": "ResearchAndDevelopmentExpense (absent); snapshot holds only CostOfRevenue and InventoryNet for WMT"
+   }
+  }
+ }
+]

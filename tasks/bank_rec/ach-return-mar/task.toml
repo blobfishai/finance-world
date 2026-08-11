@@ -1,0 +1,23 @@
+schema_version = "1.4"
+
+[task]
+name = "bank_rec/ach-return-mar"
+version = "0.1.0"
+description = "A settled customer payment is returned by the bank: identify which invoice reopens and by how much."
+authors = ["nario-ai"]
+keywords = ["finance", "bank_rec", "ach-return", "ar"]
+
+[metadata]
+family = "bank_rec"
+origin = "gap found in repo sweep (research/external/repos/INDEX.md): payment failure after settlement — ACH returns/reversals"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 5
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024
