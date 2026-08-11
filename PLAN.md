@@ -122,7 +122,21 @@ Budgets are reference-relative (`maxTurns = max(24, refWalk*3+6)`), never capabi
 **Done when:** the shipped set is majority in_band/flaky at target depth, with failure-mode
 reports per parked task.
 
-### Stage 6 — Package & ship
+### Stage 6 — Package & ship (EXPORTER BUILT 2026-08-11 — 61/61 oracle-verified)
+`sim/export_harbor.py` writes `dist/harbor/<family>__<slug>/` as a **self-contained** Harbor
+task: the prepared world (core + that task's seed layers), the MCP servers that serve it, the
+verifier engine and the oracle are all baked in, and `bootstrap.py` re-points the MCP roster
+at wherever the directory lands. Verified by copying a bundle to `/tmp` outside the repo:
+`solution/solve.sh` bootstraps 7 servers and replays the 11-step walk, `tests/test.sh` writes
+`reward.txt` = 1, and the nop control (run `test.sh` without solving) scores 0 with all
+answer, trace and state checks failing.
+
+Export is **gated**, per round-2 ledger row 37: a bundle ships only if it solves and verifies
+*itself* using only its own contents; failures are deleted and reported, never shipped.
+Current: **61/61 pass the gate, 162 MB.** Remaining for this stage: `world.json`
+(format_version 4) for blobfish import, and dashboards from the flake JSON.
+
+#### (original Stage 6 spec)
 Per-task true-Harbor export (`task.toml`/`instruction.md`/`environment/`/`solution/`/`tests/`,
 reward.txt, oracle-verified at export, harbor CLI 0.17.1) + `world.json` (format_version 4)
 kept blobfish-importable for hosted MCP / customer release. Dashboards from flake JSON.
