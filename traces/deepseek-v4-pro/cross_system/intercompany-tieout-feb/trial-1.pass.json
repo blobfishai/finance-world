@@ -1,0 +1,198 @@
+{
+ "task": "cross_system/intercompany-tieout-feb",
+ "family": "cross_system",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp",
+  "filings",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 24,
+ "walk_len": 5,
+ "budget_turns": 52,
+ "num_turns": 11,
+ "agent_error": false,
+ "duration_s": 61.9,
+ "cost_usd": null,
+ "final_text": "All four fields submitted. Here's the summary:\n\n- **Parent AR balance:** $76,500\n- **Sub recorded balance:** $54,000\n- **Difference:** $22,500\n- **Cause:** ICINV-03 (February management fee, $22,500, dated Feb 27) was booked by parent in February but arrived at CES Direct on March 1 \u2014 a clean month-end timing difference. Dana Kim flagged it proactively and it will post in CES's March books.",
+ "trace": [
+  {
+   "ts": 1786477322.162359,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"intercompany CES Direct\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477322.1630871,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"intercompany reconciliation policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477322.163309,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"intercompany\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477326.258324,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"CES\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786477326.258832,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477326.2592692,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"CES Direct intercompany February\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477331.450442,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"name\": \"CES\"}, \"page\": 2, \"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477331.451245,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'CES%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477331.4516711,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"CES Direct\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477340.755531,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"IC-001\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786477340.756137,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"IC-001\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786477340.7565582,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%CES%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477340.7568939,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"CES Direct intercompany\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477347.08215,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE DocNumber LIKE 'ICINV%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477347.08272,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477347.0831392,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786477347.083637,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Companies\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786477351.251476,
+   "server": "sheets",
+   "tool": "workbook_worksheets",
+   "args": "{\"item\": \"CES-intercompany-schedule-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477353.299215,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"CES-intercompany-schedule-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477361.3504121,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"ICINV-03 February management fee\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477361.35151,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"CES Direct intercompany reconciliation February\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477361.352291,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"intercompany reconciliation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477363.756877,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-0310\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477374.660484,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"parent_ar_balance\": 76500, \"sub_recorded_balance\": 54000, \"difference\": 22500, \"difference_cause\": \"ICINV-03 ($22,500 February management fee, dated 2026-02-27) was recorded by parent in February but arrived at CES Direct on 2026-03-01 and was not yet booked in CES Feb close \\u2014 pur",
+   "ok": true
+  }
+ ]
+}

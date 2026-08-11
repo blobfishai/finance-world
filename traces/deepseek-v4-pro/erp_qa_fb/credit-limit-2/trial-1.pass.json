@@ -1,0 +1,103 @@
+{
+ "task": "erp_qa_fb/credit-limit-2",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 11,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 11,
+ "agent_error": false,
+ "duration_s": 80.3,
+ "cost_usd": null,
+ "final_text": "Here's a summary of what I found for **Humongous Insurance International (SYNCUS-0883)** in USMF:\n\n| Field | Value |\n|---|---|\n| **Customer Name** | Humongous Insurance International |\n| **Credit Limit** | $25,000.00 |\n| **Open Balance (as of Mar 2, 2026)** | $47,897.88 |\n| **Available Credit** | -$22,897.88 |\n\n**How I got there:**\n- The credit limit (`credit_max`) on the customer master record is **$25,000.00**.\n- There is one open invoice \u2014 **CIV-003050** (\"License Fee\") dated 2025-09-27 for $47,897.88 \u2014 that remains unsettled as of the requested date. This was confirmed by both the transaction records and the Aged Balances Snapshot (run March 1, 2026), which shows the full amount in the 90+ days past-due bucket.\n- Available credit = Credit limit \u2212 Open balance = $25,000.00 \u2212 $47,897.88 = **\u2212$22,897.88**, meaning the customer has exceeded their credit limit.",
+ "trace": [
+  {
+   "ts": 1786478451.976773,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478455.612889,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Humongous\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786478461.084797,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0883\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786478471.373963,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478471.3792892,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0883\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786478484.6213398,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478488.521204,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0883\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786478497.559556,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit available credit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478506.26419,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 25000, \"customer_name\": \"Humongous Insurance International\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786478512.320704,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"available_credit\": -22897.88}}",
+   "ok": true
+  },
+  {
+   "ts": 1786478515.302628,
+   "server": "harness",
+   "tool": "list_submitted",
+   "args": "{}",
+   "ok": true
+  }
+ ]
+}

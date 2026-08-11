@@ -1,0 +1,111 @@
+{
+ "task": "expense_audit/policy-validation-feb",
+ "family": "expense_audit",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "email",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 12,
+ "walk_len": 9,
+ "budget_turns": 84,
+ "num_turns": 11,
+ "agent_error": false,
+ "duration_s": 129.3,
+ "cost_usd": null,
+ "final_text": "All six fields submitted. Here's the summary, Dev:\n\n| Field | Value | Notes |\n|---|---|---|\n| **perdiem_due** | **$404.00** | $200 (Denver) + $204 (SF summit) + $0 (Sacramento same-day under 12h) |\n| **conference_mie_rate** | **$92.00** | San Francisco full daily rate applied to the GreenLedger Summit trip |\n| **nonaccountable_amount** | **$612.40** | EXP-2058 \u2014 Okonkwo's Chicago lodging, 73 days late |\n| **reimbursable_total** | **$2,932.50** | All accountable-plan lines at repriced amounts |\n| **structural_exception_line** | **EXP-2058** | |\n| **structural_exception_reason** | 73 days from incurral to submission breaks the 60-day clock; every per-line cap passes clean | |\n\nThe key callouts:\n- **Blake's per diem** dropped from $222 claimed to $204 \u2014 San Francisco rate governs (work city, not Oakland lodging), and the Wednesday delegate lunch knocks $26 off day 2.\n- **Kim's Sacramento per diem** zeroed out entirely \u2014 9.5 hours, no overnight.\n- **Kim's wi-fi** stays reimbursable at $18, just reclassified out of Incidentals per \u00a75.\n- **Okonkwo's $612.40** is your W-2 item. Everything else flows to AP tax-free.",
+ "trace": [
+  {
+   "ts": 1786478884.730926,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"FIN-POL-022 per diem\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478884.7314339,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786478888.295552,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--travel-perdiem-and-substantiation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478888.296275,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"expense-extract-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478899.9956212,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"FIN-REF-022A GSA M&IE Rate Table\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478902.223064,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"reference--gsa-mie-rate-table\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478928.135767,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"GreenLedger Summit registration confirmation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478931.128665,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"GreenLedger\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478933.9371772,
+   "server": "email",
+   "tool": "threads_get",
+   "args": "{\"id\": \"t_79c073ee00\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478977.833549,
+   "server": "docs",
+   "tool": "get_document_metadata",
+   "args": "{\"doc_id\": \"policy--travel-perdiem-and-substantiation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478998.5147798,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"perdiem_due\": 404.0, \"conference_mie_rate\": 92.0, \"nonaccountable_amount\": 612.4, \"reimbursable_total\": 2932.5, \"structural_exception_line\": \"EXP-2058\", \"structural_exception_reason\": \"EXP-2058 (A. Okonkwo, Chicago lodging $612.40) passes every per-line limit \\u2014 receipt attached, $",
+   "ok": true
+  },
+  {
+   "ts": 1786479001.650172,
+   "server": "harness",
+   "tool": "list_submitted",
+   "args": "{}",
+   "ok": true
+  }
+ ]
+}

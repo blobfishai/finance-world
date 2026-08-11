@@ -1,0 +1,206 @@
+{
+ "task": "erp_qa_fb/credit-notes-1",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:unapplied_credit_total:mismatch(got=$0.00)"
+ ],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 24,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 17,
+ "agent_error": false,
+ "duration_s": 107.9,
+ "cost_usd": null,
+ "final_text": "The answer has been submitted. Here's a summary of what I found:\n\n- **Customer**: \"Litware Asia\" (account **SYNCUS-0352**) in USMF \u2014 the system spells it \"Litware\" rather than \"Liteware.\"\n- **CustomerTransactions** for SYNCUS-0352: 5 total \u2014 4 invoices and 1 payment. None are credit notes (`txn_type = \"CreditNote\"`).\n- **Unapplied credit notes**: **0**, with a total of **$0.00**.",
+ "trace": [
+  {
+   "ts": 1786478472.150711,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer credit notes unapplied\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478472.151024,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"customers\", \"filters\": {\"name\": \"Liteware Asia\"}}",
+   "ok": false,
+   "note": "unknown entity type 'customers'"
+  },
+  {
+   "ts": 1786478472.154901,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0352\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478478.851557,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Liteware Asia\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786478478.852125,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"unapplied credit note\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478484.31424,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478484.315184,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE name LIKE '%Liteware%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478488.964108,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE name LIKE '%Lite%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478488.964997,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE name LIKE '%Asia%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478494.906847,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478501.891349,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0352' AND dataareaid = 'USMF' ORDER BY trans_date DESC\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786478505.899039,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0352\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786478517.797319,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"page\": 2, \"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0352\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786478517.797995,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT DISTINCT txn_type FROM erp_customertransactions WHERE dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786478525.288523,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT DISTINCT txn_type FROM CustomerTransactions WHERE dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786478525.2909179,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"txn_type\": \"Credit\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786478531.574944,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0352\", \"txn_type\": \"CreditNote\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786478538.848759,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions WHERE account = 'SYNCUS-0352'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786478543.411728,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0352'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786478550.209926,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0352' AND txn_type = 'CreditNote'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786478553.485404,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%customer%'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786478558.67606,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions WHERE account = 'SYNCUS-0352' AND txn_type = 'CreditNote'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786478558.676501,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions WHERE account = 'SYNCUS-0352' AND txn_type = 'CreditNote'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786478566.596488,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"unapplied_credit_note_count\": 0, \"unapplied_credit_total\": \"$0.00\"}}",
+   "ok": true
+  }
+ ]
+}

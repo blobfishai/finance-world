@@ -1,0 +1,53 @@
+{
+ "task": "finance_qa/xom-current-assets",
+ "family": "finance_qa",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 4,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 5,
+ "agent_error": false,
+ "duration_s": 14.1,
+ "cost_usd": null,
+ "final_text": "Here you go, Dana:\n\n- **Current assets**: $91,990,000,000\n- **Period end**: 2024-12-31 (FY2024)\n- **Source**: Exxon Mobil Corporation **10-K** (US-GAAP tag `AssetsCurrent`), filed 2026-02-18, accession number 0000034088-26-000015, pulled from the SEC EDGAR XBRL company concept feed.",
+ "trace": [
+  {
+   "ts": 1786479013.068335,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"ExxonMobil\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479015.05509,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"Exxon\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479017.867429,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"XOM\", \"concept\": \"AssetsCurrent\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479020.950009,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"current_assets_usd\": 91990000000, \"period_end\": \"2024-12-31\", \"source_form\": \"10-K (filed 2026-02-18, accn 0000034088-26-000015)\"}}",
+   "ok": true
+  }
+ ]
+}

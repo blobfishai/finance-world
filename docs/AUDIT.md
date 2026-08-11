@@ -219,6 +219,32 @@ as `trial-N.starved.json`, carry `budget_exhausted: true`, are excluded from tri
 like infra runs, and are re-run by the resume rule. A model failure has to be a *finance*
 failure, not a clock failure.
 
+### A9. The OpenAI-path runner ended episodes on an empty assistant turn — FIXED
+Found 2026-08-11 auditing the first DeepSeek sweep, before reading any of it as a result.
+
+`sim/agent_openai.py` treated any assistant message with no tool calls as the end of the
+episode. Models on this transport routinely emit an empty or purely narrative turn mid-task,
+so the loop exited while the model was still working — and the run was then graded as a wrong
+answer:
+
+| task | turns / budget | successful tool calls | submitted |
+|---|---|---|---|
+| `erp_qa_fb/aged-balance-1` | 5 / 40 | 5 | no |
+| `erp_qa/due-next-week-adventure` | 6 / 40 | 5 | no |
+| `erp_qa_fb/aged-balance-2` | 10 / 40 | 14 | no |
+| `erp_qa/ap-overdue-usmf` | 35 / 40 | 46 | no |
+
+**4 of 23 apparent failures were this bug** (2 more at 40/40 were genuine budget starvation,
+already labelled). Reading that sweep at face value would have overstated the world's
+difficulty by ~17% of its failures — the same error as A5 and A8, in a new transport.
+
+**Fix:** an assistant turn with no tool call ends the episode only if `submit_answer` has
+already succeeded; otherwise the runner appends one reminder that the task is not complete
+and continues, capped at 3 nudges. This enforces the output contract that `claude -p`
+enforces by running to completion, and supplies no task content — the nudge says "you have
+not submitted", never anything about the finance. Affected trials were discarded, not
+re-graded (the run itself was truncated, so there is nothing to re-grade), and re-run.
+
 ### A4. `--max-turns` not strictly enforced by observed runs — WATCH
 haiku's ap-overdue run recorded `num_turns=36` against `--max-turns 24`. Budget overruns
 currently can't masquerade as passes (verification is answer-based), but turn accounting

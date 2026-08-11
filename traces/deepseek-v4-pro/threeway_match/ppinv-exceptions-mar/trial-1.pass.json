@@ -1,0 +1,155 @@
+{
+ "task": "threeway_match/ppinv-exceptions-mar",
+ "family": "threeway_match",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 18,
+ "walk_len": 5,
+ "budget_turns": 52,
+ "num_turns": 8,
+ "agent_error": false,
+ "duration_s": 53.8,
+ "cost_usd": null,
+ "final_text": "Here's the breakdown:\n\n| Invoice | PO | Vendor | Ordered | Received | Invoiced | Issue |\n|---------|-----|--------|---------|----------|----------|-------|\n| **TWINV-301** | PO-7001 | SYNVEN-0003 | 100 \u00d7 $45 | 100 | $4,500 | \u2705 Clean \u2014 price and qty match |\n| **TWINV-302** | PO-7002 | SYNVEN-0007 | 50 \u00d7 $120 | 50 | $6,300 | \u274c Price variance \u2014 billed $126/unit vs $120 PO |\n| **TWINV-303** | PO-7003 | SYNVEN-0011 | 200 \u00d7 $18.50 | 160 | $3,700 | \u274c Qty variance \u2014 billed for 200, only 160 received |\n\n**Answers submitted:**\n\n- **Clean:** TWINV-301\n- **Price variance:** TWINV-302 \u2014 $300 over (50 units \u00d7 $6 overage per unit)\n- **Quantity variance:** TWINV-303 \u2014 40 units over-billed (invoiced for full 200 but only 160 received across PR-8103 and PR-8104)",
+ "trace": [
+  {
+   "ts": 1786479178.1038961,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"purchase invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479178.104718,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"match queue invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479181.890792,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"TransactionNumber\": \"TWINV-301\"}}",
+   "ok": false,
+   "note": "unknown field TransactionNumber"
+  },
+  {
+   "ts": 1786479181.8912919,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"TransactionNumber\": \"TWINV-302\"}}",
+   "ok": false,
+   "note": "unknown field TransactionNumber"
+  },
+  {
+   "ts": 1786479181.891667,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"TransactionNumber\": \"TWINV-303\"}}",
+   "ok": false,
+   "note": "unknown field TransactionNumber"
+  },
+  {
+   "ts": 1786479185.7750258,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"invoice\": \"TWINV-301\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479185.7768471,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"invoice\": \"TWINV-302\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479185.778365,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"invoice\": \"TWINV-303\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479191.840369,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"po_number\": \"PO-7001\"}, \"entity\": \"PurchaseOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479191.840947,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"po_number\": \"PO-7002\"}, \"entity\": \"PurchaseOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479191.841389,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"po_number\": \"PO-7003\"}, \"entity\": \"PurchaseOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479191.8417778,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"po_number\": \"PO-7001\"}, \"entity\": \"ProductReceipts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479191.8422022,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"po_number\": \"PO-7002\"}, \"entity\": \"ProductReceipts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479191.842604,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"po_number\": \"PO-7003\"}, \"entity\": \"ProductReceipts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479206.026845,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"three-way match invoice tolerance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479206.027663,
+   "server": "docs",
+   "tool": "list_document_types",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786479207.9197628,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786479219.099187,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"clean_invoice\": \"TWINV-301\", \"price_variance_invoice\": \"TWINV-302\", \"price_variance_amount\": 300.0, \"qty_variance_invoice\": \"TWINV-303\", \"qty_over_billed_units\": 40.0}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,112 @@
+{
+ "task": "erp_qa_fb/credit-limit-4",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 12,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 12,
+ "agent_error": false,
+ "duration_s": 90.1,
+ "cost_usd": null,
+ "final_text": "The submission is recorded. Here's a summary:\n\n| Detail | Value |\n|---|---|\n| **Customer** | Fourth Coffee East |\n| **Account** | SYNCUS-0741 |\n| **Credit Limit** | $10,000.00 |\n| **Open Balance (as of Mar 2, 2026)** | $83,929.71 |\n| **% Utilised** | **839.30%** |\n\nThe two open invoices driving the balance are CIV-002550 (Support Services, $49,266.16) and CIV-002552 (Annual Subscription, $34,663.55). The customer is well over their credit limit.",
+ "trace": [
+  {
+   "ts": 1786478464.9008489,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE customer_account = 'SYNCUS-0741'\"}",
+   "ok": false,
+   "note": "OperationalError('no such column: customer_account')"
+  },
+  {
+   "ts": 1786478468.763942,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478472.5648692,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478476.7075799,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786478481.785281,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478485.661511,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0741' AND dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786478489.33024,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0741\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786478499.260248,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478499.26241,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit utilization percentage\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478503.233183,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0741\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786478508.624019,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786478543.168733,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 10000, \"customer_name\": \"Fourth Coffee East\"}}",
+   "ok": true
+  }
+ ]
+}

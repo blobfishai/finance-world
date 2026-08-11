@@ -66,6 +66,7 @@ def run(task_dir, run_dir, model, base_url, api_key, budget, timeout_s=900):
     msgs = [{"role": "system", "content": SYSTEM},
             {"role": "user", "content": (task_dir / "instruction.md").read_text()}]
     t0, turns, final, err = time.time(), 0, "", None
+    submitted, nudges, MAX_NUDGES = False, 0, 3
 
     while turns < budget:
         if time.time() - t0 > timeout_s:
@@ -80,8 +81,21 @@ def run(task_dir, run_dir, model, base_url, api_key, budget, timeout_s=900):
         msgs.append({"role": "assistant", "content": m.content or "",
                      "tool_calls": [tc.model_dump() for tc in (m.tool_calls or [])] or None})
         if not m.tool_calls:
-            final = m.content or ""
-            break
+            # An assistant turn with no tool call is not necessarily the end of the episode.
+            # The task is only complete once harness__submit_answer has been called, and
+            # models on this transport routinely emit an empty or narrative turn mid-task.
+            # Treating that as "done" ended episodes at 5-35 turns against a 40 budget and
+            # scored them as wrong answers (docs/AUDIT.md A9). Nudge instead, up to a small
+            # cap; this enforces the output contract that `claude -p` enforces by running to
+            # completion, and never supplies any task content.
+            if submitted or nudges >= MAX_NUDGES:
+                final = m.content or ""
+                break
+            nudges += 1
+            msgs.append({"role": "user", "content":
+                         "You have not called harness__submit_answer yet. Continue working, "
+                         "then submit every field the task asks for."})
+            continue
         for tc in m.tool_calls:
             name = tc.function.name
             try:
@@ -94,6 +108,8 @@ def run(task_dir, run_dir, model, base_url, api_key, budget, timeout_s=900):
                 srv, tool = route[name]
                 try:
                     out = srv.call(tool, args)          # traces itself, like every other path
+                    if tool == "submit_answer" and not (isinstance(out, dict) and "error" in out):
+                        submitted = True
                 except Exception as e:
                     out = {"error": repr(e)}
             msgs.append({"role": "tool", "tool_call_id": tc.id,

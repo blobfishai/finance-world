@@ -1,0 +1,265 @@
+{
+ "task": "cross_system/total-ar-adventure-group",
+ "family": "cross_system",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:erp_open_balance:off(got=1060156.1)",
+  "answer:combined_exposure:off(got=1079206.1)"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 32,
+ "walk_len": 6,
+ "budget_turns": 60,
+ "num_turns": 24,
+ "agent_error": false,
+ "duration_s": 189.0,
+ "cost_usd": null,
+ "final_text": "Here's the breakdown for Treasury, Sam:\n\n---\n\n**ERP Open Balance (all Adventure Works entities): $1,060,156.10**\n\nAcross 26 Adventure Works accounts in USMF, ranging from $1,873.91 (Headquarters) up to $107,987.97 (Services). The three biggest exposures:\n\n| Account | Name | Open Balance |\n|---|---|---|\n| SYNCUS-0450 | Adventure Works Services | $107,987.97 |\n| SYNCUS-0954 | Adventure Works Americas | $114,170.05 |\n| SYNCUS-0002 | Adventure Works Cycles | $94,749.19 |\n\n**Subsidiary Net Balance (QBO): $19,050.00**\n\nOne entity \u2014 Adventure Works Cycles - Direct (BC-114) \u2014 with $22,200 in open invoices (CD-1041, CD-1055) less $3,150 in unapplied credits (CM-2007). References ERP SYNCUS-0002 but carries separate invoices, so no double-count.\n\n**Combined Group Exposure: $1,079,206.10**\n\nThat's the one number Treasury can defend \u2014 ERP $1,060,156.10 + QBO net $19,050.00.",
+ "trace": [
+  {
+   "ts": 1786477325.859138,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer account\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477325.8599129,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Adventure%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477325.86031,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Adventure Works exposure group\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477329.505538,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786477329.5061069,
+   "server": "books",
+   "tool": "get_customer",
+   "args": "{\"customer_id\": \"BC-114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477337.184353,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT c.name, c.account, ct.amount, ct.settled, ct.closed, ct.open_remainder FROM erp_customers c JOIN erp_customertransactions ct ON c.account = ct.customer_account WHERE c.name LIKE 'Adventure Works%' AND ct.closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786477339.924066,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477339.9247181,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477343.2015738,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions WHERE account IN (SELECT account FROM erp_customers WHERE name LIKE 'Adventure Works%') AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786477345.961119,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM CustomerTransactions WHERE account IN (SELECT account FROM Customers WHERE name LIKE 'Adventure Works%') AND closed = 0\"}",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786477348.96464,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE name LIKE 'Adventure Works%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477352.9750998,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE closed = 0 AND account LIKE 'SYNCUS-%' LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786477354.820698,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'erp_%'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786477357.267375,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions WHERE closed = 0 AND account = 'SYNCUS-0002' LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786477361.365512,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477364.4668381,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, name, total_due FROM erp_agedbalancessnapshot WHERE name LIKE 'Adventure Works%' ORDER BY account\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786477366.547331,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, name, total_due FROM erp_aged_balances_snapshot WHERE name LIKE 'Adventure Works%'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_aged_balances_snapshot')"
+  },
+  {
+   "ts": 1786477370.730075,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"name\": \"Adventure\"}, \"page\": 1}",
+   "ok": true
+  },
+  {
+   "ts": 1786477386.778442,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"name\": \"Adventure\"}, \"page\": 2, \"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477386.778945,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"group exposure intercompany consolidation subsidiary\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477424.119405,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477424.120367,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE CustomerRef = 'BC-114'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477424.1209338,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM CreditMemo WHERE CustomerRef = 'BC-114'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477437.5929239,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Adventure%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477437.593659,
+   "server": "books",
+   "tool": "report_aged_receivables",
+   "args": "{\"as_of\": \"2026-03-01\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786477444.434541,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0002\", \"closed\": \"0\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786477464.1002188,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT SUM(not_due + b1_30 + b31_60 + b61_90 + b90_plus) as total_open FROM erp_agedbalancessnapshot WHERE name LIKE 'Adventure Works%'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786477468.274621,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT SUM(amount - settled) as total FROM erp_customertransactions WHERE closed = 0 AND account IN (SELECT account FROM erp_customers WHERE name LIKE 'Adventure Works%')\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786477472.095922,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786477488.8423932,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0422\", \"closed\": \"0\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786477488.8448708,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0450\", \"closed\": \"0\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786477503.732128,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"erp_open_balance\": 1060156.1, \"subsidiary_net_balance\": 19050.0, \"combined_exposure\": 1079206.1}}",
+   "ok": true
+  }
+ ]
+}

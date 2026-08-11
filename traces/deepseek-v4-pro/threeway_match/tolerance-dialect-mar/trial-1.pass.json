@@ -1,0 +1,119 @@
+{
+ "task": "threeway_match/tolerance-dialect-mar",
+ "family": "threeway_match",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 13,
+ "walk_len": 5,
+ "budget_turns": 52,
+ "num_turns": 6,
+ "agent_error": false,
+ "duration_s": 38.4,
+ "cost_usd": null,
+ "final_text": "Here's the breakdown for Priya:\n\n---\n\n**TDINV-401 \u2014 HOLD (Blocked)**\n\n| Detail | Value |\n|---|---|\n| PO | PO-8101 (Legacy ledger, 81xx series) |\n| Invoiced | $3,240.00 |\n| PO expected (100 \u00d7 $32) | $3,200.00 |\n| **Price variance** | **$40.00** |\n| **Rule** | Legacy ledger with no tolerance key \u2192 **ZERO tolerance**. Any variance blocks. |\n\n---\n\n**TDINV-402 \u2014 RELEASE (Passes)**\n\n| Detail | Value |\n|---|---|\n| PO | PO-8102 (New ledger \u2014 explicitly listed in policy) |\n| Invoiced | $3,465.00 |\n| PO expected (150 \u00d7 $21) | $3,150.00 |\n| **Price variance** | **$315.00** |\n| **Rule** | New ledger with blank tolerance \u2192 **UNLIMITED**. No upper check applies. |\n\n---\n\nThe key insight from **AP Match Tolerance Policy (AP-POL-018) v2.0**: the two ledgers interpret a missing tolerance setting in opposite ways. Legacy says zero; new says unlimited. So the $40 variance on 401 blocks it, while the $315 variance on 402 sails through.",
+ "trace": [
+  {
+   "ts": 1786479191.041025,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479191.041801,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"price variance tolerance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479195.59377,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--ap-match-tolerances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479195.594282,
+   "server": "docs",
+   "tool": "get_document_metadata",
+   "args": "{\"doc_id\": \"policy--ap-match-tolerances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479195.5947678,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"Description\": \"TDINV-401\"}}",
+   "ok": false,
+   "note": "unknown field Description"
+  },
+  {
+   "ts": 1786479195.595175,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"Description\": \"TDINV-402\"}}",
+   "ok": false,
+   "note": "unknown field Description"
+  },
+  {
+   "ts": 1786479201.620702,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479201.623127,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"invoice\": \"TDINV-401\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479201.6247869,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"invoice\": \"TDINV-402\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479207.186709,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"PurchaseOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786479207.187648,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PurchaseOrders\", \"filters\": {\"po_number\": \"PO-8101\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479207.188182,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PurchaseOrders\", \"filters\": {\"po_number\": \"PO-8102\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786479218.328775,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"blocked_invoice\": \"TDINV-401\", \"blocked_variance\": 40.0, \"passing_invoice\": \"TDINV-402\", \"passing_variance\": 315.0, \"blocking_rule\": \"Legacy ledger (PO-81xx series): tolerance key not maintained = ZERO tolerance. Any variance, however small, blocks the invoice.\"}}",
+   "ok": true
+  }
+ ]
+}
