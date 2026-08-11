@@ -57,6 +57,11 @@ EXTRA = {  # tools needing a different task's seed to be meaningful
         ("filings", "get_submissions", {"ticker": "CAT"}),
         ("filings", "full_text_search", {"q": "balance sheet"}),
     ],
+    "tasks/vendor_master/missing-po-inquiry": [
+        ("email", "send_message", {"to": "ap@wingtip-sim.example",
+                                   "subject": "PO reference needed for invoice TWINV-303",
+                                   "body": "Please confirm the purchase order this invoice was raised against."}),
+    ],
     "tasks/collections_ops/escalate-sparrow-letter3": [
         ("erp", "api_invoke_action", {"action": "ContosoIssueCollectionLetter", "parameters": {"customer_account": "US-008"}}),
         ("erp", "api_invoke_action", {"action": "ContosoSetCreditHold", "parameters": {"customer_account": "US-008", "on_hold": "Open", "reason": "demo"}}),
