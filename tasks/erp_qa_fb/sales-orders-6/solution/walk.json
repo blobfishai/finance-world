@@ -1,0 +1,22 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "SalesOrders",
+   "filters": {
+    "account": "US-004"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "order_count": 1,
+    "sales_order_id": "725"
+   }
+  }
+ }
+]

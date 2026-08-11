@@ -1,0 +1,36 @@
+{
+ "answer_checks": [
+  {
+   "field": "order_count",
+   "type": "number",
+   "expect": 1,
+   "tol_abs": 0
+  },
+  {
+   "field": "sales_order_id",
+   "type": "contains_all",
+   "expect": [
+    "725"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}
