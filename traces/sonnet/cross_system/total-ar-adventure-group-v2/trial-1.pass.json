@@ -1,0 +1,286 @@
+{
+ "task": "cross_system/total-ar-adventure-group-v2",
+ "family": "cross_system",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 36,
+ "walk_len": 10,
+ "budget_turns": 36,
+ "num_turns": 40,
+ "agent_error": false,
+ "duration_s": 127.7,
+ "cost_usd": 0.9814755,
+ "final_text": "Submitted. Summary for Sam:\n\n| Field | Amount | Source |\n|---|---|---|\n| ERP open balance | $94,749.19 | CustomerTransactions + AgedBalancesSnapshot for SYNCUS-0002 (Adventure Works Cycles) |\n| Subsidiary net balance | $19,050.00 | QBO \"Direct\" book (BC-114): $22,200 open invoices \u2212 $3,150 unapplied credit memo |\n| Off-book invoice | $6,200.00 | CES-SIDE-009, confirmed by Dana's email + migration side-log; in neither system |\n| **Combined group exposure** | **$119,999.19** | Sum of the three, no overlap |\n\nKey traps avoided: 27 unrelated \"Adventure Works X\" customers in the ERP with similar names but no linkage; a stale January AR snapshot ($88,300) explicitly marked \"DO NOT USE\"; an unapplied credit memo that both source reports leave un-netted; and a second side-log line item (Tailspin Toys) already booked elsewhere that would have double-counted if included.",
+ "trace": [
+  {
+   "ts": 1786467272.315626,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customer\", \"filters\": {\"Name\": \"Adventure Works\"}}",
+   "ok": false,
+   "note": "unknown entity type 'Customer'"
+  },
+  {
+   "ts": 1786467272.8488698,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Adventure Works%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467272.853109,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Adventure Works\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467273.3953001,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Adventure Works\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467273.399447,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"Adventure Works\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467273.608572,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"CES cutover\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467281.8074539,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"Name\": \"Adventure\"}}",
+   "ok": false,
+   "note": "unknown field Name"
+  },
+  {
+   "ts": 1786467282.603945,
+   "server": "email",
+   "tool": "threads_get",
+   "args": "{\"threadId\": \"t_ee3f0d6819\"}",
+   "ok": false,
+   "note": "TypeError(\"threads_get() got an unexpected keyword argument 'threadId'\")"
+  },
+  {
+   "ts": 1786467282.781863,
+   "server": "sheets",
+   "tool": "get_drive_item",
+   "args": "{\"path\": \"CES-migration-side-log.xlsx\"}",
+   "ok": false,
+   "note": "TypeError(\"get_drive_item() got an unexpected keyword argument 'path'\")"
+  },
+  {
+   "ts": 1786467282.785064,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786467283.0640352,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"CES cutover migration\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467283.067466,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786467288.9565618,
+   "server": "email",
+   "tool": "threads_get",
+   "args": "{\"id\": \"t_ee3f0d6819\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467289.667302,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"CES-migration-side-log.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467290.057724,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467290.531252,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"subsidiary legal entity company\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467312.391753,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0002'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786467313.1458938,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account = 'SYNCUS-0002'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786467313.52338,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE CustomerRef = 'BC-114'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467314.048413,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM CreditMemo WHERE CustomerRef = 'BC-114'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467314.560406,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Payment WHERE CustomerRef = 'BC-114'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467314.56295,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Adventure Works Cycles\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467315.194759,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"SYNCUS-0002 OR BC-114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467315.2846909,
+   "server": "sheets",
+   "tool": "get_drive_item",
+   "args": "{\"item\": \"AR-summary-2026-01.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467321.749978,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0002\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467322.397373,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0002\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467322.84201,
+   "server": "books",
+   "tool": "report_customer_balance",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786467323.7447062,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467345.917566,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure Works Cycles\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467346.867276,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Companies\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467347.4362218,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"SYNCUS-0002\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467347.6835241,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"BC-114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467347.686217,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"exposure roll-up\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467347.841307,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"write off OR dispute OR duplicate Adventure\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467366.1447139,
+   "server": "books",
+   "tool": "report_aged_receivables",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786467377.9879029,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"erp_open_balance\": 94749.19, \"subsidiary_net_balance\": 19050, \"offbook_invoice_amount\": 6200, \"combined_exposure\": 119999.19}}",
+   "ok": true
+  }
+ ]
+}

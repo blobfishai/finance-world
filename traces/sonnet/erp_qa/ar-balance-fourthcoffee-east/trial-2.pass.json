@@ -1,0 +1,121 @@
+{
+ "task": "erp_qa/ar-balance-fourthcoffee-east",
+ "family": "erp_qa",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 13,
+ "walk_len": 4,
+ "budget_turns": 24,
+ "num_turns": 16,
+ "agent_error": false,
+ "duration_s": 51.6,
+ "cost_usd": 0.8691792999999998,
+ "final_text": "Fourth Coffee East (account **SYNCUS-0069**) is carrying:\n\n- **Outstanding balance:** $121,321.26\n- **Open invoices:** 4\n\n| Invoice | Description | Amount | Due Date |\n|---|---|---|---|\n| FCE-2201 | Q1 wholesale beans order | $36,319.23 | 2025-12-03 |\n| FCE-2202 | Store fit-out supplies | $48,255.68 | 2026-02-13 |\n| FCE-2203 | February roast delivery | $23,841.80 | 2026-03-07 |\n| FCE-2204 | Equipment servicing | $12,904.55 | 2026-03-20 |\n\nNone are disputed, and none have partial payments applied (all fully open). Answer submitted.",
+ "trace": [
+  {
+   "ts": 1786468239.929987,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Fourth Coffee%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468241.73505,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Fourth%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468244.5239658,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468251.604682,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer accounts receivable balance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468251.608664,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customer\", \"filters\": {\"Name\": \"Fourth Coffee\"}}",
+   "ok": false,
+   "note": "unknown entity type 'Customer'"
+  },
+  {
+   "ts": 1786468254.371891,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"Name\": \"Fourth Coffee\"}}",
+   "ok": false,
+   "note": "unknown field Name"
+  },
+  {
+   "ts": 1786468255.8452742,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Fourth Coffee\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468258.9955342,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, invoice, due_date, amount, settled_amount, (amount - settled_amount) AS open_remainder, closed, transaction_type FROM erp_CustomerTransactions WHERE account = 'SYNCUS-0069' AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786468261.2260659,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786468262.545225,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468264.300043,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, invoice, txn_type, trans_date, due_date, amount, settled, closed, disputed FROM erp_customertransactions WHERE account = 'SYNCUS-0069' AND closed = 0 ORDER BY due_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786468266.644518,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0069\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468278.118376,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"customer_account\": \"SYNCUS-0069\", \"outstanding_balance\": 121321.26, \"open_invoice_count\": 4}}",
+   "ok": true
+  }
+ ]
+}

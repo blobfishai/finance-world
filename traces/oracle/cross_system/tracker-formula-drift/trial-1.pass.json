@@ -4,6 +4,7 @@
  "agent": "oracle",
  "model": null,
  "infra_error": false,
+ "budget_exhausted": false,
  "trial": 1,
  "reward": 1,
  "failed": [],
@@ -14,7 +15,7 @@
  ],
  "n_tool_calls": 5,
  "walk_len": 5,
- "budget_turns": 24,
+ "budget_turns": 52,
  "num_turns": null,
  "agent_error": false,
  "duration_s": 0.1,
@@ -22,38 +23,38 @@
  "final_text": "{\"walk_steps\": 5}\n",
  "trace": [
   {
-   "ts": 1786398299.737649,
+   "ts": 1786470697.3942301,
    "server": "sheets",
    "tool": "get_drive_item",
    "args": "{\"item\": \"AR-watchlist-tracker.xlsx\"}",
    "ok": true
   },
   {
-   "ts": 1786398299.738032,
+   "ts": 1786470697.3947678,
    "server": "sheets",
    "tool": "workbook_used_range",
    "args": "{\"item\": \"AR-watchlist-tracker.xlsx\"}",
    "ok": true
   },
   {
-   "ts": 1786398299.739222,
+   "ts": 1786470697.396996,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT c.name, ROUND(SUM(t.amount - t.settled), 2) AS open FROM erp_cust_trans t JOIN erp_customers c ON c.account = t.account WHERE t.account IN ('US-031','US-032','US-033') AND t.txn_type='Invoice' AND t.closed=0 GROUP BY c.name\"}",
    "ok": true
   },
   {
-   "ts": 1786398299.7397351,
+   "ts": 1786470697.398366,
    "server": "erp",
    "tool": "data_find_entities_sql",
    "args": "{\"sql\": \"SELECT ROUND(SUM(amount - settled), 2) AS total FROM erp_cust_trans WHERE account IN ('US-031','US-032','US-033') AND txn_type='Invoice' AND closed=0\"}",
    "ok": true
   },
   {
-   "ts": 1786398299.7406778,
+   "ts": 1786470697.400224,
    "server": "harness",
    "tool": "submit_answer",
-   "args": "{\"answers\": {\"tracker_cached_total\": 118400.0, \"tracker_rows_sum\": 121900.0, \"erp_live_total\": 127450.0, \"stale_customers\": \"Tailwind Bikes, Ostara Labs\"}}",
+   "args": "{\"answers\": {\"tracker_cached_total\": 118400.0, \"tracker_rows_sum\": 228138.01, \"erp_live_total\": 127450.0, \"stale_customers\": \"Tailwind Bikes, Ostara Labs\"}}",
    "ok": true
   }
  ]

@@ -5,8 +5,11 @@
  "model": null,
  "infra_error": false,
  "trial": 1,
- "reward": 1,
- "failed": [],
+ "reward": 0,
+ "failed": [
+  "answer:outstanding_balance:off(got=172068.91)",
+  "answer:open_invoice_count:off(got=5.0)"
+ ],
  "servers_used": [
   "erp",
   "harness"
@@ -48,5 +51,6 @@
    "args": "{\"answers\": {\"customer_account\": \"SYNCUS-0069\", \"outstanding_balance\": 172068.91, \"open_invoice_count\": 5}}",
    "ok": true
   }
- ]
+ ],
+ "regraded": "verifier changed; run data unchanged (docs/AUDIT.md A5)"
 }

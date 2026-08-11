@@ -1,0 +1,270 @@
+{
+ "task": "cross_system/tracker-formula-drift",
+ "family": "cross_system",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 3,
+ "reward": 0,
+ "failed": [
+  "answer:erp_live_total:off(got=238195.17)"
+ ],
+ "servers_used": [
+  "docs",
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 34,
+ "walk_len": 5,
+ "budget_turns": 24,
+ "num_turns": 40,
+ "agent_error": false,
+ "duration_s": 252.8,
+ "cost_usd": 1.5547461000000002,
+ "final_text": "Casey's right \u2014 the CFO's number is stale on two separate levels. Here's the breakdown:\n\n**1. The tracker's cached total is broken (formula drift)**\n- `AR-watchlist-tracker.xlsx`, Sheet1, cell C10 shows **$118,400.00** \u2014 but its own note admits it's \"cached before the Northwind row was updated.\"\n- The 8 rows currently in the sheet actually add up to **$228,138.01**. The `=SUM(C2:C9)` formula never recalculated after edits, so the displayed total understates the sheet's own data by ~$109,738.\n\n**2. Even the row-level data in the tracker is stale vs. the ERP**\nI pulled live open-AR balances from the ERP (`CustomerTransactions`, cross-checked against `AgedBalancesSnapshot`) for all 8 watchlist accounts. Only **Northwind Field Services** ($52,300.00) matches exactly. Everything else has drifted:\n\n| Customer | Tracker | ERP live | Note |\n|---|---|---|---|\n| Northwind Field Services | $52,300.00 | $52,300.00 | matches |\n| Tailwind Bikes | $38,100.00 | $41,650.00 | missing Feb add-on invoice |\n| Ostara Labs | $31,500.00 | $33,500.00 | missing Feb calibration invoice |\n| Tailspin Toys | $15,472.79 | $35,584.26 | large gap |\n| Proseware USA | $17,569.43 | $26,639.13 | large gap |\n| Alpine Ski House Global | $22,168.51 | $48,521.78 | large gap |\n| Litware Manufacturing | $17,121.96 | **$0.00** | fully paid off \u2014 should come off the list |\n| The Phone Company Americas | $33,905.32 | **$0.00** | fully paid off \u2014 should come off the list |\n\nLive ERP total across these 8 accounts: **$238,195.17**.\n\n**Bottom line for your reply to the CFO:** the real number isn't $118,400 (broken formula) and isn't even $228,138.01 (the sheet's own row sum, which is itself outdated). The current true watchlist exposure is **$238,195.17**, and two names (Litware Manufacturing, The Phone Company Americas) should be dropped from the list entirely since they're now fully collected \u2014 Casey's tracker needs a refresh before the next credit meeting.",
+ "trace": [
+  {
+   "ts": 1786467795.302321,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"watchlist\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467795.364386,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"watchlist\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467795.3673542,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"watchlist\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467800.3112571,
+   "server": "sheets",
+   "tool": "get_drive_item",
+   "args": "{\"item\": \"AR-watchlist-tracker.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467800.501218,
+   "server": "sheets",
+   "tool": "workbook_worksheets",
+   "args": "{\"item\": \"AR-watchlist-tracker.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467803.069678,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"AR-watchlist-tracker.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467819.296136,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer open balance accounts receivable\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467821.879304,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467821.941449,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467826.659692,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, dataareaid, txn_type, invoice, amount, settled, closed, disputed, trans_date, due_date FROM erp_CustomerTransactions WHERE account IN ('US-031','US-032','US-033','SYNCUS-0331','SYNCUS-0272','SYNCUS-0436','SYNCUS-0227','SYNCUS-0305') AND closed = 0 ORDER BY account\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786467827.172265,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, dataareaid, name, on_hold FROM erp_Customers WHERE account IN ('US-031','US-032','US-033','SYNCUS-0331','SYNCUS-0272','SYNCUS-0436','SYNCUS-0227','SYNCUS-0305')\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467830.5028841,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-031\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467838.1204941,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786467848.6883352,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786467858.9526541,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-032\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467859.522651,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-033\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467860.2810051,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0331\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467860.7527208,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0272\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467861.207891,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0436\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467861.986752,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0227\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467862.3802319,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0305\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467884.045252,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0436\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467884.301088,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0305\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467976.1104908,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0227\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467976.634946,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0272\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467976.841247,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0227\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467982.414666,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0331\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467982.9658308,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0272\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467983.5032651,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0436\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467984.0593548,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0305\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467984.6237812,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"US-032\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467985.199289,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"US-033\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467985.22174,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"US-031\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468018.360592,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"tracker_cached_total\": 118400, \"tracker_rows_sum\": 228138.01, \"erp_live_total\": 238195.17, \"stale_customers\": \"7 of the 8 rows are stale vs. live ERP; only Northwind Field Services (US-031, $52,300.00) matches exactly. Tailwind Bikes (US-032): tracker $38,100.00 vs ERP $41,650.00 (miss",
+   "ok": true
+  }
+ ]
+}

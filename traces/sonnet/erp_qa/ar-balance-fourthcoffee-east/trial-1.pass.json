@@ -1,0 +1,176 @@
+{
+ "task": "erp_qa/ar-balance-fourthcoffee-east",
+ "family": "erp_qa",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 21,
+ "walk_len": 4,
+ "budget_turns": 24,
+ "num_turns": 25,
+ "agent_error": false,
+ "duration_s": 120.8,
+ "cost_usd": 1.0172923,
+ "final_text": "Submitted. Quick heads-up for Casey: **Fourth Coffee East (SYNCUS-0069, Philadelphia)** is carrying **$121,321.26** across **4 open invoices** (FCE-2201 through FCE-2204, all currently past due \u2014 oldest from Dec 2025).\n\nOne flag worth knowing about: there's a *second*, unrelated customer record also named \"Fourth Coffee East\" (SYNCUS-0741, Atlanta) in the system with its own $34,663.55 balance on 2 open invoices. If the caller mentioned a different location or the numbers don't match what they expect, we may be talking to the Atlanta entity instead \u2014 worth confirming which one called before promising anything back.",
+ "trace": [
+  {
+   "ts": 1786468228.704448,
+   "server": "books",
+   "tool": "report_customer_balance",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786468228.7080379,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Fourth Coffee%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468230.9898949,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468230.991819,
+   "server": "books",
+   "tool": "get_company_info",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786468237.6737878,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468237.9876559,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomersV3\", \"filters\": {\"CustomerName\": \"Fourth Coffee East\"}}",
+   "ok": false,
+   "note": "unknown entity type 'CustomersV3'"
+  },
+  {
+   "ts": 1786468241.7586272,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"CustomerName\": \"Fourth Coffee East\"}}",
+   "ok": false,
+   "note": "unknown field CustomerName"
+  },
+  {
+   "ts": 1786468243.715381,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Fourth Coffee East\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468248.144598,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0069\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468248.270325,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468259.5154629,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Activities\", \"filters\": {\"account\": \"SYNCUS-0069\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468259.756028,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Activities\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468263.6805902,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Fourth Coffee East\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468263.7500648,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Fourth Coffee East\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468307.883744,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0069\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468308.434665,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468308.969943,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CollectionLetters\", \"filters\": {\"account\": \"SYNCUS-0069\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468309.329289,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CollectionLetters\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468328.9885921,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"SalesOrders\", \"filters\": {\"account\": \"SYNCUS-0069\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468329.109625,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"SalesOrders\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468336.239904,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"customer_account\": \"SYNCUS-0069\", \"outstanding_balance\": 121321.26, \"open_invoice_count\": 4}}",
+   "ok": true
+  }
+ ]
+}

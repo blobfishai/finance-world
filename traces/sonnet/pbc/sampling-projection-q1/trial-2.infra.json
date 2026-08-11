@@ -1,0 +1,27 @@
+{
+ "task": "pbc/sampling-projection-q1",
+ "family": "pbc",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": true,
+ "trial": 2,
+ "reward": 0,
+ "failed": [
+  "answer:projected_misstatement:missing",
+  "answer:population_size:missing",
+  "answer:exceeds_materiality:missing",
+  "answer:method_used:missing",
+  "trace:required_servers_missing(['sheets', 'docs'])",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [],
+ "n_tool_calls": 0,
+ "walk_len": 4,
+ "budget_turns": 24,
+ "num_turns": 1,
+ "agent_error": true,
+ "duration_s": 2.8,
+ "cost_usd": 0,
+ "final_text": "You've hit your session limit \u00b7 resets 1:50pm (America/Los_Angeles)",
+ "trace": []
+}

@@ -5,8 +5,10 @@
  "model": null,
  "infra_error": false,
  "trial": 1,
- "reward": 1,
- "failed": [],
+ "reward": 0,
+ "failed": [
+  "answer:total_overdue_ap:off(got=81262127.02)"
+ ],
  "servers_used": [
   "erp",
   "harness"
@@ -41,5 +43,6 @@
    "args": "{\"answers\": {\"total_overdue_ap\": 81262127.02, \"as_of_date\": \"2026-03-02\"}}",
    "ok": true
   }
- ]
+ ],
+ "regraded": "verifier changed; run data unchanged (docs/AUDIT.md A5)"
 }

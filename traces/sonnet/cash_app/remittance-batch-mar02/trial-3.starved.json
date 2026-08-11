@@ -1,0 +1,491 @@
+{
+ "task": "cash_app/remittance-batch-mar02",
+ "family": "cash_app",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 3,
+ "reward": 0,
+ "failed": [
+  "answer:dep501_invoices:missing",
+  "answer:dep502_invoices:missing",
+  "answer:dep503_invoices:missing",
+  "answer:unapplied_amount:missing",
+  "trace:required_servers_missing(['sheets'])",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp"
+ ],
+ "n_tool_calls": 64,
+ "walk_len": 7,
+ "budget_turns": 27,
+ "num_turns": 28,
+ "agent_error": true,
+ "duration_s": 213.6,
+ "cost_usd": 1.7349052999999999,
+ "final_text": "",
+ "trace": [
+  {
+   "ts": 1786466158.425141,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Lamna lockbox\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466158.428985,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Lamna lockbox\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466158.693415,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Lamna%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466160.753262,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Lamna\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466161.262649,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"lockbox\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466161.604696,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Lamna\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466161.6068501,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466164.90397,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-0211\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466165.14049,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-0210\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466165.143142,
+   "server": "books",
+   "tool": "report_customer_balance",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786466168.493443,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"DEP-503\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466168.495782,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"remittance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466168.974887,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE DocNumber LIKE 'LHINV%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466169.338378,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Healthcare%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466172.707631,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466172.709561,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786466172.888567,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"DEP\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466177.627531,
+   "server": "email",
+   "tool": "threads_get",
+   "args": "{\"id\": \"t_ba99430f07\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466177.631007,
+   "server": "email",
+   "tool": "threads_get",
+   "args": "{\"id\": \"t_7dfcdee752\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466182.013312,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Healthcare\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466182.01998,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"payment\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466182.420097,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"LHINV\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466182.4287858,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466186.850346,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Lamna\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466186.995538,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"the\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466189.791508,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-021\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466189.99541,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466193.943695,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions WHERE account = 'US-021' ORDER BY trans_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786466195.7716029,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786466197.035171,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466200.1712651,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'US-021' ORDER BY trans_date LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786466211.639242,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"021\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466211.647412,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"description\": \"Lamna\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466254.154811,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"sales invoice header lines\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466254.6471622,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"open invoices by customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466254.6519969,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"city\": \"Austin\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466260.265098,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"invoice\": \"LHINV\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466260.671544,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-021 \"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466269.481277,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"503\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466269.503794,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"DEP-503\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466269.952353,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"lockbox bank deposit batch\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466269.963933,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"lockbox deposit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466275.351964,
+   "server": "email",
+   "tool": "attachments_get",
+   "args": "{\"message_id\": \"em-0210\"}",
+   "ok": false,
+   "note": "{'code': 404, 'message': 'message has no attachment'}"
+  },
+  {
+   "ts": 1786466275.46051,
+   "server": "email",
+   "tool": "attachments_get",
+   "args": "{\"message_id\": \"em-0211\"}",
+   "ok": false,
+   "note": "{'code': 404, 'message': 'message has no attachment'}"
+  },
+  {
+   "ts": 1786466275.4783008,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"deposit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466275.704911,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Lamna Healthcare\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466279.497209,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"voucher\": \"DEP\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466280.047188,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-021\", \"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466280.198349,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerSettlements\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466288.96738,
+   "server": "docs",
+   "tool": "list_document_types",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786466289.41693,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"BankAccounts\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466291.415004,
+   "server": "email",
+   "tool": "labels_list",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786466307.123156,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"unapplied cash unidentified receipts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466307.130722,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"bank statement transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466307.332503,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"cash receipts journal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466321.20432,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-0209\"}",
+   "ok": false,
+   "note": "{'code': 404, 'message': 'Requested entity was not found: em-0209'}"
+  },
+  {
+   "ts": 1786466325.121374,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"lockbox deposit apply cash\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466325.124346,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-0212\"}",
+   "ok": false,
+   "note": "{'code': 404, 'message': 'Requested entity was not found: em-0212'}"
+  },
+  {
+   "ts": 1786466339.6783879,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"LedgerJournalLines\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466340.2171211,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournalLines\", \"filters\": {\"dimension\": \"US-021\"}}",
+   "ok": false,
+   "note": "unknown field dimension"
+  },
+  {
+   "ts": 1786466340.592312,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466343.383562,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournalLines\", \"filters\": {\"party\": \"US-021\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466343.916516,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournalLines\", \"filters\": {\"description\": \"Lamna\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466344.0024981,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournalLines\", \"filters\": {\"description\": \"DEP\"}}",
+   "ok": true
+  }
+ ],
+ "budget_exhausted": true,
+ "relabelled": "cut off by the old turn budget before answering (docs/AUDIT.md A8)"
+}

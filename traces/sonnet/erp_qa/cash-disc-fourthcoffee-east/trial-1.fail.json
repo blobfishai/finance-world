@@ -1,0 +1,117 @@
+{
+ "task": "erp_qa/cash-disc-fourthcoffee-east",
+ "family": "erp_qa",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:has_active_discount:wrong_polarity(got=no, want=yes)",
+  "answer:potential_discount_usd:off(got=0.0)"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 12,
+ "walk_len": 6,
+ "budget_turns": 24,
+ "num_turns": 16,
+ "agent_error": false,
+ "duration_s": 116.8,
+ "cost_usd": 0.9264794999999999,
+ "final_text": "## Summary\n\nInvestigated Fourth Coffee East (vendor SYNVEN-0069) in the ERP:\n\n- **Discount terms:** They do have a negotiated `2%10N30` cash-discount code (2% if paid within 10 days of invoice date) applied to two open invoices \u2014 but no vendor-master default discount.\n- **Open invoices on the account:**\n  - VINV-900001 \u2014 $12,480.00, invoiced 2026-02-25, discount window closed **2026-03-07**\n  - VINV-900002 \u2014 $9,375.50, invoiced 2026-02-28, discount window closed **2026-03-10**\n  - VINV-000220 \u2014 $35,769.85, invoiced 2025-09-24, no discount code at all\n- Per policy AP-POL-007 (\"discounts on already-overdue invoices are expired and must not be assumed\"), both discount-eligible invoices are now past due and their windows lapsed over 5 months ago (today is 2026-08-11).\n\n**Answer to Priya:** No, there's nothing left to capture \u2014 the AR desk's tip refers to a discount that already expired back in March. Paying today captures **$0** in early-payment discount. (Had it been caught within the window, it would have been ~$437.11 combined \u2014 worth flagging as a process gap for future invoices with this vendor, but not recoverable today.)\n\nSubmitted: `has_active_discount = No`, `qualifying_invoices = None (detail on the three open invoices and why)`, `potential_discount_usd = 0`.",
+ "trace": [
+  {
+   "ts": 1786468372.5042272,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Fourth Coffee%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468372.893709,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"early payment discount\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468372.89731,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468375.192821,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--cash-discount-capture\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468375.495856,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customer\", \"filters\": {\"Name\": \"Fourth Coffee\"}}",
+   "ok": false,
+   "note": "unknown entity type 'Customer'"
+  },
+  {
+   "ts": 1786468384.3152168,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Vendors\", \"filters\": {\"Name\": \"Fourth Coffee\"}}",
+   "ok": false,
+   "note": "unknown field Name"
+  },
+  {
+   "ts": 1786468385.678103,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Vendors\", \"filters\": {\"name\": \"Fourth Coffee\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468390.323264,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CashDiscounts\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468390.37258,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_VendorTransactions WHERE account = 'SYNVEN-0069' ORDER BY invoice_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_VendorTransactions')"
+  },
+  {
+   "ts": 1786468392.958793,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"account\": \"SYNVEN-0069\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468422.1665778,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNVEN-0069\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468446.451434,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"has_active_discount\": \"No \\u2014 Fourth Coffee East (vendor SYNVEN-0069) has a negotiated 2%10N30 cash-discount code (2% if paid within 10 days of invoice date) on two invoices, but neither is currently within its discount window. Both windows lapsed in early March 2026, over 5 months ",
+   "ok": true
+  }
+ ],
+ "regraded": "verifier changed; run data unchanged (docs/AUDIT.md A5)"
+}

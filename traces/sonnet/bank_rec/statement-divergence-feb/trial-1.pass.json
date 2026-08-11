@@ -1,0 +1,415 @@
+{
+ "task": "bank_rec/statement-divergence-feb",
+ "family": "bank_rec",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 55,
+ "walk_len": 4,
+ "budget_turns": 24,
+ "num_turns": 25,
+ "agent_error": true,
+ "duration_s": 289.6,
+ "cost_usd": 1.9318517999999996,
+ "final_text": "",
+ "trace": [
+  {
+   "ts": 1786465486.777539,
+   "server": "docs",
+   "tool": "list_document_types",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786465487.241626,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"bank statement February\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465487.2443452,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786465487.5197709,
+   "server": "books",
+   "tool": "report_transaction_list",
+   "args": "{\"date_from\": \"2026-02-24\", \"date_to\": \"2026-02-28\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465493.064801,
+   "server": "books",
+   "tool": "report_transaction_list",
+   "args": "{\"date_from\": \"2026-02-01\", \"date_to\": \"2026-02-28\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465496.203583,
+   "server": "sheets",
+   "tool": "workbook_worksheets",
+   "args": "{\"item\": \"bank-statement-operating-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465496.728668,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Payment\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465496.769092,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465499.849705,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465500.1121778,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"bank-statement-operating-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465508.5112,
+   "server": "books",
+   "tool": "get_company_info",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786465510.543381,
+   "server": "books",
+   "tool": "report_customer_balance",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786465510.826777,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Payment WHERE TxnDate >= '2026-02-24' AND TxnDate <= '2026-02-28'\"}",
+   "ok": false,
+   "note": "QueryParserError: unsupported syntax. Use SELECT * FROM <Entity> [WHERE <Field> = '<value>'] with entities Customer, Invoice, CreditMemo, Payment"
+  },
+  {
+   "ts": 1786465523.249394,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"cash receipts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465523.2530482,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"reconciliation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465526.4636438,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer payments received\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465526.754272,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"bank account transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465526.756023,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"general ledger journal entries\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465534.2569442,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"LedgerJournalLines\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465534.799119,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"BankAccounts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465534.80295,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465538.885351,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"LedgerJournals\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465539.135207,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_ledgerjournallines LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_ledgerjournallines')"
+  },
+  {
+   "ts": 1786465542.6745222,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786465548.006038,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {\"posting_date\": \"2026-02-2\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465548.1220129,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"BankAccounts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465553.383004,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465553.6016152,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465567.4334788,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournalLines\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465567.9842298,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"txn_type\": \"Payment\", \"trans_date\": \"2026-02-2\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465568.296504,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"txn_type\": \"Payment\", \"trans_date\": \"2026-02-2\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465585.284684,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"dataareaid\": \"CESP\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465585.3109262,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"dataareaid\": \"CESP\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465589.185239,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"bank reconciliation statement lines\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465589.189693,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"cash receipts journal deposits\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465589.350579,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"payroll funding wire transfer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465593.217206,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"PaymentRuns\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465593.7464068,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"PaymentRunLines\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465593.749634,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentRuns\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465600.042592,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Alpine\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465600.584397,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Power\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465600.762631,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Coho\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465606.330642,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0003\", \"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465606.8665159,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0005\", \"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465607.261049,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0007\", \"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465648.031483,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"invoice\": \"PMT-2\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465648.696295,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"invoice\": \"PMT-2\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465649.084198,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"voucher\": \"PMTV\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465649.569588,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"invoice\": \"DEP\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465649.572663,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"invoice\": \"DEP\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465702.005313,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465702.3778508,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0011\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465712.067727,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"invoice\": \"PMT-\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465712.4367669,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0011\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465747.9042702,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"matched_count\": 2, \"discrepancy_ref\": \"PMT-2102\", \"discrepancy_amount\": 45, \"bank_only_ref\": \"DEP-9911\", \"books_only_ref\": \"PMT-2104\"}}",
+   "ok": true
+  }
+ ]
+}

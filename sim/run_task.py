@@ -32,7 +32,13 @@ def run_trial(task_dir, agent="oracle", model=None, trial=1, _attempt=1):
     for _sd in steps_of(task_dir):
         if (_sd / "walk.json").exists():
             walk_len += len(json.loads((_sd / "walk.json").read_text()))
-    budget = max(24, walk_len * 3 + 6)   # reference-relative turn budget, never a capability cap
+    # Reference-relative turn budget, never a capability cap. walk_len is the ORACLE's path,
+    # and the oracle cheats: it goes straight to the right SQL. A model doing the same work
+    # honestly spends turns on discovery and on 25-row pagination, so a 3-step oracle walk can
+    # be a 30-turn agent run. The old max(24, walk*3+6) was cutting models off mid-task and
+    # scoring it as a wrong answer (docs/AUDIT.md A8); this is sized off observed successful
+    # runs (40-45 turns at walk 5-6) with headroom.
+    budget = max(40, walk_len * 8 + 12)
     t0, final_text, num_turns, cost = time.time(), "", None, None
 
     if agent == "oracle":
@@ -84,6 +90,10 @@ def run_trial(task_dir, agent="oracle", model=None, trial=1, _attempt=1):
     for r in trace:
         r["args"] = json.dumps(r.get("args", {}), default=str)[:300]
 
+    submitted = any(r.get("tool") == "submit_answer" for r in trace)
+    starved = (agent == "claude" and not submitted and num_turns is not None
+               and num_turns >= budget - 1)
+
     if agent == "claude" and is_infra(agent_error, v["n_tool_calls"], final_text):
         if _attempt == 1:
             print(f"[{label}] {family}/{slug} trial-{trial}: INFRA ({final_text[:60]!r}) — one retry")
@@ -92,6 +102,7 @@ def run_trial(task_dir, agent="oracle", model=None, trial=1, _attempt=1):
         # retry also infra: record it labeled, excluded from triage by run_batch
     rec = {"task": f"{family}/{slug}", "family": family, "agent": agent, "model": model,
            "infra_error": agent == "claude" and is_infra(agent_error, v["n_tool_calls"], final_text),
+           "budget_exhausted": starved,
            "trial": trial, "reward": v["reward"], "failed": v["failed"],
            "servers_used": v["servers_used"], "n_tool_calls": v["n_tool_calls"],
            "walk_len": walk_len, "budget_turns": budget, "num_turns": num_turns,
@@ -99,7 +110,9 @@ def run_trial(task_dir, agent="oracle", model=None, trial=1, _attempt=1):
            "cost_usd": cost, "final_text": final_text, "trace": trace}
     out_dir = ROOT / "traces" / label / family / slug
     out_dir.mkdir(parents=True, exist_ok=True)
-    suffix = "infra" if rec["infra_error"] else ("pass" if v["reward"] else "fail")
+    suffix = ("infra" if rec["infra_error"] else
+              "starved" if rec["budget_exhausted"] else
+              ("pass" if v["reward"] else "fail"))
     out = out_dir / f"trial-{trial}.{suffix}.json"
     for stale in out_dir.glob(f"trial-{trial}.*.json"): stale.unlink()
     out.write_text(json.dumps(rec, indent=1))

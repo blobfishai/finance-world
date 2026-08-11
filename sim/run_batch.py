@@ -16,18 +16,21 @@ def classify(rewards):
     return "flaky"
 
 def existing_real(model, task_path, trial):
-    """Resume rule: a trial reruns only if it has no trace or an infra-tainted one."""
+    """Resume rule: a trial reruns only if it has no trace, or one the harness disowns
+    (infra-tainted, or cut off by the turn budget before it could answer)."""
     d = ROOT / "traces" / model / task_path.parent.name / task_path.name
     hits = list(d.glob(f"trial-{trial}.*.json"))
-    return bool(hits) and not hits[0].name.endswith(".infra.json")
+    return bool(hits) and not hits[0].name.endswith((".infra.json", ".starved.json"))
 
 def rebuild_summary(models):
     summary = {}
     for m in models:
         for p in sorted((ROOT / "traces" / m).glob("*/*/trial-*.json")):
             r = json.loads(p.read_text())
-            s = summary.setdefault(m, {}).setdefault(r["task"], {"rewards": [], "failed": [], "infra_trials": 0})
+            s = summary.setdefault(m, {}).setdefault(r["task"], {"rewards": [], "failed": [],
+                                                                   "infra_trials": 0, "starved_trials": 0})
             if r.get("infra_error"): s["infra_trials"] += 1
+            elif r.get("budget_exhausted"): s["starved_trials"] = s.get("starved_trials", 0) + 1
             else:
                 s["rewards"].append(r["reward"]); s["failed"].append(r["failed"])
     for m in summary:

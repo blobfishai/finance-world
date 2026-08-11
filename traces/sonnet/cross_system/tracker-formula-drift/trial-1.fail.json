@@ -1,0 +1,298 @@
+{
+ "task": "cross_system/tracker-formula-drift",
+ "family": "cross_system",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:erp_live_total:off(got=233688.01)"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 37,
+ "walk_len": 5,
+ "budget_turns": 24,
+ "num_turns": 42,
+ "agent_error": false,
+ "duration_s": 393.7,
+ "cost_usd": 1.9540438,
+ "final_text": "## Bottom line for Sam: the CFO's number is low \u2014 it should be **$233,688.01**, not $118,400.\n\nHere's the chain of what's wrong, in order of severity:\n\n**1. The cached TOTAL cell is stale (formula drift) \u2014 this is almost certainly what the CFO quoted.**\nThe tracker's `TOTAL` row shows **$118,400.00**, but that's a cached `=SUM(C2:C9)` result that never recalculated. Casey's own note on that row says so: *\"cached before the Northwind row was updated.\"* Summing the 8 rows as they currently stand gives **$228,138.01** \u2014 $109,738 higher than the number on screen.\n\n**2. Two of those rows are themselves stale relative to the ERP.**\nI cross-checked each watchlist account against live open-invoice data:\n- **Tailwind Bikes (US-032)**: tracker shows $38,100 (reviewed 2/8, note *\"before Feb add-on order\"*) \u2014 ERP has a $3,550 add-on invoice posted 2/21 not yet reflected. Live balance: **$41,650**.\n- **Ostara Labs (US-033)**: tracker shows $31,500 (reviewed 2/5, note *\"before Feb calibration invoice\"*) \u2014 ERP has a $2,000 calibration invoice posted 2/24 not yet reflected. Live balance: **$33,500**.\n- Northwind Field Services (US-031) is already current at $52,300 \u2014 matches ERP exactly, which is why it's the row that made the cached total go stale.\n\nCorrecting those two rows on top of the row-sum gets you to **$233,688.01**.\n\n**Numbers for the record:**\n| Field | Value |\n|---|---|\n| Tracker cached total (what the CFO likely quoted) | $118,400.00 |\n| Tracker rows summed as-is | $228,138.01 |\n| ERP-verified live total | **$233,688.01** |\n| Stale rows | Tailwind Bikes, Ostara Labs |\n\nNote: I did **not** fold in the other 5 SYNCUS-coded accounts' full ERP transaction histories \u2014 those show large unrelated balances/history going back to 2025 that look like general ledger noise, not tied to this watchlist (no purpose-built invoices, unlike the three US-03x accounts). Flagging that in case Casey wants a deeper look at those separately, but I'd treat $233,688.01 as the number to give the ",
+ "trace": [
+  {
+   "ts": 1786467736.339457,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786467736.521065,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"watchlist\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467738.226183,
+   "server": "sheets",
+   "tool": "workbook_worksheets",
+   "args": "{\"item\": \"AR-watchlist-tracker.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467738.232957,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"AR-watchlist-tracker.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467756.3838232,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer accounts receivable balance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467756.387447,
+   "server": "books",
+   "tool": "report_customer_balance",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786467759.041939,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467759.077518,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467762.983976,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, name, on_hold FROM erp_customers WHERE account IN ('US-031','US-032','US-033','SYNCUS-0331','SYNCUS-0272','SYNCUS-0436','SYNCUS-0227','SYNCUS-0305')\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467763.5271192,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, SUM(amount - settled) AS open_balance, COUNT(*) AS n FROM erp_customertransactions WHERE account IN ('US-031','US-032','US-033','SYNCUS-0331','SYNCUS-0272','SYNCUS-0436','SYNCUS-0227','SYNCUS-0305') AND closed = 0 GROUP BY account\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786467766.349366,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%customer%'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786467768.379497,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-031\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467787.0297768,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, SUM(amount - settled) AS open_balance, COUNT(*) AS n FROM erp_customer_transactions WHERE closed = 0 AND account = 'US-031' GROUP BY account\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786467787.111348,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, SUM(amount - settled) AS open_balance, COUNT(*) AS n FROM erp_customertransactionsv3 WHERE closed = 0 AND account = 'US-031' GROUP BY account\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactionsv3')"
+  },
+  {
+   "ts": 1786467833.22788,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM pragma_table_list() WHERE name LIKE 'erp_%'\"}",
+   "ok": false,
+   "note": "ValueError('table pragma_table_list is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786467836.3411899,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT 1 FROM erp_customertransaction LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransaction')"
+  },
+  {
+   "ts": 1786467836.915359,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT 1 FROM erp_ar_transactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_ar_transactions')"
+  },
+  {
+   "ts": 1786467837.409199,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT 1 FROM erp_customer_transactions_v3 LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions_v3')"
+  },
+  {
+   "ts": 1786467837.411614,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT 1 FROM erp_customertransactions_v3 LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions_v3')"
+  },
+  {
+   "ts": 1786467847.286273,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-031\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467847.750124,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-032\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467848.0713458,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-033\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467914.2425652,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0331\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467914.866776,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0272\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467915.3452291,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0436\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467915.892274,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0227\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467916.049858,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0305\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467922.726408,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Tailspin Toys\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468018.985291,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"watchlist\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468018.990031,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"watchlist\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468028.15204,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468030.8084722,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0331\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468031.357093,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0227\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468031.8913422,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0272\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468032.47299,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0436\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468032.825133,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0305\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468090.246785,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"tracker_cached_total\": 118400, \"tracker_rows_sum\": 228138.01, \"erp_live_total\": 233688.01, \"stale_customers\": \"Tailwind Bikes (US-032): tracker row shows $38,100.00 as of last review 2026-02-08, note 'before Feb add-on order' \\u2014 ERP has an additional open invoice WLINV-104 for $3,5",
+   "ok": true
+  }
+ ]
+}

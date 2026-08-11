@@ -1,0 +1,31 @@
+{
+ "task": "vendor_master/missing-po-inquiry",
+ "family": "vendor_master",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": true,
+ "trial": 3,
+ "reward": 0,
+ "failed": [
+  "answer:po_number:missing",
+  "answer:po_exists_in_erp:missing",
+  "answer:po_item:missing",
+  "answer:contact_emailed:missing",
+  "trace:required_servers_missing(['erp', 'email'])",
+  "trace:min_calls(email<2)",
+  "trace:no_reads_before_submit",
+  "state:row_count(agent_sent_mail: got 0, want 1)",
+  "state:row_count(vendor_replied: got 0, want 1)",
+  "state:row_count(mailed_the_vendor_on_file: got 0, want 1)"
+ ],
+ "servers_used": [],
+ "n_tool_calls": 0,
+ "walk_len": 6,
+ "budget_turns": 24,
+ "num_turns": 1,
+ "agent_error": true,
+ "duration_s": 2.9,
+ "cost_usd": 0,
+ "final_text": "You've hit your session limit \u00b7 resets 1:50pm (America/Los_Angeles)",
+ "trace": []
+}

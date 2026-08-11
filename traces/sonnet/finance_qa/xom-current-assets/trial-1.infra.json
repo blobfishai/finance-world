@@ -1,0 +1,26 @@
+{
+ "task": "finance_qa/xom-current-assets",
+ "family": "finance_qa",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": true,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:current_assets_usd:missing",
+  "answer:period_end:missing",
+  "answer:source_form:missing",
+  "trace:required_servers_missing(['filings'])",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [],
+ "n_tool_calls": 0,
+ "walk_len": 3,
+ "budget_turns": 24,
+ "num_turns": 1,
+ "agent_error": true,
+ "duration_s": 3.7,
+ "cost_usd": 0,
+ "final_text": "You've hit your session limit \u00b7 resets 1:50pm (America/Los_Angeles)",
+ "trace": []
+}

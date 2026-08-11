@@ -1,0 +1,217 @@
+{
+ "task": "cross_system/total-ar-adventure-group-v2",
+ "family": "cross_system",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 3,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 27,
+ "walk_len": 10,
+ "budget_turns": 36,
+ "num_turns": 30,
+ "agent_error": false,
+ "duration_s": 171.2,
+ "cost_usd": 1.0403185,
+ "final_text": "Submitted. Summary for Sam:\n\n| Field | Amount | Source |\n|---|---|---|\n| `erp_open_balance` | $94,749.19 | USMF live AR subledger, 3 open invoices for Adventure Works Cycles (SYNCUS-0002), none settled/disputed |\n| `subsidiary_net_balance` | $19,050.00 | CES Direct LLC books, BC-114: $22,200 open invoices less $3,150 unapplied credit memo |\n| `offbook_invoice_amount` | $6,200.00 | CES-SIDE-009 from the migration side-log \u2014 confirmed by Dana's email as still unrecorded in either system |\n| `combined_exposure` | **$119,999.19** | Sum of the three, no overlap |\n\nKey judgment calls, flagged for your review:\n- **Scoped to \"Adventure Works Cycles\" only.** The ERP has 36 similarly-named \"Adventure Works *\" customers (even duplicate names like two separate \"Adventure Works South\" accounts) \u2014 these are unrelated, distinct customers, not divisions of one group. Only Cycles is cross-referenced by the subsidiary book and named in Dana's email.\n- **Ignored `AR-summary-2026-01.xlsx`** ($88,300) \u2014 it's an explicitly stale January snapshot marked \"DO NOT USE for current balances.\"\n- **Netted the subsidiary's unapplied $3,150 credit memo** against the $22,200 gross open-invoice balance, since the reports don't net it automatically.\n- **Excluded CES-SIDE-010** ($2,450) from the migration side-log \u2014 it's a different customer (Tailspin Toys) and already recorded in the books, so including it would have double-counted.",
+ "trace": [
+  {
+   "ts": 1786467575.8160682,
+   "server": "docs",
+   "tool": "list_document_types",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786467575.819686,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Adventure Works\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467576.380994,
+   "server": "email",
+   "tool": "labels_list",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786467576.387208,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Adventure Works\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467576.90366,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"CES cutover\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467576.905886,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467577.108456,
+   "server": "books",
+   "tool": "get_company_info",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786467577.112545,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786467585.774634,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure Works\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467586.21238,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Adventure%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467586.7702012,
+   "server": "email",
+   "tool": "threads_get",
+   "args": "{\"id\": \"em-0141\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467611.650354,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0002\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467612.10354,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE CustomerRef = 'BC-114'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467612.66256,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Payment WHERE CustomerRef = 'BC-114'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467613.201716,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM CreditMemo WHERE CustomerRef = 'BC-114'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467613.204753,
+   "server": "books",
+   "tool": "report_customer_balance",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786467613.7775621,
+   "server": "sheets",
+   "tool": "workbook_worksheets",
+   "args": "{\"item\": \"CES-migration-side-log.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467613.779995,
+   "server": "sheets",
+   "tool": "get_drive_item",
+   "args": "{\"item\": \"CES-migration-side-log.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467614.010675,
+   "server": "sheets",
+   "tool": "get_drive_item",
+   "args": "{\"item\": \"AR-summary-2026-01.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467628.1689432,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"CES-migration-side-log.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467628.713255,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"AR-summary-2026-01.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467628.8326972,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"Adventure Works\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467628.835349,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786467674.2417269,
+   "server": "books",
+   "tool": "report_aged_receivables",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786467674.52045,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerSettlements\", \"filters\": {\"account\": \"SYNCUS-0002\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467684.980298,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure Works\"}, \"page\": 2}",
+   "ok": true
+  },
+  {
+   "ts": 1786467698.7703319,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"erp_open_balance\": 94749.19, \"subsidiary_net_balance\": 19050, \"offbook_invoice_amount\": 6200, \"combined_exposure\": 119999.19}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,15 +1,47 @@
 {
-  "answer_checks": [
-    {"field": "has_active_discount", "type": "string", "expect": "yes"},
-    {"field": "qualifying_invoices", "type": "contains_all", "expect": ["VINV-900001", "VINV-900002"]},
-    {"field": "potential_discount_usd", "type": "number", "expect": 437.11, "tol_abs": 0.02}
-  ],
-  "trace_checks": [
-    {"type": "required_servers", "servers": ["erp"]},
-    {"type": "min_calls", "server": "erp", "n": 2},
-    {"type": "reads_before_submit"}
-  ],
-  "state_checks": [
-    {"type": "writes_only", "tables": ["answers"]}
-  ]
+ "answer_checks": [
+  {
+   "field": "has_active_discount",
+   "type": "yes_no",
+   "expect": "yes"
+  },
+  {
+   "field": "qualifying_invoices",
+   "type": "contains_all",
+   "expect": [
+    "VINV-900001",
+    "VINV-900002"
+   ]
+  },
+  {
+   "field": "potential_discount_usd",
+   "type": "number",
+   "expect": 437.11,
+   "tol_abs": 0.02
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "min_calls",
+   "server": "erp",
+   "n": 2
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
 }

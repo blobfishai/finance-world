@@ -10,6 +10,9 @@ checks.json:
               max(tol_abs, |expect|*tol_rel); default exact to 0.01.
       string: case/space-insensitive equality.
       contains_all: every listed substring appears (case-insensitive) in the value.
+      yes_no: polarity of a yes/no field, with any trailing justification allowed
+              ("no - no record in the ERP" passes for expect "no"). Same lesson as
+              none_answer: grade the finding, not the prose.
       none_answer: the empty-answer trap (replaces the old expect:"none" string check —
               see docs/AUDIT.md A5). Passes when the value OPENS with a negative
               ("none", "no ...", "n/a", "nil", "not found", "zero"), with any trailing
@@ -51,6 +54,17 @@ def norm(v): return re.sub(r"\s+", " ", str(v)).strip().lower()
 # differently measured prose, not grounding (docs/AUDIT.md A5).
 NEG_RE = re.compile(r"^(none|no|n/?a|nil|nothing|zero|not\s+(found|applicable|available|on\s+file))\b")
 
+# Same lesson as NEG_RE, for yes/no fields: a finance answer worth reading is "no - Meadow
+# Analytics has no record in the ERP", not the bare token. Grade the polarity, not the prose.
+YES_RE = re.compile(r"^(yes|y|true|correct|confirmed|affirmative)\b")
+NO_RE  = re.compile(r"^(no|n|false|incorrect|negative|none|not)\b")
+
+def polarity(v):
+    s = norm(v)
+    if YES_RE.match(s): return "yes"
+    if NO_RE.match(s):  return "no"
+    return None
+
 def verify(task_dir, run_dir):
     """Verify one step. `task_dir` is a task root (tests/checks.json) or a step dir (checks.json)."""
     p = Path(task_dir) / "tests/checks.json"
@@ -82,6 +96,15 @@ def verify(task_dir, run_dir):
                 # the anti-hallucination half: naming a real record while claiming "none"
                 # is a harder failure than being wrong, and is what the trap exists to catch.
                 bad = [s for s in c.get("forbid", []) if norm(s) in g]
+                if bad: failed.append(name + f":hallucinated({bad})")
+        elif typ == "yes_no":
+            got_p, exp_p = polarity(got), norm(c["expect"])
+            if got_p is None:
+                failed.append(name + f":unparseable_yes_no(got={norm(got)[:60]})")
+            elif got_p != exp_p:
+                failed.append(name + f":wrong_polarity(got={got_p}, want={exp_p})")
+            else:
+                bad = [s for s in c.get("forbid", []) if norm(s) in norm(got)]
                 if bad: failed.append(name + f":hallucinated({bad})")
         elif typ == "contains_all":
             g = norm(got)

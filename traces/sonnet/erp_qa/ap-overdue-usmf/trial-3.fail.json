@@ -1,0 +1,224 @@
+{
+ "task": "erp_qa/ap-overdue-usmf",
+ "family": "erp_qa",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 3,
+ "reward": 0,
+ "failed": [
+  "answer:total_overdue_ap:off(got=35934094.7)",
+  "answer:as_of_date:missing_terms(['2026-03-02'])"
+ ],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 27,
+ "walk_len": 3,
+ "budget_turns": 24,
+ "num_turns": 30,
+ "agent_error": false,
+ "duration_s": 119.2,
+ "cost_usd": 1.1099921000000001,
+ "final_text": "**Total overdue AP in USMF as of 2026\u201108\u201111: $35,934,094.70**\n\nHow I got it:\n- Queried `VendorTransactions` (posted AP subledger) filtered to `dataareaid='USMF'`, `closed=0` (still open), `due_date < 2026-08-11`.\n- 1,422 open invoices matched \u2014 and as it turns out, **every** open invoice at USMF is past due (the latest due date among open items is 2026\u201104\u201115, well before today), so \"open AP\" and \"overdue AP\" are the same set here.\n- 1,421 of those lines are USD; one (EUR 294.72, invoice FAB\u20117781) needed FX conversion \u2014 used the EUR\u2192USD rate on file (1.0842) \u2192 $319.54.\n- Sum: $35,933,775.16 (USD lines) + $319.54 (converted EUR line) = **$35,934,094.70**.\n- Sanity-checked: no negative/credit balances in the open set, no separate AP aging snapshot exists to cross-check against (only an AR aging snapshot entity exists), so the live subledger sum is authoritative.\n\nSubmitted `total_overdue_ap: 35934094.70` and `as_of_date: 2026-08-11`.",
+ "trace": [
+  {
+   "ts": 1786468126.419654,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor open transactions accounts payable aging\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468126.4257011,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice due date\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468127.915759,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468132.355813,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT dataareaid, txn_type, closed, count(*) as cnt, sum(amount) as total_amt, min(amount) as min_amt, max(amount) as max_amt FROM erp_vendor_transactions WHERE dataareaid ILIKE 'usmf' GROUP BY dataareaid, txn_type, closed ORDER BY txn_type, closed\"}",
+   "ok": false,
+   "note": "OperationalError('near \"ILIKE\": syntax error')"
+  },
+  {
+   "ts": 1786468134.807601,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT dataareaid, txn_type, closed, count(*) as cnt, sum(amount) as total_amt, min(amount) as min_amt, max(amount) as max_amt FROM erp_vendor_transactions WHERE lower(dataareaid) = 'usmf' GROUP BY dataareaid, txn_type, closed ORDER BY txn_type, closed\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_transactions')"
+  },
+  {
+   "ts": 1786468138.671384,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786468138.924466,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"dataareaid\": \"usmf\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468147.5281448,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_VendorTransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_VendorTransactions')"
+  },
+  {
+   "ts": 1786468148.097058,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786468148.101642,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor_transaction LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_transaction')"
+  },
+  {
+   "ts": 1786468151.2958121,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vend_trans LIMIT 1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468151.751328,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_VendTrans LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_VendTrans')"
+  },
+  {
+   "ts": 1786468151.752718,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"SQL table names schema list\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468154.2557912,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT count(*) as cnt, sum(amount - settled) as overdue_total FROM erp_vend_trans WHERE dataareaid = 'USMF' AND closed = 0 AND due_date < '2026-08-11'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468154.8243399,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT dataareaid, txn_type, closed, count(*) as cnt FROM erp_vend_trans WHERE dataareaid = 'USMF' GROUP BY txn_type, closed\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468161.81866,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT currency, count(*) as cnt, sum(amount-settled) as open_amt FROM erp_vend_trans WHERE dataareaid = 'USMF' AND closed = 0 GROUP BY currency\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468162.0584671,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT count(*) as cnt, sum(amount-settled) as due_today_amt FROM erp_vend_trans WHERE dataareaid = 'USMF' AND closed = 0 AND due_date = '2026-08-11'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468162.3963242,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT min(due_date) as min_due, max(due_date) as max_due, min(amount-settled) as min_open, max(amount-settled) as max_open FROM erp_vend_trans WHERE dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468173.0728111,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vend_trans WHERE dataareaid='USMF' AND closed=0 AND currency='EUR'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468173.074741,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"exchange rates currency conversion\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468178.6289332,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"ExchangeRates\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468180.5029418,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_exchange_rates WHERE (from_ccy='EUR' AND to_ccy='USD') OR (from_ccy='USD' AND to_ccy='EUR') ORDER BY rate_date DESC LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_exchange_rates')"
+  },
+  {
+   "ts": 1786468183.1842718,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ExchangeRates\", \"filters\": {\"from_ccy\": \"EUR\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468201.922595,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT ROUND(SUM(CASE WHEN currency='USD' THEN amount-settled ELSE (amount-settled)*1.0842 END), 2) as overdue_total_usd, COUNT(*) as cnt FROM erp_vend_trans WHERE dataareaid='USMF' AND closed=0 AND due_date < '2026-08-11'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468209.709574,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT count(*) as neg_cnt, sum(amount-settled) as neg_sum FROM erp_vend_trans WHERE dataareaid='USMF' AND closed=0 AND due_date<'2026-08-11' AND (amount-settled) < 0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468209.960886,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"accounts payable aging report vendor overdue summary\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468213.713892,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_overdue_ap\": 35934094.7, \"as_of_date\": \"2026-08-11\"}}",
+   "ok": true
+  }
+ ]
+}

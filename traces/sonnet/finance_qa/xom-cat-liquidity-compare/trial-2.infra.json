@@ -1,0 +1,28 @@
+{
+ "task": "finance_qa/xom-cat-liquidity-compare",
+ "family": "finance_qa",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": true,
+ "trial": 2,
+ "reward": 0,
+ "failed": [
+  "answer:larger_company:missing",
+  "answer:xom_current_assets:missing",
+  "answer:cat_current_assets:missing",
+  "answer:difference:missing",
+  "trace:required_servers_missing(['filings'])",
+  "trace:min_calls(filings<2)",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [],
+ "n_tool_calls": 0,
+ "walk_len": 4,
+ "budget_turns": 24,
+ "num_turns": 1,
+ "agent_error": true,
+ "duration_s": 2.9,
+ "cost_usd": 0,
+ "final_text": "You've hit your session limit \u00b7 resets 1:50pm (America/Los_Angeles)",
+ "trace": []
+}

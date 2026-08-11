@@ -1,0 +1,396 @@
+{
+ "task": "erp_qa/ap-overdue-usmf",
+ "family": "erp_qa",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:total_overdue_ap:missing",
+  "answer:as_of_date:missing",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [
+  "erp"
+ ],
+ "n_tool_calls": 49,
+ "walk_len": 3,
+ "budget_turns": 24,
+ "num_turns": 25,
+ "agent_error": true,
+ "duration_s": 203.0,
+ "cost_usd": 1.5057277,
+ "final_text": "",
+ "trace": [
+  {
+   "ts": 1786468070.2082748,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor open transactions accounts payable\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468070.4675531,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice due date\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468072.768644,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468078.57869,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT DISTINCT txn_type FROM erp_vendortransactions WHERE dataareaid='usmf'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786468078.791536,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions WHERE dataareaid='usmf' AND closed=0 LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786468081.384536,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"dataareaid\": \"usmf\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468086.169255,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786468087.951396,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor_transactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_transactions')"
+  },
+  {
+   "ts": 1786468098.890701,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransaction LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransaction')"
+  },
+  {
+   "ts": 1786468098.9182642,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendtrans LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendtrans')"
+  },
+  {
+   "ts": 1786468099.089358,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor_trans LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_trans')"
+  },
+  {
+   "ts": 1786468105.291865,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"dataareaid\": \"USMF\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786468119.673692,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor_transactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_transactions')"
+  },
+  {
+   "ts": 1786468119.6773021,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_VendorTransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_VendorTransactions')"
+  },
+  {
+   "ts": 1786468129.8920162,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendtransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendtransactions')"
+  },
+  {
+   "ts": 1786468130.439839,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_ap_transactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_ap_transactions')"
+  },
+  {
+   "ts": 1786468130.5617971,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendors LIMIT 1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468139.087408,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786468141.310921,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786468141.862856,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendtable LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendtable')"
+  },
+  {
+   "ts": 1786468142.208307,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendinvoicetrans LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendinvoicetrans')"
+  },
+  {
+   "ts": 1786468148.075152,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786468148.544252,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_purchase_orders LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_purchase_orders')"
+  },
+  {
+   "ts": 1786468148.5503418,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_main_accounts LIMIT 1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468152.464973,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_bank_accounts LIMIT 1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468152.998647,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_fiscal_periods LIMIT 1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468153.000404,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_methods_of_payment LIMIT 1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468171.581377,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_ap_trans LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_ap_trans')"
+  },
+  {
+   "ts": 1786468172.120348,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor_invoices LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_invoices')"
+  },
+  {
+   "ts": 1786468172.6568608,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_accounts_payable LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_accounts_payable')"
+  },
+  {
+   "ts": 1786468173.202601,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor_ledger LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_ledger')"
+  },
+  {
+   "ts": 1786468173.377399,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vend_trans LIMIT 1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468178.7656782,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT txn_type, COUNT(*) as cnt, SUM(amount) as total_amount FROM erp_vend_trans WHERE dataareaid='USMF' GROUP BY txn_type\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468179.302756,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT DISTINCT currency FROM erp_vend_trans WHERE dataareaid='USMF'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468179.805913,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT MIN(due_date) as min_due, MAX(due_date) as max_due, MAX(trans_date) as max_trans FROM erp_vend_trans WHERE dataareaid='USMF'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468190.53569,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT currency, COUNT(*) as cnt, SUM(amount - settled) as open_remainder FROM erp_vend_trans WHERE dataareaid='USMF' AND closed=0 AND due_date < '2026-08-11' AND txn_type='Invoice' GROUP BY currency\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468191.072802,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT currency, COUNT(*) as cnt, SUM(amount-settled) as open_remainder FROM erp_vend_trans WHERE dataareaid='USMF' AND closed=0 GROUP BY currency\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468191.621411,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT txn_type, closed, COUNT(*) as cnt FROM erp_vend_trans WHERE dataareaid='USMF' AND closed=0 GROUP BY txn_type, closed\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468199.361381,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vend_trans WHERE dataareaid='USMF' AND closed=0 AND currency='EUR'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468199.36338,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"exchange rate EUR to USD\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468201.672312,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"ExchangeRates\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468203.499646,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_exchange_rates WHERE from_ccy='EUR' AND to_ccy='USD' AND rate_date <= '2026-08-11' ORDER BY rate_date DESC LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_exchange_rates')"
+  },
+  {
+   "ts": 1786468207.0468118,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_fx_rates WHERE from_ccy='EUR' AND to_ccy='USD' ORDER BY rate_date DESC LIMIT 5\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468207.373494,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_exchangerates WHERE from_ccy='EUR' AND to_ccy='USD' ORDER BY rate_date DESC LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_exchangerates')"
+  },
+  {
+   "ts": 1786468207.611386,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_rates WHERE from_ccy='EUR' AND to_ccy='USD' ORDER BY rate_date DESC LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_rates')"
+  },
+  {
+   "ts": 1786468212.709532,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT DISTINCT from_ccy, to_ccy, rate_date, rate FROM erp_fx_rates ORDER BY rate_date DESC\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468230.1740239,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT DISTINCT dataareaid FROM erp_vend_trans\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468230.720363,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT COUNT(*) as anomalies FROM erp_vend_trans WHERE dataareaid='USMF' AND closed=0 AND settled > amount\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786468231.2040472,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT ROUND(SUM(amount-settled),2) as total_usd_open, COUNT(*) as n FROM erp_vend_trans WHERE dataareaid='USMF' AND closed=0 AND currency='USD'\"}",
+   "ok": true
+  }
+ ],
+ "budget_exhausted": true,
+ "relabelled": "cut off by the old turn budget before answering (docs/AUDIT.md A8)"
+}

@@ -193,6 +193,32 @@ verifier changed, the world did not); it must never be used across a world rebui
 **Consequence:** the "sonnet passes 12/12" reading recorded earlier in this session drew on
 Aug-10 traces and does not stand. Difficulty claims wait for the fresh scan.
 
+### A8. The turn budget was a capability cap after all — FIXED
+Found 2026-08-11 auditing the first clean scan. Several "failures" showed the model making
+44–84 successful tool calls and then submitting **nothing** — verdicts like
+`answer:*:missing` plus `trace:no_reads_before_submit`. That is not a model that got the
+finance wrong; it is a model that ran out of clock.
+
+| task | budget | turns used | submitted |
+|---|---|---|---|
+| `cash_app/remittance-batch-mar02` | 27 | 28 | no |
+| `collections_ops/escalate-sparrow-letter3` | 24 | 25 | no |
+| `erp_qa/collections-sparrow` | 24 | 24 | no |
+| `erp_qa/ap-overdue-usmf` | 24 | 25 | no |
+
+Root cause: `budget = max(24, walk_len*3+6)` derives the allowance from the **oracle's** walk,
+and the oracle cheats — it goes straight to the right `data_find_entities_sql`. A model doing
+the same work honestly spends turns on discovery and on 25-row pagination (`ap-overdue-usmf`
+aggregates 3,428 AP rows = 137 pages if paged). A 3-step oracle walk is legitimately a
+30-turn agent run, so PLAN.md's own rule — "budgets are reference-relative, never capability
+caps" — was being violated by the formula meant to implement it.
+
+**Fix:** `budget = max(40, walk_len*8+12)`, sized off observed *successful* runs (40–45 turns
+at walk 5–6) with headroom. Runs that still end without submitting at the cap are now written
+as `trial-N.starved.json`, carry `budget_exhausted: true`, are excluded from triage exactly
+like infra runs, and are re-run by the resume rule. A model failure has to be a *finance*
+failure, not a clock failure.
+
 ### A4. `--max-turns` not strictly enforced by observed runs — WATCH
 haiku's ap-overdue run recorded `num_turns=36` against `--max-turns 24`. Budget overruns
 currently can't masquerade as passes (verification is answer-based), but turn accounting

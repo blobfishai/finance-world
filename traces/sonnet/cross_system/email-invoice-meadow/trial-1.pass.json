@@ -1,0 +1,447 @@
+{
+ "task": "cross_system/email-invoice-meadow",
+ "family": "cross_system",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 59,
+ "walk_len": 6,
+ "budget_turns": 24,
+ "num_turns": 7,
+ "agent_error": false,
+ "duration_s": 230.5,
+ "cost_usd": 3.4464007999999993,
+ "final_text": "**Answer for Sam:**\n\nYes, Meadow Analytics **was** invoiced \u2014 that's why you can't find them: the invoice never made it into the ERP or Books.\n\n- **Invoice:** INV-2026-047, dated 2026-02-06, for \"Executive AI workshop \u2014 February program,\" $18,750.00, Net 30 (due 2026-03-08)\n- **How it happened:** You sent it directly to Meadow Analytics by email on 2/6, and noted at the time that their vendor/customer master-data setup in D365 was still pending, so you asked the team to log it in a manual tracker \"until the entity exists in the ERP.\" That entity setup apparently never got finished \u2014 Meadow Analytics has zero records in either the ERP (checked Customers, Vendors, Sales Orders, Customer Transactions) or Books (entire ledger is empty for them).\n- **Response:** Meadow Analytics' AP team confirmed receipt on 2/24 and said it was queued in their March payment run ahead of the 3/8 due date.\n- **Outstanding:** No payment confirmation exists anywhere (no follow-up email, nothing in Books/ERP), so the full **$18,750.00** should be treated as still outstanding until you can verify it actually landed. Worth flagging: today is 8/11, five months past the due date \u2014 I'd chase confirmation of payment or get Meadow Analytics properly onboarded as a customer entity so this doesn't keep falling through the cracks.\n\nI've submitted `found_in_erp`, `invoice_number`, `outstanding_amount` ($18,750), and `evidence_source` for the record.",
+ "trace": [
+  {
+   "ts": 1786466970.82882,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Meadow Analytics\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466970.832512,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Meadow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466971.067598,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"executive workshop\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466971.074377,
+   "server": "docs",
+   "tool": "list_document_types",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786466971.2120168,
+   "server": "books",
+   "tool": "get_company_info",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786466971.224588,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466971.226091,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"accounts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466971.3262248,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Meadow%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466972.146209,
+   "server": "email",
+   "tool": "labels_list",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786466972.697748,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Meadow Analytics\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466972.7005482,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Meadow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466972.910197,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"executive workshop\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466972.993819,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786466972.997798,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"workshop\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466973.226084,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Meadow\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466973.371625,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466973.491303,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SOW\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466973.4952462,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"February\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466975.5399208,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-0117\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466975.606966,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466975.766047,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE CompanyName LIKE '%Meadow%'\"}",
+   "ok": false,
+   "note": "Invalid property 'CompanyName' for Customer"
+  },
+  {
+   "ts": 1786466976.0982258,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-0118\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466976.123164,
+   "server": "email",
+   "tool": "threads_get",
+   "args": "{\"id\": \"t_16eb6daac5\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466976.257428,
+   "server": "email",
+   "tool": "threads_get",
+   "args": "{\"id\": \"t_b419f3061f\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466978.2486331,
+   "server": "email",
+   "tool": "attachments_get",
+   "args": "{\"message_id\": \"em-0117\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466978.5899289,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE name LIKE '%Mead%' OR name LIKE '%mead%' OR contact_email LIKE '%meadow%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466978.6086662,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Mead\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466979.2912261,
+   "server": "books",
+   "tool": "report_customer_balance",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786466979.524349,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE Id != '0'\"}",
+   "ok": false,
+   "note": "QueryParserError: unsupported syntax. Use SELECT * FROM <Entity> [WHERE <Field> = '<value>'] with entities Customer, Invoice, CreditMemo, Payment"
+  },
+  {
+   "ts": 1786466983.1923368,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Analytics\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786466983.239576,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%a%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466983.268428,
+   "server": "books",
+   "tool": "report_aged_receivables",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786466983.596846,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, name, contact_name, contact_email FROM erp_customers WHERE name LIKE '%Analytics%' OR contact_email LIKE '%analytics%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466987.5045362,
+   "server": "books",
+   "tool": "report_transaction_list",
+   "args": "{\"date_from\": \"2020-01-01\", \"date_to\": \"2026-12-31\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466987.818393,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE DocNumber LIKE '%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466988.029396,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"sales order\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466988.5285618,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"project\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466988.542065,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"sales invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466988.7615051,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"prospect lead vendor contact\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466990.986269,
+   "server": "books",
+   "tool": "get_customer",
+   "args": "{\"customer_id\": \"1\"}",
+   "ok": false,
+   "note": "Object Not Found: Customer 1"
+  },
+  {
+   "ts": 1786466991.172076,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName = 'Meadow Analytics'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466993.474835,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT COUNT(*) as cnt FROM erp_customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466993.909899,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"SalesOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466993.922477,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Vendors\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466997.564515,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT sales_id, account, customer_name, order_date, amount FROM erp_salesorders WHERE customer_name LIKE '%Mead%' OR customer_name LIKE '%mead%'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_salesorders')"
+  },
+  {
+   "ts": 1786466998.005148,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, name FROM erp_vendors WHERE name LIKE '%Mead%' OR name LIKE '%mead%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466998.02784,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786466999.8105118,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'erp_%'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786467002.563074,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"SalesOrders\", \"filters\": {\"customer_name\": \"Meadow\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467002.638901,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT description FROM erp_customertransactions WHERE description LIKE '%Meadow%' OR description LIKE '%Workshop%' LIMIT 20\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786467006.1718762,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"description\": \"Meadow\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467006.1809092,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"description\": \"Workshop\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467009.424675,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"SalesOrders\", \"filters\": {\"customer_name\": \"Mead\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467009.426124,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"Meadow Analytics\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467009.642889,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"prospect opportunity CRM lead\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786467021.1762261,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Vendors\", \"filters\": {\"name\": \"Analytics\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467021.2481549,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Maedow\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467021.347807,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Meado\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786467127.326313,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"found_in_erp\": \"No \\u2014 Meadow Analytics has no customer or vendor record in the ERP (searched Customers/Vendors/SalesOrders/CustomerTransactions across 1,007 customer records, zero matches for Meadow/Mead/Analytics) or in the Books system (entire ledger empty \\u2014 zero customers, ",
+   "ok": true
+  }
+ ],
+ "regraded": "verifier changed; run data unchanged (docs/AUDIT.md A5)"
+}

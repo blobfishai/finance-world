@@ -1,27 +1,75 @@
 {
-  "answer_checks": [
-    {"field": "letter_issued", "type": "contains_all", "expect": ["3"]},
-    {"field": "letter_fee", "type": "number", "expect": 40.00, "tol_abs": 0.01},
-    {"field": "credit_hold_placed", "type": "string", "expect": "no"},
-    {"field": "reasoning", "type": "contains_all", "expect": ["75"]}
-  ],
-  "trace_checks": [
-    {"type": "required_servers", "servers": ["erp", "docs"]},
-    {"type": "reads_before_submit"}
-  ],
-  "state_checks": [
-    {"type": "writes_only", "tables": ["answers", "erp_collection_letters"]},
-    {"type": "row_count", "name": "letter3_posted_today",
-     "sql": "SELECT COUNT(*) FROM erp_collection_letters WHERE account='US-008' AND letter_code='3' AND letter_date='2026-03-02' AND status='Sent'",
-     "expect": 1},
-    {"type": "row_count", "name": "no_duplicate_letters",
-     "sql": "SELECT COUNT(*) FROM erp_collection_letters WHERE account='US-008'",
-     "expect": 3},
-    {"type": "cell_equals", "name": "letter3_fee",
-     "sql": "SELECT fee FROM erp_collection_letters WHERE account='US-008' AND letter_code='3'",
-     "expect": 40.0, "tol_abs": 0.01},
-    {"type": "cell_equals", "name": "no_credit_hold",
-     "sql": "SELECT on_hold FROM erp_customers WHERE account='US-008'",
-     "expect": "Open"}
-  ]
+ "answer_checks": [
+  {
+   "field": "letter_issued",
+   "type": "contains_all",
+   "expect": [
+    "3"
+   ]
+  },
+  {
+   "field": "letter_fee",
+   "type": "number",
+   "expect": 40.0,
+   "tol_abs": 0.01
+  },
+  {
+   "field": "credit_hold_placed",
+   "type": "yes_no",
+   "expect": "no"
+  },
+  {
+   "field": "reasoning",
+   "type": "contains_all",
+   "expect": [
+    "75"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp",
+    "docs"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers",
+    "erp_collection_letters"
+   ]
+  },
+  {
+   "type": "row_count",
+   "name": "letter3_posted_today",
+   "sql": "SELECT COUNT(*) FROM erp_collection_letters WHERE account='US-008' AND letter_code='3' AND letter_date='2026-03-02' AND status='Sent'",
+   "expect": 1
+  },
+  {
+   "type": "row_count",
+   "name": "no_duplicate_letters",
+   "sql": "SELECT COUNT(*) FROM erp_collection_letters WHERE account='US-008'",
+   "expect": 3
+  },
+  {
+   "type": "cell_equals",
+   "name": "letter3_fee",
+   "sql": "SELECT fee FROM erp_collection_letters WHERE account='US-008' AND letter_code='3'",
+   "expect": 40.0,
+   "tol_abs": 0.01
+  },
+  {
+   "type": "cell_equals",
+   "name": "no_credit_hold",
+   "sql": "SELECT on_hold FROM erp_customers WHERE account='US-008'",
+   "expect": "Open"
+  }
+ ]
 }
