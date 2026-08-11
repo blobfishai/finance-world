@@ -9,4 +9,16 @@
   rule (fail 3/3 → too_hard after audit-before-blame · mixed → flaky = the frontier, keep ·
   pass all → too_easy, escalate).
 
+- `boundary-deepseek-v4-pro.md` — the first cross-model boundary test (2026-08-11): 83 tasks,
+  breadth pass, 77% pass rate, and the per-task table showing where the world separates
+  deepseek-v4-pro from sonnet. Generated from traces, not hand-written.
+
 Never hand-edit; regenerate from traces.
+
+## Reading any of these
+
+A number here is only a model verdict if the harness was exonerated first. `docs/AUDIT.md`
+records nine findings where it was not — including four separate mechanisms (A5, A8, A9 and
+the A7 stale-trace class) that each inflated apparent difficulty. Every one was caught by
+auditing failures before reporting them, and every one made the world *easier* than the raw
+numbers said. Treat an unaudited scan as unpublished.
