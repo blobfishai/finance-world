@@ -6,6 +6,9 @@ Task seed layers (all optional, all task-level by design):
   environment/seed/mcp_seed.json   {table_name: [row dicts]} declarative per-server seeding
   environment/seed/documents/*.md  seeded documents -> docs_documents (docs MCP server)
   environment/seed/inputs/*        input files staged into the agent workdir (container runs)
+task.toml [metadata] doc_mode = "buried" additionally seeds world/doc_decoys/*.md — the
+adjacent policies a real finance function maintains — so the governing document must be found
+rather than being the only one present (the tau2 retrieval-modes escalation lever).
 Produces run_dir/{world.sqlite, .mcp.json, trace.jsonl, initial_state.json, workdir/}.
 """
 import json, shutil, sqlite3, sys
@@ -34,14 +37,31 @@ def prepare(task_dir, run_dir):
                 cols = ",".join(row); ph = ",".join("?" * len(row))
                 cx.execute(f"INSERT OR REPLACE INTO {table}({cols}) VALUES({ph})", list(row.values()))
 
+    import tomllib as _toml
+    _meta = _toml.loads((task_dir / "task.toml").read_text()).get("metadata", {})
+
+    def _seed_doc(path, effective="2026-01-01"):
+        body = path.read_text()
+        title = next((l[2:].strip() for l in body.splitlines() if l.startswith("# ")), path.stem)
+        dtype = path.stem.split("--")[0] if "--" in path.stem else "doc"
+        cx.execute("INSERT OR REPLACE INTO docs_documents VALUES(?,?,?,?,?,?)",
+                   (path.stem, title, dtype, "1.0", effective, body))
+
     docs = seed / "documents"
     if docs.is_dir():
         for p in sorted(docs.glob("*.md")):
-            body = p.read_text()
-            title = next((l[2:].strip() for l in body.splitlines() if l.startswith("# ")), p.stem)
-            dtype = p.stem.split("--")[0] if "--" in p.stem else "doc"
-            cx.execute("INSERT OR REPLACE INTO docs_documents VALUES(?,?,?,?,?,?)",
-                       (p.stem, title, dtype, "1.0", "2026-01-01", body))
+            _seed_doc(p)
+
+    # doc_mode (the tau2 retrieval-modes lever): "buried" seeds the adjacent-policy library
+    # alongside the task's own documents, so the governing rule has to be FOUND rather than
+    # being the only thing on the shelf. The decoys never contain the rule the task turns on,
+    # so difficulty rises without ambiguity — there is still exactly one governing document.
+    # Used to escalate tasks the flake scan labels too_easy, re-grading the same ground truth
+    # against a harder search.
+    if _meta.get("doc_mode") == "buried":
+        for p in sorted((ROOT / "world/doc_decoys").glob("*.md")):
+            if p.stem == "README": continue
+            _seed_doc(p)
 
     cx.commit()
     now = cx.execute("SELECT value FROM meta WHERE key='WORLD_NOW'").fetchone()[0]
@@ -52,8 +72,7 @@ def prepare(task_dir, run_dir):
         for p in inputs.iterdir(): shutil.copy(p, run / "workdir" / p.name)
 
     trace = run / "trace.jsonl"; trace.touch()
-    import tomllib
-    meta = tomllib.loads((task_dir / "task.toml").read_text()).get("metadata", {})
+    meta = _meta
     env = {"WORLD_DB": str(db), "WORLD_NOW": now, "TRACE_FILE": str(trace),
            "WORLD_ROLE": meta.get("agent_role", "analyst")}
     mcp = {"mcpServers": {s: {"command": "python3",

@@ -1,0 +1,74 @@
+{
+ "answer_checks": [
+  {
+   "field": "dormant_count",
+   "type": "number",
+   "expect": 2,
+   "tol_abs": 0.01
+  },
+  {
+   "field": "dormant_vendors",
+   "type": "contains_all",
+   "expect": [
+    "DVEN-02",
+    "DVEN-03"
+   ],
+   "forbid": [
+    "DVEN-04",
+    "DVEN-05",
+    "DVEN-06"
+   ]
+  },
+  {
+   "field": "cutoff_date",
+   "type": "contains_all",
+   "expect": [
+    "2025-03-02"
+   ]
+  },
+  {
+   "field": "unused_vendors",
+   "type": "contains_all",
+   "expect": [
+    "DVEN-04"
+   ]
+  },
+  {
+   "field": "out_of_scope_vendors",
+   "type": "contains_all",
+   "expect": [
+    "DVEN-06"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp",
+    "docs"
+   ]
+  },
+  {
+   "type": "min_calls",
+   "server": "erp",
+   "n": 2
+  },
+  {
+   "type": "reads_before_submit"
+  },
+  {
+   "type": "min_calls",
+   "server": "docs",
+   "n": 3
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

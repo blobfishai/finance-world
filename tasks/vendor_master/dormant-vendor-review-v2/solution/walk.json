@@ -1,0 +1,72 @@
+[
+ {
+  "server": "docs",
+  "tool": "list_document_types",
+  "args": {}
+ },
+ {
+  "server": "docs",
+  "tool": "search_documents",
+  "args": {
+   "query": "vendor"
+  }
+ },
+ {
+  "server": "docs",
+  "tool": "get_document_metadata",
+  "args": {
+   "doc_id": "policy--ap-vendor-onboarding"
+  }
+ },
+ {
+  "server": "docs",
+  "tool": "get_document_metadata",
+  "args": {
+   "doc_id": "vendor-hygiene-policy"
+  }
+ },
+ {
+  "server": "docs",
+  "tool": "get_document",
+  "args": {
+   "doc_id": "vendor-hygiene-policy"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Vendors",
+   "filters": {
+    "vendor_group": "REVIEW"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT v.account, v.name, v.on_hold, MAX(t.trans_date) AS last_activity, COUNT(t.id) AS txn_count FROM erp_vendors v LEFT JOIN erp_vend_trans t ON t.account=v.account WHERE v.vendor_group='REVIEW' GROUP BY v.account ORDER BY v.account"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT account, txn_type, trans_date, amount FROM erp_vend_trans WHERE account LIKE 'DVEN-%' ORDER BY account, trans_date"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "dormant_count": 2,
+    "dormant_vendors": "DVEN-02, DVEN-03",
+    "cutoff_date": "2025-03-02",
+    "unused_vendors": "DVEN-04",
+    "out_of_scope_vendors": "DVEN-06"
+   }
+  }
+ }
+]

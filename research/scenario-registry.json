@@ -574,9 +574,10 @@
    "id": "tau2.retrieval_modes",
    "source": "tau2-bench (repo sweep)",
    "name": "Knowledge-access mode as a difficulty lever",
-   "tasks": [],
-   "status": "gap",
-   "note": "harness feature: swap how policy docs are reachable (in-prompt / searchable / absent) to re-grade an existing task without re-authoring \u2014 cheapest escalation lever for too_easy tasks"
+   "tasks": [
+    "vendor_master/dormant-vendor-review-v2"
+   ],
+   "note": "closed 2026-08-11: task.toml [metadata] doc_mode = \"buried\" makes sim/prepare.py seed world/doc_decoys/*.md alongside the task's own documents, so the governing policy must be found rather than being the only thing on the shelf (1 document -> 9, of which 3 match the obvious search term). Identical ground truth, harder retrieval - the cheapest escalation for anything the flake scan labels too_easy"
   },
   {
    "id": "tatqa.scale_unit",
