@@ -54,6 +54,8 @@ ENTITIES = {
     "PaymentRunLines":      ("erp_payment_run_lines", "Payment run lines: invoice, net, disposition (paid|rejected), reason_code"),
     "ExchangeRates":        ("erp_fx_rates", "FX rates by from/to currency and date"),
     "DeductionReasons":     ("erp_deduction_reasons", "Deduction/short-pay reason codes: validity, owning team, disposition"),
+    "WithholdingTax":       ("erp_withholding_tax", "Withholding-tax categories: rate, threshold, statutory reference"),
+    "VendorTaxProfile":     ("erp_vendor_tax_profile", "Per-vendor tax category, exemption certificate type, whether it is on file and when it expires"),
     "CashDiscounts":        ("erp_cash_disc", "Cash discount codes: percent, day window, next-code chain"),
     "CollectionLetters":    ("erp_collection_letters", "Collection letter journal per customer: letter_code 1..4/Collection, date, status, fee"),
     "AgedBalancesSnapshot": ("erp_aging_snapshot", "Batch customer aging snapshot (run_id, as_of, buckets). May lag live transactions."),
@@ -648,9 +650,38 @@ def _eligible_payables(cx, pay_date, vendor_account=None, due_from=None, vendor_
                 deadline = (dt.date.fromisoformat(r["trans_date"]) + dt.timedelta(days=d["days"])).isoformat()
                 if pay_date <= deadline:
                     disc = round(r["gross"] * d["percent"] / 100.0, 2)
+        # Withholding is re-derived here, never read off anything the agent typed (M4).
+        # It applies when the vendor carries a withholding category and does NOT have a
+        # valid, unexpired exemption certificate on file as at the pay date - the expiry is
+        # the part that bites, because a certificate that lapsed still LOOKS present.
+        wh, wh_cat, wh_reason = 0.0, None, None
+        prof = cx.execute("SELECT * FROM erp_vendor_tax_profile WHERE account=?", (r["account"],)).fetchone()
+        if prof:
+            declared = prof["tax_category"] or "none"
+            valid_cert = bool(prof["certificate_on_file"]) and (
+                not prof["certificate_expiry"] or prof["certificate_expiry"] >= pay_date)
+            # A valid certificate buys the DECLARED treatment (which for a treaty claim is a
+            # reduced rate, not exemption). Without one, the punitive default applies: the
+            # non-resident rate for a foreign payee, backup withholding for a domestic one.
+            if valid_cert:
+                applies = declared
+            else:
+                applies = ("foreign_contractor" if declared in ("foreign_treaty", "foreign_contractor")
+                           else "backup_withholding")
+            cat = cx.execute("SELECT * FROM erp_withholding_tax WHERE tax_category=?",
+                             (applies,)).fetchone()
+            if cat and cat["rate_pct"] and r["gross"] >= (cat["threshold_amount"] or 0):
+                wh = round(r["gross"] * cat["rate_pct"] / 100.0, 2)
+                wh_cat = cat["tax_category"]
+                wh_reason = (f"{cat['tax_category']} at {cat['rate_pct']:.0f}% - "
+                             + ("valid certificate on file" if valid_cert
+                                else "no certificate on file" if not prof["certificate_on_file"]
+                                else f"{prof['certificate_type'] or 'certificate'} expired {prof['certificate_expiry']}"))
         out.append({"invoice": r["invoice"], "vendor": r["account"], "vendor_name": r["vendor_name"],
                     "due_date": r["due_date"], "gross_amount": r["gross"],
-                    "discount_taken": disc, "net_amount": round(r["gross"] - disc, 2),
+                    "discount_taken": disc, "withholding": wh,
+                    "withholding_category": wh_cat, "withholding_reason": wh_reason,
+                    "net_amount": round(r["gross"] - disc - wh, 2),
                     "vendor_on_hold": (r["on_hold"] or "") not in ("", "Open", None)})
     return out
 
@@ -682,9 +713,9 @@ def _payment_run_propose(cx, p):
     for i, e in enumerate(elig, 1):
         cx.execute("INSERT INTO erp_payment_run_lines(run_id,line,invoice,vendor,due_date,gross_amount,"
                    "discount_taken,withholding,net_amount,disposition,reason_code,reason,priority_rank)"
-                   " VALUES(?,?,?,?,?,?,?,0,?,'proposed',NULL,NULL,?)",
+                   " VALUES(?,?,?,?,?,?,?,?,?,'proposed',NULL,NULL,?)",
                    (rid, i, e["invoice"], e["vendor"], e["due_date"], e["gross_amount"],
-                    e["discount_taken"], e["net_amount"], i))
+                    e["discount_taken"], e["withholding"], e["net_amount"], i))
     _audit(cx, "PaymentRun", rid, "propose", after={"eligible_net": net, "cash_available": cash})
     cx.commit()
     shortfall = round(net - cash, 2)

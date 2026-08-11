@@ -201,3 +201,14 @@ CREATE TABLE erp_audit_trail(
 CREATE TABLE erp_deduction_reasons(
   reason_code TEXT PRIMARY KEY, description TEXT, valid_claim INTEGER,
   owner TEXT, disposition TEXT);
+
+-- Withholding tax (erpnext.withholding_tax). ERPNext models this as Tax Withholding
+-- Category + rates with a cumulative threshold; the vendor-side profile carries the
+-- exemption certificate and its expiry, which is what actually decides whether we withhold.
+CREATE TABLE erp_withholding_tax(
+  tax_category TEXT PRIMARY KEY, description TEXT, rate_pct REAL,
+  threshold_amount REAL DEFAULT 0, statutory_ref TEXT);
+
+CREATE TABLE erp_vendor_tax_profile(
+  account TEXT PRIMARY KEY, tax_category TEXT, certificate_type TEXT,
+  certificate_on_file INTEGER DEFAULT 0, certificate_expiry TEXT, notes TEXT);

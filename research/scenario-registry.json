@@ -540,9 +540,10 @@
    "id": "erpnext.withholding_tax",
    "source": "frappe/erpnext (repo sweep)",
    "name": "Withholding-tax thresholds on vendor payments",
-   "tasks": [],
-   "status": "gap",
-   "note": "needs a tax-withholding category table + rate thresholds on the vendor master"
+   "tasks": [
+    "payment_run/withholding-mar13"
+   ],
+   "note": "closed 2026-08-11: erp_withholding_tax (category, rate, threshold, statutory ref) + erp_vendor_tax_profile (certificate type, on-file flag, expiry), and the payment run now re-derives withholding at proposal time. A valid certificate buys the DECLARED treatment - for a treaty claim a reduced rate, not exemption - while a lapsed one reverts to the punitive default, which is the whole task"
   },
   {
    "id": "erpnext.fx_revaluation",

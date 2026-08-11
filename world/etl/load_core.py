@@ -187,6 +187,16 @@ def write_surface_refdata(cx):
                    (pid, "USMF", doc, "Grand Total", thr, "USD", applies, approving, None,
                     "DOA-JE-02" if pid == "DOA-JE-01" else
                     "DOA-PAY-02" if pid == "DOA-PAY-01" else None))
+    # Withholding-tax categories. Rates are the standard US statutory ones so the
+    # arithmetic is checkable against a public reference rather than invented.
+    for cat, desc, rate, thresh, ref in [
+            ("backup_withholding", "Backup withholding - payee TIN missing or not certified", 24.0, 600.0, "IRC 3406 / Form W-9"),
+            ("foreign_contractor",  "Non-US person, US-source services, no treaty claim",      30.0,   0.0, "IRC 1441 / Form W-8BEN"),
+            ("foreign_treaty",      "Non-US person with a valid treaty claim on file",         15.0,   0.0, "Treaty article; Form W-8BEN Part II"),
+            ("none",                "No withholding applies",                                   0.0,   0.0, "-"),
+    ]:
+        cx.execute("INSERT INTO erp_withholding_tax VALUES(?,?,?,?,?)", (cat, desc, rate, thresh, ref))
+
     # Deduction reason codes: the taxonomy an AR analyst codes a short-pay against.
     for code, desc, valid, owner, disp in [
             ("pricing_variance",     "Customer paid at a price different from the invoiced price", 0, "Sales", "verify against the order; concede only with Sales approval"),

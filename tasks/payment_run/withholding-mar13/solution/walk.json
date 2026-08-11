@@ -1,0 +1,26 @@
+[
+ {"server": "docs", "tool": "search_documents", "args": {"query": "withholding"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "withholding-policy"}},
+ {"server": "erp", "tool": "data_find_entities", "args": {"entity": "WithholdingTax"}},
+ {"server": "erp", "tool": "data_find_entities_sql",
+  "args": {"sql": "SELECT p.account, v.name, p.tax_category, p.certificate_type, p.certificate_on_file, p.certificate_expiry FROM erp_vendor_tax_profile p JOIN erp_vendors v ON v.account=p.account WHERE v.vendor_group='CONTRACT' ORDER BY p.account"}},
+ {"server": "email", "tool": "messages_list", "args": {"q": "W-8"}},
+ {"server": "email", "tool": "messages_get", "args": {"id": "em-0902"}},
+ {"server": "erp", "tool": "api_invoke_action",
+  "args": {"action": "ContosoPaymentRunPropose",
+           "parameters": {"pay_date": "2026-03-13", "bank_account": "USMF-OPER", "vendor_group": "CONTRACT"}}},
+ {"server": "erp", "tool": "api_invoke_action",
+  "args": {"action": "ContosoPaymentRunCommit",
+           "parameters": {"run_id": "PR-00001", "confirm_token": "CONF-PR-00001-1",
+                          "paid": ["WINV-801", "WINV-802", "WINV-803", "WINV-804"],
+                          "rejected": []}}},
+ {"server": "erp", "tool": "data_find_entities", "args": {"entity": "PaymentRunLines", "filters": {"run_id": "PR-00001"}}},
+ {"server": "harness", "tool": "submit_answer",
+  "args": {"answers": {
+    "run_id": "PR-00001",
+    "total_gross": 140000.00,
+    "total_withheld": 22200.00,
+    "total_paid": 117800.00,
+    "withheld_vendors": "WVEN-02, WVEN-03, WVEN-04",
+    "meridian_rate_pct": 30}}}
+]
