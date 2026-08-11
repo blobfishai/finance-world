@@ -1,0 +1,54 @@
+{
+ "task": "expense_audit/threshold-shaving-h1",
+ "family": "expense_audit",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 4,
+ "walk_len": 4,
+ "budget_turns": 44,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.1,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 4}\n",
+ "trace": [
+  {
+   "ts": 1786484318.062773,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"threshold shaving\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484318.063248,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--expense-audit-detectors\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484318.064495,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"expense-extract-6mo.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484318.065656,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"shaving_employee\": \"K. Osei\", \"shaving_claim_count\": 6, \"shaving_total\": 2850.74, \"detector_triggered\": \"yes\"}}",
+   "ok": true
+  }
+ ]
+}

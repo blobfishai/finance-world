@@ -245,6 +245,42 @@ enforces by running to completion, and supplies no task content — the nudge sa
 not submitted", never anything about the finance. Affected trials were discarded, not
 re-graded (the run itself was truncated, so there is nothing to re-grade), and re-run.
 
+### A10. Three graders were wrong, found in the deepseek "too_hard" bucket — 2 FIXED, 1 OPEN
+Found 2026-08-11 auditing the 17 tasks deepseek-v4-pro failed 3/3, before labelling any of
+them `too_hard`.
+
+**A10.1 — we failed a model for using our own spelling. FIXED.**
+`finance_qa/xom-cat-liquidity-compare` demanded `larger_company` contain `"ExxonMobil"`. The
+company our own seed calls **"Exxon Mobil Corporation"**. The model read our data, echoed our
+name, and got every other field exactly right (91,990,000,000 / 45,682,000,000 /
+46,308,000,000). Now accepts `Exxon`, and — since the check was doing no real work — also
+`forbid`s `Caterpillar`, so it grades naming the *wrong* company instead of grading spacing.
+
+**A10.2 — my own yes/no conversion introduced prompt/verifier drift. FIXED.**
+`expense_audit/threshold-shaving-h1` asks for `detector_triggered` **(text)** in its
+instruction. When I swept 8 tasks onto the new `yes_no` check type earlier the same day, I
+changed the grader without reading each instruction, so the prompt asked for text and the
+verifier graded polarity. The model answered `"Threshold shaving"` — the detector's name,
+which is what the prompt invites — with all three other fields correct. Instruction now states
+the yes/no contract. **Validator gap worth noting:** S4 checks that an answer field is
+*mentioned* in the instruction, not that the stated type matches the check type. A conversion
+sweep can therefore pass validation while breaking the contract.
+
+**A10.3 — the FB cloner silently rebinds a question to a different entity. OPEN.**
+`erp_qa_fb/credit-limit-3` asks *"What is the credit limit for **Contoso Retail San Diego**"*.
+No such customer exists in this world. `resolve()` fuzzy-matched it to **Contoso Retail**
+(SYNCUS-0485) and pinned ground truth to that account's 100,000. The model answered `none`,
+which for the entity actually named is defensible, and we scored it 0.
+
+This is the A6 class one level up: *task seeds may add entities, never silently repurpose an
+existing account's identity* — here the **question's** entity is repurposed. A benchmark
+question naming an entity the world does not have should either be excluded with a stated
+reason or shipped deliberately as an empty-answer trap, never rebound to a near neighbour.
+
+Deferred only because `world/etl/clone_fb_erp.py` is being edited concurrently by the parity
+push; the fix is a strictness flag on `resolve()` plus a re-run. **Until it lands, every
+FB-cloned task whose question names an entity absent from the ledger is suspect.**
+
 ### A4. `--max-turns` not strictly enforced by observed runs — WATCH
 haiku's ap-overdue run recorded `num_turns=36` against `--max-turns 24`. Budget overruns
 currently can't masquerade as passes (verification is answer-based), but turn accounting

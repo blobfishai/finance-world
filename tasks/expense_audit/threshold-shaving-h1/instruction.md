@@ -9,4 +9,4 @@ Reply with `submit_answer`:
 - `shaving_employee` (text)
 - `shaving_claim_count` (number)
 - `shaving_total` (number)
-- `detector_triggered` (text)
+- `detector_triggered` (yes/no) — did the threshold-shaving detector trigger
