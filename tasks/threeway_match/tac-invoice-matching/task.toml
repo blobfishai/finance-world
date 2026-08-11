@@ -1,0 +1,48 @@
+schema_version = "1.4"
+
+[task]
+name = "threeway_match/tac-invoice-matching"
+version = "0.1.0"
+description = "Reconcile a vendor's Q1 statement of account against our payment register when the remittance references carry instalments, combined payments and one out-of-scope invoice: name the invoices that genuinely do not reconcile and split the position into what we owe and what we overpaid."
+authors = ["nario-ai"]
+keywords = ["finance", "threeway_match", "ap", "statement-reconciliation", "duplicate-payment", "controls"]
+
+[metadata]
+family = "threeway_match"
+origin = "port of research/external/repos/TheAgentCompany/workspaces/tasks/finance-invoice-matching (match a payments file to a reference invoice set, handling split and combined payments, and identify the mismatches; its deliverable is a written flagged_payments.xlsx with a TOTAL row 'Invoices=..., Payments=...'). The judgement ports, the plumbing does not: the two workbooks become sheet_files/sheet_rows on the sheets server, the matching conventions become SOP-AP-11 on the docs server, and the flagged list plus the two totals go through harness__submit_answer as graded fields. It also fixes what the source's own reference evaluator gets wrong — that evaluator iterates payments, so it flags all 36 legitimately split payments as problems and, being payment-driven, cannot see an invoice with no payment at all or an invoice paid twice in full, while the 17 genuine single-line variances that account for the whole of its own 210.66 total gap go unflagged. Here the exception set is defined at invoice level and is re-derived from the seeded world. Differs from the two existing threeway_match tasks: ppinv-exceptions-mar and tolerance-dialect-mar each match ONE invoice at a time against its PO and receipt and turn on the tolerance rule (SAP unmaintained key = zero vs Oracle blank = unlimited); this one has no PO or receipt in it at all and is a bulk many-to-many reconciliation where the difficulty is match CARDINALITY - one payment covering two invoices, one invoice covering three payments, one payment belonging to neither."
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 8
+doc_mode = "buried"
+
+# Objective non-collapse (M3): the naive strategy is the one the vendor's credit controller
+# already ran and the one the request quotes back - compare the two files at the level they
+# are keyed. Both footers are printed on the sheets (statement 116,438.25, register
+# 116,064.75), so subtracting them gives 373.50, and the payment-level version of the same
+# mistake - compare each payment line to the invoice its reference names first - reaches the
+# same 373.50 because it counts every payment in the register including PMT-8817, which
+# references HF-2190, an invoice that is not on this statement at all.
+# That path also names the wrong invoices, in both directions. It flags ten: the six invoices
+# settled by the three combined remittances (HF-2205/2206, HF-2212/2217, HF-2220/2223) and the
+# two settled in instalments (HF-2210 in two, HF-2216 in three), none of which is a
+# discrepancy - they are payment structure. And being payment-driven it is blind to the two
+# exceptions that matter most: HF-2203 was paid in full TWICE (PMT-8803 and PMT-8822, each
+# exactly 2,750.00, so no payment line disagrees with its invoice), and HF-2222 has no payment
+# against it at all, so no payment line mentions it. It keeps only HF-2207 (short-paid 32.00)
+# and HF-2218 (instalment 1 of 2 paid, balance never ran).
+# The amount collision is deliberate: HF-2219 and HF-2222 are both 1,318.50, so matching on
+# amount rather than reference clears the wrong one of the two.
+# M4: every graded amount is re-derived from the statement and the register (gt_sql on each
+# numeric check), never read off either footer. M5: the rule that instalment and combined
+# references are structure rather than exception, and that an out-of-scope reference is
+# reported but never netted, exists only in SOP-AP-11 - no field on either workbook says it.
+naive_answer = "net 373.50 behind; 10 exception invoices HF-2205, HF-2206, HF-2207, HF-2210, HF-2212, HF-2216, HF-2217, HF-2218, HF-2220, HF-2223; applied 116,064.75; no overpayment"
+graded_answer = "net 3,240.50 behind; 4 exception invoices HF-2203, HF-2207, HF-2218, HF-2222; applied 113,197.75; overpaid 2,750.00 and underpaid 5,990.50"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

@@ -1,0 +1,82 @@
+{
+ "task": "fpna/rd-tax-credit-asc",
+ "family": "fpna",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 8,
+ "walk_len": 8,
+ "budget_turns": 76,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.1,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 8}\n",
+ "trace": [
+  {
+   "ts": 1786484742.930946,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"research credit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484742.9314811,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"rd-credit-policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484742.931861,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"tax-positions-2025\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484742.9325151,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786484742.932984,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"rd-wage-detail-2025.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484742.93343,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"rd-nonwage-costs-2025.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484742.934102,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"rd-qre-history.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484742.935509,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"qualified_wages\": 471200.0, \"current_year_qre\": 781850.0, \"base_period_years\": \"2022, 2023, 2024\", \"prior_three_year_qre_total\": 2074800.0, \"base_amount\": 345800.0, \"asc_credit\": 61047.0, \"reduced_credit_elected\": \"no - the 2025 return positions memo declines the section 280C reduced c",
+   "ok": true
+  }
+ ]
+}

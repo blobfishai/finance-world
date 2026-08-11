@@ -12,27 +12,43 @@
 
 ## The number
 
-| corpus | ships | runs here | gap | note |
-|---|---|---|---|---|
-| microsoft/FinanceBenchmark `erp_qa` | 100 | **35** | 65 | cloner ceiling is 39; 50 questions rejected by the intent gate, 11 unresolvable |
-| microsoft/FinanceBenchmark `finance_qa` | 126 | 0 | 126 | no cloner written; 6 hand-authored finance_qa tasks exist but are not clones |
-| microsoft/FinanceBenchmark `business_brief` | 25 | 0 | 25 | no cloner written; 2 hand-authored briefs exist but are not clones |
-| agentic-labs/erp-bench | 300 | 0 | 300 | Odoo procurement/manufacturing; needs an Odoo-shaped surface we do not have |
-| TheAgentCompany (finance) | 12 | **4** | 8 | ported onto sheets/docs; originals need Docker + ownCloud + RocketChat |
-| **agentic total** | **563** | **39** | **524** | **7%** |
+**Generated, not asserted** — `python3 ingest/run.py` reads the corpora, binds each item to
+the live world, and prints this. Re-run it; do not edit it.
 
-Static-QA corpora are counted separately because porting them would change what they measure:
+```
+microsoft/FinanceBenchmark — 251 items
+   class      : verbatim_gt 100 · not_agentic 90 · recomputable 36 · judgement_port 25
+   addressable: 161      binding: bound 130 · absent_entity 31      runs here: 35  (22%)
+TheAgentCompany — 12 items
+   class      : judgement_port 12
+   addressable: 12       binding: bound 12                          runs here: 8   (67%)
+agentic-labs/erp-bench — 300 items
+   class      : needs_surface 300
+   addressable: 0                                                   runs here: 0
+──────────────────────────────────────────────────────────────────────────
+TOTAL  items 563 · addressable 173 · running here 44  (25% of addressable)
+```
 
-| corpus | ships | status |
+**The denominator matters more than the numerator.** The crude "7% of 563" was itself
+misleading: 300 of those items need an Odoo surface, and 90 of FinanceBenchmark's
+`finance_qa` are open analytical prompts whose only grader is an LLM judge over 2,394 style
+assertions — which this repo bans from the reward path. Counting them as a gap would imply we
+intend to close them, and we do not; counting them as "done" would be a lie. They are a
+**class**, with a reason.
+
+Addressable = `verbatim_gt` + `recomputable` + `judgement_port`. Against that, coverage is
+**44 of 173 (25%)**, and every one of the remaining 129 has a named blocker:
+
+| blocker | items | what unblocks it |
 |---|---|---|
-| patronus/financebench | 150 | mechanism adopted (refusal/evidence-span design); not agent-tool tasks |
-| FinQA / ConvFinQA / TAT-QA | 1,147 / 3,037 / 16,552 | mechanisms adopted (executable-program GT; `scale` as a graded field) |
-| SECQUE | 565 | environment contract studied; no tools, hidden judge |
-| vals-ai finance-agent v1/v2 | 50 / 27 | rubric design adopted (conjunction + contradiction, severity weights) |
+| FB `erp_qa` questions not yet emitted by the cloner | 65 | handlers for the rejected intent classes (in flight) |
+| FB items naming companies absent from the shared world | 31 | a frozen filings snapshot covering WMT (17), KO (16), XOM (14), CAT (8), CVX (8), MSFT (6), AAPL/AMZN/PFE/BA (4 each), TSLA/INTC (3) |
+| FB `business_brief` | 25 | a brief emitter grading required fields per-section |
+| TAC finance remaining | 4 | the porting pattern is proven; 8 of 12 done |
 
-Turning a static table-QA item into a tool-using task makes it a *retrieval* task, not a
-finance-operations task. Those corpora were read for design, and that is defensible. **The
-563 agentic tasks are not**, and 7% is the honest coverage.
+The 31 unbindable items are a *useful* failure: filings are seeded per task, so the binder
+correctly reports those companies absent from the shared world and names exactly which
+snapshot to build. That is a build list, not a shrug.
 
 ## Why the gap exists, without excuses
 

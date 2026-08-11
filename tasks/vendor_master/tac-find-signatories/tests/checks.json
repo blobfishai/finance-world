@@ -1,0 +1,33 @@
+{
+ "answer_checks": [
+  {"field": "valid_mandate_rows", "type": "number", "expect": 5, "tol_abs": 0.01,
+   "gt_sql": "SELECT COUNT(*) FROM sheet_rows m JOIN sheet_rows h ON json_extract(h.cells,'$[0]')=json_extract(m.cells,'$[1]') WHERE m.file='bank-mandate-register-2026.xlsx' AND h.file='hr-personnel-extract-2026-03-01.xlsx' AND json_extract(m.cells,'$[0]') LIKE 'SIG-%' AND json_extract(h.cells,'$[4]')='Active' AND json_extract(m.cells,'$[6]')<=substr((SELECT value FROM meta WHERE key='WORLD_NOW'),1,10) AND (json_extract(m.cells,'$[7]')='' OR json_extract(m.cells,'$[7]')>=substr((SELECT value FROM meta WHERE key='WORLD_NOW'),1,10))"},
+
+  {"field": "authorised_signatory_count", "type": "number", "expect": 4, "tol_abs": 0.01,
+   "gt_sql": "SELECT COUNT(DISTINCT json_extract(m.cells,'$[1]')) FROM sheet_rows m JOIN sheet_rows h ON json_extract(h.cells,'$[0]')=json_extract(m.cells,'$[1]') WHERE m.file='bank-mandate-register-2026.xlsx' AND h.file='hr-personnel-extract-2026-03-01.xlsx' AND json_extract(m.cells,'$[0]') LIKE 'SIG-%' AND json_extract(h.cells,'$[4]')='Active' AND json_extract(m.cells,'$[6]')<=substr((SELECT value FROM meta WHERE key='WORLD_NOW'),1,10) AND (json_extract(m.cells,'$[7]')='' OR json_extract(m.cells,'$[7]')>=substr((SELECT value FROM meta WHERE key='WORLD_NOW'),1,10))"},
+
+  {"field": "authorised_signatories", "type": "contains_all",
+   "expect": ["Okonjo", "Brekke", "Shah", "Achebe"],
+   "forbid": ["Vasquez", "Larsen", "Fabbri", "Nystrom", "Bergstrom", "Ferreira"]},
+
+  {"field": "expired_delegation", "type": "contains_all",
+   "expect": ["Larsen"],
+   "forbid": ["Vasquez"]},
+
+  {"field": "departed_signatory", "type": "contains_all",
+   "expect": ["Vasquez"],
+   "forbid": ["Larsen", "Bergstrom"]},
+
+  {"field": "max_release_without_band_a", "type": "number", "expect": 50000.0, "tol_abs": 0.05,
+   "gt_sql": "SELECT MAX(json_extract(m.cells,'$[5]')) FROM sheet_rows m JOIN sheet_rows h ON json_extract(h.cells,'$[0]')=json_extract(m.cells,'$[1]') WHERE m.file='bank-mandate-register-2026.xlsx' AND h.file='hr-personnel-extract-2026-03-01.xlsx' AND json_extract(m.cells,'$[0]') LIKE 'SIG-%' AND json_extract(m.cells,'$[4]')<>'A' AND json_extract(h.cells,'$[4]')='Active' AND json_extract(m.cells,'$[6]')<=substr((SELECT value FROM meta WHERE key='WORLD_NOW'),1,10) AND (json_extract(m.cells,'$[7]')='' OR json_extract(m.cells,'$[7]')>=substr((SELECT value FROM meta WHERE key='WORLD_NOW'),1,10))"}
+ ],
+ "trace_checks": [
+  {"type": "required_servers", "servers": ["sheets", "docs"]},
+  {"type": "min_calls", "server": "sheets", "n": 3},
+  {"type": "min_calls", "server": "docs", "n": 2},
+  {"type": "reads_before_submit"}
+ ],
+ "state_checks": [
+  {"type": "writes_only", "tables": ["answers"]}
+ ]
+}

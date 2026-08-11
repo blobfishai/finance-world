@@ -1,0 +1,27 @@
+{
+ "answer_checks": [
+  {"field": "revenue", "type": "number", "expect": 1482000000, "tol_rel": 0.0005,
+   "gt_sql": "SELECT value FROM filings_facts WHERE cik='0009900413' AND concept='Revenues' AND fy='2025' AND period_end='2025-12-31'"},
+  {"field": "cost_of_revenue", "type": "number", "expect": 642000000, "tol_rel": 0.0005,
+   "gt_sql": "SELECT value FROM filings_facts WHERE cik='0009900413' AND concept='CostOfRevenue' AND fy='2025' AND period_end='2025-12-31'"},
+  {"field": "gross_profit", "type": "number", "expect": 840000000, "tol_rel": 0.0005,
+   "gt_sql": "SELECT value FROM filings_facts WHERE cik='0009900413' AND concept='GrossProfit' AND fy='2025' AND period_end='2025-12-31'"},
+  {"field": "operating_income", "type": "number", "expect": 313000000, "tol_rel": 0.0005,
+   "gt_sql": "SELECT value FROM filings_facts WHERE cik='0009900413' AND concept='OperatingIncomeLoss' AND fy='2025' AND period_end='2025-12-31'"},
+  {"field": "net_income", "type": "number", "expect": 412000000, "tol_rel": 0.0005,
+   "gt_sql": "SELECT (SELECT value FROM filings_facts WHERE cik='0009900413' AND concept='ProfitLoss' AND fy='2025' AND period_end='2025-12-31') - (SELECT value FROM filings_facts WHERE cik='0009900413' AND concept='NetIncomeLossAttributableToNoncontrollingInterest' AND fy='2025' AND period_end='2025-12-31')"},
+  {"field": "operating_margin_pct", "type": "number", "expect": 21.1201, "tol_abs": 0.06,
+   "gt_sql": "SELECT ROUND(100.0*(SELECT value FROM filings_facts WHERE cik='0009900413' AND concept='OperatingIncomeLoss' AND fy='2025' AND period_end='2025-12-31')/(SELECT value FROM filings_facts WHERE cik='0009900413' AND concept='Revenues' AND fy='2025' AND period_end='2025-12-31'),4)"},
+  {"field": "revenue_growth_pct", "type": "number", "expect": 14.3519, "tol_abs": 0.06,
+   "gt_sql": "SELECT ROUND(100.0*((SELECT value FROM filings_facts WHERE cik='0009900413' AND concept='Revenues' AND fy='2025' AND period_end='2025-12-31')/(SELECT value FROM filings_facts WHERE cik='0009900413' AND concept='Revenues' AND fy='2025' AND period_end='2024-12-31')-1),4)"},
+  {"field": "source_form", "type": "contains_all", "expect": ["10-K"]}
+ ],
+ "trace_checks": [
+  {"type": "required_servers", "servers": ["filings", "docs"]},
+  {"type": "min_calls", "server": "filings", "n": 4},
+  {"type": "reads_before_submit"}
+ ],
+ "state_checks": [
+  {"type": "writes_only", "tables": ["answers"]}
+ ]
+}

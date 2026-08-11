@@ -1,0 +1,18 @@
+[
+ {"server": "sheets", "tool": "list_drive_items", "args": {}},
+ {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "bank-mandate-register-2026.xlsx"}},
+ {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "hr-personnel-extract-2026-03-01.xlsx"}},
+ {"server": "docs", "tool": "search_documents", "args": {"query": "signing authority mandate"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "policy--treasury-signing-authority"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "memo--interim-signing-delegation"}},
+ {"server": "email", "tool": "messages_list", "args": {"q": "mandate"}},
+ {"server": "email", "tool": "messages_get", "args": {"id": "em-3101"}},
+ {"server": "harness", "tool": "submit_answer",
+  "args": {"answers": {
+    "valid_mandate_rows": 5,
+    "authorised_signatory_count": 4,
+    "authorised_signatories": "Marguerite Okonjo, Halvard Brekke, Priya Shah, Desmond Achebe",
+    "expired_delegation": "SIG-07, held by Toma Larsen (Band B, USD 250,000, interim cover for the Controller). The CFO's delegation of 2025-11-03 was time-limited and ended 2026-02-28, so the authority is void from 2026-03-01 under SOP-TR-02 s2 even though the register still shows the row Active. He remains an employee in his substantive role; only the signing authority has lapsed, and the row must be struck at this refresh.",
+    "departed_signatory": "SIG-06, Corinne Vasquez, Director of Financial Reporting (Band B, USD 250,000). The HR extract records her as a leaver with a final working day of 2026-02-13, so her authority fell away on that date under SOP-TR-02 s2.1; the register was never updated and her offboarding checklist is still open. Strike the row and revoke her payment-release access.",
+    "max_release_without_band_a": 50000}}}
+]

@@ -1,0 +1,40 @@
+schema_version = "1.4"
+
+[task]
+name = "vendor_master/tac-find-signatories"
+version = "0.1.0"
+description = "Certify who is authorised to sign the operating-account bank mandate today: test every mandate row against employment status and delegation dates rather than the register's own status column, and count individuals rather than rows."
+authors = ["nario-ai"]
+keywords = ["finance", "vendor_master", "treasury", "signatories", "mandate", "delegation", "controls"]
+
+[metadata]
+family = "vendor_master"
+origin = "port of research/external/repos/TheAgentCompany/workspaces/tasks/finance-find-signatories (establish the set of signatories from source records, then report both the number of signatures found and the smaller number of PEOPLE to act on - the original's 38 signatures vs 29 signatories). The original's ownCloud/RocketChat plumbing does not port: the workbooks become sheets (bank mandate register + HR personnel extract), the rules become docs (SOP-TR-02 and the CFO's interim delegation memo), and the answer goes through harness__submit_answer. Mechanics per docs/HARD-LAYER-DESIGN.md: M3 non-collapse (the register's own Active column is the naive source of truth and is wrong in two directions), M5 the validity rules live only in the SOP and the delegation memo - no field on the register says an authority has fallen away, and the Register status column actively asserts the opposite."
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 9
+trap = "two independent failures of the same register: a person still shown Active who has LEFT (SIG-06 Corinne Vasquez, final day 2026-02-13), and a person still employed whose DELEGATION lapsed (SIG-07 Toma Larsen, interim cover ended 2026-02-28, world epoch 2026-03-02). A third row is honestly marked Lapsed, so 'count what the register calls Active' is a real strategy rather than a strawman."
+
+# Objective non-collapse (M3): the strategy a real practitioner runs - and the one Treasury
+# Operations recommends in writing on the thread - is to certify the register: take the rows
+# whose Register status reads Active and send those. That yields seven rows and seven
+# signatories, misses nothing that is already marked Lapsed, and is wrong three times over.
+# It certifies Corinne Vasquez, who left on 2026-02-13 (her authority fell away with her
+# employment, and only the HR extract knows). It certifies Toma Larsen, who is still employed
+# but whose interim Band B delegation ended 2026-02-28 - two days before the world's today -
+# and whose expiry is stated on the row and in the CFO's memo while the status column still
+# says Active. And it counts Priya Shah twice, because she holds two mandate rows; the bank
+# holds one specimen signature per individual, so five valid rows are four signatories. The
+# consequence field separates the paths further: with both Band B holders gone, the largest
+# payment releasable without a Band A signature drops from 250,000 to 50,000, which is the
+# answer that governs Friday's run.
+naive_answer = "7 valid rows, 7 signatories, max release without Band A 250000, no expired delegation, no departed signatory"
+graded_answer = "5 valid rows, 4 signatories, max release without Band A 50000, expired delegation Toma Larsen SIG-07, departed signatory Corinne Vasquez"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

@@ -1,0 +1,90 @@
+{
+ "task": "vendor_master/tac-find-signatories",
+ "family": "vendor_master",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "email",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 9,
+ "walk_len": 9,
+ "budget_turns": 84,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.1,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 9}\n",
+ "trace": [
+  {
+   "ts": 1786484760.545589,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786484760.54611,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"bank-mandate-register-2026.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484760.546514,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"hr-personnel-extract-2026-03-01.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484760.547062,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"signing authority mandate\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484760.547385,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--treasury-signing-authority\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484760.5476968,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"memo--interim-signing-delegation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484760.5514398,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"mandate\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484760.551955,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-3101\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484760.553916,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"valid_mandate_rows\": 5, \"authorised_signatory_count\": 4, \"authorised_signatories\": \"Marguerite Okonjo, Halvard Brekke, Priya Shah, Desmond Achebe\", \"expired_delegation\": \"SIG-07, held by Toma Larsen (Band B, USD 250,000, interim cover for the Controller). The CFO's delegation of 2025-1",
+   "ok": true
+  }
+ ]
+}

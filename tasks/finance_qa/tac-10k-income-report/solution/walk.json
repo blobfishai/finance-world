@@ -1,0 +1,24 @@
+[
+ {"server": "docs", "tool": "search_documents", "args": {"query": "external company financial summaries basis"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "policy--external-reporting-basis"}},
+ {"server": "filings", "tool": "lookup_company", "args": {"query": "Calderwood"}},
+ {"server": "filings", "tool": "get_submissions", "args": {"ticker": "CLWS"}},
+ {"server": "filings", "tool": "full_text_search", "args": {"q": "discontinued operations"}},
+ {"server": "filings", "tool": "list_available_concepts", "args": {"ticker": "CLWS"}},
+ {"server": "filings", "tool": "get_company_concept", "args": {"ticker": "CLWS", "concept": "Revenues"}},
+ {"server": "filings", "tool": "get_company_concept", "args": {"ticker": "CLWS", "concept": "CostOfRevenue"}},
+ {"server": "filings", "tool": "get_company_concept", "args": {"ticker": "CLWS", "concept": "GrossProfit"}},
+ {"server": "filings", "tool": "get_company_concept", "args": {"ticker": "CLWS", "concept": "OperatingIncomeLoss"}},
+ {"server": "filings", "tool": "get_company_concept", "args": {"ticker": "CLWS", "concept": "ProfitLoss"}},
+ {"server": "filings", "tool": "get_company_concept", "args": {"ticker": "CLWS", "concept": "NetIncomeLoss"}},
+ {"server": "harness", "tool": "submit_answer",
+  "args": {"answers": {
+    "revenue": 1482000000,
+    "cost_of_revenue": 642000000,
+    "gross_profit": 840000000,
+    "operating_income": 313000000,
+    "net_income": 412000000,
+    "operating_margin_pct": 21.12,
+    "revenue_growth_pct": 14.35,
+    "source_form": "10-K for fiscal year 2025, accession 0009900413-26-000007, Item 8"}}}
+]

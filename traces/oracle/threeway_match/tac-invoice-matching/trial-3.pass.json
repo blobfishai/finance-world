@@ -1,0 +1,82 @@
+{
+ "task": "threeway_match/tac-invoice-matching",
+ "family": "threeway_match",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 3,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 8,
+ "walk_len": 8,
+ "budget_turns": 76,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.1,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 8}\n",
+ "trace": [
+  {
+   "ts": 1786484765.664427,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"vendor statement reconciliation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484765.66493,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"sop--vendor-statement-reconciliation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484765.6655202,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786484765.665928,
+   "server": "sheets",
+   "tool": "get_drive_item",
+   "args": "{\"item\": \"halden-statement-2026Q1.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484765.66651,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"halden-statement-2026Q1.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484765.667339,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"ap-payment-register-halden-2026Q1.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484765.66783,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"partial\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786484765.6693509,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"statement_total_usd\": 116438.25, \"applied_total_usd\": 113197.75, \"net_variance_usd\": 3240.5, \"exception_invoices\": \"HF-2203, HF-2207, HF-2218, HF-2222\", \"overpaid_usd\": 2750.0, \"underpaid_usd\": 5990.5, \"out_of_scope_payment\": \"PMT-8817, which references HF-2190 - not on this statement\"",
+   "ok": true
+  }
+ ]
+}

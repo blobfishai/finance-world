@@ -1,0 +1,35 @@
+{
+ "answer_checks": [
+  {"field": "statement_total_usd", "type": "number", "expect": 116438.25, "tol_abs": 0.05,
+   "gt_sql": "SELECT ROUND(SUM(json_extract(cells,'$[3]')),2) FROM sheet_rows WHERE file='halden-statement-2026Q1.xlsx' AND json_extract(cells,'$[0]') LIKE 'HF-%'"},
+
+  {"field": "applied_total_usd", "type": "number", "expect": 113197.75, "tol_abs": 0.05,
+   "gt_sql": "SELECT ROUND(SUM(json_extract(cells,'$[2]')),2) FROM sheet_rows WHERE file='ap-payment-register-halden-2026Q1.xlsx' AND json_extract(cells,'$[0]') LIKE 'PMT-%' AND substr(json_extract(cells,'$[3]'),1,7) IN (SELECT json_extract(cells,'$[0]') FROM sheet_rows WHERE file='halden-statement-2026Q1.xlsx')"},
+
+  {"field": "net_variance_usd", "type": "number", "expect": 3240.50, "tol_abs": 0.05,
+   "gt_sql": "SELECT ROUND((SELECT SUM(json_extract(cells,'$[3]')) FROM sheet_rows WHERE file='halden-statement-2026Q1.xlsx' AND json_extract(cells,'$[0]') LIKE 'HF-%') - (SELECT SUM(json_extract(cells,'$[2]')) FROM sheet_rows WHERE file='ap-payment-register-halden-2026Q1.xlsx' AND json_extract(cells,'$[0]') LIKE 'PMT-%' AND substr(json_extract(cells,'$[3]'),1,7) IN (SELECT json_extract(cells,'$[0]') FROM sheet_rows WHERE file='halden-statement-2026Q1.xlsx')),2)"},
+
+  {"field": "exception_invoices", "type": "contains_all",
+   "expect": ["HF-2203", "HF-2207", "HF-2218", "HF-2222"],
+   "forbid": ["HF-2201", "HF-2202", "HF-2204", "HF-2205", "HF-2206", "HF-2208", "HF-2209",
+              "HF-2210", "HF-2211", "HF-2212", "HF-2213", "HF-2214", "HF-2215", "HF-2216",
+              "HF-2217", "HF-2219", "HF-2220", "HF-2221", "HF-2223", "HF-2224", "HF-2190"]},
+
+  {"field": "overpaid_usd", "type": "number", "expect": 2750.00, "tol_abs": 0.05,
+   "gt_sql": "WITH stmt AS (SELECT json_extract(cells,'$[0]') AS inv, json_extract(cells,'$[3]') AS amt FROM sheet_rows WHERE file='halden-statement-2026Q1.xlsx' AND json_extract(cells,'$[0]') LIKE 'HF-%'), pay AS (SELECT json_extract(cells,'$[3]') AS ref, json_extract(cells,'$[2]') AS amt FROM sheet_rows WHERE file='ap-payment-register-halden-2026Q1.xlsx' AND json_extract(cells,'$[0]') LIKE 'PMT-%'), single AS (SELECT substr(ref,1,7) AS inv, SUM(amt) AS paid FROM pay WHERE ref NOT LIKE '%,%' GROUP BY 1), comb AS (SELECT substr(ref,1,7) AS a, substr(ref,9,7) AS b FROM pay WHERE ref LIKE '%,%'), app AS (SELECT s.inv AS inv, s.amt AS amt, COALESCE((SELECT paid FROM single WHERE single.inv=s.inv),0) + CASE WHEN EXISTS(SELECT 1 FROM comb WHERE comb.a=s.inv OR comb.b=s.inv) THEN s.amt ELSE 0 END AS paid FROM stmt s) SELECT ROUND(SUM(paid-amt),2) FROM app WHERE paid > amt"},
+
+  {"field": "underpaid_usd", "type": "number", "expect": 5990.50, "tol_abs": 0.05,
+   "gt_sql": "WITH stmt AS (SELECT json_extract(cells,'$[0]') AS inv, json_extract(cells,'$[3]') AS amt FROM sheet_rows WHERE file='halden-statement-2026Q1.xlsx' AND json_extract(cells,'$[0]') LIKE 'HF-%'), pay AS (SELECT json_extract(cells,'$[3]') AS ref, json_extract(cells,'$[2]') AS amt FROM sheet_rows WHERE file='ap-payment-register-halden-2026Q1.xlsx' AND json_extract(cells,'$[0]') LIKE 'PMT-%'), single AS (SELECT substr(ref,1,7) AS inv, SUM(amt) AS paid FROM pay WHERE ref NOT LIKE '%,%' GROUP BY 1), comb AS (SELECT substr(ref,1,7) AS a, substr(ref,9,7) AS b FROM pay WHERE ref LIKE '%,%'), app AS (SELECT s.inv AS inv, s.amt AS amt, COALESCE((SELECT paid FROM single WHERE single.inv=s.inv),0) + CASE WHEN EXISTS(SELECT 1 FROM comb WHERE comb.a=s.inv OR comb.b=s.inv) THEN s.amt ELSE 0 END AS paid FROM stmt s) SELECT ROUND(SUM(amt-paid),2) FROM app WHERE paid < amt"},
+
+  {"field": "out_of_scope_payment", "type": "contains_all", "expect": ["PMT-8817", "HF-2190"]}
+ ],
+ "trace_checks": [
+  {"type": "required_servers", "servers": ["sheets", "docs"]},
+  {"type": "min_calls", "server": "sheets", "n": 3},
+  {"type": "min_calls", "server": "docs", "n": 1},
+  {"type": "reads_before_submit"}
+ ],
+ "state_checks": [
+  {"type": "writes_only", "tables": ["answers"]}
+ ]
+}

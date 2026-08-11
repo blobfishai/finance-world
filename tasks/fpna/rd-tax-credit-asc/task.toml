@@ -1,0 +1,43 @@
+schema_version = "1.4"
+
+[task]
+name = "fpna/rd-tax-credit-asc"
+version = "0.1.0"
+description = "Build Form 6765 Section B (alternative simplified credit) for the 2025 credit year: qualify the current-year R&D spend line by line, then set the base period to the three preceding tax years rather than the whole history tab."
+authors = ["nario-ai"]
+keywords = ["finance", "fpna", "tax", "r&d credit", "form 6765", "section 41", "asc"]
+
+[metadata]
+family = "fpna"
+origin = "port of research/external/repos/TheAgentCompany/workspaces/tasks/finance-apply-tax-credit (IRS Form 6765 Section B alternative simplified credit built from a wage file plus a financials extract, with the ambiguous questions - section 280C election, existence of prior-3-year QREs - resolved by consulting a colleague). The judgement ports; the plumbing does not: the fillable PDF becomes graded answer fields through harness__submit_answer, the two workbooks become sheets/sheet_rows, the f6765 instructions become a docs policy (TAX-POL-11), and the RocketChat consultation with the finance director becomes the year's return positions memo. Escalated per docs/HARD-LAYER-DESIGN.md M3 (the base period is the objective the naive four-row average collapses), M4 (every component re-derived from line detail - wages x project time %, 65% contract-research haircut - never read off a totals row) and M5 (the qualification rules - US-sited research, quality-control testing, market research, depreciation, patent legal - exist only in TAX-POL-11, not as a field on either workbook)"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 8
+
+# Objective non-collapse (M3): the naive strategy is the one the provider ran last year and the
+# one the source task's own data invites - open the QRE history tab, average every prior year
+# printed on it, halve it, and call that the base. The tab carries four years (FY2021-FY2024)
+# because Tax has kept it since the programme began, but the ASC base period is only the three
+# tax years immediately preceding the credit year. FY2021 is both outside that window and a
+# year with no qualified activity at all - the whole programme ran at Kilbrannan Labs in Cork,
+# so its QRE line is 0.00 - and averaging it in drags the base down by a quarter. Same
+# current-year QRE (781,850.00) either way, so the two paths differ on exactly one thing: a
+# base amount of 259,350.00 against 345,800.00, and a credit of 73,150.00 against 61,047.00 -
+# a 12,103.00 overstatement of a discrete tax item, stateable to the cent.
+# Two further shortcuts are defeated. Seeing the FY2021 zero and reaching for the section
+# 41(c)(5)(B) fallback gives 6% x 781,850.00 = 46,911.00; the 2025 positions memo forecloses it
+# by confirming QREs in each of the three preceding years. And working off the totals rows -
+# 1,096,000.00 of wages and 588,850.00 of non-wage cost, as the GL booked them - ignores every
+# qualification rule in TAX-POL-11: the Taipei research programme, the quality-control testing
+# line, the market-research line, the Cork contract lab, equipment depreciation, patent legal
+# fees, and the 65% haircut on the one contract that does qualify.
+naive_answer = "base period 2021-2024; base_amount 259350.00; asc_credit 73150.00"
+graded_answer = "base period 2022-2024; base_amount 345800.00; asc_credit 61047.00"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

@@ -1,0 +1,31 @@
+{
+ "answer_checks": [
+  {"field": "qualified_wages", "type": "number", "expect": 471200.0, "tol_abs": 0.5,
+   "gt_sql": "SELECT ROUND(SUM(json_extract(cells,'$[5]') * json_extract(cells,'$[6]') / 100.0),2) FROM sheet_rows WHERE file='rd-wage-detail-2025.xlsx' AND json_extract(cells,'$[0]') LIKE 'E-3%' AND json_extract(cells,'$[3]')='qualified research' AND json_extract(cells,'$[4]') LIKE '%(US)%'"},
+
+  {"field": "current_year_qre", "type": "number", "expect": 781850.0, "tol_abs": 0.5,
+   "gt_sql": "SELECT ROUND((SELECT SUM(json_extract(cells,'$[5]') * json_extract(cells,'$[6]') / 100.0) FROM sheet_rows WHERE file='rd-wage-detail-2025.xlsx' AND json_extract(cells,'$[0]') LIKE 'E-3%' AND json_extract(cells,'$[3]')='qualified research' AND json_extract(cells,'$[4]') LIKE '%(US)%') + (SELECT SUM(CASE WHEN json_extract(cells,'$[1]')='contract research' THEN 0.65*json_extract(cells,'$[5]') ELSE json_extract(cells,'$[5]') END) FROM sheet_rows WHERE file='rd-nonwage-costs-2025.xlsx' AND json_extract(cells,'$[0]') LIKE 'C-%' AND json_extract(cells,'$[1]') IN ('supplies','computer rental','contract research') AND json_extract(cells,'$[4]') LIKE '%(US)%'),2)"},
+
+  {"field": "base_period_years", "type": "contains_all", "expect": ["2022", "2024"]},
+
+  {"field": "prior_three_year_qre_total", "type": "number", "expect": 2074800.0, "tol_abs": 0.5,
+   "gt_sql": "SELECT ROUND(SUM(json_extract(cells,'$[2]')),2) FROM sheet_rows WHERE file='rd-qre-history.xlsx' AND CAST(json_extract(cells,'$[0]') AS INTEGER) BETWEEN 2022 AND 2024"},
+
+  {"field": "base_amount", "type": "number", "expect": 345800.0, "tol_abs": 0.5,
+   "gt_sql": "SELECT ROUND(SUM(json_extract(cells,'$[2]'))/6.0,2) FROM sheet_rows WHERE file='rd-qre-history.xlsx' AND CAST(json_extract(cells,'$[0]') AS INTEGER) BETWEEN 2022 AND 2024"},
+
+  {"field": "asc_credit", "type": "number", "expect": 61047.0, "tol_abs": 0.5,
+   "gt_sql": "SELECT ROUND(0.14 * ((SELECT SUM(json_extract(cells,'$[5]') * json_extract(cells,'$[6]') / 100.0) FROM sheet_rows WHERE file='rd-wage-detail-2025.xlsx' AND json_extract(cells,'$[0]') LIKE 'E-3%' AND json_extract(cells,'$[3]')='qualified research' AND json_extract(cells,'$[4]') LIKE '%(US)%') + (SELECT SUM(CASE WHEN json_extract(cells,'$[1]')='contract research' THEN 0.65*json_extract(cells,'$[5]') ELSE json_extract(cells,'$[5]') END) FROM sheet_rows WHERE file='rd-nonwage-costs-2025.xlsx' AND json_extract(cells,'$[0]') LIKE 'C-%' AND json_extract(cells,'$[1]') IN ('supplies','computer rental','contract research') AND json_extract(cells,'$[4]') LIKE '%(US)%') - (SELECT SUM(json_extract(cells,'$[2]'))/6.0 FROM sheet_rows WHERE file='rd-qre-history.xlsx' AND CAST(json_extract(cells,'$[0]') AS INTEGER) BETWEEN 2022 AND 2024)),2)"},
+
+  {"field": "reduced_credit_elected", "type": "yes_no", "expect": "no"}
+ ],
+ "trace_checks": [
+  {"type": "required_servers", "servers": ["sheets", "docs"]},
+  {"type": "min_calls", "server": "sheets", "n": 3},
+  {"type": "min_calls", "server": "docs", "n": 2},
+  {"type": "reads_before_submit"}
+ ],
+ "state_checks": [
+  {"type": "writes_only", "tables": ["answers"]}
+ ]
+}

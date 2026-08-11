@@ -1,0 +1,48 @@
+schema_version = "1.4"
+
+[task]
+name = "finance_qa/tac-10k-income-report"
+version = "0.1.0"
+description = "Rebuild a comp's FY2025 income statement summary from the audited Item 8 statements in its 10-K rather than its earnings release, taking net income attributable to the registrant and computing the operating margin and the year-over-year revenue growth on the recast comparative."
+authors = ["nario-ai"]
+keywords = ["finance", "finance_qa", "filings", "income-statement", "non-gaap", "noncontrolling-interests", "discontinued-operations"]
+
+[metadata]
+family = "finance_qa"
+origin = "port of research/external/repos/TheAgentCompany/workspaces/tasks/finance-create-10k-income-report (extract income-statement figures from 10-K Item 8 for multiple years, compile a structured table, and derive the year-over-year percentage change). The source's plumbing does not port: its ownCloud folder-navigation checkpoint, its written /workspace/net_income_report.csv, and its LLM-judged RocketChat message to David Wong are all environment-specific, and its checkpoint 4 graded an exact CSV cell set. Here the workbook becomes the frozen filings server (filings_companies/filings_facts/filings_documents, seeded as tasks/finance_qa/scale-trap-lmt does), the column structure becomes submit_answer fields, the CSV-shape checkpoint becomes the required_servers/reads_before_submit trace checks, and the derived percentage change is graded as revenue_growth_pct alongside a derived margin. The source's own trap - 'net income ... in section/item 8' and 'the name of registrant as specified in its charter' - is kept and sharpened: docs/HARD-LAYER-DESIGN.md M3 (non-collapse), M4 (the margin and the growth rate are recomputed from revenue and the line items, never read off a stated figure) and M5 (the governing basis lives only in FRP-02)"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 13
+mechanic = "three tiers of 'the company's own numbers' for one fiscal year - the adjusted figures in the earnings release, the consolidated GAAP subtotal, and the registrant's audited Item 8 result - and only the third is the comp table's answer"
+
+# Objective non-collapse (M3): the naive strategy is the one a comp table actually gets built
+# from - take each year's figures from the company's own headline publication for that year:
+# the FY2025 earnings release (8-K Item 2.02, filed 2026-01-29, two weeks ahead of the 10-K and
+# the first hit on any full-text search) for FY2025, and the FY2024 10-K for the prior year.
+# It is not lazy - it is what IR quotes and what most sell-side comp sheets carry - and it is
+# wrong in four stateable places:
+#   operating_income     358,000,000 (the release's ADJUSTED figure, which adds back 31.0m of
+#                        acquired-intangible amortization and 14.0m of restructuring) against
+#                        313,000,000 on the face of the Item 8 statement;
+#   net_income           449,000,000 (the release's line labelled "Net income", which is the
+#                        consolidated ProfitLoss subtotal) against 412,000,000 attributable to
+#                        the registrant after the 37,000,000 noncontrolling interest;
+#   operating_margin_pct 24.2 (the release's own adjusted margin) against 21.12;
+#   revenue_growth_pct   -0.47 - FY2025 revenue of 1,482.0m against the 1,489.0m the FY2024
+#                        10-K reported - against +14.35 on the 1,296.0m recast comparative the
+#                        FY2025 filing presents, the Meridian test-systems business having been
+#                        reclassified to discontinued operations. The naive path reports the
+#                        comp as shrinking; the graded one has it growing double digits, so the
+#                        two do not merely differ in magnitude, they differ in sign.
+# revenue is identical on both paths (1,482,000,000, GAAP in the release too), which is what
+# makes the naive path survive a spot check: the number an analyst tests first agrees.
+naive_answer = "operating_income=358000000,net_income=449000000,operating_margin_pct=24.2,revenue_growth_pct=-0.47"
+graded_answer = "operating_income=313000000,net_income=412000000,operating_margin_pct=21.12,revenue_growth_pct=14.35"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

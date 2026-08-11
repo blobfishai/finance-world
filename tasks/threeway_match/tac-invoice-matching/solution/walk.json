@@ -1,0 +1,18 @@
+[
+ {"server": "docs", "tool": "search_documents", "args": {"query": "vendor statement reconciliation"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "sop--vendor-statement-reconciliation"}},
+ {"server": "sheets", "tool": "list_drive_items", "args": {}},
+ {"server": "sheets", "tool": "get_drive_item", "args": {"item": "halden-statement-2026Q1.xlsx"}},
+ {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "halden-statement-2026Q1.xlsx"}},
+ {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "ap-payment-register-halden-2026Q1.xlsx"}},
+ {"server": "sheets", "tool": "drive_search", "args": {"q": "partial"}},
+ {"server": "harness", "tool": "submit_answer",
+  "args": {"answers": {
+    "statement_total_usd": 116438.25,
+    "applied_total_usd": 113197.75,
+    "net_variance_usd": 3240.50,
+    "exception_invoices": "HF-2203, HF-2207, HF-2218, HF-2222",
+    "overpaid_usd": 2750.00,
+    "underpaid_usd": 5990.50,
+    "out_of_scope_payment": "PMT-8817, which references HF-2190 - not on this statement"}}}
+]
