@@ -43,17 +43,25 @@ def run_trial(task_dir, agent="oracle", model=None, trial=1, _attempt=1):
     t0, final_text, num_turns, cost = time.time(), "", None, None
 
     if agent == "openai":
-        # Any OpenAI-compatible endpoint (DeepSeek, Qwen, Kimi, xAI). Runs the same MCP
-        # servers in-process, so the trace the verifier reads is produced the same way.
-        sys.path.insert(0, str(ROOT / "sim"))
-        from agent_openai import run as run_openai
-        key = os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("OPENAI_API_KEY")
-        base = os.environ.get("OPENAI_BASE_URL", "https://api.deepseek.com")
-        if not key:
+        # Any OpenAI-compatible endpoint (DeepSeek, Qwen, Kimi, xAI). Run OUT OF PROCESS.
+        # The MCP servers read WORLD_DB/TRACE_FILE from os.environ at call time, and
+        # run_batch parallelises with a THREAD pool — running the agent in-process would let
+        # concurrent trials overwrite each other's world and silently grade the wrong data.
+        # A subprocess per trial gives the same isolation the claude path gets for free.
+        if not (os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("OPENAI_API_KEY")):
             final_text, agent_error = "no API key: set DEEPSEEK_API_KEY", True
         else:
-            out = run_openai(task_dir, run_dir, model, base, key, budget)
-            final_text, num_turns, agent_error = out["final_text"], out["num_turns"], out["agent_error"]
+            cmd = [sys.executable, str(ROOT / "sim/agent_openai.py"),
+                   "--task", str(task_dir), "--run-dir", str(run_dir),
+                   "--model", model, "--budget", str(budget)]
+            try:
+                p = subprocess.run(cmd, capture_output=True, text=True, timeout=1200)
+                out = json.loads(p.stdout.strip().splitlines()[-1])
+                final_text, num_turns = out["final_text"], out["num_turns"]
+                agent_error = out["agent_error"]
+            except Exception as e:
+                final_text = ((p.stdout + p.stderr)[-2000:] if "p" in dir() else "") or repr(e)
+                agent_error = True
     elif agent == "oracle":
         p = subprocess.run([sys.executable, str(ROOT / "sim/oracle.py"), str(task_dir), str(run_dir)],
                            capture_output=True, text=True, timeout=300)
