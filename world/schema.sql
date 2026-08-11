@@ -194,3 +194,10 @@ CREATE TABLE erp_confirm_tokens(
 CREATE TABLE erp_audit_trail(
   audit_id INTEGER PRIMARY KEY, entity_type TEXT, entity_id TEXT, action TEXT,
   actor TEXT, role TEXT, at TEXT, before_json TEXT, after_json TEXT);
+
+-- Deduction / short-pay reason codes (art.deduction_coding). Vocabulary follows AR
+-- cash-application practice: research/external/articles/cash-application--{highradius,stuut,
+-- zamp}.md — a deduction is coded, routed to an owner, and either conceded or charged back.
+CREATE TABLE erp_deduction_reasons(
+  reason_code TEXT PRIMARY KEY, description TEXT, valid_claim INTEGER,
+  owner TEXT, disposition TEXT);

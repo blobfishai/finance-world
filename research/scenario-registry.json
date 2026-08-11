@@ -133,9 +133,10 @@
    "id": "fb.erp.deductions",
    "source": "microsoft/FinanceBenchmark erp_qa",
    "name": "Open deductions",
-   "tasks": [],
-   "status": "gap",
-   "note": "surfaced 2026-08-11: the previous entry claimed erp_qa_fb/discounts-1, which is a Discounts clone, not a Deductions one - the scenario was counted covered by a mislabel. erp_cust_trans carries a deduction column but no FB question for it survives the intent gate; needs either a dedicated handler or a hand-authored short-pay/deduction-coding task"
+   "tasks": [
+    "cash_app/deduction-coding-mar"
+   ],
+   "note": "closed 2026-08-11 by the hand-authored deduction-coding task, as the gap note anticipated; the mislabelled claim on erp_qa_fb/discounts-1 is not reinstated"
   },
   {
    "id": "fb.erp.sales_orders",
@@ -621,9 +622,10 @@
    "id": "art.deduction_coding",
    "source": "articles: deduction management",
    "name": "Deduction reason-coding and routing (7 codes), distinct from unapplied cash",
-   "tasks": [],
-   "status": "gap",
-   "note": "deduction rows exist (erp_cust_trans.deduction); needs a reason-code table + routing policy doc"
+   "tasks": [
+    "cash_app/deduction-coding-mar"
+   ],
+   "note": "closed 2026-08-11: erp_deduction_reasons ships the taxonomy (validity, owning team, disposition) and the task codes four short-pays from documentary evidence rather than the remittance narrative"
   },
   {
    "id": "art.confirmation_control",

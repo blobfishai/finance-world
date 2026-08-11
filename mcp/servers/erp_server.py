@@ -53,6 +53,7 @@ ENTITIES = {
     "PaymentRuns":          ("erp_payment_runs", "Payment run headers: pay date, cash available, eligible net, state"),
     "PaymentRunLines":      ("erp_payment_run_lines", "Payment run lines: invoice, net, disposition (paid|rejected), reason_code"),
     "ExchangeRates":        ("erp_fx_rates", "FX rates by from/to currency and date"),
+    "DeductionReasons":     ("erp_deduction_reasons", "Deduction/short-pay reason codes: validity, owning team, disposition"),
     "CashDiscounts":        ("erp_cash_disc", "Cash discount codes: percent, day window, next-code chain"),
     "CollectionLetters":    ("erp_collection_letters", "Collection letter journal per customer: letter_code 1..4/Collection, date, status, fee"),
     "AgedBalancesSnapshot": ("erp_aging_snapshot", "Batch customer aging snapshot (run_id, as_of, buckets). May lag live transactions."),

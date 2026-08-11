@@ -1,0 +1,21 @@
+[
+ {"server": "docs", "tool": "search_documents", "args": {"query": "deduction"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "deduction-policy"}},
+ {"server": "erp", "tool": "data_find_entities", "args": {"entity": "DeductionReasons"}},
+ {"server": "erp", "tool": "data_find_entities_sql",
+  "args": {"sql": "SELECT invoice, account, amount, settled, ROUND(amount-settled,2) AS deduction FROM erp_cust_trans WHERE invoice LIKE 'CINV-70%' ORDER BY invoice"}},
+ {"server": "email", "tool": "messages_list", "args": {"q": "CINV-70"}},
+ {"server": "email", "tool": "messages_get", "args": {"id": "em-0801"}},
+ {"server": "email", "tool": "messages_get", "args": {"id": "em-0802"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "copper-ridge-po"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "sable-finch-allowance"}},
+ {"server": "harness", "tool": "submit_answer",
+  "args": {"answers": {
+    "total_deductions": 7350.00,
+    "cinv701_reason": "pricing_variance",
+    "cinv702_reason": "promotional_allowance",
+    "cinv703_reason": "write_off_immaterial",
+    "cinv704_reason": "unauthorized",
+    "conceded_amount": 1950.00,
+    "chargeback_amount": 5400.00}}}
+]

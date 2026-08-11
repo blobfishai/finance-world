@@ -187,6 +187,16 @@ def write_surface_refdata(cx):
                    (pid, "USMF", doc, "Grand Total", thr, "USD", applies, approving, None,
                     "DOA-JE-02" if pid == "DOA-JE-01" else
                     "DOA-PAY-02" if pid == "DOA-PAY-01" else None))
+    # Deduction reason codes: the taxonomy an AR analyst codes a short-pay against.
+    for code, desc, valid, owner, disp in [
+            ("pricing_variance",     "Customer paid at a price different from the invoiced price", 0, "Sales", "verify against the order; concede only with Sales approval"),
+            ("shortage_damage",      "Goods short-shipped or damaged in transit",                  1, "Logistics", "issue credit memo once the delivery evidence supports it"),
+            ("promotional_allowance","Contracted promotional or volume allowance taken at payment",1, "Sales", "issue credit memo; allowance is contractual"),
+            ("unauthorized",         "No contractual or evidential basis for the deduction",       0, "Collections", "charge back to the customer and pursue"),
+            ("write_off_immaterial", "Below the materiality threshold for investigation",          1, "AR", "write off without investigation"),
+            ("duplicate_payment",    "Customer deducted a prior overpayment",                      1, "AR", "offset against the identified overpayment"),
+    ]:
+        cx.execute("INSERT INTO erp_deduction_reasons VALUES(?,?,?,?,?)", (code, desc, valid, owner, disp))
     # FX rates — without a rate table M4 cannot re-derive any cross-currency amount.
     for f, t, rate in [("EUR", "USD", 1.0842), ("GBP", "USD", 1.2715), ("CAD", "USD", 0.7218),
                        ("USD", "EUR", 0.9223), ("USD", "GBP", 0.7865), ("USD", "CAD", 1.3854)]:

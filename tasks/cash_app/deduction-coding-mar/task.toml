@@ -1,0 +1,33 @@
+schema_version = "1.4"
+
+[task]
+name = "cash_app/deduction-coding-mar"
+version = "0.1.0"
+description = "Code four customer short-pays to the ERP's deduction taxonomy from documentary evidence rather than the remittance narrative, and split the result into conceded and chargeback."
+authors = ["nario-ai"]
+keywords = ["finance", "cash_app", "ar", "deductions", "short-pay", "controls"]
+
+[metadata]
+family = "cash_app"
+origin = "closes tracked coverage gaps art.deduction_coding and fb.erp.deductions; deduction taxonomy and routing from research/external/articles/cash-application--{highradius,stuut,zamp}.md; docs/HARD-LAYER-DESIGN.md M3/M4/M5"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 10
+
+# Objective non-collapse (M3): coding each deduction to the reason the customer STATED gets
+# two of the four wrong. CINV-701 is stated as damaged goods, but the delivery was signed
+# clean and the PO carries a tier price of 38.00 against an invoice at 40.00 - a pricing
+# variance, chargeable. CINV-703 is stated as freight, but at 150.00 it is below the 250.00
+# materiality threshold and is written off before any evidential analysis. The two paths also
+# split differently: stated-reason coding concedes 4,350 and charges back 3,000, while the
+# evidence concedes 1,950 and charges back 5,400.
+naive_answer = "shortage_damage,promotional_allowance,shortage_damage,unauthorized"
+graded_answer = "pricing_variance,promotional_allowance,write_off_immaterial,unauthorized"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

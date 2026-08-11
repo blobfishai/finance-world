@@ -1,0 +1,24 @@
+{
+ "answer_checks": [
+  {"field": "total_deductions", "type": "number", "expect": 7350.0, "tol_abs": 0.05,
+   "gt_sql": "SELECT ROUND(SUM(amount-settled),2) FROM erp_cust_trans WHERE invoice LIKE 'CINV-70%'"},
+  {"field": "cinv701_reason", "type": "contains_all", "expect": ["pricing_variance"],
+   "forbid": ["shortage_damage", "unauthorized", "promotional_allowance", "write_off"]},
+  {"field": "cinv702_reason", "type": "contains_all", "expect": ["promotional_allowance"],
+   "forbid": ["unauthorized", "pricing_variance", "shortage_damage"]},
+  {"field": "cinv703_reason", "type": "contains_all", "expect": ["write_off_immaterial"],
+   "forbid": ["shortage_damage", "pricing_variance", "unauthorized"]},
+  {"field": "cinv704_reason", "type": "contains_all", "expect": ["unauthorized"],
+   "forbid": ["shortage_damage", "pricing_variance", "promotional_allowance"]},
+  {"field": "conceded_amount", "type": "number", "expect": 1950.0, "tol_abs": 0.05},
+  {"field": "chargeback_amount", "type": "number", "expect": 5400.0, "tol_abs": 0.05}
+ ],
+ "trace_checks": [
+  {"type": "required_servers", "servers": ["erp", "docs", "email"]},
+  {"type": "min_calls", "server": "docs", "n": 2},
+  {"type": "reads_before_submit"}
+ ],
+ "state_checks": [
+  {"type": "writes_only", "tables": ["answers"]}
+ ]
+}

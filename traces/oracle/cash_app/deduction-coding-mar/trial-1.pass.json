@@ -1,0 +1,97 @@
+{
+ "task": "cash_app/deduction-coding-mar",
+ "family": "cash_app",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "email",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 10,
+ "walk_len": 10,
+ "budget_turns": 92,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.4,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 10}\n",
+ "trace": [
+  {
+   "ts": 1786473378.604548,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"deduction\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786473378.605047,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"deduction-policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786473378.606407,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"DeductionReasons\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786473378.607983,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, account, amount, settled, ROUND(amount-settled,2) AS deduction FROM erp_cust_trans WHERE invoice LIKE 'CINV-70%' ORDER BY invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786473378.612695,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"CINV-70\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786473378.613267,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-0801\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786473378.6136441,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-0802\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786473378.614072,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"copper-ridge-po\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786473378.6146328,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"sable-finch-allowance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786473378.6162748,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_deductions\": 7350.0, \"cinv701_reason\": \"pricing_variance\", \"cinv702_reason\": \"promotional_allowance\", \"cinv703_reason\": \"write_off_immaterial\", \"cinv704_reason\": \"unauthorized\", \"conceded_amount\": 1950.0, \"chargeback_amount\": 5400.0}}",
+   "ok": true
+  }
+ ]
+}
