@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_fb/ap-purchase-orders-1-esc-burie-quiet",
+ "family": "erp_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786485753.718552,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PurchaseOrders\", \"filters\": {\"vendor\": \"1001\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786485753.720054,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"open_po_count\": 1, \"purchase_order_number\": \"39\"}}",
+   "ok": true
+  }
+ ]
+}

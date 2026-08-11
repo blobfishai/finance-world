@@ -1,0 +1,14 @@
+{
+  "answer_checks": [
+    {"field": "matched_count", "type": "number", "expect": 2, "tol_abs": 0},
+    {"field": "discrepancy_ref", "type": "contains_all", "expect": ["PMT-2102"]},
+    {"field": "discrepancy_amount", "type": "number", "expect": 45.00, "tol_abs": 0.01},
+    {"field": "bank_only_ref", "type": "contains_all", "expect": ["DEP-9911"]},
+    {"field": "books_only_ref", "type": "contains_all", "expect": ["PMT-2104"]}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["erp", "sheets"]},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [{"type": "writes_only", "tables": ["answers"]}]
+}

@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/collections-tasks-southridge-video-south",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786486054.0873759,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Activities\", \"filters\": {\"account\": \"SYNCUS-0050\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786486054.0900722,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"open_activity_count\": 0, \"open_activity_purpose\": \"none - this customer has no open collections activity\"}}",
+   "ok": true
+  }
+ ]
+}

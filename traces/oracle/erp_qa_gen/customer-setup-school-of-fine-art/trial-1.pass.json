@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/customer-setup-school-of-fine-art",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786486074.422992,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"School of Fine Art\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786486074.4337049,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"phone_number\": \"901-555-0104\", \"customer_account\": \"SYNCUS-0021\"}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,25 @@
+schema_version = "1.4"
+
+[task]
+name = "pbc/approval-evidence-q1-esc-burie-quiet"
+version = "0.1.0"
+description = "Audit PBC: locate approval evidence for two invoices; one approval exists only in email, the other nowhere (the finding)."
+authors = ["nario-ai"]
+keywords = ["finance", "pbc", "audit", "evidence"]
+
+[metadata]
+family = "pbc"
+origin = "escalated variant of pbc/approval-evidence-q1 via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: research/finance-agent-workflows.md wf#9 + chaos pattern 'approvals live in email threads'"
+difficulty = "medium"
+acceptance_label = "pending_calibration"
+doc_mode = "buried"
+walk_len = 6
+trap = "PBINV-202 has no approval evidence anywhere; reporting a plausible approver fails"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

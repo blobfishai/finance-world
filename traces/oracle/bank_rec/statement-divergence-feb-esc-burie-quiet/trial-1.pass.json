@@ -1,0 +1,54 @@
+{
+ "task": "bank_rec/statement-divergence-feb-esc-burie-quiet",
+ "family": "bank_rec",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 4,
+ "walk_len": 4,
+ "budget_turns": 44,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 4}\n",
+ "trace": [
+  {
+   "ts": 1786485744.890065,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786485744.890826,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"bank-statement-operating-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485744.8929121,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, account, trans_date, ROUND(-amount,2) AS received FROM erp_cust_trans WHERE txn_type='Payment' AND trans_date BETWEEN '2026-02-24' AND '2026-02-28' AND invoice LIKE 'PMT-21%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485744.902252,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"matched_count\": 2, \"discrepancy_ref\": \"PMT-2102\", \"discrepancy_amount\": 45.0, \"bank_only_ref\": \"DEP-9911\", \"books_only_ref\": \"PMT-2104\"}}",
+   "ok": true
+  }
+ ]
+}

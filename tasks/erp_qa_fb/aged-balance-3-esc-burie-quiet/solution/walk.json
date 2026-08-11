@@ -1,0 +1,19 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT invoice, due_date, closed, ROUND(amount-settled,2) AS open FROM erp_cust_trans WHERE account IN ('SYNCUS-0686')"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "open_invoice_count": 0,
+    "aged_balance": "none - this customer has no open receivables, so every aging bucket is empty"
+   }
+  }
+ }
+]

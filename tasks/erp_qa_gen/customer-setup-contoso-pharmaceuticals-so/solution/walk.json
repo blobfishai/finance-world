@@ -1,0 +1,22 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "name": "Contoso Pharmaceuticals South"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "matching_customer_count": 2,
+    "contact_emails": "michael@www.contoso.com; ruth@www.contoso.com"
+   }
+  }
+ }
+]

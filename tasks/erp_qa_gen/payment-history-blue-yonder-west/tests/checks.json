@@ -1,0 +1,34 @@
+{
+ "answer_checks": [
+  {
+   "field": "payment_count",
+   "type": "number",
+   "expect": 0,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_cust_trans WHERE account IN ('SYNCUS-0088','SYNCUS-0760') AND txn_type='Payment' AND trans_date LIKE '2017-%'"
+  },
+  {
+   "field": "payments",
+   "type": "none_answer"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

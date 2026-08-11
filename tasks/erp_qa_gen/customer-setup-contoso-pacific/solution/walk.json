@@ -1,0 +1,22 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "name": "Contoso Pacific"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "matching_customer_count": 2,
+    "contact_emails": "gregory@example.com; dennis@example.com"
+   }
+  }
+ }
+]

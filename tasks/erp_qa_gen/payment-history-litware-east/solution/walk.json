@@ -1,0 +1,21 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT voucher, trans_date, ROUND(-amount,2) AS paid FROM erp_cust_trans WHERE account IN ('SYNCUS-0072','SYNCUS-0744') AND txn_type='Payment' ORDER BY paid DESC"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "payment_count": 4,
+    "largest_payment_amount": 46392.48,
+    "largest_payment_voucher": "ARPM001731",
+    "largest_payment_date": "2025-08-29"
+   }
+  }
+ }
+]

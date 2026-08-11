@@ -1,0 +1,8 @@
+[
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "Vendors", "filters": {"name": "Fourth Coffee East"}}},
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "CashDiscounts", "filters": {"code": "2%10N30"}}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT invoice, trans_date, due_date, cash_disc_code, ROUND(amount - settled, 2) AS open FROM erp_vend_trans WHERE account='SYNVEN-0069' AND txn_type='Invoice' AND closed=0"}},
+  {"server": "docs", "tool": "search_documents", "args": {"query": "cash discount"}},
+  {"server": "email", "tool": "messages_list", "args": {"q": "fourth coffee statement"}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"has_active_discount": "yes", "qualifying_invoices": "VINV-900001, VINV-900002", "potential_discount_usd": 437.11}}}
+]

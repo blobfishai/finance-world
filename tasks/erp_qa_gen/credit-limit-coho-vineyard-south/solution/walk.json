@@ -1,0 +1,30 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "account": "SYNCUS-0034"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_cust_trans WHERE account IN ('SYNCUS-0034') AND closed=0"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "credit_limit": 100000.0,
+    "open_balance": 54456.22,
+    "available_credit": 45543.78
+   }
+  }
+ }
+]

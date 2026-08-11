@@ -1,0 +1,46 @@
+{
+ "task": "erp_qa_gen/customer-setup-contoso-east",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 3}\n",
+ "trace": [
+  {
+   "ts": 1786486070.519001,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0065\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786486070.5196621,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net30\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786486070.522099,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"payment_terms\": \"Net30\", \"customer_account\": \"SYNCUS-0065\"}}",
+   "ok": true
+  }
+ ]
+}

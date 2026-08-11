@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/ap-purchase-orders-coho-vineyard-winery",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.4,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786486032.0208042,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PurchaseOrders\", \"filters\": {\"vendor\": \"SYNVEN-0008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786486032.022573,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"open_po_count\": 0, \"purchase_order_number\": \"none - this vendor has no open purchase orders\"}}",
+   "ok": true
+  }
+ ]
+}

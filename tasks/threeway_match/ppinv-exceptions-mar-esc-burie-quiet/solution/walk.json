@@ -1,0 +1,7 @@
+[
+  {"server": "erp", "tool": "data_find_entity_type", "args": {"query": "purchase orders receipts"}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT invoice, account, po_number, ROUND(amount,2) AS invoiced FROM erp_vend_trans WHERE invoice IN ('TWINV-301','TWINV-302','TWINV-303')"}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT po_number, line, item, qty_ordered, unit_price FROM erp_purch_orders WHERE po_number IN ('PO-7001','PO-7002','PO-7003')"}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT po_number, SUM(qty_received) AS received FROM erp_product_receipts WHERE po_number IN ('PO-7001','PO-7002','PO-7003') GROUP BY po_number"}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"clean_invoice": "TWINV-301", "price_variance_invoice": "TWINV-302", "price_variance_amount": 300.00, "qty_variance_invoice": "TWINV-303", "qty_over_billed_units": 40}}}
+]

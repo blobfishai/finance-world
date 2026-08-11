@@ -1,0 +1,22 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "name": "Adventure Works Central"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "matching_customer_count": 2,
+    "phone_numbers": "904-555-0118; 512-555-0149"
+   }
+  }
+ }
+]

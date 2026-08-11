@@ -1,0 +1,33 @@
+{
+ "answer_checks": [
+  {"field": "run_id", "type": "contains_all", "expect": ["PR-00001"]},
+  {"field": "total_gross", "type": "number", "expect": 140000.0, "tol_abs": 0.05,
+   "gt_sql": "SELECT ROUND(SUM(gross_amount),2) FROM erp_payment_run_lines WHERE run_id='PR-00001'"},
+  {"field": "total_withheld", "type": "number", "expect": 22200.0, "tol_abs": 0.05,
+   "gt_sql": "SELECT ROUND(SUM(withholding),2) FROM erp_payment_run_lines WHERE run_id='PR-00001'"},
+  {"field": "total_paid", "type": "number", "expect": 117800.0, "tol_abs": 0.05,
+   "gt_sql": "SELECT ROUND(total_paid,2) FROM erp_payment_runs WHERE run_id='PR-00001'"},
+  {"field": "withheld_vendors", "type": "contains_all", "expect": ["WVEN-02", "WVEN-03", "WVEN-04"],
+   "forbid": ["WVEN-01"]},
+  {"field": "meridian_rate_pct", "type": "number", "expect": 30, "tol_abs": 0.01}
+ ],
+ "trace_checks": [
+  {"type": "required_servers", "servers": ["erp", "docs"]},
+  {"type": "min_calls", "server": "erp", "n": 3},
+  {"type": "reads_before_submit"}
+ ],
+ "state_checks": [
+  {"type": "sql", "name": "run_committed", "expect": "committed",
+   "sql": "SELECT state FROM erp_payment_runs WHERE run_id='PR-00001'"},
+  {"type": "sql", "name": "meridian_withheld_at_statutory_rate", "expect": 12000.0, "tol_abs": 0.05,
+   "sql": "SELECT ROUND(withholding,2) FROM erp_payment_run_lines WHERE run_id='PR-00001' AND invoice='WINV-803'"},
+  {"type": "sql", "name": "treaty_vendor_withheld_at_reduced_rate", "expect": 3000.0, "tol_abs": 0.05,
+   "sql": "SELECT ROUND(withholding,2) FROM erp_payment_run_lines WHERE run_id='PR-00001' AND invoice='WINV-804'"},
+  {"type": "sql", "name": "certified_domestic_not_withheld", "expect": 0.0, "tol_abs": 0.005,
+   "sql": "SELECT ROUND(withholding,2) FROM erp_payment_run_lines WHERE run_id='PR-00001' AND invoice='WINV-801'"},
+  {"type": "sql", "name": "all_four_paid", "expect": 4,
+   "sql": "SELECT COUNT(*) FROM erp_payment_run_lines WHERE run_id='PR-00001' AND disposition='paid'"},
+  {"type": "writes_only",
+   "tables": ["answers", "erp_payment_runs", "erp_payment_run_lines", "erp_confirm_tokens", "erp_audit_trail"]}
+ ]
+}

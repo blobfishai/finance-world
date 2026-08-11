@@ -1,0 +1,51 @@
+{
+ "answer_checks": [
+  {
+   "field": "payment_count",
+   "type": "number",
+   "expect": 3,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_cust_trans WHERE account IN ('SYNCUS-0042','SYNCUS-0714') AND txn_type='Payment'"
+  },
+  {
+   "field": "largest_payment_amount",
+   "type": "number",
+   "expect": 32035.59,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(MAX(-amount),2) FROM erp_cust_trans WHERE account IN ('SYNCUS-0042','SYNCUS-0714') AND txn_type='Payment'"
+  },
+  {
+   "field": "largest_payment_voucher",
+   "type": "contains_all",
+   "expect": [
+    "ARPM001654"
+   ]
+  },
+  {
+   "field": "largest_payment_date",
+   "type": "contains_all",
+   "expect": [
+    "2025-05-30"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

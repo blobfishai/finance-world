@@ -1,0 +1,46 @@
+{
+ "task": "finance_qa/xom-current-assets-esc-burie-quiet",
+ "family": "finance_qa",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 3}\n",
+ "trace": [
+  {
+   "ts": 1786485766.515628,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"ExxonMobil\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485766.517474,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"XOM\", \"concept\": \"AssetsCurrent\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485766.5191581,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"current_assets_usd\": 91990000000, \"period_end\": \"2024-12-31\", \"source_form\": \"10-K\"}}",
+   "ok": true
+  }
+ ]
+}

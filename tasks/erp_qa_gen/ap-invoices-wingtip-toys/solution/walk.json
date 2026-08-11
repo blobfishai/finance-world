@@ -1,0 +1,19 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_vend_trans WHERE account IN ('SYNVEN-0027') AND txn_type='Invoice' AND closed=0"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "open_invoice_count": 1,
+    "open_invoice_total": 30079.56
+   }
+  }
+ }
+]

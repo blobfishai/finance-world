@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/other-contoso-east",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.4,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786486100.965301,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT txn_type, COUNT(*) AS n FROM erp_vend_trans WHERE account IN ('SYNVEN-0065','SYNVEN-0737') GROUP BY txn_type\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786486100.9669151,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_note_count\": 0, \"credit_notes\": \"none - no credit note from this vendor is posted in 2026\"}}",
+   "ok": true
+  }
+ ]
+}

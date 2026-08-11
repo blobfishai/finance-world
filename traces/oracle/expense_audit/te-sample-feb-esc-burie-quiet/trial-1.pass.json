@@ -1,0 +1,54 @@
+{
+ "task": "expense_audit/te-sample-feb-esc-burie-quiet",
+ "family": "expense_audit",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 4,
+ "walk_len": 4,
+ "budget_turns": 44,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 4}\n",
+ "trace": [
+  {
+   "ts": 1786485765.102367,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"travel expense policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485765.102838,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--travel-and-expense\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485765.103808,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"expense-export-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485765.105407,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"violation_count\": 3, \"violating_report_ids\": \"EXP-1042, EXP-1047, EXP-1051\", \"out_of_policy_amount\": 1512.4, \"worst_violation_rule\": \"business class airfare requires VP pre-approval; economy is the standard\"}}",
+   "ok": true
+  }
+ ]
+}

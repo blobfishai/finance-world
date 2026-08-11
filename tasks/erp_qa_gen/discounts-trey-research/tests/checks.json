@@ -1,0 +1,34 @@
+{
+ "answer_checks": [
+  {
+   "field": "open_deduction_count",
+   "type": "number",
+   "expect": 0,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_cust_trans WHERE account IN ('SYNCUS-0024') AND deduction=1 AND closed=0"
+  },
+  {
+   "field": "open_deduction_total",
+   "type": "none_answer"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

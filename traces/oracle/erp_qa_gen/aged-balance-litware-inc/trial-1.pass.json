@@ -1,0 +1,46 @@
+{
+ "task": "erp_qa_gen/aged-balance-litware-inc",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 3}\n",
+ "trace": [
+  {
+   "ts": 1786486021.345556,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"aged balances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786486021.3469539,
+   "server": "erp",
+   "tool": "api_invoke_action",
+   "args": "{\"action\": \"ContosoCustAgedBalancesLive\", \"parameters\": {\"customer_account\": \"SYNCUS-0016\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786486021.348683,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_past_due\": 38463.52, \"not_yet_due\": 0.0, \"over_90_days\": 38463.52}}",
+   "ok": true
+  }
+ ]
+}

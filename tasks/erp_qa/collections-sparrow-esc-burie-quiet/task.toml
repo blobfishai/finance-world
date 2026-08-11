@@ -1,0 +1,27 @@
+schema_version = "1.4"
+
+[task]
+name = "erp_qa/collections-sparrow-esc-burie-quiet"
+version = "0.1.0"
+description = "Collection-letter level + recent payment for Sparrow Retail (user-brief example)."
+authors = ["nario-ai"]
+keywords = ["finance", "erp_qa", "ar", "collections", "dunning"]
+
+[metadata]
+family = "erp_qa"
+origin = "escalated variant of erp_qa/collections-sparrow via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: financebenchmark:erp_qa/Collection Letters + Payment History; customer injected by task seed (Contoso demo US-008)"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+doc_mode = "buried"
+walk_len = 5
+seeds = "special core data: customer US-008 + invoices + payment + settlement + letters; dunning runbook document"
+
+[verifier]
+timeout_sec = 120
+
+[agent]
+timeout_sec = 600
+
+[environment]
+cpus = 1
+memory_mb = 1024

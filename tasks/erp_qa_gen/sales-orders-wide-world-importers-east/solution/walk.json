@@ -1,0 +1,22 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "SalesOrders",
+   "filters": {
+    "account": "SYNCUS-0082"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "order_count": 0,
+    "sales_order_id": "none - this customer has no sales orders in USMF"
+   }
+  }
+ }
+]

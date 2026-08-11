@@ -1,0 +1,22 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Vendors",
+   "filters": {
+    "account": "SYNVEN-0004"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "offers_discount": "no",
+    "discount_code": "none - no cash discount code is set on this vendor"
+   }
+  }
+ }
+]

@@ -1,0 +1,22 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "name": "Southridge Video Central"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "matching_customer_count": 2,
+    "contact_emails": "larry@www.southridgevideo.com; joshua@www.southridgevideo.com"
+   }
+  }
+ }
+]

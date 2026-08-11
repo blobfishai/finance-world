@@ -1,0 +1,35 @@
+{
+ "answer_checks": [
+  {
+   "field": "has_active_cash_discount",
+   "type": "yes_no",
+   "expect": "no"
+  },
+  {
+   "field": "discounted_open_invoice_count",
+   "type": "number",
+   "expect": 0,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_cust_trans WHERE account IN ('SYNCUS-0028') AND txn_type='Invoice' AND closed=0 AND cash_disc_code IS NOT NULL"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

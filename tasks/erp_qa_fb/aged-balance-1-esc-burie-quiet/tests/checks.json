@@ -1,0 +1,43 @@
+{
+ "answer_checks": [
+  {
+   "field": "customers_listed",
+   "type": "number",
+   "expect": 10,
+   "tol_abs": 0
+  },
+  {
+   "field": "top_customer_account",
+   "type": "contains_all",
+   "expect": [
+    "SYNCUS-0644"
+   ]
+  },
+  {
+   "field": "top_customer_past_due",
+   "type": "number",
+   "expect": 86848.42,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(t.amount-t.settled),0),2) FROM erp_cust_trans t JOIN erp_customers c ON c.account=t.account WHERE t.txn_type='Invoice' AND t.closed=0 AND c.customer_group='90' AND julianday('2026-03-02') - julianday(t.due_date) > 90 AND t.account='SYNCUS-0644'"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

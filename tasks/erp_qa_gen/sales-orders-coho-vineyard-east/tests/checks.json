@@ -1,0 +1,34 @@
+{
+ "answer_checks": [
+  {
+   "field": "order_count",
+   "type": "number",
+   "expect": 0,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_sales_orders WHERE account IN ('SYNCUS-0062','SYNCUS-0734')"
+  },
+  {
+   "field": "sales_order_id",
+   "type": "none_answer"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

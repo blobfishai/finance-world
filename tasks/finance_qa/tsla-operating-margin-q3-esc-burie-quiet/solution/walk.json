@@ -1,0 +1,36 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "Tesla"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "TSLA",
+   "concept": "OperatingIncomeLoss"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "TSLA",
+   "concept": "RevenueFromContractWithCustomerExcludingAssessedTax"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "operating_margin_pct": 5.78,
+    "operating_income": 1624000000,
+    "quarter_revenue": 28095000000
+   }
+  }
+ }
+]

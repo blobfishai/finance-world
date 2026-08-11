@@ -1,0 +1,29 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "account": "SYNCUS-0095"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT invoice, cash_disc_code FROM erp_cust_trans WHERE account IN ('SYNCUS-0095') AND closed=0"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "has_active_cash_discount": "no",
+    "discounted_open_invoice_count": 0
+   }
+  }
+ }
+]

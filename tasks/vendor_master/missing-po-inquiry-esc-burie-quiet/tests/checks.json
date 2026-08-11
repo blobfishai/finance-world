@@ -1,0 +1,74 @@
+{
+ "answer_checks": [
+  {
+   "field": "po_number",
+   "type": "contains_all",
+   "expect": [
+    "PO-7003"
+   ]
+  },
+  {
+   "field": "po_exists_in_erp",
+   "type": "yes_no",
+   "expect": "yes"
+  },
+  {
+   "field": "po_item",
+   "type": "contains_all",
+   "expect": [
+    "PKG-LABEL-ROLL"
+   ]
+  },
+  {
+   "field": "contact_emailed",
+   "type": "contains_all",
+   "expect": [
+    "wingtip"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp",
+    "email"
+   ]
+  },
+  {
+   "type": "min_calls",
+   "server": "email",
+   "n": 2
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers",
+    "email_messages"
+   ]
+  },
+  {
+   "type": "row_count",
+   "name": "agent_sent_mail",
+   "sql": "SELECT COUNT(*) FROM email_messages WHERE folder='sent'",
+   "expect": 1
+  },
+  {
+   "type": "row_count",
+   "name": "vendor_replied",
+   "sql": "SELECT COUNT(*) FROM email_messages WHERE id='em-reply-wingtip-po'",
+   "expect": 1
+  },
+  {
+   "type": "row_count",
+   "name": "mailed_the_vendor_on_file",
+   "sql": "SELECT COUNT(*) FROM email_messages WHERE folder='sent' AND to_addr='ap@wingtip-sim.example'",
+   "expect": 1
+  }
+ ]
+}

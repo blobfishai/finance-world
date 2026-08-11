@@ -1,0 +1,27 @@
+{
+ "email_npc_scripts": [
+  {
+   "id": "wingtip-po",
+   "match_to": "wingtip",
+   "match_keywords": "po,purchase order,twinv-303,reference",
+   "reply_from": "ap@wingtip-sim.example",
+   "reply_subject": "Re: PO reference needed for invoice TWINV-303",
+   "reply_body": "Hi Contoso AP,\\n\\nApologies for the omission \u2014 TWINV-303 was raised against purchase order PO-7003 (packaging label rolls, February order). Our system dropped the reference when the invoice was regenerated.\\n\\nLee\\nWingtip Logistics AP (SIMULATION)",
+   "attachment_name": null,
+   "attachment_text": null
+  }
+ ],
+ "email_messages": [
+  {
+   "id": "em-0601",
+   "folder": "inbox",
+   "from_addr": "ap@wingtip-sim.example",
+   "to_addr": "ap@contoso-sim.example",
+   "subject": "Invoice TWINV-303 \u2014 packaging supplies",
+   "sent_at": "2026-02-20T11:00:00Z",
+   "body": "Please find invoice TWINV-303 for February packaging supplies, $3,700.00. Terms net 30.\\n\\nLee, Wingtip Logistics (SIMULATION)",
+   "attachment_name": null,
+   "attachment_text": null
+  }
+ ]
+}

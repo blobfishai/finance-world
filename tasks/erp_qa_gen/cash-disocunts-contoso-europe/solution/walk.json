@@ -1,0 +1,18 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT settle_date, ROUND(amount,2) AS settled, ROUND(cash_disc_taken,2) AS discount FROM erp_settlements WHERE side='AR' AND account IN ('DE-001')"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "discount_payment_count": 0
+   }
+  }
+ }
+]

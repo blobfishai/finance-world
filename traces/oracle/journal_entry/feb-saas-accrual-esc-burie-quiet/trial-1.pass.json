@@ -1,0 +1,96 @@
+{
+ "task": "journal_entry/feb-saas-accrual-esc-burie-quiet",
+ "family": "journal_entry",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 10,
+ "walk_len": 10,
+ "budget_turns": 92,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 10}\n",
+ "trace": [
+  {
+   "ts": 1786485767.941267,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"accrual\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485767.941731,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"accrual-sop\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485767.942165,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"CloudScale\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485767.94261,
+   "server": "docs",
+   "tool": "get_document_metadata",
+   "args": "{\"doc_id\": \"cloudscale-msa-v1-superseded\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485767.943043,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"cloudscale-msa-v2\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485767.9448588,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, description, trans_date, amount FROM erp_vend_trans WHERE account='PVEN-11'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485767.94528,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"FiscalPeriods\", \"filters\": {\"period_id\": \"2026-02\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786485767.945677,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalPolicies\", \"filters\": {\"doc_type\": \"Journal Entry\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786485767.947702,
+   "server": "erp",
+   "tool": "api_invoke_action",
+   "args": "{\"action\": \"ContosoJournalPropose\", \"parameters\": {\"description\": \"Feb 2026 accrual - CloudScale Analytics subscription (12-28 Feb, 17 days @ 1,800,000/365)\", \"posting_date\": \"2026-02-28\", \"voucher_type\": \"Journal Entry\", \"lines\": [{\"account_code\": \"600200\", \"debit\": 83835.62, \"description\": \"CloudS",
+   "ok": true
+  },
+  {
+   "ts": 1786485767.949215,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"journal_id\": \"GJ-00001\", \"accrual_amount\": 83835.62, \"service_days\": 17, \"journal_state\": \"draft\", \"next_step\": \"Pending Controller approval - approval request APR-00001 was raised because the journal exceeds the 25,000.00 staff-accountant delegation-of-authority threshold (policy DOA-",
+   "ok": true
+  }
+ ]
+}

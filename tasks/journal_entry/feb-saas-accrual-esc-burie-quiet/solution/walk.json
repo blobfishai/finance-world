@@ -1,0 +1,28 @@
+[
+ {"server": "docs", "tool": "search_documents", "args": {"query": "accrual"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "accrual-sop"}},
+ {"server": "docs", "tool": "search_documents", "args": {"query": "CloudScale"}},
+ {"server": "docs", "tool": "get_document_metadata", "args": {"doc_id": "cloudscale-msa-v1-superseded"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "cloudscale-msa-v2"}},
+ {"server": "erp", "tool": "data_find_entities_sql",
+  "args": {"sql": "SELECT invoice, description, trans_date, amount FROM erp_vend_trans WHERE account='PVEN-11'"}},
+ {"server": "erp", "tool": "data_find_entities", "args": {"entity": "FiscalPeriods", "filters": {"period_id": "2026-02"}}},
+ {"server": "erp", "tool": "data_find_entities", "args": {"entity": "ApprovalPolicies", "filters": {"doc_type": "Journal Entry"}}},
+ {"server": "erp", "tool": "api_invoke_action",
+  "args": {"action": "ContosoJournalPropose",
+           "parameters": {
+             "description": "Feb 2026 accrual - CloudScale Analytics subscription (12-28 Feb, 17 days @ 1,800,000/365)",
+             "posting_date": "2026-02-28",
+             "voucher_type": "Journal Entry",
+             "lines": [
+               {"account_code": "600200", "debit": 83835.62, "description": "CloudScale subscription accrual Feb 2026", "dimension_dept": "IT"},
+               {"account_code": "210100", "credit": 83835.62, "description": "Accrued liability - CloudScale"}
+             ]}}},
+ {"server": "harness", "tool": "submit_answer",
+  "args": {"answers": {
+    "journal_id": "GJ-00001",
+    "accrual_amount": 83835.62,
+    "service_days": 17,
+    "journal_state": "draft",
+    "next_step": "Pending Controller approval - approval request APR-00001 was raised because the journal exceeds the 25,000.00 staff-accountant delegation-of-authority threshold (policy DOA-JE-01). The Controller must approve it before it can be posted; it is not booked yet."}}}
+]

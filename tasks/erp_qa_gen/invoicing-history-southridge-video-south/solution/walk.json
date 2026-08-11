@@ -1,0 +1,19 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT invoice, trans_date, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account IN ('SYNCUS-0050','SYNCUS-0722') AND txn_type='Invoice'"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "invoice_count": 8,
+    "invoiced_total": 191382.96
+   }
+  }
+ }
+]

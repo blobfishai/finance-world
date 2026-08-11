@@ -1,0 +1,9 @@
+[
+  {"server": "docs", "tool": "search_documents", "args": {"query": "payment run"}},
+  {"server": "docs", "tool": "get_document", "args": {"doc_id": "sop--payment-run"}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT t.invoice, t.account, v.name, v.on_hold, t.due_date, t.cash_disc_code, ROUND(t.amount - t.settled, 2) AS open FROM erp_vend_trans t JOIN erp_vendors v ON v.account = t.account WHERE t.txn_type='Invoice' AND t.closed=0 AND t.invoice LIKE 'PPINV-%'"}},
+  {"server": "erp", "tool": "api_find_actions", "args": {"query": "cash discount"}},
+  {"server": "erp", "tool": "api_invoke_action", "args": {"action": "ContosoCashDiscountForecast", "parameters": {"as_of": "2026-03-06"}}},
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "Vendors", "filters": {"account": "SYNVEN-0044"}}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"proposal_invoices": "PPINV-101, PPINV-102, PPINV-103", "excluded_invoice": "PPINV-104", "exclusion_reason": "vendor SYNVEN-0044 is on payment hold", "discount_captured": 437.11, "net_payment_total": 36418.39}}}
+]

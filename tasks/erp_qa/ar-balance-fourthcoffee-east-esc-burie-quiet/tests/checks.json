@@ -1,0 +1,49 @@
+{
+ "answer_checks": [
+  {
+   "field": "customer_account",
+   "type": "contains_all",
+   "expect": [
+    "SYNCUS-0069"
+   ]
+  },
+  {
+   "field": "outstanding_balance",
+   "type": "number",
+   "expect": 121321.26,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(SUM(amount-settled),2) FROM erp_cust_trans WHERE account='SYNCUS-0069' AND txn_type='Invoice' AND closed=0"
+  },
+  {
+   "field": "open_invoice_count",
+   "type": "number",
+   "expect": 4,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_cust_trans WHERE account='SYNCUS-0069' AND txn_type='Invoice' AND closed=0"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "min_calls",
+   "server": "erp",
+   "n": 2
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

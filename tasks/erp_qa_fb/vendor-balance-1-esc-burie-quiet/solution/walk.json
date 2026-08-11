@@ -1,0 +1,20 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT currency, COUNT(*) AS invoices, ROUND(SUM(amount-settled),2) AS ap_balance FROM erp_vend_trans WHERE txn_type='Invoice' AND closed=0 GROUP BY currency"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "ap_balance": 294.72,
+    "currency": "EUR",
+    "open_invoice_count": 1
+   }
+  }
+ }
+]

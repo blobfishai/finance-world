@@ -1,0 +1,33 @@
+schema_version = "1.4"
+
+[task]
+name = "payment_run/withholding-mar13-esc-burie-quiet"
+version = "0.1.0"
+description = "Apply withholding on a contractor payment run where one vendor's treaty certificate has lapsed and the vendor is still asserting the treaty rate by email."
+authors = ["nario-ai"]
+keywords = ["finance", "payment_run", "withholding", "tax", "ap", "write"]
+
+[metadata]
+family = "payment_run"
+origin = "escalated variant of payment_run/withholding-mar13 via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: closes tracked coverage gap erpnext.withholding_tax; Tax Withholding Category + certificate model from research/erp-mcp-tool-census.md (ERPNext); rates are US statutory (IRC 3406 backup 24%, IRC 1441 non-resident 30%, treaty-reduced 15%); docs/HARD-LAYER-DESIGN.md M1/M3/M4/M5"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+doc_mode = "buried"
+agent_role = "treasury"
+walk_len = 10
+
+# Objective non-collapse (M3). Meridian's W-8BEN-E expired 2025-12-31, so as at the
+# 2026-03-13 pay date the statutory non-resident rate applies, not the treaty rate they
+# assert by email. Taking the vendor at their word gives a different run:
+#   emailed treaty claim honoured -> WINV-803 withheld 6,000; run withholds 16,200, pays 123,800
+#   certificate checked as at pay date -> WINV-803 withheld 12,000; run withholds 22,200, pays 117,800
+naive_answer = "16200.00"
+graded_answer = "22200.00"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

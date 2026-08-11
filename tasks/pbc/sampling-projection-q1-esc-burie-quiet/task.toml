@@ -1,0 +1,24 @@
+schema_version = "1.4"
+
+[task]
+name = "pbc/sampling-projection-q1-esc-burie-quiet"
+version = "0.1.0"
+description = "Project a sample misstatement to the population and compare against materiality (audit sampling arithmetic)."
+authors = ["nario-ai"]
+keywords = ["finance", "pbc", "audit", "sampling"]
+
+[metadata]
+family = "pbc"
+origin = "escalated variant of pbc/sampling-projection-q1 via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: research/external/articles: PCAOB AS 2315 projection arithmetic (50 of 1,000 sampled, $3,000 found -> $60,000 projected)"
+difficulty = "medium"
+acceptance_label = "pending_calibration"
+doc_mode = "buried"
+walk_len = 4
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

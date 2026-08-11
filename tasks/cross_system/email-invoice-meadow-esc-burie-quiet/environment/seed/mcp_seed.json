@@ -1,0 +1,35 @@
+{
+  "email_messages": [
+    {
+      "id": "em-0117",
+      "folder": "inbox",
+      "from_addr": "sam.rivera@contoso-sim.example",
+      "to_addr": "ar@contoso-sim.example",
+      "subject": "Fwd: Meadow Analytics — February executive workshop invoice (sent)",
+      "sent_at": "2026-02-06T18:22:00Z",
+      "body": "Team — forwarding for the file. I sent Meadow Analytics their invoice for the February executive workshop directly (new client, their vendor setup in D365 is still pending with master data). Please log it in the manual tracker until the entity exists in the ERP.\n\n— Sam (SIMULATION)",
+      "attachment_name": "INV-2026-047-meadow-analytics.pdf.txt",
+      "attachment_text": "CONTOSO ENTERTAINMENT SYSTEM USA (SIMULATION)\nINVOICE INV-2026-047\nBill to: Meadow Analytics, 210 Greenway Blvd, Austin, TX\nDate: 2026-02-06   Terms: Net 30   Due: 2026-03-08\n\nExecutive AI workshop — February program ......... $18,750.00\n\nTOTAL DUE: $18,750.00\nRemit to: ar@contoso-sim.example"
+    },
+    {
+      "id": "em-0118",
+      "folder": "inbox",
+      "from_addr": "billing@meadowanalytics-sim.example",
+      "to_addr": "ar@contoso-sim.example",
+      "subject": "Re: INV-2026-047 — received, scheduling payment",
+      "sent_at": "2026-02-24T15:02:00Z",
+      "body": "Confirming receipt of invoice INV-2026-047 ($18,750). It is in our March payment run ahead of the 3/8 due date.\n\nMeadow Analytics AP (SIMULATION)",
+      "attachment_name": null,
+      "attachment_text": null
+    }
+  ],
+  "sheet_files": [
+    {"name": "AR-manual-invoice-log-FY26.xlsx", "owner": "sam.rivera", "modified_at": "2026-02-26T09:14:00Z", "description": "Manual log of invoices sent outside D365 (new clients pending entity setup)"}
+  ],
+  "sheet_rows": [
+    {"file": "AR-manual-invoice-log-FY26.xlsx", "row_no": 1, "cells": ["Date sent", "Counterparty", "Invoice #", "Amount USD", "Status", "Notes"]},
+    {"file": "AR-manual-invoice-log-FY26.xlsx", "row_no": 2, "cells": ["2026-01-12", "Tailwind Studios", "INV-2026-031", "5200.00", "Paid 2026-02-02", "Later keyed into D365 as SYNCUS-0894"]},
+    {"file": "AR-manual-invoice-log-FY26.xlsx", "row_no": 3, "cells": ["2026-02-06", "Meadow Analytics", "INV-2026-047", "18750.00", "Sent - NOT in D365", "New client; entity setup pending with master data"]},
+    {"file": "AR-manual-invoice-log-FY26.xlsx", "row_no": 4, "cells": ["2026-02-18", "Fourth Coffee East", "see D365", "-", "In D365", "Normal flow; do not double count"]}
+  ]
+}

@@ -1,0 +1,37 @@
+{
+ "answer_checks": [
+  {
+   "field": "open_invoice_count",
+   "type": "number",
+   "expect": 5,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_vend_trans WHERE account IN ('SYNVEN-0075','SYNVEN-0747') AND txn_type='Invoice' AND closed=0"
+  },
+  {
+   "field": "ap_balance",
+   "type": "number",
+   "expect": 113206.88,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_vend_trans WHERE account IN ('SYNVEN-0075','SYNVEN-0747') AND txn_type='Invoice' AND closed=0"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

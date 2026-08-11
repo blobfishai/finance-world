@@ -1,0 +1,22 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "PurchaseOrders",
+   "filters": {
+    "vendor": "SYNVEN-0026"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "open_po_count": 0,
+    "purchase_order_number": "none - this vendor has no open purchase orders"
+   }
+  }
+ }
+]

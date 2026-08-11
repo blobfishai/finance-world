@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_fb/credit-limit-1-esc-burie-quiet",
+ "family": "erp_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786485756.691974,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0001\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786485756.693899,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 25000.0, \"customer_account\": \"SYNCUS-0001\"}}",
+   "ok": true
+  }
+ ]
+}

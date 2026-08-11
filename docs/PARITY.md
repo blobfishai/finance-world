@@ -115,3 +115,21 @@ capability.** That is the next push.
 
 Parity is not the ceiling of this world — the hard layer is what makes it worth running. But
 parity is the claim a buyer can check, and it should have come first.
+
+## Generated instances vs ported tasks — counted separately, deliberately
+
+`world/etl/sweep_erp_qa.py` generates additional **instances** of the ERP question patterns
+the cloner already verifies, over other entities in the ledger, with ground truth recomputed
+in-world. They live in `tasks/erp_qa_gen/` and are **excluded from every parity number above**,
+which counts only real clones of real benchmark questions.
+
+The distinction matters and is easy to abuse: 1,320 instances of 33 patterns is breadth, not
+diversity. ERP-Bench does the same (300 tasks from 29 patterns) and it is defensible — a
+benchmark needs instances so a model cannot pass by memorising one — but the count must be
+reported as **patterns x instances**, never as if each task were a distinct kind of problem.
+
+| | count |
+|---|---|
+| distinct task patterns (hand-authored + ported + cloner routes) | ~70 |
+| generated instances of those patterns | 1,320 |
+| escalated variants (same ground truth, harder retrieval) | 54 |

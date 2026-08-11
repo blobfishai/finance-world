@@ -1,0 +1,14 @@
+{
+  "answer_checks": [
+    {"field": "week1_net", "type": "number", "expect": 14000.00, "tol_abs": 0.05},
+    {"field": "week2_net", "type": "number", "expect": -169000.00, "tol_abs": 0.05},
+    {"field": "week3_net", "type": "number", "expect": 51000.00, "tol_abs": 0.05},
+    {"field": "week4_net", "type": "number", "expect": -218000.00, "tol_abs": 0.05},
+    {"field": "four_week_net", "type": "number", "expect": -322000.00, "tol_abs": 0.1}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["erp", "sheets", "docs"]},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [{"type": "writes_only", "tables": ["answers"]}]
+}

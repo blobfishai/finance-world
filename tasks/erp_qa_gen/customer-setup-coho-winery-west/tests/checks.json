@@ -1,0 +1,38 @@
+{
+ "answer_checks": [
+  {
+   "field": "matching_customer_count",
+   "type": "number",
+   "expect": 2,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE name='Coho Winery West'"
+  },
+  {
+   "field": "phone_numbers",
+   "type": "contains_all",
+   "expect": [
+    "503-555-0136",
+    "904-555-0105"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

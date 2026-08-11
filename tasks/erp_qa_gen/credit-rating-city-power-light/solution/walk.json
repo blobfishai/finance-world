@@ -1,0 +1,22 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "account": "SYNCUS-0005"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "credit_rating": "Excellent",
+    "customer_account": "SYNCUS-0005"
+   }
+  }
+ }
+]

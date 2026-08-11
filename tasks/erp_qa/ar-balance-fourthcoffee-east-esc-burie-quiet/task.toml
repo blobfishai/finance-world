@@ -1,0 +1,27 @@
+schema_version = "1.4"
+
+[task]
+name = "erp_qa/ar-balance-fourthcoffee-east-esc-burie-quiet"
+version = "0.1.0"
+description = "Outstanding receivables for one customer; 8 near-name siblings act as natural distractors."
+authors = ["nario-ai"]
+keywords = ["finance", "erp_qa", "ar", "open-balance"]
+
+[metadata]
+family = "erp_qa"
+origin = "escalated variant of erp_qa/ar-balance-fourthcoffee-east via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: financebenchmark:erp_qa/Customer Balance (user-brief example rephrased onto in-world entity)"
+difficulty = "medium"
+acceptance_label = "pending_calibration"
+doc_mode = "buried"
+walk_len = 4
+distractors = "Fourth Coffee, Fourth Coffee South/West/Central/Pacific/Atlantic/International share the name stem"
+
+[verifier]
+timeout_sec = 120
+
+[agent]
+timeout_sec = 600
+
+[environment]
+cpus = 1
+memory_mb = 1024

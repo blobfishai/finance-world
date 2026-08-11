@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/outstanding-balance-humongous-insurance-south",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786486112.785266,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_cust_trans WHERE account IN ('SYNCUS-0043','SYNCUS-0715') AND txn_type='Invoice' AND closed=0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786486112.787691,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"unpaid_invoice_count\": 4, \"unpaid_total\": 119810.42}}",
+   "ok": true
+  }
+ ]
+}

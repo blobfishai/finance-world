@@ -1,0 +1,46 @@
+{
+ "task": "erp_qa_gen/payment-history-woodgrove-west",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 3}\n",
+ "trace": [
+  {
+   "ts": 1786486120.644877,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT MIN(trans_date) AS earliest, MAX(trans_date) AS latest FROM erp_cust_trans WHERE account IN ('SYNCUS-0112','SYNCUS-0784')\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786486120.6460009,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT voucher, trans_date FROM erp_cust_trans WHERE account IN ('SYNCUS-0112','SYNCUS-0784') AND txn_type='Payment' AND trans_date LIKE '2017-%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786486120.6479528,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"payment_count\": 0, \"payments\": \"none - the AR subledger holds no payment for this customer in 2017\"}}",
+   "ok": true
+  }
+ ]
+}

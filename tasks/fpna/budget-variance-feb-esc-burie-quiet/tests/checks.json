@@ -1,0 +1,24 @@
+{
+ "answer_checks": [
+  {"field": "flagged_ids", "type": "contains_all",
+   "expect": ["Engineering_Software_202602", "Sales_Travel_202602",
+              "Marketing_Training_202602", "Operations_Equipment_202601"],
+   "forbid": ["Engineering_Facilities_202601", "Operations_Facilities_202601",
+              "Engineering_Facilities_202602", "Operations_Facilities_202602",
+              "Sales_Software_202602", "Marketing_Equipment_202602",
+              "HR_Training_202601", "Engineering_Salaries_202602",
+              "Sales_Salaries_202601"]},
+  {"field": "flagged_count", "type": "number", "expect": 4, "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM sheet_rows a JOIN sheet_rows b ON b.file='FY26-opex-budget.xlsx' AND b.row_no>1 AND json_extract(b.cells,'$[0]')=json_extract(a.cells,'$[0]') AND json_extract(b.cells,'$[1]')=json_extract(a.cells,'$[1]') AND json_extract(b.cells,'$[2]')=json_extract(a.cells,'$[2]') WHERE a.file='FY26-actuals-jan-feb.xlsx' AND a.row_no>1 AND json_extract(a.cells,'$[1]')<>'Facilities' AND (json_extract(a.cells,'$[3]')-json_extract(b.cells,'$[3]'))>5000.0 AND (json_extract(a.cells,'$[3]')-json_extract(b.cells,'$[3]'))>0.10*json_extract(b.cells,'$[3]')"},
+  {"field": "unfavourable_total_usd", "type": "number", "expect": 38515.4, "tol_abs": 0.05,
+   "gt_sql": "SELECT ROUND(SUM(json_extract(a.cells,'$[3]')-json_extract(b.cells,'$[3]')),2) FROM sheet_rows a JOIN sheet_rows b ON b.file='FY26-opex-budget.xlsx' AND b.row_no>1 AND json_extract(b.cells,'$[0]')=json_extract(a.cells,'$[0]') AND json_extract(b.cells,'$[1]')=json_extract(a.cells,'$[1]') AND json_extract(b.cells,'$[2]')=json_extract(a.cells,'$[2]') WHERE a.file='FY26-actuals-jan-feb.xlsx' AND a.row_no>1 AND json_extract(a.cells,'$[1]')<>'Facilities' AND (json_extract(a.cells,'$[3]')-json_extract(b.cells,'$[3]'))>5000.0 AND (json_extract(a.cells,'$[3]')-json_extract(b.cells,'$[3]'))>0.10*json_extract(b.cells,'$[3]')"}
+ ],
+ "trace_checks": [
+  {"type": "required_servers", "servers": ["sheets", "docs"]},
+  {"type": "min_calls", "server": "sheets", "n": 3},
+  {"type": "reads_before_submit"}
+ ],
+ "state_checks": [
+  {"type": "writes_only", "tables": ["answers"]}
+ ]
+}

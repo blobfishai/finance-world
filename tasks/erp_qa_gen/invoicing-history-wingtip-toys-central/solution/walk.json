@@ -1,0 +1,19 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT txn_type, invoice, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account IN ('SYNCUS-0139','SYNCUS-0811') ORDER BY amount DESC"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "positive_transaction_count": 7,
+    "positive_transaction_total": 191777.31
+   }
+  }
+ }
+]

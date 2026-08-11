@@ -1,0 +1,46 @@
+{
+ "task": "erp_qa_gen/customer-setup-school-of-fine-art-south",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 3}\n",
+ "trace": [
+  {
+   "ts": 1786486074.765294,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0049\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786486074.7659268,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net30\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786486074.768111,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"payment_terms\": \"Net30\", \"customer_account\": \"SYNCUS-0049\"}}",
+   "ok": true
+  }
+ ]
+}

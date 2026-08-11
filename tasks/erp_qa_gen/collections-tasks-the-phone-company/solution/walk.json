@@ -1,0 +1,22 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Activities",
+   "filters": {
+    "account": "SYNCUS-0025"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "open_activity_count": 0,
+    "open_activity_purpose": "none - this customer has no open collections activity"
+   }
+  }
+ }
+]

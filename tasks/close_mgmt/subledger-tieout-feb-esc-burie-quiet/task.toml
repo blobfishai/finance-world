@@ -1,0 +1,24 @@
+schema_version = "1.4"
+
+[task]
+name = "close_mgmt/subledger-tieout-feb-esc-burie-quiet"
+version = "0.1.0"
+description = "Month-end close: tie CESP subledgers to the close workbook and find the one line that doesn't agree."
+authors = ["nario-ai"]
+keywords = ["finance", "close_mgmt", "reconciliation"]
+
+[metadata]
+family = "close_mgmt"
+origin = "escalated variant of close_mgmt/subledger-tieout-feb via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: research/finance-agent-workflows.md wf#2 (close checklist + subledger tie-out); chaos: workbook vs ERP divergence"
+difficulty = "medium"
+acceptance_label = "pending_calibration"
+doc_mode = "buried"
+walk_len = 6
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

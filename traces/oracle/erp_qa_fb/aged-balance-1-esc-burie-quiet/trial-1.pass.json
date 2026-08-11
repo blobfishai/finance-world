@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_fb/aged-balance-1-esc-burie-quiet",
+ "family": "erp_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786485751.878284,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT t.account, c.name, ROUND(SUM(t.amount-t.settled),2) AS past_due FROM erp_cust_trans t JOIN erp_customers c ON c.account=t.account WHERE t.txn_type='Invoice' AND t.closed=0 AND c.customer_group='90' AND julianday('2026-03-02') - julianday(t.due_date) > 90 GROUP BY t.account ORDER BY p",
+   "ok": true
+  },
+  {
+   "ts": 1786485751.880633,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"customers_listed\": 10, \"top_customer_account\": \"SYNCUS-0644\", \"top_customer_past_due\": 86848.42}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,46 @@
+{
+ "task": "erp_qa_gen/aged-balance-city-power-light",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 3}\n",
+ "trace": [
+  {
+   "ts": 1786486018.355201,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"aged balances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786486018.356989,
+   "server": "erp",
+   "tool": "api_invoke_action",
+   "args": "{\"action\": \"ContosoCustAgedBalancesLive\", \"parameters\": {\"customer_account\": \"SYNCUS-0005\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786486018.3593442,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_past_due\": 21175.06, \"not_yet_due\": 0.0, \"over_90_days\": 0.0}}",
+   "ok": true
+  }
+ ]
+}

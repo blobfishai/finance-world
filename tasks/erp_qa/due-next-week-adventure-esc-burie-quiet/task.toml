@@ -1,0 +1,27 @@
+schema_version = "1.4"
+
+[task]
+name = "erp_qa/due-next-week-adventure-esc-burie-quiet"
+version = "0.1.0"
+description = "Empty-answer hallucination trap: the correct answer is that nothing is due."
+authors = ["nario-ai"]
+keywords = ["finance", "erp_qa", "ar", "trap", "empty-answer"]
+
+[metadata]
+family = "erp_qa"
+origin = "escalated variant of erp_qa/due-next-week-adventure via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: financebenchmark pattern: deliberately-empty ground truths (hallucination traps)"
+difficulty = "medium"
+acceptance_label = "pending_calibration"
+doc_mode = "buried"
+walk_len = 3
+trap = "customer has open invoices, but none due in the asked window; inventing one fails"
+
+[verifier]
+timeout_sec = 120
+
+[agent]
+timeout_sec = 600
+
+[environment]
+cpus = 1
+memory_mb = 1024

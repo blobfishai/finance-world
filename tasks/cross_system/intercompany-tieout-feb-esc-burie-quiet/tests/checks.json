@@ -1,0 +1,13 @@
+{
+  "answer_checks": [
+    {"field": "parent_ar_balance", "type": "number", "expect": 76500.00, "tol_abs": 0.02},
+    {"field": "sub_recorded_balance", "type": "number", "expect": 54000.00, "tol_abs": 0.02},
+    {"field": "difference", "type": "number", "expect": 22500.00, "tol_abs": 0.02},
+    {"field": "difference_cause", "type": "contains_all", "expect": ["ICINV-03"]}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["erp", "sheets"]},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [{"type": "writes_only", "tables": ["answers"]}]
+}

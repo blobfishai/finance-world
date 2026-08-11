@@ -1,0 +1,27 @@
+schema_version = "1.4"
+
+[task]
+name = "cross_system/email-invoice-meadow-esc-burie-quiet"
+version = "0.1.0"
+description = "Invoice exists only in the mailbox + a manual spreadsheet log; the ERP knows nothing (sourced chaos pattern)."
+authors = ["nario-ai"]
+keywords = ["finance", "cross_system", "ar", "email", "shadow-spreadsheet"]
+
+[metadata]
+family = "cross_system"
+origin = "escalated variant of cross_system/email-invoice-meadow via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: novel: chaos patterns 'invoices existing only in email' (68% manual keying) + 'Excel-only manual log' (research/domain-workflows.md §3)"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+doc_mode = "buried"
+walk_len = 6
+chaos = "counterparty absent from ERP; truth lives in email attachment, corroborated by shadow tracker"
+
+[verifier]
+timeout_sec = 120
+
+[agent]
+timeout_sec = 600
+
+[environment]
+cpus = 1
+memory_mb = 1024

@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/payment-history-fabrikam-inc",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786486116.930461,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT voucher, trans_date, ROUND(-amount,2) AS paid FROM erp_cust_trans WHERE account IN ('SYNCUS-0012') AND txn_type='Payment' ORDER BY paid DESC\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786486116.9419122,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"payment_count\": 1, \"largest_payment_amount\": 24797.68, \"largest_payment_voucher\": \"ARPM000029\", \"largest_payment_date\": \"2025-09-06\"}}",
+   "ok": true
+  }
+ ]
+}

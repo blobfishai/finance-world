@@ -1,0 +1,38 @@
+{
+ "answer_checks": [
+  {
+   "field": "matching_customer_count",
+   "type": "number",
+   "expect": 2,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE name='Woodgrove West'"
+  },
+  {
+   "field": "phone_numbers",
+   "type": "contains_all",
+   "expect": [
+    "215-555-0159",
+    "702-555-0134"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

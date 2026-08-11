@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/other-coho-vineyard-west",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786486099.711004,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, trans_date, ROUND(amount,2) AS amount FROM erp_vend_trans WHERE account IN ('SYNVEN-0090','SYNVEN-0762') AND txn_type='Invoice'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786486099.718097,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"invoice_count\": 2, \"total_spend_fy\": 31784.12}}",
+   "ok": true
+  }
+ ]
+}

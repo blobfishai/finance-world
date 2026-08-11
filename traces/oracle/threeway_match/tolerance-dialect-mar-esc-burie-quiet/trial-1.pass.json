@@ -1,0 +1,61 @@
+{
+ "task": "threeway_match/tolerance-dialect-mar-esc-burie-quiet",
+ "family": "threeway_match",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 5,
+ "walk_len": 5,
+ "budget_turns": 52,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 5}\n",
+ "trace": [
+  {
+   "ts": 1786485770.792434,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"tolerance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485770.793099,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--ap-match-tolerances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485770.795234,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, po_number, ROUND(amount,2) AS invoiced FROM erp_vend_trans WHERE invoice IN ('TDINV-401','TDINV-402')\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485770.795699,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT po_number, qty_ordered, unit_price, ROUND(qty_ordered*unit_price,2) AS po_value FROM erp_purch_orders WHERE po_number IN ('PO-8101','PO-8102')\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485770.799531,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"blocked_invoice\": \"TDINV-401\", \"blocked_variance\": 40.0, \"passing_invoice\": \"TDINV-402\", \"passing_variance\": 315.0, \"blocking_rule\": \"legacy ledger: an unmaintained tolerance key means zero tolerance, so any variance blocks\"}}",
+   "ok": true
+  }
+ ]
+}

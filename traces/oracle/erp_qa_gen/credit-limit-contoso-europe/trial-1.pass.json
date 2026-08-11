@@ -1,0 +1,46 @@
+{
+ "task": "erp_qa_gen/credit-limit-contoso-europe",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 3}\n",
+ "trace": [
+  {
+   "ts": 1786486059.362981,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"DE-001\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786486059.364911,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_cust_trans WHERE account IN ('DE-001') AND closed=0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786486059.3670652,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 500000.0, \"open_balance\": 669832.5, \"available_credit\": -169832.5}}",
+   "ok": true
+  }
+ ]
+}

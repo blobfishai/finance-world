@@ -1,0 +1,76 @@
+{
+ "task": "cash_app/remittance-batch-mar02-esc-burie-quiet",
+ "family": "cash_app",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 7,
+ "walk_len": 7,
+ "budget_turns": 68,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 7}\n",
+ "trace": [
+  {
+   "ts": 1786485746.1785011,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"lockbox-2026-03-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485746.1801448,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"US-021\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786485746.1820538,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, due_date, ROUND(amount - settled, 2) AS open FROM erp_cust_trans WHERE account='US-021' AND txn_type='Invoice' AND closed=0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485746.18688,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"lamna remittance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485746.187783,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-0210\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485746.188725,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-0211\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485746.191045,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"dep501_invoices\": \"LHINV-001, LHINV-002\", \"dep502_invoices\": \"LHINV-003\", \"dep503_invoices\": \"none\", \"unapplied_amount\": 4000.0}}",
+   "ok": true
+  }
+ ]
+}

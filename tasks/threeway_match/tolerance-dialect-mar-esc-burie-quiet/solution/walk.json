@@ -1,0 +1,43 @@
+[
+ {
+  "server": "docs",
+  "tool": "search_documents",
+  "args": {
+   "query": "tolerance"
+  }
+ },
+ {
+  "server": "docs",
+  "tool": "get_document",
+  "args": {
+   "doc_id": "policy--ap-match-tolerances"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT invoice, po_number, ROUND(amount,2) AS invoiced FROM erp_vend_trans WHERE invoice IN ('TDINV-401','TDINV-402')"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT po_number, qty_ordered, unit_price, ROUND(qty_ordered*unit_price,2) AS po_value FROM erp_purch_orders WHERE po_number IN ('PO-8101','PO-8102')"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "blocked_invoice": "TDINV-401",
+    "blocked_variance": 40.0,
+    "passing_invoice": "TDINV-402",
+    "passing_variance": 315.0,
+    "blocking_rule": "legacy ledger: an unmaintained tolerance key means zero tolerance, so any variance blocks"
+   }
+  }
+ }
+]

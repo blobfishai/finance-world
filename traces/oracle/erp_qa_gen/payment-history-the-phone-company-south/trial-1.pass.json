@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/payment-history-the-phone-company-south",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786486119.764147,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT voucher, trans_date, ROUND(-amount,2) AS paid FROM erp_cust_trans WHERE account IN ('SYNCUS-0053','SYNCUS-0725') AND txn_type='Payment' ORDER BY paid DESC\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786486119.772753,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"payment_count\": 4, \"largest_payment_amount\": 42574.38, \"largest_payment_voucher\": \"ARPM000122\", \"largest_payment_date\": \"2026-01-19\"}}",
+   "ok": true
+  }
+ ]
+}

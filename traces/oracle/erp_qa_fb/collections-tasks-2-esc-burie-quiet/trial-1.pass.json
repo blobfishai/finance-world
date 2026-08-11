@@ -1,0 +1,46 @@
+{
+ "task": "erp_qa_fb/collections-tasks-2-esc-burie-quiet",
+ "family": "erp_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 3}\n",
+ "trace": [
+  {
+   "ts": 1786485756.127084,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Activities\", \"filters\": {\"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786485756.129375,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT activity_id, account, start_date, end_date, closed FROM erp_activities\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485756.131927,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"worklist_customer_count\": 0, \"worklist_customers\": \"none - no open collections activity is scheduled for 2026-03-03\"}}",
+   "ok": true
+  }
+ ]
+}

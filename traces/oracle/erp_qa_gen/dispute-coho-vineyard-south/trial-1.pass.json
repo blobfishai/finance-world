@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/dispute-coho-vineyard-south",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786486080.7425752,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account IN ('SYNCUS-0034','SYNCUS-0706') AND disputed=1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786486080.744229,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"disputed_transaction_count\": 0}}",
+   "ok": true
+  }
+ ]
+}

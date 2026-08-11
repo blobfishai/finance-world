@@ -1,0 +1,19 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_cust_trans WHERE account IN ('SYNCUS-0659') AND closed=0"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "transactions_coming_due_count": 0,
+    "amount_coming_due": "none - no open transaction for this customer falls due between 2026-03-02 and 2026-03-08"
+   }
+  }
+ }
+]

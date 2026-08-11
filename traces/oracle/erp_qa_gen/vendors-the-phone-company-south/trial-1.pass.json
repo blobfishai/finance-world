@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/vendors-the-phone-company-south",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786486135.481678,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Vendors\", \"filters\": {\"account\": \"SYNVEN-0053\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786486135.483831,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"offers_discount\": \"no\", \"discount_code\": \"none - no cash discount code is set on this vendor\"}}",
+   "ok": true
+  }
+ ]
+}

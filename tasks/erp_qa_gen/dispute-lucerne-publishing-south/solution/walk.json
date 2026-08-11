@@ -1,0 +1,18 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT invoice, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account IN ('SYNCUS-0045','SYNCUS-0717') AND disputed=1"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "disputed_transaction_count": 0
+   }
+  }
+ }
+]

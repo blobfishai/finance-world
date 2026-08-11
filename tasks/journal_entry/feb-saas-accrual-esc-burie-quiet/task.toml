@@ -1,0 +1,34 @@
+schema_version = "1.4"
+
+[task]
+name = "journal_entry/feb-saas-accrual-esc-burie-quiet"
+version = "0.1.0"
+description = "Compute a mid-month SaaS accrual from the governing contract version on a 365-day basis, stage the journal, and report honestly that it is pending approval rather than booked."
+authors = ["nario-ai"]
+keywords = ["finance", "journal_entry", "close", "accrual", "approval", "write"]
+
+[metadata]
+family = "journal_entry"
+origin = "escalated variant of journal_entry/feb-saas-accrual via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: docs/HARD-LAYER-DESIGN.md M1/M3/M4/M5; DoA shape from ERPNext Authorization Rule (research/erp-mcp-tool-census.md); period lock from research/odoo-domain.md; accrual practice from research/external/articles/month-end-close--numeric.md"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+doc_mode = "buried"
+agent_role = "accountant"
+walk_len = 10
+
+# Objective non-collapse (M3). The graded answer is the 365-day pro-rata on the GOVERNING
+# contract version: 1,800,000 / 365 x 17 days (12-28 Feb inclusive) = 83,835.62.
+# Every cheap route lands somewhere else:
+#   monthly convention on the current contract  1,800,000 / 12          = 150,000.00
+#   365-day basis on the SUPERSEDED v1.0        1,500,000 / 365 x 17    =  69,863.01
+#   the number already sitting in the ledger    implementation fee      =  37,500.00
+naive_answer = "150000.00"
+graded_answer = "83835.62"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

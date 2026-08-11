@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/credit-rating-adventure-works-south",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786486064.701334,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0030\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786486064.703377,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_rating\": \"Fair\", \"customer_account\": \"SYNCUS-0030\"}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/vendors-lucerne-publishing-east",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786486134.11426,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_vend_trans WHERE account IN ('SYNVEN-0073','SYNVEN-0745') AND txn_type='Invoice' AND closed=0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786486134.1179688,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"open_invoice_count\": 2, \"ap_balance\": 59988.58}}",
+   "ok": true
+  }
+ ]
+}

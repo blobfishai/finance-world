@@ -1,0 +1,30 @@
+[
+ {
+  "server": "erp",
+  "tool": "api_find_actions",
+  "args": {
+   "query": "aged balances"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "api_invoke_action",
+  "args": {
+   "action": "ContosoCustAgedBalancesLive",
+   "parameters": {
+    "customer_account": "SYNCUS-0032"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "total_past_due": 91089.51,
+    "not_yet_due": 3933.79,
+    "over_90_days": 44351.12
+   }
+  }
+ }
+]

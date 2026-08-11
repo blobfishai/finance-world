@@ -1,0 +1,46 @@
+{
+ "answer_checks": [
+  {
+   "field": "operating_margin_pct",
+   "type": "number",
+   "expect": 5.78,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "operating_income",
+   "type": "number",
+   "expect": 1624000000,
+   "tol_rel": 0.001
+  },
+  {
+   "field": "quarter_revenue",
+   "type": "number",
+   "expect": 28095000000,
+   "tol_rel": 0.001
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "filings"
+   ]
+  },
+  {
+   "type": "min_calls",
+   "server": "filings",
+   "n": 2
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

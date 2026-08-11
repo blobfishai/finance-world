@@ -1,0 +1,29 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Activities",
+   "filters": {
+    "closed": 0
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT activity_id, account, start_date, end_date, closed FROM erp_activities"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "worklist_customer_count": 0,
+    "worklist_customers": "none - no open collections activity is scheduled for 2026-03-03"
+   }
+  }
+ }
+]

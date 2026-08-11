@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/customer-setup-coho-winery-west",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786486070.371677,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Coho Winery West\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786486070.377661,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"503-555-0136; 904-555-0105\"}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+{
+ "answer_checks": [
+  {
+   "field": "total_past_due",
+   "type": "number",
+   "expect": 62775.86,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_cust_trans WHERE account IN ('SYNCUS-0037','SYNCUS-0709') AND txn_type='Invoice' AND closed=0 AND julianday('2026-03-02') - julianday(due_date) > 0"
+  },
+  {
+   "field": "not_yet_due",
+   "type": "number",
+   "expect": 49550.82,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "over_90_days",
+   "type": "number",
+   "expect": 0.0,
+   "tol_abs": 0.02
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

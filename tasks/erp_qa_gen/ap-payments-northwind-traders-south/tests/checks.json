@@ -1,0 +1,37 @@
+{
+ "answer_checks": [
+  {
+   "field": "payment_count",
+   "type": "number",
+   "expect": 4,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_vend_trans WHERE account IN ('SYNVEN-0047','SYNVEN-0719') AND txn_type='Payment' AND trans_date >= '2025-03-02'"
+  },
+  {
+   "field": "total_paid",
+   "type": "number",
+   "expect": 99666.09,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(-amount),0),2) FROM erp_vend_trans WHERE account IN ('SYNVEN-0047','SYNVEN-0719') AND txn_type='Payment' AND trans_date >= '2025-03-02'"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,69 @@
+{
+ "task": "pbc/approval-evidence-q1-esc-burie-quiet",
+ "family": "pbc",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "email",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 6,
+ "walk_len": 6,
+ "budget_turns": 60,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 6}\n",
+ "trace": [
+  {
+   "ts": 1786485769.3582249,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, account, description, trans_date, amount FROM erp_vend_trans WHERE invoice IN ('PBINV-201','PBINV-202')\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485769.362499,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"PBINV-201\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485769.363103,
+   "server": "email",
+   "tool": "threads_get",
+   "args": "{\"id\": \"em-0402\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485769.363615,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"PBINV-202\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485769.364564,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"PBINV-202 approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485769.3662488,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"inv201_approver\": \"Priya Shah\", \"inv201_approval_date\": \"2026-01-18\", \"inv201_evidence_location\": \"shared mailbox thread (approval reply from AP Manager)\", \"inv202_approver\": \"none\", \"inv202_finding\": \"No approval evidence located in the ERP, mailbox, or document library \\u2014 control",
+   "ok": true
+  }
+ ]
+}

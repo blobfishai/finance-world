@@ -1,0 +1,5 @@
+[
+  {"server": "erp", "tool": "data_find_entity_type", "args": {"query": "customer credit limit"}},
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "Customers", "filters": {"account": "SYNCUS-0001"}}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"credit_limit": 25000, "customer_name": "A. Datum Corporation"}}}
+]

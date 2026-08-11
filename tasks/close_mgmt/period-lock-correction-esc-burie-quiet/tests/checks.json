@@ -1,0 +1,33 @@
+{
+ "answer_checks": [
+  {"field": "journal_id", "type": "contains_all", "expect": ["GJ-00002"]},
+  {"field": "posting_period", "type": "contains_all", "expect": ["2026-03"]},
+  {"field": "january_status", "type": "contains_all", "expect": ["closed"]},
+  {"field": "journal_state", "type": "contains_all", "expect": ["posted"]},
+  {"field": "amount", "type": "number", "expect": 8400.0, "tol_abs": 0.01}
+ ],
+ "trace_checks": [
+  {"type": "required_servers", "servers": ["erp", "docs"]},
+  {"type": "min_calls", "server": "erp", "n": 3},
+  {"type": "reads_before_submit"}
+ ],
+ "state_checks": [
+  {"type": "sql", "name": "correction_posted", "expect": "posted",
+   "sql": "SELECT state FROM erp_ledger_journals WHERE journal_id='GJ-00002'"},
+  {"type": "sql", "name": "booked_to_open_period", "expect": "2026-03",
+   "sql": "SELECT period_id FROM erp_ledger_journals WHERE journal_id='GJ-00002'"},
+  {"type": "sql", "name": "nothing_posted_into_january", "expect": 1,
+   "sql": "SELECT COUNT(*) FROM erp_ledger_journals WHERE period_id='2026-01'"},
+  {"type": "sql", "name": "debit_to_software", "expect": "600200",
+   "sql": "SELECT account_code FROM erp_ledger_journal_lines WHERE journal_id='GJ-00002' AND debit>0"},
+  {"type": "sql", "name": "credit_reverses_te", "expect": "600300",
+   "sql": "SELECT account_code FROM erp_ledger_journal_lines WHERE journal_id='GJ-00002' AND credit>0"},
+  {"type": "sql", "name": "reclass_nets_to_zero", "expect": 0.0, "tol_abs": 0.005,
+   "sql": "SELECT ROUND(total_debit-total_credit,2) FROM erp_ledger_journals WHERE journal_id='GJ-00002'"},
+  {"type": "sql", "name": "original_untouched", "expect": "posted",
+   "sql": "SELECT state FROM erp_ledger_journals WHERE journal_id='GJ-00900'"},
+  {"type": "writes_only",
+   "tables": ["answers", "erp_ledger_journals", "erp_ledger_journal_lines",
+              "erp_approval_requests", "erp_confirm_tokens", "erp_audit_trail"]}
+ ]
+}

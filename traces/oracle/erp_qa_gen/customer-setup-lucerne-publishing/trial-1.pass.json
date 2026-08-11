@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_gen/customer-setup-lucerne-publishing",
+ "family": "erp_qa_gen",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786486073.004501,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Lucerne Publishing\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786486073.008707,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"phone_number\": \"816-555-0182\", \"customer_account\": \"SYNCUS-0017\"}}",
+   "ok": true
+  }
+ ]
+}

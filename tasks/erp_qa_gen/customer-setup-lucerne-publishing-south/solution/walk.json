@@ -1,0 +1,32 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "account": "SYNCUS-0045"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "PaymentTerms",
+   "filters": {
+    "code": "Net30"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "payment_terms": "Net30",
+    "customer_account": "SYNCUS-0045"
+   }
+  }
+ }
+]

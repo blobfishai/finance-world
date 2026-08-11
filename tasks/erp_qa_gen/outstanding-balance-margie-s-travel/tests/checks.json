@@ -1,0 +1,37 @@
+{
+ "answer_checks": [
+  {
+   "field": "unpaid_invoice_count",
+   "type": "number",
+   "expect": 2,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_cust_trans WHERE account IN ('SYNCUS-0018') AND txn_type='Invoice' AND closed=0"
+  },
+  {
+   "field": "unpaid_total",
+   "type": "number",
+   "expect": 27807.54,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_cust_trans WHERE account IN ('SYNCUS-0018') AND txn_type='Invoice' AND closed=0"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

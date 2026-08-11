@@ -1,0 +1,26 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT MIN(trans_date) AS earliest, MAX(trans_date) AS latest FROM erp_cust_trans WHERE account IN ('SYNCUS-0081','SYNCUS-0753')"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT voucher, trans_date FROM erp_cust_trans WHERE account IN ('SYNCUS-0081','SYNCUS-0753') AND txn_type='Payment' AND trans_date LIKE '2017-%'"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "payment_count": 0,
+    "payments": "none - the AR subledger holds no payment for this customer in 2017"
+   }
+  }
+ }
+]
