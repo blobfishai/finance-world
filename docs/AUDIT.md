@@ -166,6 +166,33 @@ stages in order and finishes by running the validation gate. Nothing calls `load
 directly any more. The cash layer is seeded (`random.Random(SEED)`), so the build is
 reproducible and the ground truths re-derive exactly.
 
+### A7. Calibration traces outlived the world they measured — INVALIDATED
+Found 2026-08-11 while re-grading stored trials after the A5 verifier fix.
+
+`traces/sonnet/erp_qa/ap-overdue-usmf/trial-1` (2026-08-10) records the model answering
+**$81,262,127.02** and being graded **reward=1**. That figure is the *pre-cash-layer* AP
+total: the run predates `world/etl/load_cash.py` (commit 828b13e), which added payments and
+settlements and moved the same figure to ~$30.6M. The verdict was correct **against the
+world of the day** and is meaningless against the world we ship.
+
+Two mechanisms hid this:
+1. `run_batch.py`'s resume rule re-runs a trial only when it has **no trace or an
+   infra-tainted one** — a *stale* trace looks exactly like a good one, so a rescan
+   preserves it forever.
+2. Re-grading stored runs (`sim/reverify.py`) cannot fix it either: the run's own
+   `world.sqlite` is the old world, so re-verification just re-measures the old answer
+   against the new ground truth and reports a failure that never happened.
+
+**Rule adopted:** a trace is valid only if it was recorded against the *current* world
+build. Trials older than `world/build/core.sqlite` are archived, not re-graded — 191 of them
+moved to `traces_archive/pre-2026-08-11-rebuild/` — and re-run from scratch.
+
+`sim/reverify.py` remains the right tool for the narrower case it was written for (the
+verifier changed, the world did not); it must never be used across a world rebuild.
+
+**Consequence:** the "sonnet passes 12/12" reading recorded earlier in this session drew on
+Aug-10 traces and does not stand. Difficulty claims wait for the fresh scan.
+
 ### A4. `--max-turns` not strictly enforced by observed runs — WATCH
 haiku's ap-overdue run recorded `num_turns=36` against `--max-turns 24`. Budget overruns
 currently can't masquerade as passes (verification is answer-based), but turn accounting

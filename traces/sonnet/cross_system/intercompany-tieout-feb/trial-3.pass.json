@@ -1,0 +1,199 @@
+{
+ "task": "cross_system/intercompany-tieout-feb",
+ "family": "cross_system",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 3,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 24,
+ "walk_len": 5,
+ "budget_turns": 24,
+ "num_turns": 28,
+ "agent_error": false,
+ "duration_s": 90.8,
+ "cost_usd": 0.9653362999999998,
+ "final_text": "Submitted. Here's the tie-out for Sam:\n\n| | Amount |\n|---|---|\n| **We say CES Direct owes us** (parent AR, ERP acct IC-001) | **$76,500** |\n| **CES Direct says they owe us** (their Feb intercompany schedule) | **$54,000** |\n| **Difference** | **$22,500** |\n\n**Cause:** Three intercompany invoices make up the parent's $76,500 \u2014 ICINV-01 ($30,000, shared services Q4), ICINV-02 ($24,000, January inventory transfer), and ICINV-03 ($22,500, February management fee, dated 2026-02-27). CES Direct's schedule only shows the first two as booked ($54,000 total). Per an email from Dana Kim (CES contact), ICINV-03 didn't arrive at CES until 2026-03-01 \u2014 after their Feb close \u2014 so it's sitting in transit and will post to their books in March.\n\nBottom line: not a dispute, just a timing cutoff difference. The $22,500 gap is exactly ICINV-03; everything else ties out dollar-for-dollar.",
+ "trace": [
+  {
+   "ts": 1786465189.3777869,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%CES%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465189.960778,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"CES Direct intercompany\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465189.9630961,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"CES Direct intercompany February\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465192.146709,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465192.149167,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"CES\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465192.529977,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"CES\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465192.5540109,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786465197.734821,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"message_id\": \"em-0310\"}",
+   "ok": false,
+   "note": "TypeError(\"messages_get() got an unexpected keyword argument 'message_id'\")"
+  },
+  {
+   "ts": 1786465197.8235688,
+   "server": "books",
+   "tool": "report_customer_balance",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786465197.9469252,
+   "server": "docs",
+   "tool": "list_document_types",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786465203.103772,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"em-0310\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465203.501771,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465203.509249,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"intercompany\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465212.1570618,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"CES\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465218.8064792,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Direct\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465219.3430028,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Companies\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465219.3473961,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786465219.523535,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"CES\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465237.875129,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"CES-intercompany-schedule-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786465238.30782,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions WHERE invoice LIKE '%ICINV%' LIMIT 50\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786465245.47135,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"invoice\": \"ICINV\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465245.5118499,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournalLines\", \"filters\": {\"dimension\": \"CES\"}}",
+   "ok": false,
+   "note": "unknown field dimension"
+  },
+  {
+   "ts": 1786465251.06865,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"IC-001\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786465260.802701,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"parent_ar_balance\": 76500, \"sub_recorded_balance\": 54000, \"difference\": 22500, \"difference_cause\": \"In-transit intercompany invoice ICINV-03, the $22,500 February management fee (dated 2026-02-27), was booked by the parent as AR in February but did not reach CES Direct until 2026-03-01",
+   "ok": true
+  }
+ ]
+}

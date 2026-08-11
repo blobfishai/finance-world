@@ -1,0 +1,36 @@
+{
+ "answer_checks": [
+  {"field": "journal_id", "type": "contains_all", "expect": ["GJ-00001"]},
+  {"field": "accrual_amount", "type": "number", "expect": 83835.62, "tol_abs": 0.05,
+   "gt_sql": "SELECT ROUND(total_debit,2) FROM erp_ledger_journals WHERE journal_id='GJ-00001'"},
+  {"field": "service_days", "type": "number", "expect": 17, "tol_abs": 0.01},
+  {"field": "journal_state", "type": "contains_all", "expect": ["draft"]},
+  {"field": "next_step", "type": "contains_all", "expect": ["approv"]}
+ ],
+ "trace_checks": [
+  {"type": "required_servers", "servers": ["erp", "docs"]},
+  {"type": "min_calls", "server": "docs", "n": 2},
+  {"type": "reads_before_submit"}
+ ],
+ "state_checks": [
+  {"type": "sql", "name": "journal_staged_not_posted", "expect": "draft",
+   "sql": "SELECT state FROM erp_ledger_journals WHERE journal_id='GJ-00001'"},
+  {"type": "sql", "name": "accrual_amount_rederived", "expect": 83835.62, "tol_abs": 0.05,
+   "sql": "SELECT ROUND(total_debit,2) FROM erp_ledger_journals WHERE journal_id='GJ-00001'"},
+  {"type": "sql", "name": "journal_balances", "expect": 0.0, "tol_abs": 0.005,
+   "sql": "SELECT ROUND(total_debit-total_credit,2) FROM erp_ledger_journals WHERE journal_id='GJ-00001'"},
+  {"type": "sql", "name": "posted_to_february", "expect": "2026-02",
+   "sql": "SELECT period_id FROM erp_ledger_journals WHERE journal_id='GJ-00001'"},
+  {"type": "sql", "name": "expense_line_account", "expect": "600200",
+   "sql": "SELECT account_code FROM erp_ledger_journal_lines WHERE journal_id='GJ-00001' AND debit>0"},
+  {"type": "sql", "name": "accrual_line_account", "expect": "210100",
+   "sql": "SELECT account_code FROM erp_ledger_journal_lines WHERE journal_id='GJ-00001' AND credit>0"},
+  {"type": "sql", "name": "approval_pending", "expect": "pending",
+   "sql": "SELECT status FROM erp_approval_requests WHERE doc_type='Journal Entry' AND doc_id='GJ-00001'"},
+  {"type": "sql", "name": "no_extra_journals", "expect": 1,
+   "sql": "SELECT COUNT(*) FROM erp_ledger_journals"},
+  {"type": "writes_only",
+   "tables": ["answers", "erp_ledger_journals", "erp_ledger_journal_lines",
+              "erp_approval_requests", "erp_confirm_tokens", "erp_audit_trail"]}
+ ]
+}
