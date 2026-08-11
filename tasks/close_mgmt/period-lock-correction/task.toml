@@ -1,0 +1,30 @@
+schema_version = "1.4"
+
+[task]
+name = "close_mgmt/period-lock-correction"
+version = "0.1.0"
+description = "Reclass a January coding error when January is hard-closed and February is mid-close: read the period calendar, book into the earliest open period, and post it."
+authors = ["nario-ai"]
+keywords = ["finance", "close_mgmt", "period-lock", "reclass", "journal_entry", "write"]
+
+[metadata]
+family = "close_mgmt"
+origin = "closes tracked coverage gap erpnext.period_close_lock (sim/coverage.py); period-status model from research/odoo-domain.md (Odoo company lock dates) and research/erp-mcp-tool-census.md (mcp-erp close_period/reopen_period); docs/HARD-LAYER-DESIGN.md M1/M3/M5"
+difficulty = "medium"
+acceptance_label = "pending_calibration"
+agent_role = "accountant"
+walk_len = 9
+
+# Objective non-collapse (M3): the obvious destination is the period the error is in, and
+# the ERP refuses it. February is on_hold and the SOP forbids using an in-flight close as a
+# parking space, so the only lawful destination is March - which must be READ, not assumed.
+naive_answer = "2026-01"
+graded_answer = "2026-03"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

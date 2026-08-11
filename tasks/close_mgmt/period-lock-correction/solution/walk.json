@@ -1,0 +1,29 @@
+[
+ {"server": "docs", "tool": "search_documents", "args": {"query": "period close"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "period-close-policy"}},
+ {"server": "erp", "tool": "data_find_entities_sql",
+  "args": {"sql": "SELECT j.journal_id, j.posting_date, j.period_id, l.line, l.account_code, l.debit, l.credit FROM erp_ledger_journals j JOIN erp_ledger_journal_lines l ON l.journal_id=j.journal_id WHERE j.journal_id='GJ-00900'"}},
+ {"server": "erp", "tool": "data_find_entities", "args": {"entity": "FiscalPeriods"}},
+ {"server": "erp", "tool": "data_find_entities", "args": {"entity": "MainAccounts", "filters": {"account_type": "expense"}}},
+ {"server": "erp", "tool": "api_invoke_action",
+  "args": {"action": "ContosoJournalPropose",
+           "parameters": {
+             "description": "Reclass of GJ-00900 (period 2026-01, closed): analytics subscription mis-coded to T&E; booked to the earliest open period",
+             "posting_date": "2026-03-02",
+             "voucher_type": "Journal Entry",
+             "lines": [
+               {"account_code": "600200", "debit": 8400.00, "description": "Software & subscriptions - reclass from T&E (GJ-00900)", "dimension_dept": "IT"},
+               {"account_code": "600300", "credit": 8400.00, "description": "Travel & entertainment - reverse mis-coding (GJ-00900)", "dimension_dept": "IT"}
+             ]}}},
+ {"server": "erp", "tool": "api_invoke_action",
+  "args": {"action": "ContosoJournalPost",
+           "parameters": {"journal_id": "GJ-00002", "confirm_token": "CONF-GJ-00002-1"}}},
+ {"server": "erp", "tool": "data_find_entities", "args": {"entity": "LedgerJournals", "filters": {"journal_id": "GJ-00002"}}},
+ {"server": "harness", "tool": "submit_answer",
+  "args": {"answers": {
+    "journal_id": "GJ-00002",
+    "posting_period": "2026-03",
+    "january_status": "closed",
+    "journal_state": "posted",
+    "amount": 8400.00}}}
+]
