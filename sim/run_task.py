@@ -3,7 +3,7 @@
 
 Traces land in traces/<label>/<family>/<slug>/trial-N.<pass|fail>.json — including failures,
 which are first-class data for failure reports."""
-import json, subprocess, sys, time
+import json, os, subprocess, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -14,7 +14,8 @@ from vcode import verify_all as verify, steps_of
 ALLOWED = "mcp__erp,mcp__books,mcp__sheets,mcp__email,mcp__filings,mcp__docs,mcp__harness"
 DISALLOWED = "Bash,Edit,Write,Read,Glob,Grep,WebSearch,WebFetch,NotebookEdit,Task"
 INFRA_MARKERS = ("session limit", "rate limit", "overloaded", "credit balance",
-                 "login", "authentication", "api error")
+                 "login", "authentication", "api error", "no api key", "insufficient balance",
+                 "401", "429", "502", "503", "connection")
 
 def is_infra(agent_error, n_calls, final_text):
     """A run that died before any tool call for account/limit reasons is a harness
@@ -24,7 +25,7 @@ def is_infra(agent_error, n_calls, final_text):
 def run_trial(task_dir, agent="oracle", model=None, trial=1, _attempt=1):
     task_dir = Path(task_dir)
     family, slug = task_dir.parent.name, task_dir.name
-    label = model if agent == "claude" else "oracle"
+    label = "oracle" if agent == "oracle" else model
     run_dir = ROOT / ".runs" / label / family / slug / f"trial-{trial}"
     prepare(task_dir, run_dir)
 
@@ -41,7 +42,19 @@ def run_trial(task_dir, agent="oracle", model=None, trial=1, _attempt=1):
     budget = max(40, walk_len * 8 + 12)
     t0, final_text, num_turns, cost = time.time(), "", None, None
 
-    if agent == "oracle":
+    if agent == "openai":
+        # Any OpenAI-compatible endpoint (DeepSeek, Qwen, Kimi, xAI). Runs the same MCP
+        # servers in-process, so the trace the verifier reads is produced the same way.
+        sys.path.insert(0, str(ROOT / "sim"))
+        from agent_openai import run as run_openai
+        key = os.environ.get("DEEPSEEK_API_KEY") or os.environ.get("OPENAI_API_KEY")
+        base = os.environ.get("OPENAI_BASE_URL", "https://api.deepseek.com")
+        if not key:
+            final_text, agent_error = "no API key: set DEEPSEEK_API_KEY", True
+        else:
+            out = run_openai(task_dir, run_dir, model, base, key, budget)
+            final_text, num_turns, agent_error = out["final_text"], out["num_turns"], out["agent_error"]
+    elif agent == "oracle":
         p = subprocess.run([sys.executable, str(ROOT / "sim/oracle.py"), str(task_dir), str(run_dir)],
                            capture_output=True, text=True, timeout=300)
         final_text = (p.stdout + p.stderr)[-2000:]
@@ -91,17 +104,17 @@ def run_trial(task_dir, agent="oracle", model=None, trial=1, _attempt=1):
         r["args"] = json.dumps(r.get("args", {}), default=str)[:300]
 
     submitted = any(r.get("tool") == "submit_answer" for r in trace)
-    starved = (agent == "claude" and not submitted and num_turns is not None
+    starved = (agent != "oracle" and not submitted and num_turns is not None
                and num_turns >= budget - 1)
 
-    if agent == "claude" and is_infra(agent_error, v["n_tool_calls"], final_text):
+    if agent in ("claude", "openai") and is_infra(agent_error, v["n_tool_calls"], final_text):
         if _attempt == 1:
             print(f"[{label}] {family}/{slug} trial-{trial}: INFRA ({final_text[:60]!r}) — one retry")
             time.sleep(20)
             return run_trial(task_dir, agent, model, trial, _attempt=2)
         # retry also infra: record it labeled, excluded from triage by run_batch
     rec = {"task": f"{family}/{slug}", "family": family, "agent": agent, "model": model,
-           "infra_error": agent == "claude" and is_infra(agent_error, v["n_tool_calls"], final_text),
+           "infra_error": agent in ("claude", "openai") and is_infra(agent_error, v["n_tool_calls"], final_text),
            "budget_exhausted": starved,
            "trial": trial, "reward": v["reward"], "failed": v["failed"],
            "servers_used": v["servers_used"], "n_tool_calls": v["n_tool_calls"],

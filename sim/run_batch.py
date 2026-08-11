@@ -40,7 +40,9 @@ def rebuild_summary(models):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--models", required=True, help="comma-separated claude model names")
+    ap.add_argument("--models", required=True, help="comma-separated model names")
+    ap.add_argument("--agent", default="claude", choices=["claude", "openai"],
+                    help="claude = headless claude -p over MCP; openai = any OpenAI-compatible endpoint")
     ap.add_argument("--trials", type=int, default=2)
     ap.add_argument("--tasks", default="tasks/*/*")
     ap.add_argument("--workers", type=int, default=3)
@@ -53,7 +55,7 @@ def main():
     print(f"{len(tasks)} tasks x {len(models)} models x {a.trials} trials -> {len(jobs)} runs (resume skips real traces)")
 
     with ThreadPoolExecutor(max_workers=a.workers) as ex:
-        futs = [ex.submit(run_trial, t, "claude", m, n) for t, m, n in jobs]
+        futs = [ex.submit(run_trial, t, a.agent, m, n) for t, m, n in jobs]
         for f in futs:
             try: f.result()
             except Exception as e: print("RUN ERROR:", e)
