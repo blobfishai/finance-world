@@ -1,0 +1,20 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT vendor_group, COUNT(*) AS vendors FROM erp_vendors GROUP BY vendor_group"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "vendors_in_group": 0,
+    "vendor_group_count": 5,
+    "ap_balance": "none - USMF has no vendor group 'Services' \u2014 the vendor groups on file are 10, 20, 30, 40 and 50"
+   }
+  }
+ }
+]

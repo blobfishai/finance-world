@@ -1,12 +1,16 @@
 [
  {
   "server": "erp",
-  "tool": "data_find_entities",
+  "tool": "data_find_entities_sql",
   "args": {
-   "entity": "Customers",
-   "filters": {
-    "account": "SYNCUS-0883"
-   }
+   "sql": "SELECT account, name, on_hold FROM erp_customers WHERE on_hold IS NOT NULL AND LOWER(on_hold) NOT IN ('open','no') LIMIT 25"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT on_hold, COUNT(*) AS customers FROM erp_customers GROUP BY on_hold"
   }
  },
  {
@@ -14,8 +18,9 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "credit_limit": 25000.0,
-    "customer_name": "Humongous Insurance International"
+    "customers_on_credit_hold": 0,
+    "customers_reviewed": 1007,
+    "customer_accounts": "none - no customer in USMF is on credit hold"
    }
   }
  }

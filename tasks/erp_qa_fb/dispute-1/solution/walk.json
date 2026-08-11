@@ -3,7 +3,7 @@
   "server": "erp",
   "tool": "data_find_entities_sql",
   "args": {
-   "sql": "SELECT invoice, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account='SYNCUS-0238' AND disputed=1"
+   "sql": "SELECT invoice, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account IN ('SYNCUS-0238','SYNCUS-0910') AND disputed=1"
   }
  },
  {

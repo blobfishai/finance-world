@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_fb/payment-history-4",
+ "family": "erp_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786485684.4356291,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT voucher, trans_date, ROUND(-amount,2) AS paid FROM erp_cust_trans WHERE account IN ('US-018') AND txn_type='Payment' ORDER BY paid DESC\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485684.4377458,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"payment_count\": 2, \"largest_payment_amount\": 187707.98, \"largest_payment_voucher\": \"ARPM000080\", \"largest_payment_date\": \"2025-04-28\"}}",
+   "ok": true
+  }
+ ]
+}

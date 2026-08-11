@@ -1,0 +1,20 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT v.vendor_group, ROUND(SUM(t.amount-t.settled),2) AS ap_balance FROM erp_vend_trans t JOIN erp_vendors v ON v.account=t.account WHERE t.txn_type='Invoice' AND t.closed=0 GROUP BY v.vendor_group ORDER BY ap_balance DESC"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "vendor_group_count": 5,
+    "largest_vendor_group": "30",
+    "largest_group_ap_balance": 8004342.18
+   }
+  }
+ }
+]

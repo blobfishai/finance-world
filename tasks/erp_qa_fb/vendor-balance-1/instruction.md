@@ -8,3 +8,4 @@ Reply with `submit_answer`:
 
 - `ap_balance` (number)
 - `currency` (text)
+- `open_invoice_count` (number)

@@ -1,15 +1,22 @@
 {
  "answer_checks": [
   {
-   "field": "order_count",
+   "field": "sales_order_count",
    "type": "number",
    "expect": 0,
-   "tol_abs": 0
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_sales_orders WHERE LOWER(status) LIKE '%returned%'"
   },
   {
-   "field": "sales_order_id",
-   "type": "string",
-   "expect": "none"
+   "field": "sales_orders_in_usmf",
+   "type": "number",
+   "expect": 3,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_sales_orders"
+  },
+  {
+   "field": "sales_order_ids",
+   "type": "none_answer"
   }
  ],
  "trace_checks": [

@@ -1,0 +1,46 @@
+{
+ "task": "erp_qa_fb/payment-history-5",
+ "family": "erp_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 3}\n",
+ "trace": [
+  {
+   "ts": 1786485684.798561,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT MIN(trans_date) AS earliest, MAX(trans_date) AS latest FROM erp_cust_trans WHERE account IN ('US-027')\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485684.807901,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT voucher, trans_date FROM erp_cust_trans WHERE account IN ('US-027') AND txn_type='Payment' AND trans_date LIKE '2017-%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485684.8171048,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"payment_count\": 0, \"payments\": \"none - the AR subledger holds no payment for this customer in 2017\"}}",
+   "ok": true
+  }
+ ]
+}

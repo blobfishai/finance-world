@@ -3,7 +3,7 @@
   "server": "erp",
   "tool": "data_find_entities_sql",
   "args": {
-   "sql": "SELECT COUNT(*) AS n, ROUND(SUM(amount),2) AS total FROM erp_cust_trans WHERE account='SYNCUS-0317' AND txn_type='Invoice'"
+   "sql": "SELECT invoice, trans_date, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account IN ('SYNCUS-0317','SYNCUS-0989','DE-001') AND txn_type='Invoice'"
   }
  },
  {
@@ -11,8 +11,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "invoice_count": 2,
-    "invoiced_total": 38185.41
+    "invoice_count": 9,
+    "invoiced_total": 807303.22
    }
   }
  }

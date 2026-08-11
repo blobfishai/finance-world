@@ -1,0 +1,19 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT COUNT(*) AS pending, ROUND(SUM(amount-settled),2) AS total FROM erp_vend_trans WHERE txn_type='Invoice' AND closed=0"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "pending_invoice_count": 1422,
+    "pending_invoice_total": 35934069.88
+   }
+  }
+ }
+]

@@ -1,0 +1,41 @@
+{
+ "answer_checks": [
+  {
+   "field": "vendors_on_payment_hold",
+   "type": "number",
+   "expect": 0,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_vendors WHERE COALESCE(LOWER(on_hold),'no') NOT IN ('open','no','none')"
+  },
+  {
+   "field": "vendors_reviewed",
+   "type": "number",
+   "expect": 1003,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_vendors"
+  },
+  {
+   "field": "vendor_accounts",
+   "type": "none_answer"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

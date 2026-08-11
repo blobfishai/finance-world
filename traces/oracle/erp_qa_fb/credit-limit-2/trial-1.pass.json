@@ -1,0 +1,46 @@
+{
+ "task": "erp_qa_fb/credit-limit-2",
+ "family": "erp_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 3}\n",
+ "trace": [
+  {
+   "ts": 1786485672.452883,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, name, on_hold FROM erp_customers WHERE on_hold IS NOT NULL AND LOWER(on_hold) NOT IN ('open','no') LIMIT 25\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485672.453707,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT on_hold, COUNT(*) AS customers FROM erp_customers GROUP BY on_hold\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485672.455392,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"customers_on_credit_hold\": 0, \"customers_reviewed\": 1007, \"customer_accounts\": \"none - no customer in USMF is on credit hold\"}}",
+   "ok": true
+  }
+ ]
+}

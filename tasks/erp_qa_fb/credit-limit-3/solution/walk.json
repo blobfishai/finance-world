@@ -1,12 +1,9 @@
 [
  {
   "server": "erp",
-  "tool": "data_find_entities",
+  "tool": "data_find_entities_sql",
   "args": {
-   "entity": "Customers",
-   "filters": {
-    "account": "SYNCUS-0485"
-   }
+   "sql": "SELECT t.account, c.name, ROUND(SUM(t.amount-t.settled)-c.credit_max,2) AS over_limit FROM erp_cust_trans t JOIN erp_customers c ON c.account=t.account WHERE t.txn_type='Invoice' AND t.closed=0 AND c.customer_group='90' GROUP BY t.account HAVING SUM(t.amount-t.settled) > c.credit_max ORDER BY over_limit DESC LIMIT 10"
   }
  },
  {
@@ -14,8 +11,9 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "credit_limit": 100000.0,
-    "customer_name": "Contoso Retail"
+    "customers_listed": 10,
+    "top_customer_account": "SYNCUS-0303",
+    "top_customer_over_limit_amount": 117879.95
    }
   }
  }

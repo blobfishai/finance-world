@@ -1,0 +1,22 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Vendors",
+   "filters": {
+    "name": "Ade Supply Company"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "matching_vendor_count": 0,
+    "ap_balance": "none - no vendor named 'Ade Supply Company' exists in USMF"
+   }
+  }
+ }
+]

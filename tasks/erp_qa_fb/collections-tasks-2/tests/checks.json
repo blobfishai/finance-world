@@ -1,15 +1,15 @@
 {
  "answer_checks": [
   {
-   "field": "open_activity_count",
+   "field": "worklist_customer_count",
    "type": "number",
    "expect": 0,
-   "tol_abs": 0
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(DISTINCT account) FROM erp_activities WHERE closed=0 AND start_date <= '2026-03-03' AND COALESCE(end_date, start_date) >= '2026-03-03'"
   },
   {
-   "field": "open_activity_purpose",
-   "type": "string",
-   "expect": "none"
+   "field": "worklist_customers",
+   "type": "none_answer"
   }
  ],
  "trace_checks": [

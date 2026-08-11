@@ -1,0 +1,26 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT COUNT(*) AS open_invoices_with_discount_code FROM erp_cust_trans WHERE txn_type='Invoice' AND closed=0 AND cash_disc_code IS NOT NULL"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT code, percent, days FROM erp_cash_disc"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "expiring_invoice_count": 0,
+    "invoices": "none - no open customer invoice carries a cash discount expiring by 2026-03-07"
+   }
+  }
+ }
+]

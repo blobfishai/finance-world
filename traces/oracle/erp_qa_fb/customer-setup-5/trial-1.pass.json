@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_fb/customer-setup-5",
+ "family": "erp_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786485676.4800692,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Forest Wholesales\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786485676.481666,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"contact_name\": \"Ana\", \"contact_email\": \"ana@forest-sim.example\", \"phone_number\": \"555-0100\"}}",
+   "ok": true
+  }
+ ]
+}

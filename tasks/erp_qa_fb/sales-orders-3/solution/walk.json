@@ -1,12 +1,9 @@
 [
  {
   "server": "erp",
-  "tool": "data_find_entities",
+  "tool": "data_find_entities_sql",
   "args": {
-   "entity": "SalesOrders",
-   "filters": {
-    "account": null
-   }
+   "sql": "SELECT account, customer_name, status FROM erp_sales_orders"
   }
  },
  {
@@ -14,8 +11,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "order_count": 0,
-    "sales_order_id": "none"
+    "max_open_orders_per_customer": 1,
+    "customer_names": "Birch Company; Cave Wholesales"
    }
   }
  }

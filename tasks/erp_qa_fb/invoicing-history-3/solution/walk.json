@@ -1,0 +1,20 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT invoice, account, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE txn_type='Invoice' ORDER BY amount DESC LIMIT 10"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "invoice_number": "CIV-000667",
+    "customer_account": "DE-001",
+    "invoice_amount": 382761.5
+   }
+  }
+ }
+]

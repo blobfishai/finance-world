@@ -127,6 +127,7 @@ def load_into_world(db=None):
     cx = sqlite3.connect(db)
     n_c = n_f = 0
     for p in sorted(OUT.glob("*.json")):
+        if p.name.startswith("_"): continue   # _company_tickers.json is the lexicon cache, not a snapshot
         s = json.loads(p.read_text())
         cx.execute("INSERT OR REPLACE INTO filings_companies VALUES(?,?,?)",
                    (s["cik"], s["ticker"], s["name"]))

@@ -1,0 +1,44 @@
+{
+ "answer_checks": [
+  {
+   "field": "total_due_2026_04",
+   "type": "number",
+   "expect": 800326.81,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_vend_trans WHERE txn_type='Invoice' AND closed=0 AND due_date BETWEEN '2026-04-01' AND '2026-04-30'"
+  },
+  {
+   "field": "top_vendor_account",
+   "type": "contains_all",
+   "expect": [
+    "SYNVEN-0778"
+   ]
+  },
+  {
+   "field": "top_vendor_amount_due_2026_04",
+   "type": "number",
+   "expect": 49870.13,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_vend_trans WHERE txn_type='Invoice' AND closed=0 AND due_date BETWEEN '2026-04-01' AND '2026-04-30' AND account='SYNVEN-0778'"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

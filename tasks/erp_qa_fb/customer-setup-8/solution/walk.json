@@ -1,0 +1,26 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT currency, COUNT(*) AS customers FROM erp_customers GROUP BY currency"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT account, name, currency FROM erp_customers WHERE currency='EUR' LIMIT 25"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "customer_count": 1,
+    "customer_accounts": "DE-001"
+   }
+  }
+ }
+]

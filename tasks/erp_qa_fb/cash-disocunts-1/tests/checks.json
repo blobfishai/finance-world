@@ -4,7 +4,8 @@
    "field": "discount_payment_count",
    "type": "number",
    "expect": 0,
-   "tol_abs": 0
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_settlements WHERE side='AR' AND account IN ('SYNCUS-0664') AND cash_disc_taken > 0"
   }
  ],
  "trace_checks": [

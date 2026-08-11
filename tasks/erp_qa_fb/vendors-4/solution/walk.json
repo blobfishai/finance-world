@@ -1,0 +1,27 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT payment_term, COUNT(*) AS vendors FROM erp_vendors GROUP BY payment_term"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT code, days FROM erp_payment_terms ORDER BY days DESC"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "vendor_count": 0,
+    "longest_payment_term_days": 45,
+    "vendor_accounts": "none - no vendor in USMF has payment terms longer than Net 60 \u2014 the longest term on the vendor master is Net45"
+   }
+  }
+ }
+]

@@ -4,12 +4,12 @@
    "field": "order_count",
    "type": "number",
    "expect": 0,
-   "tol_abs": 0
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_sales_orders WHERE account IN ('US-003')"
   },
   {
    "field": "sales_order_id",
-   "type": "string",
-   "expect": "none"
+   "type": "none_answer"
   }
  ],
  "trace_checks": [

@@ -1,0 +1,37 @@
+{
+ "answer_checks": [
+  {
+   "field": "customer_account",
+   "type": "contains_all",
+   "expect": [
+    "DE-001"
+   ]
+  },
+  {
+   "field": "total_invoiced",
+   "type": "number",
+   "expect": 669832.5,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(amount),0),2) FROM erp_cust_trans WHERE txn_type='Invoice' AND account='DE-001'"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

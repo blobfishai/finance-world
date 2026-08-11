@@ -1,0 +1,44 @@
+{
+ "answer_checks": [
+  {
+   "field": "contact_name",
+   "type": "contains_all",
+   "expect": [
+    "Ana"
+   ]
+  },
+  {
+   "field": "contact_email",
+   "type": "contains_all",
+   "expect": [
+    "ana@forest-sim.example"
+   ]
+  },
+  {
+   "field": "phone_number",
+   "type": "contains_all",
+   "expect": [
+    "555-0100"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

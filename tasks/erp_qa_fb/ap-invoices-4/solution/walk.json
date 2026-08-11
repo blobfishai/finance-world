@@ -1,0 +1,19 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT invoice, account, ROUND(amount,2) AS amount FROM erp_vend_trans WHERE txn_type='Invoice' AND trans_date='2026-03-02'"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "invoice_count": 6,
+    "invoiced_total": 200866.74
+   }
+  }
+ }
+]

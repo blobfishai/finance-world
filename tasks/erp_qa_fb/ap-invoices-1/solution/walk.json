@@ -3,7 +3,7 @@
   "server": "erp",
   "tool": "data_find_entities_sql",
   "args": {
-   "sql": "SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_vend_trans WHERE account='1002' AND txn_type='Invoice' AND closed=0"
+   "sql": "SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_vend_trans WHERE account IN ('1002') AND txn_type='Invoice' AND closed=0"
   }
  },
  {
@@ -12,7 +12,7 @@
   "args": {
    "answers": {
     "open_invoice_count": 0,
-    "open_invoice_total": "none"
+    "open_invoice_total": "none - this vendor has no invoices awaiting payment"
    }
   }
  }

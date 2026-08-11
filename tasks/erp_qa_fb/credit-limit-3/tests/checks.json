@@ -1,18 +1,24 @@
 {
  "answer_checks": [
   {
-   "field": "credit_limit",
+   "field": "customers_listed",
    "type": "number",
-   "expect": 100000.0,
-   "tol_abs": 0.02,
-   "gt_sql": "SELECT credit_max FROM erp_customers WHERE account='SYNCUS-0485'"
+   "expect": 10,
+   "tol_abs": 0
   },
   {
-   "field": "customer_name",
+   "field": "top_customer_account",
    "type": "contains_all",
    "expect": [
-    "Contoso Retail"
+    "SYNCUS-0303"
    ]
+  },
+  {
+   "field": "top_customer_over_limit_amount",
+   "type": "number",
+   "expect": 117879.95,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0) - (SELECT credit_max FROM erp_customers WHERE account='SYNCUS-0303'),2) FROM erp_cust_trans WHERE account='SYNCUS-0303' AND txn_type='Invoice' AND closed=0"
   }
  ],
  "trace_checks": [

@@ -1,0 +1,27 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "PaymentRuns",
+   "filters": {}
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT run_id, pay_date, state FROM erp_payment_runs"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "payment_run_count": 0,
+    "vendors_included": "none - no payment proposal exists in USMF \u2014 the payment run table is empty"
+   }
+  }
+ }
+]

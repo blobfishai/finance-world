@@ -1,0 +1,44 @@
+{
+ "answer_checks": [
+  {
+   "field": "currency_count",
+   "type": "number",
+   "expect": 2,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(DISTINCT currency) FROM erp_vend_trans WHERE txn_type='Invoice' AND closed=0"
+  },
+  {
+   "field": "usd_ap_balance",
+   "type": "number",
+   "expect": 35933775.16,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_vend_trans WHERE txn_type='Invoice' AND closed=0 AND currency='USD'"
+  },
+  {
+   "field": "eur_ap_balance",
+   "type": "number",
+   "expect": 294.72,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_vend_trans WHERE txn_type='Invoice' AND closed=0 AND currency='EUR'"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

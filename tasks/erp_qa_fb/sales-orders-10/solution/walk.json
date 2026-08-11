@@ -1,0 +1,22 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "name": "Contoso Retail San Diego"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "matching_customer_count": 0,
+    "largest_sales_order_id": "none - no customer named 'Contoso Retail San Diego' exists in USMF"
+   }
+  }
+ }
+]

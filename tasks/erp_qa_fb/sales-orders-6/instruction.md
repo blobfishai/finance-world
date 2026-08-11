@@ -6,5 +6,5 @@ What are the open sales orders for Cave Wholesales in USMF as of March 2, 2026?
 
 Reply with `submit_answer`:
 
-- `order_count` (number)
+- `open_sales_order_count` (number)
 - `sales_order_id` (text)

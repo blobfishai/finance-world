@@ -28,16 +28,15 @@ ANALYTIC = re.compile(r"\b(assess|evaluate|analy[sz]e|comprehensive|outlook|posi
                       r"strategy|compare .* and .* across|discuss|summari[sz]e|brief|overview|"
                       r"recommend|implications)\b", re.I)
 
-TICKERS = {
-    "walmart": "WMT", "coca-cola": "KO", "coca cola": "KO", "chevron": "CVX",
-    "caterpillar": "CAT", "intel": "INTC", "exxonmobil": "XOM", "exxon mobil": "XOM",
-    "amazon": "AMZN", "microsoft": "MSFT", "pfizer": "PFE", "apple": "AAPL",
-    "ford motor company": "F", "tesla": "TSLA", "boeing": "BA", "nvidia": "NVDA",
-}
+# Entity extraction runs off SEC's own registrant list, not a hardcoded map. The hardcoded
+# version missed 30 of 61 addressable items (Target, Comcast, Shopify, JPMorgan Chase,
+# Costco, AT&T, AMD, Lockheed Martin ...) — and an item with no entity extracted binds as
+# "bound", so the ledger inherited the miss as false confidence.
+from lexicon import Lexicon
+_LEX = Lexicon()
 
 def _companies(q):
-    ql = q.lower()
-    return sorted({t for name, t in TICKERS.items() if name in ql})
+    return _LEX.find(q)
 
 def load():
     d = yaml.safe_load(DATASET.read_text())

@@ -1,11 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What is the aged balance for Birch Company in USMF as of March 2, 2026?
+Show me the aging breakdown for Graphic Design Institute North in USMF as of March 2, 2026: current, 1–30, 31–60, 61–90, 90+ days as of March 2, 2026
 
 ---
 
 Reply with `submit_answer`:
 
-- `total_past_due` (number)
-- `not_yet_due` (number)
-- `over_90_days` (number)
+- `open_invoice_count` (number)
+- `aged_balance` (text)

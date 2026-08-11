@@ -1,15 +1,19 @@
 {
  "answer_checks": [
   {
-   "field": "order_count",
+   "field": "max_open_orders_per_customer",
    "type": "number",
-   "expect": 0,
-   "tol_abs": 0
+   "expect": 1,
+   "tol_abs": 0,
+   "gt_sql": "SELECT MAX(orders) FROM (SELECT COUNT(*) AS orders FROM erp_sales_orders WHERE status LIKE 'Open%' GROUP BY account)"
   },
   {
-   "field": "sales_order_id",
-   "type": "string",
-   "expect": "none"
+   "field": "customer_names",
+   "type": "contains_all",
+   "expect": [
+    "Birch Company",
+    "Cave Wholesales"
+   ]
   }
  ],
  "trace_checks": [

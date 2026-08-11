@@ -1,11 +1,11 @@
 **Casey Morgan · AR & Collections · Teams**
 
-Show me the aging breakdown for Graphic Design Institute North in USMF as of March 2, 2026: current, 1–30, 31–60, 61–90, 90+ days as of March 2, 2026
+Of the customers in Group 90  in USMF that have past due balances for more than 90 days, what are the top 10 based on past due balances as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `total_past_due` (number)
-- `not_yet_due` (number)
-- `over_90_days` (number)
+- `customers_listed` (number)
+- `top_customer_account` (text)
+- `top_customer_past_due` (number)

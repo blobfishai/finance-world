@@ -1,0 +1,34 @@
+{
+ "answer_checks": [
+  {
+   "field": "expiring_invoice_count",
+   "type": "number",
+   "expect": 0,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_cust_trans t JOIN erp_cash_disc d ON d.code=t.cash_disc_code WHERE t.txn_type='Invoice' AND t.closed=0 AND date(t.trans_date, '+' || d.days || ' days') BETWEEN '2026-03-02' AND '2026-03-07'"
+  },
+  {
+   "field": "invoices",
+   "type": "none_answer"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

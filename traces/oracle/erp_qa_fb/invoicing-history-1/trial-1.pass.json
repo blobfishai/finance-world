@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_fb/invoicing-history-1",
+ "family": "erp_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786485678.726885,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, trans_date, ROUND(amount,2) AS amount FROM erp_cust_trans WHERE account IN ('SYNCUS-0317','SYNCUS-0989','DE-001') AND txn_type='Invoice'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485678.728833,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"invoice_count\": 9, \"invoiced_total\": 807303.22}}",
+   "ok": true
+  }
+ ]
+}

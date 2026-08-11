@@ -6,5 +6,5 @@ Which customer has the most open sales orders in USMF as of March 2, 2026?
 
 Reply with `submit_answer`:
 
-- `order_count` (number)
-- `sales_order_id` (text)
+- `max_open_orders_per_customer` (number)
+- `customer_names` (text)

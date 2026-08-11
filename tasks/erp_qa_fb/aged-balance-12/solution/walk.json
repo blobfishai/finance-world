@@ -1,0 +1,29 @@
+[
+ {
+  "server": "erp",
+  "tool": "api_find_actions",
+  "args": {
+   "query": "aged balances"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_cust_trans WHERE txn_type='Invoice' AND closed=0 AND julianday('2026-03-02') - julianday(due_date) > 90"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "current_not_due": 5817896.81,
+    "days_1_30": 3917195.87,
+    "days_31_60": 2314492.37,
+    "days_61_90": 2499959.29,
+    "days_over_90": 16369769.19
+   }
+  }
+ }
+]

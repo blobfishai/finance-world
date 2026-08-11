@@ -7,4 +7,4 @@ What is Forest Wholesales credit rating in our ERP records in USMF as of March 2
 Reply with `submit_answer`:
 
 - `credit_rating` (text)
-- `customer_name` (text)
+- `customer_account` (text)

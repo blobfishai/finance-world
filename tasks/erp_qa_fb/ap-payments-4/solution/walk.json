@@ -1,0 +1,26 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT invoice, account, due_date, ROUND(amount-settled,2) AS open FROM erp_vend_trans WHERE txn_type='Invoice' AND closed=0 AND due_date BETWEEN '2026-03-02' AND '2026-03-08' LIMIT 25"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT COUNT(*) AS invoices, ROUND(SUM(amount-settled),2) AS total FROM erp_vend_trans WHERE txn_type='Invoice' AND closed=0 AND due_date BETWEEN '2026-03-02' AND '2026-03-08'"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "ap_obligation_next_7_days_count": 58,
+    "ap_obligation_next_7_days_total": 1540586.74
+   }
+  }
+ }
+]

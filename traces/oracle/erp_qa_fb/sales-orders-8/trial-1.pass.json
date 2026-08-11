@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_fb/sales-orders-8",
+ "family": "erp_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786485688.995824,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT sales_id, status, hold_code FROM erp_sales_orders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485688.997677,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"sales_order_count\": 0, \"sales_orders_in_usmf\": 3, \"sales_order_ids\": \"none - no sales order in USMF has status 'Released'\"}}",
+   "ok": true
+  }
+ ]
+}

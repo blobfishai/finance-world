@@ -1,0 +1,20 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT t.account, c.name, ROUND(SUM(t.amount-t.settled),2) AS balance FROM erp_cust_trans t JOIN erp_customers c ON c.account=t.account WHERE t.txn_type='Invoice' AND t.closed=0 GROUP BY t.account ORDER BY balance DESC LIMIT 10"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "customers_listed": 10,
+    "top_customer_account": "DE-001",
+    "top_customer_outstanding": 669832.5
+   }
+  }
+ }
+]

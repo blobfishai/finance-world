@@ -1,0 +1,19 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT account, ROUND(SUM(amount),2) AS invoiced FROM erp_cust_trans WHERE txn_type='Invoice' GROUP BY account ORDER BY invoiced DESC LIMIT 10"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "customer_account": "DE-001",
+    "total_invoiced": 669832.5
+   }
+  }
+ }
+]

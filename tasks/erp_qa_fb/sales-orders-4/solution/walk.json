@@ -1,12 +1,9 @@
 [
  {
   "server": "erp",
-  "tool": "data_find_entities",
+  "tool": "data_find_entities_sql",
   "args": {
-   "entity": "SalesOrders",
-   "filters": {
-    "account": null
-   }
+   "sql": "SELECT sales_id, status, hold_code FROM erp_sales_orders"
   }
  },
  {
@@ -14,8 +11,9 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "order_count": 0,
-    "sales_order_id": "none"
+    "sales_order_count": 0,
+    "sales_orders_in_usmf": 3,
+    "sales_order_ids": "none - no sales order in USMF has status 'returned'"
    }
   }
  }

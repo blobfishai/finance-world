@@ -5,8 +5,15 @@
   "args": {
    "entity": "Activities",
    "filters": {
-    "account": "US-018"
+    "closed": 0
    }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT activity_id, account, start_date, end_date, closed FROM erp_activities"
   }
  },
  {
@@ -14,8 +21,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "open_activity_count": 0,
-    "open_activity_purpose": "none"
+    "worklist_customer_count": 0,
+    "worklist_customers": "none - no open collections activity is scheduled for 2026-03-03"
    }
   }
  }

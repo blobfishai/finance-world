@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_fb/sales-orders-3",
+ "family": "erp_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786485686.9363961,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, customer_name, status FROM erp_sales_orders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485686.938389,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"max_open_orders_per_customer\": 1, \"customer_names\": \"Birch Company; Cave Wholesales\"}}",
+   "ok": true
+  }
+ ]
+}

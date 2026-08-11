@@ -3,7 +3,7 @@
   "server": "erp",
   "tool": "data_find_entities_sql",
   "args": {
-   "sql": "SELECT ROUND(SUM(amount-settled),2) AS ap_balance FROM erp_vend_trans WHERE account='None' AND txn_type='Invoice' AND closed=0"
+   "sql": "SELECT COUNT(*) AS overdue_invoices, ROUND(SUM(amount-settled),2) AS overdue_ap FROM erp_vend_trans WHERE txn_type='Invoice' AND closed=0 AND due_date < '2026-03-02'"
   }
  },
  {
@@ -11,8 +11,8 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "ap_balance": 0,
-    "vendor_account": null
+    "overdue_invoice_count": 1197,
+    "overdue_ap_balance": 30616849.18
    }
   }
  }

@@ -1,10 +1,11 @@
 {
  "answer_checks": [
   {
-   "field": "order_count",
+   "field": "open_sales_order_count",
    "type": "number",
    "expect": 1,
-   "tol_abs": 0
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_sales_orders WHERE account IN ('US-004') AND status LIKE 'Open%'"
   },
   {
    "field": "sales_order_id",

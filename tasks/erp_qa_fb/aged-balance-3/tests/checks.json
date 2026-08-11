@@ -1,22 +1,15 @@
 {
  "answer_checks": [
   {
-   "field": "total_past_due",
+   "field": "open_invoice_count",
    "type": "number",
-   "expect": 1084.11,
-   "tol_abs": 0.02
+   "expect": 0,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_cust_trans WHERE account IN ('SYNCUS-0686') AND txn_type='Invoice' AND closed=0"
   },
   {
-   "field": "not_yet_due",
-   "type": "number",
-   "expect": 376.41,
-   "tol_abs": 0.02
-  },
-  {
-   "field": "over_90_days",
-   "type": "number",
-   "expect": 0.0,
-   "tol_abs": 0.02
+   "field": "aged_balance",
+   "type": "none_answer"
   }
  ],
  "trace_checks": [

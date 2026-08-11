@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_fb/aged-balance-2",
+ "family": "erp_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786485660.196,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_cust_trans WHERE account IN ('SYNCUS-0659') AND closed=0\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485660.1977952,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"transactions_coming_due_count\": 0, \"amount_coming_due\": \"none - no open transaction for this customer falls due between 2026-03-02 and 2026-03-08\"}}",
+   "ok": true
+  }
+ ]
+}

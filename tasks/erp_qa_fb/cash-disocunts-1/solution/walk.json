@@ -3,7 +3,7 @@
   "server": "erp",
   "tool": "data_find_entities_sql",
   "args": {
-   "sql": "SELECT COUNT(*) AS n FROM erp_settlements WHERE account='SYNCUS-0664' AND cash_disc_taken > 0"
+   "sql": "SELECT settle_date, ROUND(amount,2) AS settled, ROUND(cash_disc_taken,2) AS discount FROM erp_settlements WHERE side='AR' AND account IN ('SYNCUS-0664')"
   }
  },
  {

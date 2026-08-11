@@ -1,10 +1,10 @@
 **Priya Shah · AP Manager · Teams**
 
-What is the total AP liability by vendor group in USMF?
+What is the total overdue AP balance in USMF?
 
 ---
 
 Reply with `submit_answer`:
 
-- `ap_balance` (number)
-- `vendor_account` (text)
+- `overdue_invoice_count` (number)
+- `overdue_ap_balance` (number)

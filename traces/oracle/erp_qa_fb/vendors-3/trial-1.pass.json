@@ -1,0 +1,39 @@
+{
+ "task": "erp_qa_fb/vendors-3",
+ "family": "erp_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 2,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 2}\n",
+ "trace": [
+  {
+   "ts": 1786485692.8996632,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT on_hold, COUNT(*) AS vendors FROM erp_vendors GROUP BY on_hold\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786485692.901362,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"vendors_on_payment_hold\": 0, \"vendors_reviewed\": 1003, \"vendor_accounts\": \"none - no vendor in USMF is on payment hold\"}}",
+   "ok": true
+  }
+ ]
+}

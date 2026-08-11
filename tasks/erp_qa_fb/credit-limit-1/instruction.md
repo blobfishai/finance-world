@@ -7,4 +7,4 @@ What is the credit limit for SYNCUS-0001 USMF as of March 2, 2026?
 Reply with `submit_answer`:
 
 - `credit_limit` (number)
-- `customer_name` (text)
+- `customer_account` (text)

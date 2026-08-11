@@ -3,7 +3,7 @@
   "server": "erp",
   "tool": "data_find_entities_sql",
   "args": {
-   "sql": "SELECT invoice, trans_date, ROUND(-amount,2) AS credit FROM erp_cust_trans WHERE account='SYNCUS-0352' AND txn_type='CreditNote' AND closed=0"
+   "sql": "SELECT invoice, trans_date, ROUND(-amount,2) AS credit FROM erp_cust_trans WHERE account IN ('SYNCUS-0352') AND txn_type='CreditNote' AND closed=0"
   }
  },
  {
@@ -12,7 +12,7 @@
   "args": {
    "answers": {
     "unapplied_credit_note_count": 0,
-    "unapplied_credit_total": "none"
+    "unapplied_credit_total": "none - this customer has no unapplied credit notes"
    }
   }
  }

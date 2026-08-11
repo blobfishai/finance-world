@@ -1,10 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What are the open activities  for Contoso Retail Detroit in USMF as of March 2, 2026?
+Which customers are on the collections agent's worklist for March 3, 2026 in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `open_activity_count` (number)
-- `open_activity_purpose` (text)
+- `worklist_customer_count` (number)
+- `worklist_customers` (text)

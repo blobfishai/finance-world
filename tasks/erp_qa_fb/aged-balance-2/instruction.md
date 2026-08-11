@@ -1,11 +1,10 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What is the aged balance of Forest Wholesales?
+Which transactions for Humongous Insurance Europe are coming due in the next 7 days (SYNCUS-0659) in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `total_past_due` (number)
-- `not_yet_due` (number)
-- `over_90_days` (number)
+- `transactions_coming_due_count` (number)
+- `amount_coming_due` (text)

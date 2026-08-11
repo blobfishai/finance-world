@@ -1,18 +1,22 @@
 {
  "answer_checks": [
   {
-   "field": "credit_limit",
+   "field": "customers_on_credit_hold",
    "type": "number",
-   "expect": 25000.0,
-   "tol_abs": 0.02,
-   "gt_sql": "SELECT credit_max FROM erp_customers WHERE account='SYNCUS-0883'"
+   "expect": 0,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE COALESCE(LOWER(on_hold),'open') NOT IN ('open','no','none')"
   },
   {
-   "field": "customer_name",
-   "type": "contains_all",
-   "expect": [
-    "Humongous Insurance International"
-   ]
+   "field": "customers_reviewed",
+   "type": "number",
+   "expect": 1007,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_customers"
+  },
+  {
+   "field": "customer_accounts",
+   "type": "none_answer"
   }
  ],
  "trace_checks": [

@@ -1,0 +1,43 @@
+{
+ "answer_checks": [
+  {
+   "field": "vendor_group_count",
+   "type": "number",
+   "expect": 5,
+   "tol_abs": 0
+  },
+  {
+   "field": "largest_vendor_group",
+   "type": "contains_all",
+   "expect": [
+    "30"
+   ]
+  },
+  {
+   "field": "largest_group_ap_balance",
+   "type": "number",
+   "expect": 8004342.18,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(COALESCE(SUM(t.amount-t.settled),0),2) FROM erp_vend_trans t JOIN erp_vendors v ON v.account=t.account WHERE t.txn_type='Invoice' AND t.closed=0 AND v.vendor_group='30'"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

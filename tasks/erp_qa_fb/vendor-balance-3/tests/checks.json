@@ -1,0 +1,41 @@
+{
+ "answer_checks": [
+  {
+   "field": "vendors_in_group",
+   "type": "number",
+   "expect": 0,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_vendors WHERE LOWER(vendor_group)='services'"
+  },
+  {
+   "field": "vendor_group_count",
+   "type": "number",
+   "expect": 5,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(DISTINCT vendor_group) FROM erp_vendors"
+  },
+  {
+   "field": "ap_balance",
+   "type": "none_answer"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

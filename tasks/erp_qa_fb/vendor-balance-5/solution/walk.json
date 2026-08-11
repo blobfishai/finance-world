@@ -1,0 +1,20 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT account, ROUND(SUM(amount-settled),2) AS due FROM erp_vend_trans WHERE txn_type='Invoice' AND closed=0 AND due_date BETWEEN '2026-04-01' AND '2026-04-30' GROUP BY account ORDER BY due DESC LIMIT 10"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "total_due_2026_04": 800326.81,
+    "top_vendor_account": "SYNVEN-0778",
+    "top_vendor_amount_due_2026_04": 49870.13
+   }
+  }
+ }
+]

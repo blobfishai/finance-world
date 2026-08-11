@@ -1,0 +1,41 @@
+{
+ "answer_checks": [
+  {
+   "field": "vendor_count",
+   "type": "number",
+   "expect": 0,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_vendors v JOIN erp_payment_terms p ON p.code=v.payment_term WHERE p.days > 60"
+  },
+  {
+   "field": "longest_payment_term_days",
+   "type": "number",
+   "expect": 45,
+   "tol_abs": 0,
+   "gt_sql": "SELECT MAX(p.days) FROM erp_vendors v JOIN erp_payment_terms p ON p.code=v.payment_term"
+  },
+  {
+   "field": "vendor_accounts",
+   "type": "none_answer"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

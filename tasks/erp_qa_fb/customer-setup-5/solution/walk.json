@@ -1,0 +1,23 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "name": "Forest Wholesales"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "contact_name": "Ana",
+    "contact_email": "ana@forest-sim.example",
+    "phone_number": "555-0100"
+   }
+  }
+ }
+]

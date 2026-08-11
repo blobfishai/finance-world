@@ -4,7 +4,8 @@
    "field": "open_po_count",
    "type": "number",
    "expect": 1,
-   "tol_abs": 0
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_purch_orders WHERE vendor IN ('1001') AND status='Open'"
   },
   {
    "field": "purchase_order_number",

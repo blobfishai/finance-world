@@ -1,0 +1,37 @@
+{
+ "answer_checks": [
+  {
+   "field": "customer_count",
+   "type": "number",
+   "expect": 1,
+   "tol_abs": 0,
+   "gt_sql": "SELECT COUNT(*) FROM erp_customers WHERE currency='EUR'"
+  },
+  {
+   "field": "customer_accounts",
+   "type": "contains_all",
+   "expect": [
+    "DE-001"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

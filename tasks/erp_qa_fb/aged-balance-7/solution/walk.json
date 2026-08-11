@@ -1,0 +1,26 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT account, invoice, due_date, ROUND(amount-settled,2) AS open FROM erp_cust_trans WHERE txn_type='Invoice' AND closed=0 AND julianday('2026-03-02') - julianday(due_date) > 180 LIMIT 25"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_cust_trans WHERE txn_type='Invoice' AND closed=0 AND julianday('2026-03-02') - julianday(due_date) > 180"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "invoice_count": 434,
+    "past_due_180_plus_total": 9903381.01
+   }
+  }
+ }
+]

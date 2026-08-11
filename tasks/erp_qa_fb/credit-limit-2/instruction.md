@@ -1,10 +1,11 @@
 **Casey Morgan · AR & Collections · Teams**
 
-What is the credit limit and available credit for Humongous Insurance International (SYNCUS-0883) in USMF as of March 2, 2026?
+Which customers are currently on credit hold in USMF as of March 2, 2026?
 
 ---
 
 Reply with `submit_answer`:
 
-- `credit_limit` (number)
-- `customer_name` (text)
+- `customers_on_credit_hold` (number)
+- `customers_reviewed` (number)
+- `customer_accounts` (text)

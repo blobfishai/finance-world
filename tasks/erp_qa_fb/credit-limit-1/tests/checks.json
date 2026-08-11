@@ -8,10 +8,10 @@
    "gt_sql": "SELECT credit_max FROM erp_customers WHERE account='SYNCUS-0001'"
   },
   {
-   "field": "customer_name",
+   "field": "customer_account",
    "type": "contains_all",
    "expect": [
-    "A. Datum Corporation"
+    "SYNCUS-0001"
    ]
   }
  ],

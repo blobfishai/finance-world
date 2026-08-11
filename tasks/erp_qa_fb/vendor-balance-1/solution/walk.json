@@ -3,7 +3,7 @@
   "server": "erp",
   "tool": "data_find_entities_sql",
   "args": {
-   "sql": "SELECT ROUND(SUM(amount-settled),2) AS ap_balance FROM erp_vend_trans WHERE currency='EUR' AND txn_type='Invoice' AND closed=0"
+   "sql": "SELECT currency, COUNT(*) AS invoices, ROUND(SUM(amount-settled),2) AS ap_balance FROM erp_vend_trans WHERE txn_type='Invoice' AND closed=0 GROUP BY currency"
   }
  },
  {
@@ -12,7 +12,8 @@
   "args": {
    "answers": {
     "ap_balance": 294.72,
-    "currency": "EUR"
+    "currency": "EUR",
+    "open_invoice_count": 1
    }
   }
  }

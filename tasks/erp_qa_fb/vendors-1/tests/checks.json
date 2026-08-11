@@ -2,7 +2,7 @@
  "answer_checks": [
   {
    "field": "offers_discount",
-   "type": "string",
+   "type": "yes_no",
    "expect": "yes"
   },
   {
@@ -16,7 +16,8 @@
    "field": "discount_percent",
    "type": "number",
    "expect": 0.5,
-   "tol_abs": 0.02
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT percent FROM erp_cash_disc WHERE code='0.5%D10'"
   }
  ],
  "trace_checks": [

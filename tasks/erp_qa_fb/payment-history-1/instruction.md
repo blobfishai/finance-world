@@ -6,6 +6,7 @@ What is the largest payment made by Contoso Retail Detroit as of March 2, 2026 i
 
 Reply with `submit_answer`:
 
+- `payment_count` (number)
 - `largest_payment_amount` (number)
 - `largest_payment_voucher` (text)
 - `largest_payment_date` (text)

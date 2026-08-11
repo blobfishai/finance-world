@@ -1,0 +1,26 @@
+[
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT customer_group, COUNT(*) AS customers FROM erp_customers GROUP BY customer_group"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT account, name FROM erp_customers WHERE customer_group='30' LIMIT 25"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "customer_count": 204,
+    "customer_group": "30"
+   }
+  }
+ }
+]
