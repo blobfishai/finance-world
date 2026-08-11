@@ -22,6 +22,20 @@ required servers reachable in the oracle walk · seed tables exist in schema ·
 manufactures capability verdicts out of harness caps — exactly what the reference-relative
 budget rule exists to prevent. Both corrected; the check now guards it permanently.
 
+### A6. Two realism bugs found by tracing tasks end-to-end (`sim/show_traces.py`) — FIXED
+1. **Invented duplicate vendor identity.** `vendor_master/missing-po-inquiry` seeded
+   "Wingtip Logistics" onto SYNVEN-0011 — an account the master already used for another
+   company — producing two similar Wingtips and an ambiguous lookup. Fixed to use the
+   existing SYNVEN-0027 Wingtip Toys, plus a state check that the agent actually mailed
+   the address on the vendor master. **Rule: task seeds may add entities, never silently
+   repurpose an existing account's identity.**
+2. **Phrase-only search.** `docs.search_documents("dunning collection")` returned zero
+   matches because it required the phrase as a contiguous substring; the oracle only
+   recovered by knowing the doc_id. Real search tokenizes, so both `docs.search_documents`
+   and `email.messages_list` now require all terms in any order (with an any-term
+   fallback). Before the fix, a model that searched sensibly would have been failed by
+   the harness — a false capability verdict.
+
 ## 2026-08-10 — wave-0 calibration
 
 ### A1. Session-limit contamination (harness/account, 33/40 runs) — FIXED

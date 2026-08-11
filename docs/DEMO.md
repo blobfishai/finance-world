@@ -408,7 +408,7 @@ task worlds, every response computed from SQLite at call time. SIMULATION ONLY.
 {"updated": true, "customer_account": "US-008", "on_hold": "Open", "reason": "demo"}
 ```
 
-11 seeded policy/SOP documents, 2 staged input files.
+14 seeded policy/SOP documents, 2 staged input files.
 
 
 ## Seeded documents and input files
@@ -425,6 +425,9 @@ task worlds, every response computed from SQLite at call time. SIMULATION ONLY.
 | erp_qa/cash-disc-fourthcoffee-east | input file | `statement-fourthcoffee-east-2026-02.csv` | Fourth Coffee East - Statement of Account,,,,, |
 | erp_qa/collections-sparrow | policy/SOP | `policy--collections-dunning-runbook.md` | # Collections & Dunning Runbook (AR-SOP-003) |
 | expense_audit/te-sample-feb | policy/SOP | `policy--travel-and-expense.md` | # Travel & Expense Policy (FIN-POL-020) |
+| expense_audit/threshold-shaving-h1 | policy/SOP | `policy--expense-audit-detectors.md` | # Expense Audit Detectors (FIN-POL-021) |
 | payment_proposal/friday-run-mar06 | policy/SOP | `sop--payment-run.md` | # Payment Run SOP (AP-SOP-002) |
 | pbc/approval-evidence-q1 | input file | `pbc-request-03.csv` | PBC Request #03 - Invoice approval evidence,,, |
+| pbc/sampling-projection-q1 | policy/SOP | `sop--audit-sampling-method.md` | # Audit Sampling & Projection Method (FIN-SOP-009) |
+| threeway_match/tolerance-dialect-mar | policy/SOP | `policy--ap-match-tolerances.md` | # AP Match Tolerance Policy (AP-POL-018) |
 | vendor_master/bank-change-verify | policy/SOP | `policy--vendor-bank-change.md` | # Vendor Bank Detail Change Policy (AP-POL-012) |

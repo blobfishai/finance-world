@@ -37,10 +37,15 @@ def _full(r):
 @S.tool("messages_list", "Search messages (users.messages.list). `q` matches subject/body/sender; optional label (default INBOX).",
         {"q": {"type": "string"}, "label": {"type": "string"}}, ["q"])
 def messages_list(q, label="INBOX"):
-    cx = S.db(); like = f"%{q.lower()}%"
-    rows = cx.execute("""SELECT id, subject, folder FROM email_messages
-                         WHERE UPPER(folder)=? AND (LOWER(subject) LIKE ? OR LOWER(body) LIKE ? OR LOWER(from_addr) LIKE ?)
-                         ORDER BY sent_at DESC LIMIT 25""", (label.upper(), like, like, like)).fetchall()
+    """Token search over subject/body/sender: every term must appear, in any order."""
+    cx = S.db()
+    terms = [t for t in re.findall(r"[a-z0-9@.\-]+", q.lower()) if len(t) > 2]
+    rows = []
+    for r in cx.execute("""SELECT id, subject, folder, from_addr, body, sent_at FROM email_messages
+                           WHERE UPPER(folder)=? ORDER BY sent_at DESC""", (label.upper(),)):
+        hay = f"{r['subject']} {r['body']} {r['from_addr']}".lower()
+        if not terms or all(t in hay for t in terms): rows.append(r)
+    rows = rows[:25]
     return {"messages": [{"id": r["id"], "threadId": _thread_id(r["subject"])} for r in rows],
             "resultSizeEstimate": len(rows)}
 

@@ -63,6 +63,12 @@
    "name": "vendor_replied",
    "sql": "SELECT COUNT(*) FROM email_messages WHERE id='em-reply-wingtip-po'",
    "expect": 1
+  },
+  {
+   "type": "row_count",
+   "name": "mailed_the_vendor_on_file",
+   "sql": "SELECT COUNT(*) FROM email_messages WHERE folder='sent' AND to_addr='ap@wingtip-sim.example'",
+   "expect": 1
   }
  ]
 }

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Docs MCP server — internal policy/SOP document store. Read-only. SIMULATION ONLY."""
-import sys
+import sys, re
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "lib"))
 from framework import Server
@@ -20,10 +20,20 @@ def list_documents(doc_type=None):
 @S.tool("search_documents", "Keyword search over titles and bodies.",
         {"query": {"type": "string"}}, ["query"])
 def search_documents(query):
-    cx = S.db(); like = f"%{query.lower()}%"
-    rows = cx.execute("""SELECT doc_id, title, doc_type, version FROM docs_documents
-                         WHERE LOWER(title) LIKE ? OR LOWER(body) LIKE ?""", (like, like))
-    return {"matches": [dict(r) for r in rows]}
+    """Token search: every term must appear somewhere in the title or body, in any order."""
+    cx = S.db()
+    terms = [t for t in re.findall(r"[a-z0-9]+", query.lower()) if len(t) > 2]
+    hits = []
+    for r in cx.execute("SELECT doc_id, title, doc_type, version, body FROM docs_documents"):
+        hay = f"{r['title']} {r['body']}".lower()
+        if not terms or all(t in hay for t in terms):
+            hits.append({k: r[k] for k in ("doc_id", "title", "doc_type", "version")})
+    if not hits and terms:   # fall back to any-term, so a near-miss query still guides the agent
+        for r in cx.execute("SELECT doc_id, title, doc_type, version, body FROM docs_documents"):
+            hay = f"{r['title']} {r['body']}".lower()
+            if any(t in hay for t in terms):
+                hits.append({k: r[k] for k in ("doc_id", "title", "doc_type", "version")})
+    return {"matches": hits}
 
 @S.tool("get_document", "Fetch a full document body.",
         {"doc_id": {"type": "string"}}, ["doc_id"])
