@@ -16,7 +16,7 @@ read-only), form tabs closed by default, grid filters support only the "matches"
 ISO dates, 25-row pages. All state lives in SQLite (WORLD_DB); form sessions persist in
 the erp_form_sessions table. SIMULATION ONLY.
 """
-import sys, re, json, datetime as dt
+import sys, re, json, json as _json, datetime as dt
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "lib"))
 from framework import Server, PAGE
@@ -28,7 +28,10 @@ import os as _os
 # unlocks the collections ICustomAPI actions. Raw data/form writes stay denied for both
 # (least privilege — write paths are exposed as governed actions, the ICustomAPI pattern).
 ROLE_NAME = {"analyst": "Finance analyst (read-only)",
-             "collections": "Collections coordinator"}.get(_os.environ.get("WORLD_ROLE", "analyst"),
+             "collections": "Collections coordinator",
+             "accountant": "Staff accountant (GL posting)",
+             "controller": "Controller (approver)",
+             "treasury": "Treasury analyst (payment runs)"}.get(_os.environ.get("WORLD_ROLE", "analyst"),
                                                            "Finance analyst (read-only)")
 ROLE = ROLE_NAME  # used in denial messages
 def _role(): return _os.environ.get("WORLD_ROLE", "analyst")
@@ -40,6 +43,16 @@ ENTITIES = {
     "VendorTransactions":   ("erp_vend_trans", "Posted AP subledger: vendor invoices/payments, due dates, settled, closed"),
     "CustomerSettlements":  ("erp_settlements", "Settlement links between payments and invoices incl. cash discount taken"),
     "PaymentTerms":         ("erp_payment_terms", "Payment terms codes (COD, Net15, Net30, ...)"),
+    "MainAccounts":         ("erp_main_accounts", "Chart of accounts: code, name, account_type, blocked, reconcilable"),
+    "FiscalPeriods":        ("erp_fiscal_periods", "Fiscal periods and their status (open | on_hold | closed)"),
+    "LedgerJournals":       ("erp_ledger_journals", "General journal headers: totals, period, state (draft|posted), reversal links"),
+    "LedgerJournalLines":   ("erp_ledger_journal_lines", "General journal lines: account, debit, credit, dimension"),
+    "ApprovalPolicies":     ("erp_approval_policies", "Delegation-of-authority rules: doc_type, threshold_amount, approving_role"),
+    "ApprovalRequests":     ("erp_approval_requests", "Approval inbox: doc_type, doc_id, amount, status, decision"),
+    "BankAccounts":         ("erp_bank_accounts", "Bank accounts with available balance as of a timestamp and overdraft limit"),
+    "PaymentRuns":          ("erp_payment_runs", "Payment run headers: pay date, cash available, eligible net, state"),
+    "PaymentRunLines":      ("erp_payment_run_lines", "Payment run lines: invoice, net, disposition (paid|rejected), reason_code"),
+    "ExchangeRates":        ("erp_fx_rates", "FX rates by from/to currency and date"),
     "CashDiscounts":        ("erp_cash_disc", "Cash discount codes: percent, day window, next-code chain"),
     "CollectionLetters":    ("erp_collection_letters", "Collection letter journal per customer: letter_code 1..4/Collection, date, status, fee"),
     "AgedBalancesSnapshot": ("erp_aging_snapshot", "Batch customer aging snapshot (run_id, as_of, buckets). May lag live transactions."),
@@ -399,7 +412,23 @@ ACTIONS = {
     "ContosoCollectionStatus": {"description": "Current dunning position for a customer: highest letter level, letters, open balance (params: customer_account)"},
     "ContosoIssueCollectionLetter": {"description": "WRITE (Collections role): post the next collection letter for a customer per the dunning ladder (params: customer_account). Validates sequence, 14-day spacing, and past-due status; posts the letter with its fee.", "requires_role": "collections"},
     "ContosoSetCreditHold": {"description": "WRITE (Collections role): set a customer's credit hold status (params: customer_account, on_hold 'Yes'|'Open', reason).", "requires_role": "collections"},
+    # --- write-and-approve surface (docs/HARD-LAYER-DESIGN.md M1/M2/M4; spec in
+    #     research/write-surface-spec.md). Two-phase: a propose action returns a
+    #     confirm_token + the exact effect; the committing action requires that token.
+    "ContosoJournalPropose": {"description": "WRITE (Accountant role): validate and stage a general journal (params: description, posting_date, lines[{account_code, debit?, credit?, description?, dimension_dept?}], voucher_type?). Enforces debit=credit, open period, and non-blocked accounts. Returns journal_id, whether delegation-of-authority approval is required, and a confirm_token for ContosoJournalPost.", "requires_role": "accountant"},
+    "ContosoJournalPost": {"description": "WRITE (Accountant role): post a staged journal (params: journal_id, confirm_token). Refuses if the period is closed/on_hold, if the journal is unbalanced, or if DoA approval is required and not yet granted.", "requires_role": "accountant"},
+    "ContosoApprovalList": {"description": "Read the delegation-of-authority approval inbox (params: status? 'pending'|'approved'|'rejected', doc_type?).", "requires_role": "controller"},
+    "ContosoApprovalDecide": {"description": "WRITE (Controller role): approve or reject a pending request (params: request_id, decision 'approve'|'reject', reason). A rejection requires a reason.", "requires_role": "controller"},
+    "ContosoPaymentRunPropose": {"description": "WRITE (Treasury role): build a payment proposal for a pay date against a bank account's available cash (params: pay_date, bank_account, vendor_account?). Returns every eligible obligation ranked, the cash available, and the shortfall if the eligible net exceeds it, plus a confirm_token.", "requires_role": "treasury"},
+    "ContosoPaymentRunCommit": {"description": "WRITE (Treasury role): commit a proposed run (params: run_id, confirm_token, paid[invoice...], rejected[{invoice, reason_code, reason}]). Every eligible obligation must appear in exactly one of paid or rejected, and the paid net must not exceed available cash — a short run is committed by naming what goes unpaid, not by dropping it.", "requires_role": "treasury"},
 }
+
+# Reason codes for the rejected half of a payment run. Vocabulary follows ERPNext's
+# _partition_payable_invoices plus the D365 hold/discount cases (write-surface-spec.md §4).
+REJECT_CODES = {"insufficient_cash", "vendor_on_hold", "awaiting_approval",
+                "discount_window_expired", "disputed", "missing_bank_details", "not_yet_due"}
+
+PROPOSAL_MAX_LINES = 60   # a payment proposal a human would actually review
 
 LETTER_FEES = {"1": 0.0, "2": 25.0, "3": 40.0}
 
@@ -435,6 +464,292 @@ def _set_credit_hold(cx, acct, on_hold, reason):
     cx.execute("UPDATE erp_customers SET on_hold=? WHERE account=?", (on_hold, acct))
     cx.commit()
     return {"updated": True, "customer_account": acct, "on_hold": on_hold, "reason": reason or ""}
+
+# ---------------------- write-and-approve implementation ---------------------
+# Confirm tokens are DETERMINISTIC by design. The oracle replays solution/walk.json with
+# literal arguments (sim/oracle.py), so a random token would be unexpressible in a gold walk
+# and every write task would fail spuriously (research/write-surface-spec.md §10.1). Minting
+# from (action, target, ordinal) keeps the two-phase gate honest — the agent still cannot
+# commit without first calling propose and reading the token out of its result — while
+# staying replayable.
+def _mint_token(cx, action, target_id, preview):
+    seq = cx.execute("SELECT COUNT(*) FROM erp_confirm_tokens WHERE target_id=?", (target_id,)).fetchone()[0] + 1
+    token = f"CONF-{target_id}-{seq}"
+    cx.execute("INSERT INTO erp_confirm_tokens(token,seq,action,actor,role,target_id,args_hash,"
+               "effect_preview,minted_at) VALUES(?,?,?,?,?,?,?,?,?)",
+               (token, seq, action, _role(), _role(), target_id, "", _json.dumps(preview)[:2000], S.now))
+    cx.commit()
+    return token
+
+def _consume_token(cx, action, target_id, token):
+    if not token:
+        return {"error": f"confirm_token is required: call the matching propose action first and pass the "
+                         f"confirm_token it returns. {action} will not run unconfirmed."}
+    row = cx.execute("SELECT * FROM erp_confirm_tokens WHERE token=?", (token,)).fetchone()
+    if not row or row["target_id"] != target_id:
+        return {"error": f"confirm_token '{token}' is not valid for {target_id}"}
+    if row["consumed_at"]:
+        return {"error": f"confirm_token '{token}' was already used at {row['consumed_at']}; "
+                         f"re-propose to obtain a fresh one (no blind retries)"}
+    cx.execute("UPDATE erp_confirm_tokens SET consumed_at=? WHERE token=?", (S.now, token))
+    return None
+
+def _audit(cx, entity_type, entity_id, action, before=None, after=None):
+    cx.execute("INSERT INTO erp_audit_trail(entity_type,entity_id,action,actor,role,at,before_json,after_json)"
+               " VALUES(?,?,?,?,?,?,?,?)",
+               (entity_type, entity_id, action, _role(), _role(), S.now,
+                _json.dumps(before or {})[:2000], _json.dumps(after or {})[:2000]))
+
+def _period_for(cx, date_str):
+    return cx.execute("SELECT * FROM erp_fiscal_periods WHERE ? BETWEEN period_start AND period_end",
+                      (date_str,)).fetchone()
+
+def _doa_required(cx, doc_type, amount):
+    """Lowest active threshold this amount exceeds, for the current role's documents."""
+    rows = cx.execute("SELECT * FROM erp_approval_policies WHERE doc_type=? AND active=1 "
+                      "ORDER BY threshold_amount", (doc_type,)).fetchall()
+    hit = [r for r in rows if amount > (r["threshold_amount"] or 0)]
+    return hit[-1] if hit else None
+
+def _journal_propose(cx, p):
+    lines = p.get("lines") or []
+    if not lines: return {"error": "parameter lines is required (at least two: one debit, one credit)"}
+    posting_date = p.get("posting_date") or S.today
+    per = _period_for(cx, posting_date)
+    if not per: return {"error": f"no fiscal period covers posting_date {posting_date}"}
+    if per["status"] != "open":
+        return {"error": f"validation: fiscal period {per['period_id']} is '{per['status']}'; "
+                         f"a journal cannot be staged into it. Open periods only."}
+    tot_d = tot_c = 0.0
+    for i, ln in enumerate(lines, 1):
+        acct = cx.execute("SELECT * FROM erp_main_accounts WHERE account_code=?", (str(ln.get("account_code")),)).fetchone()
+        if not acct:
+            return {"error": f"line {i}: no main account '{ln.get('account_code')}'",
+                    "hint": "query the MainAccounts entity for the chart of accounts"}
+        if acct["blocked"]:
+            return {"error": f"line {i}: account {acct['account_code']} ({acct['name']}) is blocked for posting"}
+        d, c = float(ln.get("debit") or 0), float(ln.get("credit") or 0)
+        if d and c: return {"error": f"line {i}: a line carries either a debit or a credit, not both"}
+        if not d and not c: return {"error": f"line {i}: needs a debit or a credit amount"}
+        tot_d += d; tot_c += c
+    diff = round(tot_d - tot_c, 2)
+    if abs(diff) > 0.005:
+        # ERPNext's wording: "Total Debit must be equal to Total Credit. The difference is {0}"
+        return {"error": f"validation: total debit must equal total credit. The difference is {diff}",
+                "total_debit": round(tot_d, 2), "total_credit": round(tot_c, 2)}
+    jid = f"GJ-{cx.execute('SELECT COUNT(*) FROM erp_ledger_journals').fetchone()[0] + 1:05d}"
+    cx.execute("INSERT INTO erp_ledger_journals(journal_id,dataareaid,voucher,voucher_type,description,"
+               "user_remark,posting_date,period_id,currency,total_debit,total_credit,difference,state,"
+               "created_by,created_at,source_doc_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,'draft',?,?,?)",
+               (jid, "USMF", jid, p.get("voucher_type") or "Journal Entry", p.get("description") or "",
+                p.get("user_remark") or "", posting_date, per["period_id"], "USD",
+                round(tot_d, 2), round(tot_c, 2), 0.0, _role(), S.now, p.get("source_doc_id")))
+    for i, ln in enumerate(lines, 1):
+        cx.execute("INSERT INTO erp_ledger_journal_lines(journal_id,line,account_code,description,debit,"
+                   "credit,currency,fx_rate,party_type,party,dimension_dept) VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+                   (jid, i, str(ln.get("account_code")), ln.get("description") or "",
+                    round(float(ln.get("debit") or 0), 2), round(float(ln.get("credit") or 0), 2),
+                    "USD", 1.0, ln.get("party_type"), ln.get("party"), ln.get("dimension_dept")))
+    pol = _doa_required(cx, "Journal Entry", round(tot_d, 2))
+    req_id = None
+    if pol:
+        req_id = f"APR-{cx.execute('SELECT COUNT(*) FROM erp_approval_requests').fetchone()[0] + 1:05d}"
+        cx.execute("INSERT INTO erp_approval_requests(request_id,dataareaid,doc_type,doc_id,amount,currency,"
+                   "submitted_by,submitted_at,note,policy_id,required_role,status) "
+                   "VALUES(?,?,?,?,?,?,?,?,?,?,?,'pending')",
+                   (req_id, "USMF", "Journal Entry", jid, round(tot_d, 2), "USD", _role(), S.now,
+                    p.get("description") or "", pol["policy_id"], pol["approving_role"]))
+    _audit(cx, "LedgerJournal", jid, "propose", after={"total_debit": round(tot_d, 2)})
+    cx.commit()
+    preview = {"journal_id": jid, "total_debit": round(tot_d, 2), "posting_date": posting_date,
+               "period_id": per["period_id"], "lines": len(lines)}
+    return {"staged": True, "journal_id": jid, "state": "draft", "total_debit": round(tot_d, 2),
+            "total_credit": round(tot_c, 2), "period_id": per["period_id"],
+            "approval_required": bool(pol),
+            "approval_request_id": req_id,
+            "approval_note": (f"exceeds the {pol['threshold_amount']:.2f} {pol['doc_type']} threshold "
+                              f"({pol['policy_id']}); {pol['approving_role']} must approve before posting"
+                              if pol else "below all delegation-of-authority thresholds"),
+            "confirm_token": _mint_token(cx, "ContosoJournalPost", jid, preview),
+            "effect_preview": preview}
+
+def _journal_post(cx, p):
+    jid = p.get("journal_id")
+    if not jid: return {"error": "parameter journal_id is required"}
+    j = cx.execute("SELECT * FROM erp_ledger_journals WHERE journal_id=?", (jid,)).fetchone()
+    if not j: return {"error": f"no journal '{jid}'"}
+    if j["state"] == "posted": return {"error": f"journal {jid} is already posted"}
+    if not p.get("confirm_token"):
+        return {"error": "confirm_token is required: call ContosoJournalPropose first and pass the "
+                         "confirm_token it returns. ContosoJournalPost will not run unconfirmed."}
+    per = cx.execute("SELECT * FROM erp_fiscal_periods WHERE period_id=?", (j["period_id"],)).fetchone()
+    if per and per["status"] != "open":
+        return {"error": f"validation: fiscal period {per['period_id']} is '{per['status']}'; cannot post"}
+    if abs(round(j["total_debit"] - j["total_credit"], 2)) > 0.005:
+        return {"error": "validation: journal is out of balance"}
+    req = cx.execute("SELECT * FROM erp_approval_requests WHERE doc_type='Journal Entry' AND doc_id=?"
+                     " ORDER BY submitted_at DESC LIMIT 1", (jid,)).fetchone()
+    if req and req["status"] != "approved":
+        return {"error": f"validation: journal {jid} requires {req['required_role']} approval "
+                         f"(request {req['request_id']} is '{req['status']}'); it cannot be posted yet"}
+    bad = _consume_token(cx, "ContosoJournalPost", jid, p.get("confirm_token"))
+    if bad: return bad
+    cx.execute("UPDATE erp_ledger_journals SET state='posted', posted_by=?, posted_at=? WHERE journal_id=?",
+               (_role(), S.now, jid))
+    _audit(cx, "LedgerJournal", jid, "post", before={"state": "draft"}, after={"state": "posted"})
+    cx.commit()
+    return {"posted": True, "journal_id": jid, "state": "posted", "posting_date": j["posting_date"],
+            "total_debit": j["total_debit"], "period_id": j["period_id"]}
+
+def _approval_decide(cx, p):
+    rid, decision = p.get("request_id"), (p.get("decision") or "").lower()
+    if not rid: return {"error": "parameter request_id is required"}
+    if decision not in ("approve", "reject"):
+        return {"error": "parameter decision must be 'approve' or 'reject'"}
+    r = cx.execute("SELECT * FROM erp_approval_requests WHERE request_id=?", (rid,)).fetchone()
+    if not r: return {"error": f"no approval request '{rid}'"}
+    if r["status"] != "pending":
+        return {"error": f"request {rid} was already {r['status']} at {r['decided_at']}"}
+    if decision == "reject" and not (p.get("reason") or "").strip():
+        return {"error": "validation: a rejection requires a reason"}
+    new = "approved" if decision == "approve" else "rejected"
+    cx.execute("UPDATE erp_approval_requests SET status=?, decided_by=?, decided_at=?, decision_reason=?"
+               " WHERE request_id=?", (new, _role(), S.now, p.get("reason") or "", rid))
+    _audit(cx, "ApprovalRequest", rid, new, before={"status": "pending"}, after={"status": new})
+    cx.commit()
+    return {"request_id": rid, "status": new, "doc_type": r["doc_type"], "doc_id": r["doc_id"],
+            "amount": r["amount"], "decided_at": S.now, "reason": p.get("reason") or ""}
+
+def _eligible_payables(cx, pay_date, vendor_account=None, due_from=None, vendor_group=None):
+    """Open AP obligations due on or before pay_date, with the cash discount re-derived (M4).
+
+    D365's payment proposal is always filtered (due-date range / vendor / group); an
+    unfiltered proposal over a live subledger is not a thing a treasury analyst builds.
+    """
+    where, args = ["t.txn_type='Invoice'", "t.closed=0", "t.due_date<=?"], [pay_date]
+    if due_from: where.append("t.due_date>=?"); args.append(due_from)
+    if vendor_account: where.append("t.account=?"); args.append(vendor_account)
+    if vendor_group: where.append("v.vendor_group=?"); args.append(vendor_group)
+    out = []
+    for r in cx.execute(f"""SELECT t.invoice, t.account, t.trans_date, t.due_date,
+                                   ROUND(t.amount - t.settled, 2) AS gross, t.cash_disc_code,
+                                   v.name AS vendor_name, v.on_hold
+                            FROM erp_vend_trans t LEFT JOIN erp_vendors v ON v.account = t.account
+                            WHERE {' AND '.join(where)}
+                            ORDER BY t.due_date, t.invoice""", args):
+        disc = 0.0
+        if r["cash_disc_code"]:
+            d = cx.execute("SELECT percent, days FROM erp_cash_disc WHERE code=?", (r["cash_disc_code"],)).fetchone()
+            if d:
+                deadline = (dt.date.fromisoformat(r["trans_date"]) + dt.timedelta(days=d["days"])).isoformat()
+                if pay_date <= deadline:
+                    disc = round(r["gross"] * d["percent"] / 100.0, 2)
+        out.append({"invoice": r["invoice"], "vendor": r["account"], "vendor_name": r["vendor_name"],
+                    "due_date": r["due_date"], "gross_amount": r["gross"],
+                    "discount_taken": disc, "net_amount": round(r["gross"] - disc, 2),
+                    "vendor_on_hold": (r["on_hold"] or "") not in ("", "Open", None)})
+    return out
+
+def _payment_run_propose(cx, p):
+    pay_date = p.get("pay_date") or S.today
+    bank = p.get("bank_account") or "USMF-OPER"
+    b = cx.execute("SELECT * FROM erp_bank_accounts WHERE bank_account=?", (bank,)).fetchone()
+    if not b: return {"error": f"no bank account '{bank}'",
+                      "hint": "query the BankAccounts entity"}
+    elig = _eligible_payables(cx, pay_date, p.get("vendor_account"), p.get("due_from"), p.get("vendor_group"))
+    if not elig:
+        return {"error": f"validation: no open vendor obligations match this proposal on or before {pay_date}"}
+    if len(elig) > PROPOSAL_MAX_LINES:
+        top = {}
+        for e in elig: top[e["vendor"]] = top.get(e["vendor"], 0) + 1
+        return {"error": f"validation: this proposal selects {len(elig)} obligations, above the "
+                         f"{PROPOSAL_MAX_LINES}-line proposal limit. Narrow it with due_from, "
+                         f"vendor_account or vendor_group.",
+                "selected": len(elig),
+                "largest_vendors": sorted(({"vendor": k, "obligations": v} for k, v in top.items()),
+                                          key=lambda x: -x["obligations"])[:10]}
+    net = round(sum(e["net_amount"] for e in elig), 2)
+    cash = round((b["available_balance"] or 0) + (b["overdraft_limit"] or 0), 2)
+    rid = f"PR-{cx.execute('SELECT COUNT(*) FROM erp_payment_runs').fetchone()[0] + 1:05d}"
+    cx.execute("INSERT INTO erp_payment_runs(run_id,dataareaid,pay_date,bank_account,currency,"
+               "period_option,cash_available,eligible_net,total_paid,total_rejected,state,created_by,created_at)"
+               " VALUES(?,?,?,?,?,?,?,?,0,0,'proposed',?,?)",
+               (rid, "USMF", pay_date, bank, "USD", "Invoice", cash, net, _role(), S.now))
+    for i, e in enumerate(elig, 1):
+        cx.execute("INSERT INTO erp_payment_run_lines(run_id,line,invoice,vendor,due_date,gross_amount,"
+                   "discount_taken,withholding,net_amount,disposition,reason_code,reason,priority_rank)"
+                   " VALUES(?,?,?,?,?,?,?,0,?,'proposed',NULL,NULL,?)",
+                   (rid, i, e["invoice"], e["vendor"], e["due_date"], e["gross_amount"],
+                    e["discount_taken"], e["net_amount"], i))
+    _audit(cx, "PaymentRun", rid, "propose", after={"eligible_net": net, "cash_available": cash})
+    cx.commit()
+    shortfall = round(net - cash, 2)
+    preview = {"run_id": rid, "eligible": len(elig), "eligible_net": net, "cash_available": cash}
+    return {"run_id": rid, "pay_date": pay_date, "bank_account": bank, "cash_available": cash,
+            "eligible_count": len(elig), "eligible_net": net,
+            "shortfall": shortfall if shortfall > 0 else 0.0,
+            "fully_fundable": shortfall <= 0,
+            "note": ("Eligible obligations exceed available cash. Commit by naming which invoices go "
+                     "unpaid and why — every eligible invoice must appear in exactly one of paid or "
+                     "rejected." if shortfall > 0 else "Available cash covers every eligible obligation."),
+            "reason_codes": sorted(REJECT_CODES),
+            "obligations": elig,
+            "confirm_token": _mint_token(cx, "ContosoPaymentRunCommit", rid, preview),
+            "effect_preview": preview}
+
+def _payment_run_commit(cx, p):
+    rid = p.get("run_id")
+    if not rid: return {"error": "parameter run_id is required"}
+    run = cx.execute("SELECT * FROM erp_payment_runs WHERE run_id=?", (rid,)).fetchone()
+    if not run: return {"error": f"no payment run '{rid}'"}
+    if run["state"] != "proposed": return {"error": f"run {rid} is already {run['state']}"}
+    if not p.get("confirm_token"):
+        return {"error": "confirm_token is required: call ContosoPaymentRunPropose first and pass the "
+                         "confirm_token it returns. ContosoPaymentRunCommit will not run unconfirmed."}
+    lines = {r["invoice"]: dict(r) for r in
+             cx.execute("SELECT * FROM erp_payment_run_lines WHERE run_id=?", (rid,))}
+    paid = [str(x) for x in (p.get("paid") or [])]
+    rejected = p.get("rejected") or []
+    if not isinstance(rejected, list) or any(not isinstance(x, dict) for x in rejected):
+        return {"error": "parameter rejected must be a list of {invoice, reason_code, reason}"}
+    rej_map = {str(x.get("invoice")): x for x in rejected}
+    # M2: the partition must be total and disjoint — a short run is committed by naming the
+    # unpaid set, never by silently dropping obligations.
+    both = sorted(set(paid) & set(rej_map))
+    unknown = sorted((set(paid) | set(rej_map)) - set(lines))
+    missing = sorted(set(lines) - set(paid) - set(rej_map))
+    if unknown: return {"error": f"not eligible obligations in run {rid}: {unknown}"}
+    if both: return {"error": f"invoices appear in both paid and rejected: {both}"}
+    if missing:
+        return {"error": f"validation: every eligible obligation must be either paid or rejected with a "
+                         f"reason. Unaccounted for: {missing}"}
+    for inv, x in rej_map.items():
+        if x.get("reason_code") not in REJECT_CODES:
+            return {"error": f"invoice {inv}: reason_code must be one of {sorted(REJECT_CODES)}"}
+        if not (x.get("reason") or "").strip():
+            return {"error": f"invoice {inv}: a rejection requires a reason"}
+    # M4: totals are re-derived from the subledger, never from anything the agent typed.
+    total_paid = round(sum(lines[i]["net_amount"] for i in paid), 2)
+    total_rej = round(sum(lines[i]["net_amount"] for i in rej_map), 2)
+    if total_paid > run["cash_available"] + 0.005:
+        return {"error": f"validation: the paid set nets {total_paid:.2f} but only "
+                         f"{run['cash_available']:.2f} is available on {run['bank_account']}"}
+    bad = _consume_token(cx, "ContosoPaymentRunCommit", rid, p.get("confirm_token"))
+    if bad: return bad
+    for inv in paid:
+        cx.execute("UPDATE erp_payment_run_lines SET disposition='paid' WHERE run_id=? AND invoice=?", (rid, inv))
+    for inv, x in rej_map.items():
+        cx.execute("UPDATE erp_payment_run_lines SET disposition='rejected', reason_code=?, reason=? "
+                   "WHERE run_id=? AND invoice=?", (x["reason_code"], x["reason"], rid, inv))
+    cx.execute("UPDATE erp_payment_runs SET state='committed', total_paid=?, total_rejected=?, "
+               "committed_at=?, approved_by=? WHERE run_id=?",
+               (total_paid, total_rej, S.now, _role(), rid))
+    _audit(cx, "PaymentRun", rid, "commit", after={"total_paid": total_paid, "total_rejected": total_rej})
+    cx.commit()
+    return {"committed": True, "run_id": rid, "paid_count": len(paid), "total_paid": total_paid,
+            "rejected_count": len(rej_map), "total_rejected": total_rej,
+            "cash_available": run["cash_available"],
+            "cash_remaining": round(run["cash_available"] - total_paid, 2)}
 
 @S.tool("api_find_actions", "Finds actions (ICustomAPI AI tools) you can invoke.",
         {"query": {"type": "string"}})
@@ -486,6 +801,22 @@ def api_invoke_action(action, parameters=None):
         open_bal = cx.execute("SELECT ROUND(COALESCE(SUM(amount-settled),0),2) FROM erp_cust_trans WHERE account=? AND txn_type='Invoice' AND closed=0", (acct,)).fetchone()[0]
         return {"customer_account": acct, "highest_letter": max((l["letter_code"] for l in letters), default=None),
                 "letters": letters, "open_balance": open_bal}
+    if action == "ContosoJournalPropose":
+        return _journal_propose(cx, p)
+    if action == "ContosoJournalPost":
+        return _journal_post(cx, p)
+    if action == "ContosoApprovalList":
+        where, args = [], []
+        if p.get("status"): where.append("status=?"); args.append(p["status"])
+        if p.get("doc_type"): where.append("doc_type=?"); args.append(p["doc_type"])
+        sql = "SELECT * FROM erp_approval_requests" + (" WHERE " + " AND ".join(where) if where else "") + " ORDER BY submitted_at"
+        return {"requests": [dict(r) for r in cx.execute(sql, args)]}
+    if action == "ContosoApprovalDecide":
+        return _approval_decide(cx, p)
+    if action == "ContosoPaymentRunPropose":
+        return _payment_run_propose(cx, p)
+    if action == "ContosoPaymentRunCommit":
+        return _payment_run_commit(cx, p)
     return {"error": f"no action '{action}'", "hint": "use api_find_actions", "available": sorted(ACTIONS)}
 
 # ==================== internal: live aged balances ==========================

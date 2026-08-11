@@ -126,6 +126,71 @@ def refdata(cx):
         cx.execute("INSERT INTO erp_cash_disc VALUES(?,?,?,?,?)", (code, pct, days, nxt, desc))
     cx.execute("INSERT INTO meta VALUES('WORLD_NOW', ?)", (EPOCH + "T12:00:00Z",))
     cx.execute("INSERT INTO meta VALUES('WORLD_NAME','finance-world core (SIMULATION ONLY)')")
+    write_surface_refdata(cx)
+
+def write_surface_refdata(cx):
+    """Reference data for the write-and-approve surface (docs/HARD-LAYER-DESIGN.md M1/M2/M4).
+
+    Task-specific rows (approval requests, payment runs, journals) live in per-task seeds;
+    only world-level reference data belongs here. account_type vocabulary is Odoo's
+    (research/odoo-domain.md); DoA rules follow ERPNext's Authorization Rule shape
+    (transaction/based_on/value/approving_role), company-scoped rules shadowing global ones.
+    """
+    # Chart of accounts — the minimum that makes a balanced accrual/reclass journal postable.
+    for code, name, atype, recon in [
+            ("110100", "Bank — operating (USD)",        "asset_cash",        1),
+            ("130100", "Accounts receivable",           "asset_receivable",  1),
+            ("140100", "Prepaid expenses",              "asset_current",     0),
+            ("150100", "Inventory",                     "asset_current",     0),
+            ("200100", "Accounts payable",              "liability_payable", 1),
+            ("210100", "Accrued liabilities",           "liability_current", 0),
+            ("215100", "Accrued payroll & bonus",       "liability_current", 0),
+            ("230100", "Deferred revenue",              "liability_current", 0),
+            ("300100", "Retained earnings",             "equity",            0),
+            ("400100", "Revenue — product",             "income",            0),
+            ("400200", "Revenue — services",            "income",            0),
+            ("500100", "Cost of goods sold",            "expense",           0),
+            ("600100", "Professional fees",             "expense",           0),
+            ("600200", "Software & subscriptions",      "expense",           0),
+            ("600300", "Travel & entertainment",        "expense",           0),
+            ("610100", "Rent expense",                  "expense",           0),
+            ("690100", "FX gain / (loss)",              "expense",           0),
+            ("999999", "Suspense — do not post",        "off_balance",       0)]:
+        cx.execute("INSERT INTO erp_main_accounts(account_code,dataareaid,name,account_type,"
+                   "currency,blocked,reconcilable,requires_dimension) VALUES(?,?,?,?,?,?,?,?)",
+                   (code, "USMF", name, atype, "USD", 1 if code == "999999" else 0, recon,
+                    "dept" if atype == "expense" else None))
+    # Fiscal periods around the epoch: Jan closed, Feb on_hold (the close in flight), Mar open.
+    for pid, s, e, st in [("2025-12", "2025-12-01", "2025-12-31", "closed"),
+                          ("2026-01", "2026-01-01", "2026-01-31", "closed"),
+                          ("2026-02", "2026-02-01", "2026-02-28", "on_hold"),
+                          ("2026-03", "2026-03-01", "2026-03-31", "open")]:
+        cx.execute("INSERT INTO erp_fiscal_periods VALUES(?,?,?,?,?)", (pid, "USMF", s, e, st))
+    # Cash position: the constraint that makes the unsat-demand mechanic (M2) bite.
+    for acct, name, bal, od in [("USMF-OPER", "Operating — First National", 1_250_000.00, 0.0),
+                                ("USMF-PAYR", "Payroll — First National",     480_000.00, 0.0),
+                                ("CESP-OPER", "CES Direct operating",          95_000.00, 25_000.00)]:
+        cx.execute("INSERT INTO erp_bank_accounts VALUES(?,?,?,?,?,?,?)",
+                   (acct, "USMF" if acct.startswith("USMF") else "CESP", name, "USD", bal,
+                    EPOCH + "T08:00:00Z", od))
+    # Delegation of authority. Thresholds are the amount ABOVE which the approving role is
+    # required; the company-scoped USMF rule shadows the global one for vendor payments.
+    for pid, doc, thr, applies, approving in [
+            ("DOA-JE-01",  "Journal Entry",  25_000.00,  "Finance analyst",     "Controller"),
+            ("DOA-JE-02",  "Journal Entry", 250_000.00,  "Controller",          "CFO"),
+            ("DOA-PAY-01", "Payment Run",    50_000.00,  "Finance analyst",     "Controller"),
+            ("DOA-PAY-02", "Payment Run",   500_000.00,  "Controller",          "CFO"),
+            ("DOA-VEND-01","Vendor Bank Change", 0.00,   "AP specialist",       "Controller")]:
+        cx.execute("INSERT INTO erp_approval_policies(policy_id,dataareaid,doc_type,based_on,"
+                   "threshold_amount,currency,applies_to_role,approving_role,approving_user,"
+                   "escalation_policy_id,active) VALUES(?,?,?,?,?,?,?,?,?,?,1)",
+                   (pid, "USMF", doc, "Grand Total", thr, "USD", applies, approving, None,
+                    "DOA-JE-02" if pid == "DOA-JE-01" else
+                    "DOA-PAY-02" if pid == "DOA-PAY-01" else None))
+    # FX rates — without a rate table M4 cannot re-derive any cross-currency amount.
+    for f, t, rate in [("EUR", "USD", 1.0842), ("GBP", "USD", 1.2715), ("CAD", "USD", 0.7218),
+                       ("USD", "EUR", 0.9223), ("USD", "GBP", 0.7865), ("USD", "CAD", 1.3854)]:
+        cx.execute("INSERT INTO erp_fx_rates VALUES(?,?,?,?)", (f, t, EPOCH, rate))
 
 def main():
     BUILD.mkdir(parents=True, exist_ok=True)

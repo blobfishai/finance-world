@@ -1,0 +1,299 @@
+{
+ "task": "bank_rec/statement-divergence-feb",
+ "family": "bank_rec",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 2,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 38,
+ "walk_len": 4,
+ "budget_turns": 24,
+ "num_turns": 45,
+ "agent_error": false,
+ "duration_s": 220.6,
+ "cost_usd": 1.5867716,
+ "final_text": "**Submitted.** Summary for Robin:\n\n- **2 receipts match clean**: Alpine Ski House wire ($12,400, PMT-2101) and Coho Winery wire ($22,000, PMT-2103).\n- **1 discrepancy**: City Power & Light ACH, ref **PMT-2102** \u2014 bank shows $8,105.75, books show $8,150.75, a **$45.00** gap (books recorded $45 more than what actually hit the account \u2014 worth a customer/remittance-advice check).\n- **1 bank-only item**: **DEP-9911**, $6,750.00 on 2/28, memo \"UNIDENTIFIED REMITTER \u2013 LOCKBOX\" \u2014 cash sitting in the account with no AR application. Needs to be traced to a customer and posted.\n- **1 books-only item**: **PMT-2104**, $5,325.50 check (#8841) from the customer at SYNCUS-0011 (\"Consolidated Messenger\"), posted 2/27 in the AR ledger but not yet showing on the bank statement \u2014 likely a deposit still in transit/uncleared.\n\nEverything else on the statement (the DEP-70xx/PMT-70xx lockbox batches, ACH settlements, payroll funding, FX conversion, card settlement lines) is routine treasury noise unrelated to customer receipts \u2014 checked each amount against the AR subledger and none tie to an individual payment record.",
+ "trace": [
+  {
+   "ts": 1786437684.710881,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"statement\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437685.273162,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786437685.2912471,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"bank statement\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437685.4428291,
+   "server": "books",
+   "tool": "report_transaction_list",
+   "args": "{\"date_from\": \"2026-02-24\", \"date_to\": \"2026-02-28\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437688.147202,
+   "server": "sheets",
+   "tool": "workbook_worksheets",
+   "args": "{\"item\": \"bank-statement-operating-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437688.921064,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Payment WHERE TxnDate >= '2026-02-24' AND TxnDate <= '2026-02-28'\"}",
+   "ok": false,
+   "note": "QueryParserError: unsupported syntax. Use SELECT * FROM <Entity> [WHERE <Field> = '<value>'] with entities Customer, Invoice, CreditMemo, Payment"
+  },
+  {
+   "ts": 1786437689.263319,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE TxnDate >= '2026-02-24' AND TxnDate <= '2026-02-28'\"}",
+   "ok": false,
+   "note": "QueryParserError: unsupported syntax. Use SELECT * FROM <Entity> [WHERE <Field> = '<value>'] with entities Customer, Invoice, CreditMemo, Payment"
+  },
+  {
+   "ts": 1786437693.550278,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"bank-statement-operating-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437693.553566,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Payment\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437693.692374,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437721.091295,
+   "server": "books",
+   "tool": "report_transaction_list",
+   "args": "{\"date_from\": \"2026-01-01\", \"date_to\": \"2026-03-31\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437721.227536,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437725.512118,
+   "server": "books",
+   "tool": "get_company_info",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786437725.849317,
+   "server": "books",
+   "tool": "report_aged_receivables",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786437725.8515809,
+   "server": "books",
+   "tool": "report_customer_balance",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786437735.720984,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer payment receipt\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437735.723349,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437738.988039,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437740.550106,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE trans_date >= '2026-02-24' AND trans_date <= '2026-02-28' ORDER BY trans_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786437742.428554,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437748.5217762,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786437751.009226,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions WHERE trans_date >= '2026-02-24' AND trans_date <= '2026-02-28' ORDER BY trans_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786437755.4932811,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"txn_type\": \"Payment\", \"trans_date\": \"2026-02-2\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437773.0809212,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Alpine Ski House\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437773.698834,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"City Power\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437773.877281,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Coho Winery\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437778.5970318,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0003\", \"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437779.248544,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0005\", \"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437779.3864489,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0007\", \"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437803.135808,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"voucher\": \"PMTV-2\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437803.4370718,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"amount\": -6750}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437849.044309,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"amount\": -8939.23}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437849.600449,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"amount\": -4668.26}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437849.604059,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"amount\": -737.27}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437850.132019,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"amount\": -4599.5}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437850.682195,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"amount\": -9067.07}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437851.0777862,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"amount\": -1612.52}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437867.556635,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"matched_count\": 2, \"discrepancy_ref\": \"PMT-2102\", \"discrepancy_amount\": 45, \"bank_only_ref\": \"DEP-9911\", \"books_only_ref\": \"PMT-2104\"}}",
+   "ok": true
+  }
+ ]
+}

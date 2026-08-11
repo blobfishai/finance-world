@@ -91,6 +91,60 @@ shipped master data, and the GT amounts equal each customer's *total open balanc
 in-world (`world/etl/load_core.py` prints a validation block on each build). No GT is ever
 copied from FB prose.
 
+### A5. Empty-answer traps are graded by exact string equality — **HARNESS BUG, false fails**
+Found 2026-08-11 during the first full-roster sonnet flake scan, by audit-before-blame on
+three fails that looked like model errors and were not.
+
+`verifiers/vcode.py:67` grades a `type:"string"` check as `norm(got) != norm(expect)` —
+exact equality after normalization. Our empty-answer traps (the FinanceBenchmark
+hallucination-trap mechanic) are all authored as `{"type":"string","expect":"none"}`. So an
+answer that is **correct and well-justified** is scored wrong the moment the model explains
+itself:
+
+| task | field | model answered | verdict |
+|---|---|---|---|
+| `cash_app/remittance-batch-mar02` | `dep503_invoices` | `none — no remittance advice on file for dep-503; the $4,000…` | FAIL (should pass) |
+| `business_brief/brief-caterpillar` | `internal_ar_relationship` | `no existing relationship. checked three internal systems…` | FAIL (should pass) |
+| `business_brief/brief-caterpillar-v2` | `internal_relationship` | `none. caterpillar has no active account in either the erp cu…` | FAIL (should pass) |
+
+The trap intends to catch **invented** invoices/relationships. It instead catches
+**prose**. Both brief-caterpillar tasks were consequently mislabelled `flaky` when the
+model's answers were right on the merits; `cash_app` was mislabelled `solidFail` on one of
+its three trials for this reason (its other two trials failed for real reasons — a
+`no_reads_before_submit` and a missing successful ERP call — so the task keeps genuine
+signal).
+
+**Fix (deferred until the in-flight scan completes, to keep the wave internally
+consistent):** replace exact-match empty-answer traps with a dedicated `none_answer` check
+that is both more forgiving *and* strictly stronger:
+- PASS if the value's leading token is a negative (`none`/`no`/`n/a`/`nil`/`zero`/`not
+  found`/`no …` ), allowing any trailing justification;
+- FAIL if the value contains any token from an explicit `forbid` list (invoice-ID patterns,
+  customer accounts, amounts) — i.e. the anti-hallucination half becomes an *assertion*
+  rather than a side effect of string equality.
+
+**Consequence for calibration:** every `too_hard`/`flaky` label derived from an
+`expect:"none"` string check is provisional until the affected tasks are re-run under the
+fixed verifier. Recorded here so the labels are not read as model verdicts.
+
+**RESOLVED 2026-08-11.** `none_answer` implemented in `verifiers/vcode.py` (opens-with-a-
+negative + an explicit `forbid` list that asserts no real record was named); all **14** tasks
+carrying the old trap converted. The stored run directories were then re-verified — the runs
+are unchanged, only the verifier is — and the corrected labels are *worse* for us, not better:
+
+| task | old label | corrected | reading |
+|---|---|---|---|
+| `business_brief/brief-caterpillar` | flaky (0,1,1) | **1,1,1 too_easy** | the flakiness was entirely our bug |
+| `business_brief/brief-caterpillar-v2` | flaky (0,1,0) | **1,1,1 too_easy** | the escalated v2 was never harder |
+| `cash_app/remittance-batch-mar02` | too_hard (0,0,0) | **1,0,0 flaky** | genuine frontier task |
+
+Two of the three tasks that looked like the frontier were false-flaky. The lesson is the
+house rule stated backwards: audit-before-blame protects the *model* from our bugs, and
+without it we would have shipped a difficulty claim that the data does not support. The one
+task that survived (`cash_app`) is now the only confirmed in_band task in the world, and its
+two real failures are both anti-hack vetoes firing correctly — a submit with no reads, and an
+assertion of ERP absence without a successful ERP query.
+
 ### A4. `--max-turns` not strictly enforced by observed runs — WATCH
 haiku's ap-overdue run recorded `num_turns=36` against `--max-turns 24`. Budget overruns
 currently can't masquerade as passes (verification is answer-based), but turn accounting

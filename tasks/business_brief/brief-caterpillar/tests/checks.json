@@ -1,16 +1,51 @@
 {
-  "answer_checks": [
-    {"field": "lt_debt_fy2024", "type": "number", "expect": 27351000000, "tol_rel": 0.001},
-    {"field": "equity_fy2024", "type": "number", "expect": 19494000000, "tol_rel": 0.001},
-    {"field": "lt_de_ratio_3yr_avg", "type": "number", "expect": 1.4253, "tol_abs": 0.02},
-    {"field": "internal_ar_relationship", "type": "string", "expect": "none"}
-  ],
-  "trace_checks": [
-    {"type": "required_servers", "servers": ["filings", "erp"]},
-    {"type": "min_calls", "server": "filings", "n": 2},
-    {"type": "reads_before_submit"}
-  ],
-  "state_checks": [
-    {"type": "writes_only", "tables": ["answers"]}
-  ]
+ "answer_checks": [
+  {
+   "field": "lt_debt_fy2024",
+   "type": "number",
+   "expect": 27351000000,
+   "tol_rel": 0.001
+  },
+  {
+   "field": "equity_fy2024",
+   "type": "number",
+   "expect": 19494000000,
+   "tol_rel": 0.001
+  },
+  {
+   "field": "lt_de_ratio_3yr_avg",
+   "type": "number",
+   "expect": 1.4253,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "internal_ar_relationship",
+   "type": "none_answer"
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "filings",
+    "erp"
+   ]
+  },
+  {
+   "type": "min_calls",
+   "server": "filings",
+   "n": 2
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
 }

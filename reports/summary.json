@@ -1,168 +1,190 @@
 {
- "haiku": {
-  "business_brief/brief-caterpillar": {
-   "rewards": [
-    1,
-    1
-   ],
-   "failed": [
-    [],
-    []
-   ],
-   "infra_trials": 0,
-   "class": "solidPass"
-  },
-  "cross_system/email-invoice-meadow": {
-   "rewards": [
-    0,
-    0
-   ],
-   "failed": [
-    [
-     "trace:required_servers_missing(['erp'])"
-    ],
-    [
-     "answer:outstanding_amount:not_numeric",
-     "trace:required_servers_missing(['erp'])"
-    ]
-   ],
-   "infra_trials": 0,
-   "class": "solidFail"
-  },
-  "cross_system/total-ar-adventure-group": {
-   "rewards": [
-    1,
-    1
-   ],
-   "failed": [
-    [],
-    []
-   ],
-   "infra_trials": 0,
-   "class": "solidPass"
-  },
-  "erp_qa/ap-overdue-usmf": {
-   "rewards": [
-    0,
-    0
-   ],
-   "failed": [
-    [
-     "answer:total_overdue_ap:off(got=1158647.89)"
-    ],
-    [
-     "answer:total_overdue_ap:missing",
-     "answer:as_of_date:missing",
-     "trace:no_reads_before_submit"
-    ]
-   ],
-   "infra_trials": 0,
-   "class": "solidFail"
-  },
-  "erp_qa/ar-balance-fourthcoffee-east": {
-   "rewards": [
-    1,
-    0
-   ],
-   "failed": [
-    [],
-    [
-     "answer:customer_account:missing_terms(['SYNCUS-0069'])",
-     "answer:outstanding_balance:off(got=171042.72)"
-    ]
-   ],
-   "infra_trials": 0,
-   "class": "flaky"
-  },
-  "erp_qa/cash-disc-fourthcoffee-east": {
-   "rewards": [
-    1,
-    0
-   ],
-   "failed": [
-    [],
-    [
-     "trace:required_servers_missing(['erp'])",
-     "trace:min_calls(erp<2)"
-    ]
-   ],
-   "infra_trials": 0,
-   "class": "flaky"
-  },
-  "erp_qa/collections-sparrow": {
-   "rewards": [
-    1,
-    0
-   ],
-   "failed": [
-    [],
-    [
-     "answer:collection_letter_level:missing",
-     "answer:last_payment_date:missing",
-     "answer:last_payment_amount:missing",
-     "answer:open_balance:missing",
-     "trace:no_reads_before_submit"
-    ]
-   ],
-   "infra_trials": 0,
-   "class": "flaky"
-  },
-  "erp_qa/credit-limit-adatum": {
-   "rewards": [
-    1,
-    1
-   ],
-   "failed": [
-    [],
-    []
-   ],
-   "infra_trials": 0,
-   "class": "solidPass"
-  },
-  "erp_qa/due-next-week-adventure": {
-   "rewards": [
-    0,
-    0
-   ],
-   "failed": [
-    [
-     "trace:required_servers_missing(['erp'])"
-    ],
-    [
-     "answer:invoice_count:missing",
-     "answer:invoice_numbers:missing",
-     "trace:required_servers_missing(['erp'])",
-     "trace:no_reads_before_submit"
-    ]
-   ],
-   "infra_trials": 0,
-   "class": "solidFail"
-  },
-  "finance_qa/xom-current-assets": {
-   "rewards": [
-    1,
-    1
-   ],
-   "failed": [
-    [],
-    []
-   ],
-   "infra_trials": 0,
-   "class": "solidPass"
-  }
- },
  "sonnet": {
-  "business_brief/brief-caterpillar": {
+  "bank_rec/ach-return-mar": {
    "rewards": [
+    1,
     1,
     1
    ],
    "failed": [
     [],
+    [],
     []
    ],
    "infra_trials": 0,
    "class": "solidPass"
+  },
+  "bank_rec/statement-divergence-feb": {
+   "rewards": [
+    1,
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  },
+  "business_brief/brief-caterpillar": {
+   "rewards": [
+    1,
+    1,
+    0
+   ],
+   "failed": [
+    [],
+    [],
+    [
+     "answer:internal_ar_relationship:mismatch(got=no existing relationship. checked three internal systems ind)"
+    ]
+   ],
+   "infra_trials": 0,
+   "class": "flaky"
+  },
+  "business_brief/brief-caterpillar-v2": {
+   "rewards": [
+    0,
+    1,
+    0
+   ],
+   "failed": [
+    [
+     "answer:internal_relationship:mismatch(got=none. caterpillar has no active account in either the erp cu)"
+    ],
+    [],
+    [
+     "answer:internal_relationship:mismatch(got=none \u2014 no existing customer or vendor relationship. checked )"
+    ]
+   ],
+   "infra_trials": 0,
+   "class": "flaky"
+  },
+  "cash_app/remittance-batch-mar02": {
+   "rewards": [
+    0,
+    0,
+    0
+   ],
+   "failed": [
+    [
+     "answer:dep503_invoices:mismatch(got=none \u2014 no remittance advice on file for dep-503; the $4,000.)"
+    ],
+    [
+     "answer:dep501_invoices:missing",
+     "answer:dep502_invoices:missing",
+     "answer:dep503_invoices:missing",
+     "answer:unapplied_amount:missing",
+     "trace:no_reads_before_submit"
+    ],
+    [
+     "answer:dep503_invoices:mismatch(got=none \u2014 no remittance advice or other documentation identifie)",
+     "trace:required_servers_missing(['erp'])"
+    ]
+   ],
+   "infra_trials": 0,
+   "class": "solidFail"
+  },
+  "cash_forecast/cesp-four-week": {
+   "rewards": [
+    0,
+    0,
+    0
+   ],
+   "failed": [
+    [
+     "answer:week1_net:off(got=0.0)",
+     "answer:week2_net:off(got=0.0)",
+     "answer:week3_net:off(got=0.0)",
+     "answer:week4_net:off(got=0.0)",
+     "answer:four_week_net:off(got=0.0)"
+    ],
+    [
+     "answer:week1_net:missing",
+     "answer:week2_net:missing",
+     "answer:week3_net:missing",
+     "answer:week4_net:missing",
+     "answer:four_week_net:missing",
+     "trace:no_reads_before_submit"
+    ],
+    [
+     "answer:week1_net:off(got=0.0)",
+     "answer:week2_net:off(got=0.0)",
+     "answer:week3_net:off(got=0.0)",
+     "answer:week4_net:off(got=0.0)",
+     "answer:four_week_net:off(got=0.0)"
+    ]
+   ],
+   "infra_trials": 0,
+   "class": "solidFail"
+  },
+  "close_mgmt/subledger-tieout-feb": {
+   "rewards": [
+    1,
+    0,
+    1
+   ],
+   "failed": [
+    [],
+    [
+     "answer:erp_ar_balance:missing",
+     "answer:erp_ap_balance:missing",
+     "answer:unreconciled_subledger:missing",
+     "answer:variance_amount:missing",
+     "answer:blocking_task_owner:missing",
+     "trace:no_reads_before_submit"
+    ],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "flaky"
+  },
+  "close_mgmt/two-period-close-cesq": {
+   "rewards": [
+    1,
+    1,
+    1
+   ],
+   "failed": [
+    [],
+    [],
+    []
+   ],
+   "infra_trials": 0,
+   "class": "solidPass"
+  },
+  "collections_ops/escalate-sparrow-letter3": {
+   "rewards": [
+    0,
+    0
+   ],
+   "failed": [
+    [
+     "answer:letter_issued:missing",
+     "answer:letter_fee:missing",
+     "answer:credit_hold_placed:missing",
+     "answer:reasoning:missing",
+     "trace:no_reads_before_submit",
+     "state:row_count(letter3_posted_today: got 0, want 1)",
+     "state:row_count(no_duplicate_letters: got 2, want 3)",
+     "state:cell_equals(letter3_fee: got None, want 40.0)"
+    ],
+    [
+     "answer:letter_issued:missing",
+     "answer:letter_fee:missing",
+     "answer:credit_hold_placed:missing",
+     "answer:reasoning:missing",
+     "trace:required_servers_missing(['erp', 'docs'])",
+     "trace:no_reads_before_submit",
+     "state:row_count(letter3_posted_today: got 0, want 1)",
+     "state:row_count(no_duplicate_letters: got 2, want 3)",
+     "state:cell_equals(letter3_fee: got None, want 40.0)"
+    ]
+   ],
+   "infra_trials": 1,
+   "class": "solidFail"
   },
   "cross_system/email-invoice-meadow": {
    "rewards": [
@@ -173,8 +195,14 @@
     [],
     []
    ],
-   "infra_trials": 0,
+   "infra_trials": 1,
    "class": "solidPass"
+  },
+  "cross_system/intercompany-tieout-feb": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
   },
   "cross_system/total-ar-adventure-group": {
    "rewards": [
@@ -185,8 +213,20 @@
     [],
     []
    ],
-   "infra_trials": 0,
+   "infra_trials": 1,
    "class": "solidPass"
+  },
+  "cross_system/total-ar-adventure-group-v2": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "cross_system/tracker-formula-drift": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
   },
   "erp_qa/ap-overdue-usmf": {
    "rewards": [
@@ -197,7 +237,7 @@
     [],
     []
    ],
-   "infra_trials": 0,
+   "infra_trials": 1,
    "class": "solidPass"
   },
   "erp_qa/ar-balance-fourthcoffee-east": {
@@ -209,7 +249,7 @@
     [],
     []
    ],
-   "infra_trials": 0,
+   "infra_trials": 1,
    "class": "solidPass"
   },
   "erp_qa/cash-disc-fourthcoffee-east": {
@@ -221,7 +261,7 @@
     [],
     []
    ],
-   "infra_trials": 0,
+   "infra_trials": 1,
    "class": "solidPass"
   },
   "erp_qa/collections-sparrow": {
@@ -233,7 +273,7 @@
     [],
     []
    ],
-   "infra_trials": 0,
+   "infra_trials": 1,
    "class": "solidPass"
   },
   "erp_qa/credit-limit-adatum": {
@@ -245,7 +285,7 @@
     [],
     []
    ],
-   "infra_trials": 0,
+   "infra_trials": 1,
    "class": "solidPass"
   },
   "erp_qa/due-next-week-adventure": {
@@ -257,8 +297,182 @@
     [],
     []
    ],
-   "infra_trials": 0,
+   "infra_trials": 1,
    "class": "solidPass"
+  },
+  "erp_qa_fb/aged-balance-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/ap-payments-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/cash-collections-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/cash-disocunts-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/collections-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/collections-tasks-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/credit-limit-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/credit-limit-2": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/credit-limit-3": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/credit-limit-4": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/credit-notes-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/customer-setup-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/discounts-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/dispute-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/invoicing-history-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/payment-history-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/payment-history-2": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/sales-orders-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/sales-orders-2": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/sales-orders-3": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/sales-orders-4": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/vendor-balance-1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "erp_qa_fb/vendor-balance-2": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "expense_audit/te-sample-feb": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "expense_audit/threshold-shaving-h1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "finance_qa/tsla-operating-margin-q3": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "finance_qa/unavailable-concept": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "finance_qa/wmt-inventory-turnover": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "finance_qa/xom-cat-liquidity-compare": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
   },
   "finance_qa/xom-current-assets": {
    "rewards": [
@@ -269,8 +483,56 @@
     [],
     []
    ],
-   "infra_trials": 0,
+   "infra_trials": 1,
    "class": "solidPass"
+  },
+  "finance_qa/xom-current-assets-followup": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "payment_proposal/friday-run-mar06": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "pbc/approval-evidence-q1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "pbc/sampling-projection-q1": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "threeway_match/ppinv-exceptions-mar": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "threeway_match/tolerance-dialect-mar": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "vendor_master/bank-change-verify": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
+  },
+  "vendor_master/missing-po-inquiry": {
+   "rewards": [],
+   "failed": [],
+   "infra_trials": 3,
+   "class": "infra_only"
   }
  }
 }

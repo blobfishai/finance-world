@@ -1,13 +1,55 @@
 {
-  "answer_checks": [
-    {"field": "dep501_invoices", "type": "contains_all", "expect": ["LHINV-001", "LHINV-002"]},
-    {"field": "dep502_invoices", "type": "contains_all", "expect": ["LHINV-003"]},
-    {"field": "dep503_invoices", "type": "string", "expect": "none"},
-    {"field": "unapplied_amount", "type": "number", "expect": 4000.00, "tol_abs": 0.01}
-  ],
-  "trace_checks": [
-    {"type": "required_servers", "servers": ["erp", "sheets", "email"]},
-    {"type": "reads_before_submit"}
-  ],
-  "state_checks": [{"type": "writes_only", "tables": ["answers"]}]
+ "answer_checks": [
+  {
+   "field": "dep501_invoices",
+   "type": "contains_all",
+   "expect": [
+    "LHINV-001",
+    "LHINV-002"
+   ]
+  },
+  {
+   "field": "dep502_invoices",
+   "type": "contains_all",
+   "expect": [
+    "LHINV-003"
+   ]
+  },
+  {
+   "field": "dep503_invoices",
+   "type": "none_answer",
+   "forbid": [
+    "LHINV-001",
+    "LHINV-002",
+    "LHINV-003"
+   ]
+  },
+  {
+   "field": "unapplied_amount",
+   "type": "number",
+   "expect": 4000.0,
+   "tol_abs": 0.01
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp",
+    "sheets",
+    "email"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
 }

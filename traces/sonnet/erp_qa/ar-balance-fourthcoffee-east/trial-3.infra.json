@@ -1,0 +1,27 @@
+{
+ "task": "erp_qa/ar-balance-fourthcoffee-east",
+ "family": "erp_qa",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": true,
+ "trial": 3,
+ "reward": 0,
+ "failed": [
+  "answer:customer_account:missing",
+  "answer:outstanding_balance:missing",
+  "answer:open_invoice_count:missing",
+  "trace:required_servers_missing(['erp'])",
+  "trace:min_calls(erp<2)",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [],
+ "n_tool_calls": 0,
+ "walk_len": 4,
+ "budget_turns": 24,
+ "num_turns": 1,
+ "agent_error": true,
+ "duration_s": 4.1,
+ "cost_usd": 0,
+ "final_text": "You've hit your session limit \u00b7 resets 5:50am (America/Los_Angeles)",
+ "trace": []
+}

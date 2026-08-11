@@ -1,0 +1,30 @@
+{
+ "task": "collections_ops/escalate-sparrow-letter3",
+ "family": "collections_ops",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": true,
+ "trial": 3,
+ "reward": 0,
+ "failed": [
+  "answer:letter_issued:missing",
+  "answer:letter_fee:missing",
+  "answer:credit_hold_placed:missing",
+  "answer:reasoning:missing",
+  "trace:required_servers_missing(['erp', 'docs'])",
+  "trace:no_reads_before_submit",
+  "state:row_count(letter3_posted_today: got 0, want 1)",
+  "state:row_count(no_duplicate_letters: got 2, want 3)",
+  "state:cell_equals(letter3_fee: got None, want 40.0)"
+ ],
+ "servers_used": [],
+ "n_tool_calls": 0,
+ "walk_len": 6,
+ "budget_turns": 24,
+ "num_turns": 1,
+ "agent_error": true,
+ "duration_s": 2.8,
+ "cost_usd": 0,
+ "final_text": "You've hit your session limit \u00b7 resets 5:50am (America/Los_Angeles)",
+ "trace": []
+}

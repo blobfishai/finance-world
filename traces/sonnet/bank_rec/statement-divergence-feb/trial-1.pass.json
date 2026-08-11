@@ -1,0 +1,307 @@
+{
+ "task": "bank_rec/statement-divergence-feb",
+ "family": "bank_rec",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 39,
+ "walk_len": 4,
+ "budget_turns": 24,
+ "num_turns": 45,
+ "agent_error": false,
+ "duration_s": 212.0,
+ "cost_usd": 1.6482005999999998,
+ "final_text": "Submitted. Summary for Robin:\n\n- **2 clean matches**: Alpine Ski House wire (PMT-2101, $12,400.00) and Coho Winery wire (PMT-2103, $22,000.00) tie exactly to the books.\n- **1 discrepancy**: PMT-2102 (City Power & Light ACH) \u2014 bank shows $8,105.75, books show $8,150.75. A $45.00 shortfall on the bank side, likely a fee netted off the ACH before it hit the account.\n- **1 bank-only item**: DEP-9911, $6,750.00 on 2/28, memo'd \"UNIDENTIFIED REMITTER \u2014 LOCKBOX.\" No matching AR record in books at all \u2014 needs identification before it can be applied.\n- **1 books-only item**: PMT-2104, Consolidated Messenger check #8841 for $5,325.50 (dated 2/27), posted in the AR subledger but never showed up on the bank statement \u2014 likely a check still in transit/uncleared.\n\nThe other statement lines (lockbox batches, payroll funding, FX conversions, card settlement, wire-out-supplier debits) are treasury noise unrelated to customer AR receipts and don't tie to any books entity, so I left them out of the reconciliation scope.",
+ "trace": [
+  {
+   "ts": 1786437528.784727,
+   "server": "docs",
+   "tool": "list_document_types",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786437529.30477,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786437529.307234,
+   "server": "books",
+   "tool": "report_transaction_list",
+   "args": "{\"date_from\": \"2026-02-24\", \"date_to\": \"2026-02-28\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437535.600053,
+   "server": "sheets",
+   "tool": "workbook_worksheets",
+   "args": "{\"item\": \"bank-statement-operating-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437535.602585,
+   "server": "books",
+   "tool": "report_transaction_list",
+   "args": "{\"date_from\": \"2026-02-01\", \"date_to\": \"2026-02-28\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437538.0016892,
+   "server": "books",
+   "tool": "report_transaction_list",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786437538.011293,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"bank-statement-operating-2026-02.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437549.0701609,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Payment\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437549.318698,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437553.631205,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437553.6501482,
+   "server": "books",
+   "tool": "get_company_info",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786437553.652179,
+   "server": "books",
+   "tool": "report_aged_receivables",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786437563.646315,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Payment WHERE DocNumber = 'PMT-2101'\"}",
+   "ok": false,
+   "note": "Invalid property 'DocNumber' for Payment"
+  },
+  {
+   "ts": 1786437564.122575,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Payment WHERE DocNumber = 'PMT-2102'\"}",
+   "ok": false,
+   "note": "Invalid property 'DocNumber' for Payment"
+  },
+  {
+   "ts": 1786437564.12989,
+   "server": "books",
+   "tool": "report_transaction_list",
+   "args": "{\"date_from\": \"2024-06-01\", \"date_to\": \"2026-12-31\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437570.51556,
+   "server": "books",
+   "tool": "get_payment",
+   "args": "{\"payment_id\": \"PMT-2101\"}",
+   "ok": false,
+   "note": "Object Not Found: Payment PMT-2101"
+  },
+  {
+   "ts": 1786437570.826062,
+   "server": "books",
+   "tool": "get_invoice",
+   "args": "{\"invoice\": \"PMT-2101\"}",
+   "ok": false,
+   "note": "Object Not Found: Invoice PMT-2101"
+  },
+  {
+   "ts": 1786437570.8292348,
+   "server": "books",
+   "tool": "report_customer_balance",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786437578.687627,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer payment receipt\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437578.717466,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"bank reconciliation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437581.645099,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437583.785567,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions WHERE trans_date >= '2026-02-24' AND trans_date <= '2026-02-28' AND txn_type = 'Payment'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786437587.646642,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437592.357397,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786437594.798544,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786437601.179455,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"txn_type\": \"Payment\", \"trans_date\": \"2026-02-2\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437616.133698,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"payment reference number wire remittance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437616.154732,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer receipts journal cash receipt\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786437624.744364,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Alpine Ski House\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437625.740299,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"City Power\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437625.74454,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Coho Winery\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437630.207812,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0003\", \"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437630.76151,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0005\", \"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437631.285538,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0007\", \"txn_type\": \"Payment\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437675.358073,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"invoice\": \"PMT-21\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437675.361561,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"voucher\": \"PMTV-\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437694.555518,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"amount\": -6750}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437694.5584378,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0011\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786437711.157106,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"matched_count\": 2, \"discrepancy_ref\": \"PMT-2102\", \"discrepancy_amount\": 45, \"bank_only_ref\": \"DEP-9911\", \"books_only_ref\": \"PMT-2104\"}}",
+   "ok": true
+  }
+ ]
+}

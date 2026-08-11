@@ -1,0 +1,25 @@
+{
+ "task": "erp_qa_fb/customer-setup-1",
+ "family": "erp_qa_fb",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": true,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:payment_terms:missing",
+  "answer:customer_account:missing",
+  "trace:required_servers_missing(['erp'])",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [],
+ "n_tool_calls": 0,
+ "walk_len": 3,
+ "budget_turns": 24,
+ "num_turns": 1,
+ "agent_error": true,
+ "duration_s": 3.3,
+ "cost_usd": 0,
+ "final_text": "You've hit your session limit \u00b7 resets 5:50am (America/Los_Angeles)",
+ "trace": []
+}

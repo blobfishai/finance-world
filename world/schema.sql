@@ -104,3 +104,93 @@ CREATE TABLE docs_documents(
 
 -- ============ Harness (answers are state; verified deterministically) ============
 CREATE TABLE answers(field TEXT PRIMARY KEY, value TEXT, submitted_at TEXT);
+
+-- ============ Write-and-approve surface (hard layer M1/M2/M7) ============
+-- Chart of accounts (Odoo account.account / ERPNext Account). account_type vocabulary is
+-- Odoo's, truncated: asset_receivable, asset_cash, asset_current, liability_payable,
+-- liability_current, equity, income, expense, off_balance.
+CREATE TABLE erp_main_accounts(
+  account_code TEXT PRIMARY KEY, dataareaid TEXT, name TEXT, account_type TEXT,
+  currency TEXT, blocked INTEGER DEFAULT 0, reconcilable INTEGER DEFAULT 0,
+  requires_dimension TEXT);
+
+-- Fiscal periods / period lock (Odoo company lock dates; mcp-erp close_period/reopen_period).
+CREATE TABLE erp_fiscal_periods(
+  period_id TEXT PRIMARY KEY, dataareaid TEXT, period_start TEXT, period_end TEXT,
+  status TEXT DEFAULT 'open');            -- open | on_hold | closed
+
+-- GL journal header. state: Odoo account.move.state (draft/posted/cancel), one-way draft->posted.
+-- voucher_type: ERPNext Journal Entry.voucher_type subset. reversed_entry_id: Odoo
+-- account.move.reversed_entry_id / ERPNext Journal Entry.reversal_of.
+CREATE TABLE erp_ledger_journals(
+  journal_id TEXT PRIMARY KEY, dataareaid TEXT, voucher TEXT, voucher_type TEXT,
+  description TEXT, user_remark TEXT, posting_date TEXT, period_id TEXT, currency TEXT,
+  total_debit REAL DEFAULT 0, total_credit REAL DEFAULT 0, difference REAL DEFAULT 0,
+  state TEXT DEFAULT 'draft',
+  reversed_entry_id TEXT, reversal_reason TEXT,
+  created_by TEXT, created_at TEXT, posted_by TEXT, posted_at TEXT,
+  source_doc_id TEXT);                    -- the docs_documents row the amounts derive from (M4)
+
+-- GL journal lines (Odoo account.move.line debit/credit/balance; mcp-erp PostJournalInput.lines).
+CREATE TABLE erp_ledger_journal_lines(
+  journal_id TEXT, line INTEGER, account_code TEXT, description TEXT,
+  debit REAL DEFAULT 0, credit REAL DEFAULT 0, currency TEXT, fx_rate REAL DEFAULT 1,
+  party_type TEXT, party TEXT, dimension_dept TEXT,
+  PRIMARY KEY(journal_id, line));
+
+-- Delegation of authority (ERPNext Authorization Rule: transaction/based_on/value/
+-- system_role/approving_role/company). company-scoped rules SHADOW global rules.
+CREATE TABLE erp_approval_policies(
+  policy_id TEXT PRIMARY KEY, dataareaid TEXT, doc_type TEXT,
+  based_on TEXT DEFAULT 'Grand Total', threshold_amount REAL, currency TEXT,
+  applies_to_role TEXT, approving_role TEXT, approving_user TEXT,
+  escalation_policy_id TEXT, active INTEGER DEFAULT 1);
+
+-- Approval inbox (ERPNext AuthorizationControl outcome, materialised as a queue).
+CREATE TABLE erp_approval_requests(
+  request_id TEXT PRIMARY KEY, dataareaid TEXT, doc_type TEXT, doc_id TEXT,
+  amount REAL, currency TEXT, submitted_by TEXT, submitted_at TEXT, note TEXT,
+  policy_id TEXT, required_role TEXT,
+  status TEXT DEFAULT 'pending',          -- pending | approved | rejected | withdrawn
+  decided_by TEXT, decided_at TEXT, decision_reason TEXT);
+
+-- Bank cash position: the constraint that makes M2 bite.
+CREATE TABLE erp_bank_accounts(
+  bank_account TEXT PRIMARY KEY, dataareaid TEXT, name TEXT, currency TEXT,
+  available_balance REAL, as_of TEXT, overdraft_limit REAL DEFAULT 0);
+
+-- Payment run header (ERPNext Payment Order; D365 payment proposal).
+-- period_option: D365 method-of-payment Period (Invoice | Date | Total).
+CREATE TABLE erp_payment_runs(
+  run_id TEXT PRIMARY KEY, dataareaid TEXT, pay_date TEXT, bank_account TEXT, currency TEXT,
+  period_option TEXT DEFAULT 'Invoice',
+  cash_available REAL, eligible_net REAL, total_paid REAL, total_rejected REAL,
+  state TEXT DEFAULT 'proposed',          -- proposed | committed | cancelled
+  created_by TEXT, created_at TEXT, approved_by TEXT, committed_at TEXT);
+
+-- Payment run lines: BOTH halves of the partition, one row each.
+-- reason_code enum from erpnext/accounts/bulk_payment.py::_partition_payable_invoices
+-- plus Vendor On Hold / Discount Window Expired / Awaiting Approval / Insufficient Cash.
+CREATE TABLE erp_payment_run_lines(
+  run_id TEXT, line INTEGER, invoice TEXT, vendor TEXT, due_date TEXT,
+  gross_amount REAL, discount_taken REAL DEFAULT 0, withholding REAL DEFAULT 0,
+  net_amount REAL, disposition TEXT, reason_code TEXT, reason TEXT, priority_rank INTEGER,
+  PRIMARY KEY(run_id, line));
+
+-- FX rates: without these, M4 cannot re-derive any cross-currency amount
+-- (odoo-domain.md §8 gap #15 — we have a currency column and no rate table).
+CREATE TABLE erp_fx_rates(
+  from_ccy TEXT, to_ccy TEXT, rate_date TEXT, rate REAL,
+  PRIMARY KEY(from_ccy, to_ccy, rate_date));
+
+-- Two-phase confirm-gate token store. RUNTIME state: never graded, never readable as an entity.
+CREATE TABLE erp_confirm_tokens(
+  token TEXT PRIMARY KEY, seq INTEGER, action TEXT, actor TEXT, role TEXT,
+  target_id TEXT, args_hash TEXT, effect_preview TEXT, minted_at TEXT,
+  consumed_at TEXT, superseded_by TEXT);
+
+-- Audit trail (mcp-erp get_erp_audit_trail; odoo-ai-agent GET /chat/{id}/audit).
+-- Derived from the graded writes; excluded from the state veto, assertable by row_count.
+CREATE TABLE erp_audit_trail(
+  audit_id INTEGER PRIMARY KEY, entity_type TEXT, entity_id TEXT, action TEXT,
+  actor TEXT, role TEXT, at TEXT, before_json TEXT, after_json TEXT);

@@ -8,8 +8,13 @@ checks.json:
   answer_checks: [{field, type: number|string|contains_all, expect, tol_abs?, tol_rel?}]
       number: value parsed from "$1,234.56", "1234.56", 1234.56; pass if within
               max(tol_abs, |expect|*tol_rel); default exact to 0.01.
-      string: case/space-insensitive equality (use expect "none" for empty-answer traps).
+      string: case/space-insensitive equality.
       contains_all: every listed substring appears (case-insensitive) in the value.
+      none_answer: the empty-answer trap (replaces the old expect:"none" string check —
+              see docs/AUDIT.md A5). Passes when the value OPENS with a negative
+              ("none", "no ...", "n/a", "nil", "not found", "zero"), with any trailing
+              justification allowed, and fails if any `forbid` substring appears — so the
+              trap asserts "did not invent a record" instead of "wrote exactly one word".
   trace_checks: [{type: required_servers, servers: [...]},
                  {type: min_calls, server, n},
                  {type: reads_before_submit}]
@@ -36,6 +41,12 @@ def parse_number(v):
 
 def norm(v): return re.sub(r"\s+", " ", str(v)).strip().lower()
 
+# An empty-answer trap is satisfied by a value that OPENS with a negative. Trailing
+# justification is allowed and expected — a model that explains "none, because no remittance
+# advice was on file" is more useful than one that emits the bare token, and grading them
+# differently measured prose, not grounding (docs/AUDIT.md A5).
+NEG_RE = re.compile(r"^(none|no|n/?a|nil|nothing|zero|not\s+(found|applicable|available|on\s+file))\b")
+
 def verify(task_dir, run_dir):
     """Verify one step. `task_dir` is a task root (tests/checks.json) or a step dir (checks.json)."""
     p = Path(task_dir) / "tests/checks.json"
@@ -59,6 +70,15 @@ def verify(task_dir, run_dir):
             exp = float(c["expect"])
             tol = max(float(c.get("tol_abs", 0.01)), abs(exp) * float(c.get("tol_rel", 0)))
             if abs(g - exp) > tol: failed.append(name + f":off(got={g})")
+        elif typ == "none_answer":
+            g = norm(got)
+            if not NEG_RE.match(g):
+                failed.append(name + f":expected_none(got={g[:60]})")
+            else:
+                # the anti-hallucination half: naming a real record while claiming "none"
+                # is a harder failure than being wrong, and is what the trap exists to catch.
+                bad = [s for s in c.get("forbid", []) if norm(s) in g]
+                if bad: failed.append(name + f":hallucinated({bad})")
         elif typ == "contains_all":
             g = norm(got)
             missing = [s for s in c["expect"] if norm(s) not in g]

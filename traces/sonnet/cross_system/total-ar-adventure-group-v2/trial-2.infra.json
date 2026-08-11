@@ -1,0 +1,28 @@
+{
+ "task": "cross_system/total-ar-adventure-group-v2",
+ "family": "cross_system",
+ "agent": "claude",
+ "model": "sonnet",
+ "infra_error": true,
+ "trial": 2,
+ "reward": 0,
+ "failed": [
+  "answer:erp_open_balance:missing",
+  "answer:subsidiary_net_balance:missing",
+  "answer:offbook_invoice_amount:missing",
+  "answer:combined_exposure:missing",
+  "trace:required_servers_missing(['erp', 'books', 'sheets'])",
+  "trace:min_calls(books<2)",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [],
+ "n_tool_calls": 0,
+ "walk_len": 10,
+ "budget_turns": 36,
+ "num_turns": 1,
+ "agent_error": true,
+ "duration_s": 2.8,
+ "cost_usd": 0,
+ "final_text": "You've hit your session limit \u00b7 resets 5:50am (America/Los_Angeles)",
+ "trace": []
+}
