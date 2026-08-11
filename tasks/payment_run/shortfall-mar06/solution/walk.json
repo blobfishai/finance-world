@@ -1,0 +1,36 @@
+[
+ {"server": "docs", "tool": "search_documents", "args": {"query": "payment run"}},
+ {"server": "docs", "tool": "get_document", "args": {"doc_id": "payment-run-sop"}},
+ {"server": "email", "tool": "messages_list", "args": {"q": "PINV"}},
+ {"server": "email", "tool": "messages_get", "args": {"id": "em-0601"}},
+ {"server": "erp", "tool": "api_find_actions", "args": {"query": "payment"}},
+ {"server": "erp", "tool": "data_find_entities", "args": {"entity": "Vendors", "filters": {"vendor_group": "PAYRUN"}}},
+ {"server": "erp", "tool": "data_find_entities", "args": {"entity": "CashDiscounts", "filters": {"code": "2%10N30"}}},
+ {"server": "erp", "tool": "api_invoke_action",
+  "args": {"action": "ContosoPaymentRunPropose",
+           "parameters": {"pay_date": "2026-03-06", "bank_account": "USMF-OPER", "vendor_group": "PAYRUN"}}},
+ {"server": "erp", "tool": "api_invoke_action",
+  "args": {"action": "ContosoPaymentRunCommit",
+           "parameters": {
+             "run_id": "PR-00001",
+             "confirm_token": "CONF-PR-00001-1",
+             "paid": ["PINV-101", "PINV-105", "PINV-106"],
+             "rejected": [
+               {"invoice": "PINV-103", "reason_code": "vendor_on_hold",
+                "reason": "Litware Facility Services is on credit hold; SOP-AP-04 s1 excludes held vendors outright"},
+               {"invoice": "PINV-104", "reason_code": "disputed",
+                "reason": "Open dispute raised by Marketing Ops 2026-03-03 (misprinted panels, credit requested); excluded until resolved"},
+               {"invoice": "PINV-102", "reason_code": "insufficient_cash",
+                "reason": "Deferred to the 2026-03-13 run; cash exhausted after discount capture and the oldest past-due item"},
+               {"invoice": "PINV-107", "reason_code": "insufficient_cash",
+                "reason": "Deferred to the 2026-03-13 run; net terms, no discount at risk"}
+             ]}}},
+ {"server": "erp", "tool": "data_find_entities", "args": {"entity": "PaymentRunLines", "filters": {"run_id": "PR-00001"}}},
+ {"server": "harness", "tool": "submit_answer",
+  "args": {"answers": {
+    "run_id": "PR-00001",
+    "total_paid": 187800.00,
+    "paid_invoices": "PINV-101, PINV-105, PINV-106",
+    "unpaid_invoices": "PINV-102, PINV-103, PINV-104, PINV-107",
+    "shortfall": 117800.00}}}
+]

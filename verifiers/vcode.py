@@ -18,7 +18,11 @@ checks.json:
   trace_checks: [{type: required_servers, servers: [...]},
                  {type: min_calls, server, n},
                  {type: reads_before_submit}]
-  state_checks: [{type: writes_only, tables: ["answers"]}]  # anti-hack veto
+  state_checks: [{type: writes_only, tables: ["answers"]},   # anti-hack veto
+                 {type: row_count, sql, expect, name?},
+                 {type: sql, sql, expect, tol_abs?, tol_rel?, name?}]
+      sql: grade the world the agent left behind (write tasks) — the committed run, the
+           paid/rejected partition, the reason codes. Numbers compare with tolerance.
 """
 import json, re, sqlite3, hashlib, sys
 from pathlib import Path
@@ -120,6 +124,20 @@ def verify(task_dir, run_dir):
             n = cx.execute(c["sql"]).fetchone()[0]
             if n != c["expect"]:
                 failed.append(f"state:row_count({c.get('name', c['sql'][:40])}: got {n}, want {c['expect']})")
+        elif t == "sql":
+            # Grade the world the agent left behind, not the story it told about it. Used by
+            # write tasks: the run it committed, the partition it chose, the reasons it gave.
+            # Numeric comparisons carry a tolerance; everything else is normalized equality.
+            got = cx.execute(c["sql"]).fetchone()
+            got = (got[0] if got else None)
+            exp, name_ = c["expect"], c.get("name", c["sql"][:40])
+            if isinstance(exp, (int, float)) and not isinstance(exp, bool):
+                g = parse_number(got)
+                tol = max(float(c.get("tol_abs", 0.01)), abs(float(exp)) * float(c.get("tol_rel", 0)))
+                if g is None or abs(g - float(exp)) > tol:
+                    failed.append(f"state:sql({name_}: got {got}, want {exp})")
+            elif norm(got) != norm(exp):
+                failed.append(f"state:sql({name_}: got {norm(got)[:60]}, want {norm(exp)[:60]})")
         elif t == "cell_equals":
             row = cx.execute(c["sql"]).fetchone()
             got = row[0] if row else None

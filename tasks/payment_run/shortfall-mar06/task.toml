@@ -1,0 +1,32 @@
+schema_version = "1.4"
+
+[task]
+name = "payment_run/shortfall-mar06"
+version = "0.1.0"
+description = "Friday payment run that cannot be fully funded: apply the SOP's exclusions and funding priority, then commit a total, disjoint paid/rejected partition with reason codes."
+authors = ["nario-ai"]
+keywords = ["finance", "payment_run", "treasury", "ap", "unsat_demand", "write"]
+
+[metadata]
+family = "payment_run"
+origin = "docs/HARD-LAYER-DESIGN.md M1/M2/M3/M4/M5; unsat-demand mechanic from ERP-Bench (77/300 tasks tagged unsat_demand, research/erp-bench-deep-dive.md); discount-capture policy from research/domain-workflows.md §2; SAP F110 payment proposals per research/external/articles/payment-runs-early-pay-discount--sap-f110.md"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+agent_role = "treasury"
+walk_len = 11
+
+# Objective non-collapse (M3), the ERP-Bench admission gate ported: a task ships only if
+# optimizing the stated objective changes the answer versus the naive heuristic.
+#   naive (earliest due date first, pay until cash runs out) -> PINV-105, PINV-102, PINV-101 = 183,800.00
+#   graded (SOP: exclusions, then discount capture, then oldest past-due) -> PINV-101, PINV-105, PINV-106 = 187,800.00
+# The two sets differ, so the naive walk cannot score.
+naive_answer = "PINV-101,PINV-102,PINV-105"
+graded_answer = "PINV-101,PINV-105,PINV-106"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

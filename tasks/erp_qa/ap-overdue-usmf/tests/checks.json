@@ -3,7 +3,7 @@
   {
    "field": "total_overdue_ap",
    "type": "number",
-   "expect": 30616554.46,
+   "expect": 30616849.18,
    "tol_abs": 0.05,
    "gt_sql": "SELECT ROUND(SUM(amount-settled),2) FROM erp_vend_trans WHERE txn_type='Invoice' AND closed=0 AND due_date<'2026-03-02'"
   },

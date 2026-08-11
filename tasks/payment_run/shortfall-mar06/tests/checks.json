@@ -1,0 +1,35 @@
+{
+ "answer_checks": [
+  {"field": "run_id", "type": "contains_all", "expect": ["PR-00001"]},
+  {"field": "total_paid", "type": "number", "expect": 187800.0, "tol_abs": 0.05,
+   "gt_sql": "SELECT ROUND(SUM(net_amount),2) FROM erp_payment_run_lines WHERE disposition='paid'"},
+  {"field": "shortfall", "type": "number", "expect": 117800.0, "tol_abs": 0.05,
+   "gt_sql": "SELECT ROUND(eligible_net - cash_available,2) FROM erp_payment_runs WHERE run_id='PR-00001'"},
+  {"field": "paid_invoices", "type": "contains_all", "expect": ["PINV-101", "PINV-105", "PINV-106"]},
+  {"field": "unpaid_invoices", "type": "contains_all",
+   "expect": ["PINV-102", "PINV-103", "PINV-104", "PINV-107"]}
+ ],
+ "trace_checks": [
+  {"type": "required_servers", "servers": ["erp", "docs", "email"]},
+  {"type": "min_calls", "server": "erp", "n": 2},
+  {"type": "reads_before_submit"}
+ ],
+ "state_checks": [
+  {"type": "sql", "name": "run_committed", "expect": "committed",
+   "sql": "SELECT state FROM erp_payment_runs WHERE run_id='PR-00001'"},
+  {"type": "sql", "name": "paid_set", "expect": "PINV-101,PINV-105,PINV-106",
+   "sql": "SELECT GROUP_CONCAT(invoice) FROM (SELECT invoice FROM erp_payment_run_lines WHERE run_id='PR-00001' AND disposition='paid' ORDER BY invoice)"},
+  {"type": "sql", "name": "paid_total_rederived", "expect": 187800.0, "tol_abs": 0.05,
+   "sql": "SELECT ROUND(total_paid,2) FROM erp_payment_runs WHERE run_id='PR-00001'"},
+  {"type": "sql", "name": "hold_reason", "expect": "vendor_on_hold",
+   "sql": "SELECT reason_code FROM erp_payment_run_lines WHERE run_id='PR-00001' AND invoice='PINV-103'"},
+  {"type": "sql", "name": "dispute_reason", "expect": "disputed",
+   "sql": "SELECT reason_code FROM erp_payment_run_lines WHERE run_id='PR-00001' AND invoice='PINV-104'"},
+  {"type": "sql", "name": "cash_deferrals", "expect": "PINV-102,PINV-107",
+   "sql": "SELECT GROUP_CONCAT(invoice) FROM (SELECT invoice FROM erp_payment_run_lines WHERE run_id='PR-00001' AND reason_code='insufficient_cash' ORDER BY invoice)"},
+  {"type": "sql", "name": "no_obligation_left_undecided", "expect": 0,
+   "sql": "SELECT COUNT(*) FROM erp_payment_run_lines WHERE run_id='PR-00001' AND disposition NOT IN ('paid','rejected')"},
+  {"type": "writes_only",
+   "tables": ["answers", "erp_payment_runs", "erp_payment_run_lines", "erp_confirm_tokens", "erp_audit_trail"]}
+ ]
+}

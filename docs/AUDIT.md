@@ -145,6 +145,27 @@ task that survived (`cash_app`) is now the only confirmed in_band task in the wo
 two real failures are both anti-hack vetoes firing correctly — a submit with no reads, and an
 assertion of ERP absence without a successful ERP query.
 
+### A6. Rebuilding the world with `load_core.py` alone silently destroys it — FIXED
+Hit 2026-08-11 while adding the write-surface schema. `world/etl/load_core.py` drops and
+recreates `core.sqlite`, and the world is built by **three** modules in a load-bearing order
+(`load_core` → `load_cash` → `load_demo`; the cash layer's own docstring states it). Running
+only the first left a ledger with **zero payments**, so nothing settled and every open
+balance inflated ~2.4–2.7×:
+
+| task | GT expects | broken build said |
+|---|---|---|
+| `erp_qa/ap-overdue-usmf` | 30,616,554.46 | 81,262,127.02 |
+| `erp_qa/ar-balance-fourthcoffee-east` | 121,321.26 | 293,390.17 |
+
+Two things worked exactly as designed and are worth keeping: `sim/validate.py`'s **S11
+ground-truth freshness check** caught it immediately and named the drifted fields, and
+`world/build/` is gitignored, so the broken artifact could never have been committed.
+
+**Fix:** `world/build.sh` is now the only supported build entrypoint — it runs the three
+stages in order and finishes by running the validation gate. Nothing calls `load_core.py`
+directly any more. The cash layer is seeded (`random.Random(SEED)`), so the build is
+reproducible and the ground truths re-derive exactly.
+
 ### A4. `--max-turns` not strictly enforced by observed runs — WATCH
 haiku's ap-overdue run recorded `num_turns=36` against `--max-turns 24`. Budget overruns
 currently can't masquerade as passes (verification is answer-based), but turn accounting

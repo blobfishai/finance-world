@@ -14,6 +14,8 @@ Checks per task (all deterministic, all offline):
   S9 negative       an idle run (no tool calls) scores reward 0  [task is not free]
   S10 no-submit     replaying the walk WITHOUT the final submit scores 0
   S11 gt freshness  any check carrying `gt_sql` still matches what the world computes
+  S12 non-collapse  a task declaring naive_answer/graded_answer is not solvable by the
+                    naive heuristic (M3; ERP-Bench's objective-certification gate)
                     (catches expected-value drift when the ledger is regenerated)
                     [answer must come from the agent, not from side effects]
 Exit 0 iff every check passes. Run before trusting any model score.
@@ -128,6 +130,19 @@ def main():
         run_o = ROOT / ".runs/validate" / t.name / "oracle"
         prepare(t, run_o); replay(t, run_o, walk)
         check(verify(t, run_o)["reward"] == 1, name, "S8", "oracle walk does not score 1")
+
+        # S12 objective non-collapse (docs/HARD-LAYER-DESIGN.md M3, ported from ERP-Bench's
+        # _objective_family_certified): a task that declares a naive baseline must not be
+        # solvable by it. Declaring the two and having them agree is the failure mode.
+        naive, graded = meta.get("naive_answer"), meta.get("graded_answer")
+        if naive is not None or graded is not None:
+            check(naive is not None and graded is not None, name, "S12",
+                  "declare both naive_answer and graded_answer, or neither")
+            if naive is not None and graded is not None:
+                norm_ = lambda s: sorted(x.strip().lower() for x in str(s).split(",") if x.strip())
+                check(norm_(naive) != norm_(graded), name, "S12",
+                      f"naive answer equals the graded answer ({graded!r}) - the task collapses "
+                      f"to the naive heuristic and cannot measure the stated objective")
 
         # S11 ground-truth freshness: a check with gt_sql must still equal the world
         cxv = sqlite3.connect(run_o / "world.sqlite")
