@@ -158,7 +158,10 @@ def main():
             cp = (d / "tests/checks.json") if (d / "tests/checks.json").exists() else (d / "checks.json")
             for c in json.loads(cp.read_text()).get("answer_checks", []):
                 if "gt_sql" not in c: continue
-                live = cxv.execute(c["gt_sql"]).fetchone()[0] or 0
+                _row = cxv.execute(c["gt_sql"]).fetchone()
+                live = _row[0] if _row else None
+                if live is None:
+                    continue      # write-task output: not derivable pre-episode (A13)
                 tol = max(float(c.get("tol_abs", 0.01)), abs(float(c["expect"])) * float(c.get("tol_rel", 0)))
                 check(abs(float(live) - float(c["expect"])) <= tol, name, "S11",
                       f"stale ground truth for {c['field']}: expects {c['expect']}, world says {live}")

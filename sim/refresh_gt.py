@@ -42,7 +42,7 @@ def walk_update(task_dir, field, old, new):
 
 
 def main(apply=False):
-    drift = []
+    drift, unresolved = [], []
     for task in sorted(ROOT.glob("tasks/*/*")):
         if not (task / "task.toml").exists(): continue
         run = ROOT / ".runs/gtrefresh" / task.parent.name / task.name
@@ -55,7 +55,16 @@ def main(apply=False):
             dirty = False
             for c in checks.get("answer_checks", []):
                 if "gt_sql" not in c: continue
-                live = cx.execute(c["gt_sql"]).fetchone()[0] or 0
+                row = cx.execute(c["gt_sql"]).fetchone()
+                live = row[0] if row else None
+                if live is None:
+                    # The query returns nothing against the world as the agent FINDS it.
+                    # For a write task that is expected — `total_paid` only exists once the
+                    # run has been committed — so the pre-state cannot re-derive it, and
+                    # coercing NULL to 0 rewrote a correct 34,450.00 to 0.00 (docs/AUDIT.md
+                    # A13). Skip; the post-episode value is graded by a state_check instead.
+                    unresolved.append((f"{task.parent.name}/{task.name}", c["field"]))
+                    continue
                 exp = float(c["expect"])
                 tol = max(float(c.get("tol_abs", 0.01)), abs(exp) * float(c.get("tol_rel", 0)))
                 if abs(float(live) - exp) <= tol: continue
@@ -73,6 +82,10 @@ def main(apply=False):
         # scratch the moment its gt_sql has been read.
         shutil.rmtree(run, ignore_errors=True)
 
+    if unresolved:
+        print(f"{len(unresolved)} gt_sql checks do not resolve against the pre-episode world "
+              f"(write-task outputs; graded by state_checks) — left untouched:")
+        for t_, f_ in unresolved[:8]: print(f"    {t_:46} {f_}")
     if not drift:
         print("no ground-truth drift — every gt_sql check matches the world")
         return 0

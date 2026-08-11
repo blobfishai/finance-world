@@ -327,6 +327,32 @@ copies are scratch the moment their `gt_sql` has been evaluated or their oracle 
 The 10x multiplied the per-task cost as faithfully as it multiplied the tasks. Anything that
 scales with the tree now has to state its cost per task before it runs.
 
+### A13. `refresh_gt` treated "query returns nothing" as "the answer is zero" — FIXED
+2026-08-11, caught within seconds of starting it because the edit landed in a task I knew the
+answer to.
+
+`sim/refresh_gt.py` re-derives every `gt_sql`-backed truth from the built world and rewrites
+any that drifted. It read the result as `fetchone()[0] or 0`. For a **write** task the graded
+value does not exist before the agent acts — `anomaly_triage/duplicate-payment-mar` grades
+`total_paid` off `erp_payment_run_lines`, which is empty until the run is committed — so the
+query returned NULL, `or 0` turned that into `0`, and the tool **rewrote a correct 34,450.00
+to 0.00** in both `checks.json` and the gold walk.
+
+One task was corrupted before the kill; `git checkout` restored it, and the oracle replays
+green again. The blast radius was one because the run was watched, not because anything
+stopped it.
+
+**Fix:** a NULL re-derivation now means *this truth is not derivable from the world as the
+agent finds it* — it is reported and skipped, never rewritten. `sim/validate.py`'s S11 check
+carried the identical `or 0` coercion and is fixed the same way. 41 answer checks fall into
+this class; their post-episode values are graded by `state_checks`, which run after the
+episode and are the right place for them.
+
+**The deeper lesson:** `gt_sql` on an *answer* check silently assumes the truth exists in the
+pre-episode world. That holds for every read task and for none of the write tasks. A repair
+tool that trusts its own inputs is a corruption tool with good intentions — and this one was
+built earlier the same day to fix a different integrity bug.
+
 ### A4. `--max-turns` not strictly enforced by observed runs — WATCH
 haiku's ap-overdue run recorded `num_turns=36` against `--max-turns 24`. Budget overruns
 currently can't masquerade as passes (verification is answer-based), but turn accounting
