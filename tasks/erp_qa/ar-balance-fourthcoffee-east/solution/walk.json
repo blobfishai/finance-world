@@ -1,6 +1,40 @@
 [
-  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "Customers", "filters": {"name": "Fourth Coffee East"}}},
-  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT COUNT(*) AS open_invoices, ROUND(SUM(amount - settled), 2) AS open_balance FROM erp_cust_trans WHERE account='SYNCUS-0069' AND txn_type='Invoice' AND closed=0"}},
-  {"server": "erp", "tool": "api_invoke_action", "args": {"action": "ContosoCustAgedBalancesLive", "parameters": {"customer_account": "SYNCUS-0069"}}},
-  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"customer_account": "SYNCUS-0069", "outstanding_balance": 172068.91, "open_invoice_count": 5}}}
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "name": "Fourth Coffee East"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT COUNT(*) AS open_invoices, ROUND(SUM(amount - settled), 2) AS open_balance FROM erp_cust_trans WHERE account='SYNCUS-0069' AND txn_type='Invoice' AND closed=0"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "api_invoke_action",
+  "args": {
+   "action": "ContosoCustAgedBalancesLive",
+   "parameters": {
+    "customer_account": "SYNCUS-0069"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "customer_account": "SYNCUS-0069",
+    "outstanding_balance": 121321.26,
+    "open_invoice_count": 4
+   }
+  }
+ }
 ]

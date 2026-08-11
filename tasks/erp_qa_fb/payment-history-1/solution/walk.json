@@ -3,7 +3,7 @@
   "server": "erp",
   "tool": "data_find_entities_sql",
   "args": {
-   "sql": "SELECT voucher, trans_date, ROUND(-amount,2) AS paid FROM erp_cust_trans WHERE account='US-018' AND txn_type='Payment' ORDER BY paid DESC"
+   "sql": "SELECT voucher, trans_date, ROUND(-amount,2) AS paid FROM erp_cust_trans WHERE account='SYNCUS-0485' AND txn_type='Payment' ORDER BY paid DESC"
   }
  },
  {
@@ -11,9 +11,9 @@
   "tool": "submit_answer",
   "args": {
    "answers": {
-    "largest_payment_amount": 187707.98,
-    "largest_payment_voucher": "ARPM000080",
-    "largest_payment_date": "2025-04-28"
+    "largest_payment_amount": 45888.65,
+    "largest_payment_voucher": "ARPM001130",
+    "largest_payment_date": "2025-07-24"
    }
   }
  }

@@ -36,6 +36,21 @@ budget rule exists to prevent. Both corrected; the check now guards it permanent
    fallback). Before the fix, a model that searched sensibly would have been failed by
    the harness — a false capability verdict.
 
+### A7. Ground truths and oracle answers could go stale together — FIXED (S11)
+The cash layer (`world/etl/load_cash.py`) changed the ledger, and validation still passed
+with every task green — because the oracle walk *submits a hardcoded answer* and the checks
+compare against that same constant. Both were stale relative to the world:
+`erp_qa/ap-overdue-usmf` expected **$81,262,127.02** when the ERP now says **$30,616,554.46**.
+S8 (oracle scores 1) is structurally blind to this: it only proves the walk agrees with the
+checks, not that either agrees with reality.
+**Fix:** answer checks may now carry `gt_sql`, and validator check **S11** recomputes it
+against the prepared world, failing on any drift. Verified by deliberately corrupting an
+expected value — S11 caught it. Every core-derived truth now carries `gt_sql`.
+**Rule:** if a task's answer is computable from world state, it must ship with `gt_sql`.
+Side effect worth noting: the cash layer paid Fourth Coffee East's account to zero, which
+would have silently turned a balance-lookup task into a "the answer is nothing" task. It
+now seeds its own open invoices, so task truth no longer depends on ledger regeneration.
+
 ## 2026-08-10 — wave-0 calibration
 
 ### A1. Session-limit contamination (harness/account, 33/40 runs) — FIXED

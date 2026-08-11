@@ -66,7 +66,7 @@ task worlds, every response computed from SQLite at call time. SIMULATION ONLY.
 **`erp.form_filter_grid`**  `{"form_id": "fh-1", "column": "name", "value": "Sparrow"}`
 
 ```json
-{"form_id": "fh-1", "form": "CustTable", "title": "Customers", "grid": {"columns": ["account", "name", "customer_group", "currency", "payment_term", "credit_max", "on_hold"], "rows": [{"_row": 1008, "account": "US-008", "name": "Sparrow Retail", "customer_group": "30", "currency": "USD", "payment_term": "Net30", "credit_max": 75000.0, "on_hold": "Open"}], "page": 1, "page_size": 25, "total_rows": 1, "filter_operator": "matches (only)"}, "tabs": {"General": "closed", "Credit and collections": "closed", "Contact info …
+{"form_id": "fh-1", "form": "CustTable", "title": "Customers", "grid": {"columns": ["account", "name", "customer_group", "currency", "payment_term", "credit_max", "on_hold"], "rows": [{"_row": 1001, "account": "US-008", "name": "Sparrow Retail", "customer_group": "30", "currency": "USD", "payment_term": "Net30", "credit_max": 75000.0, "on_hold": "Open"}], "page": 1, "page_size": 25, "total_rows": 1, "filter_operator": "matches (only)"}, "tabs": {"General": "closed", "Credit and collections": "closed", "Contact info …
 ```
 
 **`erp.form_find_controls`**  `{"form_id": "fh-1", "search": "credit"}`
@@ -75,16 +75,16 @@ task worlds, every response computed from SQLite at call time. SIMULATION ONLY.
 {"matches": [{"control": "credit_rating", "tab": "General", "tab_state": "closed"}, {"control": "credit_max", "tab": "Credit and collections", "tab_state": "closed"}, {"control": "credit_max", "type": "grid_column"}]}
 ```
 
-**`erp.form_select_grid_row`**  `{"form_id": "fh-1", "row": 1008}`
+**`erp.form_select_grid_row`**  `{"form_id": "fh-1", "row": 1001}`
 
 ```json
-{"selected_row": {"_row": 1008, "account": "US-008", "dataareaid": "USMF", "name": "Sparrow Retail", "customer_group": "30", "currency": "USD", "payment_term": "Net30", "cash_disc_code": null, "credit_max": 75000.0, "credit_rating": "Fair", "on_hold": "Open", "city": "Seattle", "state": "WA", "contact_name": "Robin", "contact_email": "robin@sparrowretail-sim.example", "phone": "206-555-0142"}, "open_tabs": [], "note": "closed-tab fields require form_open_or_close_tab"}
+{"selected_row": {"_row": 1001, "account": "US-008", "dataareaid": "USMF", "name": "Sparrow Retail", "customer_group": "30", "currency": "USD", "payment_term": "Net30", "cash_disc_code": null, "credit_max": 75000.0, "credit_rating": "Fair", "on_hold": "Open", "city": "Seattle", "state": "WA", "contact_name": "Robin", "contact_email": "robin@sparrowretail-sim.example", "phone": "206-555-0142"}, "open_tabs": [], "note": "closed-tab fields require form_open_or_close_tab"}
 ```
 
 **`erp.form_open_or_close_tab`**  `{"form_id": "fh-1", "tab": "Credit and collections"}`
 
 ```json
-{"form_id": "fh-1", "form": "CustTable", "title": "Customers", "grid": {"columns": ["account", "name", "customer_group", "currency", "payment_term", "credit_max", "on_hold"], "rows": [{"_row": 1008, "account": "US-008", "name": "Sparrow Retail", "customer_group": "30", "currency": "USD", "payment_term": "Net30", "credit_max": 75000.0, "on_hold": "Open"}], "page": 1, "page_size": 25, "total_rows": 1, "filter_operator": "matches (only)"}, "tabs": {"General": "closed", "Credit and collections": "open", "Contact inform …
+{"form_id": "fh-1", "form": "CustTable", "title": "Customers", "grid": {"columns": ["account", "name", "customer_group", "currency", "payment_term", "credit_max", "on_hold"], "rows": [{"_row": 1001, "account": "US-008", "name": "Sparrow Retail", "customer_group": "30", "currency": "USD", "payment_term": "Net30", "credit_max": 75000.0, "on_hold": "Open"}], "page": 1, "page_size": 25, "total_rows": 1, "filter_operator": "matches (only)"}, "tabs": {"General": "closed", "Credit and collections": "open", "Contact inform …
 ```
 
 **`erp.form_click_control`**  `{"form_id": "fh-1", "control": "Collections"}`
@@ -102,13 +102,13 @@ task worlds, every response computed from SQLite at call time. SIMULATION ONLY.
 **`erp.form_sort_grid_column`**  `{"form_id": "fh-1", "column": "account"}`
 
 ```json
-{"form_id": "fh-1", "form": "CustTable", "title": "Customers", "grid": {"columns": ["account", "name", "customer_group", "currency", "payment_term", "credit_max", "on_hold"], "rows": [{"_row": 1008, "account": "US-008", "name": "Sparrow Retail", "customer_group": "30", "currency": "USD", "payment_term": "Net30", "credit_max": 75000.0, "on_hold": "Open"}], "page": 1, "page_size": 25, "total_rows": 1, "filter_operator": "matches (only)"}, "tabs": {"General": "closed", "Credit and collections": "open", "Contact inform …
+{"form_id": "fh-1", "form": "CustTable", "title": "Customers", "grid": {"columns": ["account", "name", "customer_group", "currency", "payment_term", "credit_max", "on_hold"], "rows": [{"_row": 1001, "account": "US-008", "name": "Sparrow Retail", "customer_group": "30", "currency": "USD", "payment_term": "Net30", "credit_max": 75000.0, "on_hold": "Open"}], "page": 1, "page_size": 25, "total_rows": 1, "filter_operator": "matches (only)"}, "tabs": {"General": "closed", "Credit and collections": "open", "Contact inform …
 ```
 
 **`erp.form_filter_form`**  `{"form_id": "fh-1", "value": "Sparrow"}`
 
 ```json
-{"form_id": "fh-1", "form": "CustTable", "title": "Customers", "grid": {"columns": ["account", "name", "customer_group", "currency", "payment_term", "credit_max", "on_hold"], "rows": [{"_row": 1008, "account": "US-008", "name": "Sparrow Retail", "customer_group": "30", "currency": "USD", "payment_term": "Net30", "credit_max": 75000.0, "on_hold": "Open"}], "page": 1, "page_size": 25, "total_rows": 1, "filter_operator": "matches (only)"}, "tabs": {"General": "closed", "Credit and collections": "open", "Contact inform …
+{"form_id": "fh-1", "form": "CustTable", "title": "Customers", "grid": {"columns": ["account", "name", "customer_group", "currency", "payment_term", "credit_max", "on_hold"], "rows": [{"_row": 1001, "account": "US-008", "name": "Sparrow Retail", "customer_group": "30", "currency": "USD", "payment_term": "Net30", "credit_max": 75000.0, "on_hold": "Open"}], "page": 1, "page_size": 25, "total_rows": 1, "filter_operator": "matches (only)"}, "tabs": {"General": "closed", "Credit and collections": "open", "Contact inform …
 ```
 
 **`erp.form_set_control_values`**  `{"form_id": "fh-1", "values": {"credit_max": 1}}`

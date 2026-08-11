@@ -13,6 +13,8 @@ Checks per task (all deterministic, all offline):
   S8 oracle         the reference walk scores reward 1
   S9 negative       an idle run (no tool calls) scores reward 0  [task is not free]
   S10 no-submit     replaying the walk WITHOUT the final submit scores 0
+  S11 gt freshness  any check carrying `gt_sql` still matches what the world computes
+                    (catches expected-value drift when the ledger is regenerated)
                     [answer must come from the agent, not from side effects]
 Exit 0 iff every check passes. Run before trusting any model score.
 """
@@ -126,6 +128,18 @@ def main():
         run_o = ROOT / ".runs/validate" / t.name / "oracle"
         prepare(t, run_o); replay(t, run_o, walk)
         check(verify(t, run_o)["reward"] == 1, name, "S8", "oracle walk does not score 1")
+
+        # S11 ground-truth freshness: a check with gt_sql must still equal the world
+        cxv = sqlite3.connect(run_o / "world.sqlite")
+        for d in [t] + list(steps_of(t)):
+            cp = (d / "tests/checks.json") if (d / "tests/checks.json").exists() else (d / "checks.json")
+            for c in json.loads(cp.read_text()).get("answer_checks", []):
+                if "gt_sql" not in c: continue
+                live = cxv.execute(c["gt_sql"]).fetchone()[0] or 0
+                tol = max(float(c.get("tol_abs", 0.01)), abs(float(c["expect"])) * float(c.get("tol_rel", 0)))
+                check(abs(float(live) - float(c["expect"])) <= tol, name, "S11",
+                      f"stale ground truth for {c['field']}: expects {c['expect']}, world says {live}")
+        cxv.close()
 
         # S9 negative control: idle run must fail
         run_n = ROOT / ".runs/validate" / t.name / "idle"

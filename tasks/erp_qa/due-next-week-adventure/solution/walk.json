@@ -1,5 +1,29 @@
 [
-  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "Customers", "filters": {"account": "SYNCUS-0002"}}},
-  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT invoice, due_date, ROUND(amount - settled, 2) AS open FROM erp_cust_trans WHERE account='SYNCUS-0002' AND txn_type='Invoice' AND closed=0 AND due_date > '2026-03-02' AND due_date <= '2026-03-09'"}},
-  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"invoice_count": 0, "invoice_numbers": "none"}}}
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "account": "SYNCUS-0002"
+   }
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities_sql",
+  "args": {
+   "sql": "SELECT invoice, due_date, ROUND(amount - settled, 2) AS open FROM erp_cust_trans WHERE account='SYNCUS-0002' AND txn_type='Invoice' AND closed=0 AND due_date > '2026-03-02' AND due_date <= '2026-03-09'"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "invoice_count": 0,
+    "invoice_numbers": "none"
+   }
+  }
+ }
 ]

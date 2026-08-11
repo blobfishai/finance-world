@@ -1,14 +1,43 @@
 {
-  "answer_checks": [
-    {"field": "erp_open_balance", "type": "number", "expect": 94749.19, "tol_abs": 0.02},
-    {"field": "subsidiary_net_balance", "type": "number", "expect": 19050.00, "tol_abs": 0.02},
-    {"field": "combined_exposure", "type": "number", "expect": 113799.19, "tol_abs": 0.04}
-  ],
-  "trace_checks": [
-    {"type": "required_servers", "servers": ["erp", "books"]},
-    {"type": "reads_before_submit"}
-  ],
-  "state_checks": [
-    {"type": "writes_only", "tables": ["answers"]}
-  ]
+ "answer_checks": [
+  {
+   "field": "erp_open_balance",
+   "type": "number",
+   "expect": 94749.19,
+   "tol_abs": 0.02,
+   "gt_sql": "SELECT ROUND(SUM(amount-settled),2) FROM erp_cust_trans WHERE account='SYNCUS-0002' AND txn_type='Invoice' AND closed=0"
+  },
+  {
+   "field": "subsidiary_net_balance",
+   "type": "number",
+   "expect": 19050.0,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "combined_exposure",
+   "type": "number",
+   "expect": 113799.19,
+   "tol_abs": 0.04
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "erp",
+    "books"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
 }

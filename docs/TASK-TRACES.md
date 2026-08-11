@@ -16,7 +16,7 @@ computed from SQLite at call time. SIMULATION ONLY.
 **Tool calls and real responses**
 
 1. **`erp.data_find_entities`** `{"entity": "Customers", "filters": {"account": "SYNCUS-0001"}}`
-   → `{"@odata.context": "$metadata#Customers", "value": [{"account": "SYNCUS-0001", "dataareaid": "USMF", "name": "A. Datum Corporation", "customer_group": "10", "currency": "USD", "payment_term": "COD", "cash_disc_code": null, "credit_max": 25000.0, "credit_rating": "Good", "on_hold": "Open", "city": "Pittsburgh", "state": …`
+   → `{"@odata.context": "$metadata#Customers", "value": [{"account": "SYNCUS-0001", "dataareaid": "USMF", "name": "A. Datum Corporation", "customer_group": "10", "currency": "USD", "payment_term": "COD", "cash_disc_code": "2%10N30", "credit_max": 25000.0, "credit_rating": "Good", "on_hold": "Open", "city": "Pittsburgh", "st …`
 2. **`harness.submit_answer`** `{"answers": {"credit_limit": 25000.0, "customer_name": "A. Datum Corporation"}}`
    → `{"recorded_fields": ["credit_limit", "customer_name"]}`
 

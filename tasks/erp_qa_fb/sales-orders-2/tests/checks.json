@@ -3,15 +3,13 @@
   {
    "field": "order_count",
    "type": "number",
-   "expect": 1,
+   "expect": 0,
    "tol_abs": 0
   },
   {
    "field": "sales_order_id",
-   "type": "contains_all",
-   "expect": [
-    "724"
-   ]
+   "type": "string",
+   "expect": "none"
   }
  ],
  "trace_checks": [
