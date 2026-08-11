@@ -9,7 +9,9 @@ checks.json:
       number: value parsed from "$1,234.56", "1234.56", 1234.56; pass if within
               max(tol_abs, |expect|*tol_rel); default exact to 0.01.
       string: case/space-insensitive equality.
-      contains_all: every listed substring appears (case-insensitive) in the value.
+      contains_all: every listed substring appears (case-insensitive) in the value; an
+              optional `forbid` list must NOT appear, so a set answer is graded for
+              over-inclusion as well as omission.
       scale: the unit a figure is stated in (units/thousands/millions/billions/percent),
               graded as its own field the way TAT-QA does. Any numeric check additionally
               reports `scale_error` when the answer is a clean 1e3/1e6/1e9 multiple of the
@@ -164,6 +166,11 @@ def verify(task_dir, run_dir):
             g = norm(got)
             missing = [s for s in c["expect"] if norm(s) not in g]
             if missing: failed.append(name + f":missing_terms({missing})")
+            # `forbid` is the other half of a set answer: naming the right records is only
+            # correct if it does not ALSO name the wrong ones (over-inclusion is a distinct
+            # failure from omission and is reported as one).
+            over = [s for s in c.get("forbid", []) if norm(s) in g]
+            if over: failed.append(name + f":forbidden_terms({over})")
         else:
             if norm(got) != norm(c["expect"]): failed.append(name + f":mismatch(got={norm(got)[:60]})")
 

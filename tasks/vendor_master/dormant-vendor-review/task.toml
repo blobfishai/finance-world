@@ -1,0 +1,31 @@
+schema_version = "1.4"
+
+[task]
+name = "vendor_master/dormant-vendor-review"
+version = "0.1.0"
+description = "Quarterly vendor hygiene review where dormant, unused and already-actioned vendors are three different findings and only one of them is the answer."
+authors = ["nario-ai"]
+keywords = ["finance", "vendor_master", "controls", "fraud", "hygiene"]
+
+[metadata]
+family = "vendor_master"
+origin = "closes tracked coverage gap art.vendor_dormancy (sim/coverage.py); dormant-account BEC exposure from research/external/articles/vendor-master-bec-fraud--{afp-truist,fbi-ic3,wa-state-auditor}.md; docs/HARD-LAYER-DESIGN.md M3/M5"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+walk_len = 6
+
+# Objective non-collapse (M3). The naive filter - "no posted activity since the cutoff" -
+# returns four accounts. SOP-AP-11 removes two of them for different reasons (DVEN-04 never
+# transacted, so it is unused not dormant; DVEN-06 is already on hold, so it is actioned),
+# and DVEN-05 is only excluded if activity is measured from ANY transaction rather than from
+# invoices alone - its last invoice predates the cutoff but its payment does not.
+naive_answer = "DVEN-02,DVEN-03,DVEN-04,DVEN-06"
+graded_answer = "DVEN-02,DVEN-03"
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

@@ -645,9 +645,10 @@
    "id": "art.vendor_dormancy",
    "source": "articles: vendor master hygiene",
    "name": "Vendor dormancy / duplicate sweep (12-24 months inactive)",
-   "tasks": [],
-   "status": "gap",
-   "note": "vendor master + transaction history support it; needs a task and a hygiene policy doc"
+   "tasks": [
+    "vendor_master/dormant-vendor-review"
+   ],
+   "note": "closed 2026-08-11: no new infrastructure needed - the vendor master and transaction history already supported it. The task turns on dormant vs unused vs already-actioned being three different findings, a distinction that exists only in SOP-AP-11 and in no ERP field"
   },
   {
    "id": "art.credit_check_discrimination",
