@@ -1,0 +1,333 @@
+{
+ "task": "erpbench/2093-medium-10-single-bom-split-by-capacity",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 44,
+ "walk_len": 44,
+ "budget_turns": 364,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 44}\n",
+ "trace": [
+  {
+   "ts": 1786508336.931925,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.932399,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"P47D0CB45E7-SAF-LSC-006\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.932776,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"P47D0CB45E7-SAF-LSC-006\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.933635,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"r47D0CB45E7_c01\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.9344158,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 14, \"price_unit\": 2768.49}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.935115,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"r47D0CB45E7_c02\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.935763,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 21, \"price_unit\": 2768.49}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.9364622,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"r47D0CB45E7_c03\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.937141,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 15, \"price_unit\": 2768.49}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.9378839,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"r47D0CB45E7_c04\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.9384909,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 14, \"price_unit\": 2768.49}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.9392571,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00005\", \"partner_ref\": \"r47D0CB45E7_c05\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.9404428,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00005\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 14, \"price_unit\": 2768.49}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.941344,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00006\", \"partner_ref\": \"r47D0CB45E7_c06\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.9419572,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00006\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 14, \"price_unit\": 2768.49}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.942572,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00007\", \"partner_ref\": \"r47D0CB45E7_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.9431522,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00007\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 15, \"price_unit\": 2768.49}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.9437969,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00008\", \"partner_ref\": \"r47D0CB45E7_c08\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.944436,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00008\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 14, \"price_unit\": 2768.49}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.945077,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00009\", \"partner_ref\": \"r47D0CB45E7_c09\", \"state\": \"draft\", \"commitment_date\": \"2026-03-16\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.945802,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00009\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 14, \"price_unit\": 2768.49}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.946408,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00010\", \"partner_ref\": \"r47D0CB45E7_c10\", \"state\": \"draft\", \"commitment_date\": \"2026-03-16\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.9470239,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00010\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 15, \"price_unit\": 2768.49}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.947786,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\", \"S00005\", \"S00006\", \"S00007\", \"S00008\", \"S00009\", \"S00010\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.948504,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"r47D0CB45E7_q06\", \"state\": \"draft\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.949153,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"P47D0CB45E7-SAF-ESP-106\", \"qty\": 6, \"price_unit\": 38.66}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.9498749,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00002\", \"partner_ref\": \"r47D0CB45E7_q16\", \"state\": \"draft\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.9504871,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00002\", \"product_code\": \"P47D0CB45E7-SAF-FAB-110\", \"qty\": 11, \"price_unit\": 13.46}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.9510899,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00003\", \"partner_ref\": \"r47D0CB45E7_q17\", \"state\": \"draft\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.951709,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00003\", \"product_code\": \"P47D0CB45E7-SAF-RAC-113\", \"qty\": 7, \"price_unit\": 141.9}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.952415,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00004\", \"partner_ref\": \"r47D0CB45E7_q21\", \"state\": \"draft\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.953002,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00004\", \"product_code\": \"P47D0CB45E7-SAF-GFR-126\", \"qty\": 6, \"price_unit\": 113.27}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.953718,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00005\", \"partner_ref\": \"r47D0CB45E7_q01\", \"state\": \"draft\", \"date_planned\": \"2026-03-11\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.954447,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00005\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 50, \"price_unit\": 1532.15}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.955219,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00006\", \"partner_ref\": \"r47D0CB45E7_q02\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.955907,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00006\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 1, \"price_unit\": 1870.12}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.956651,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00007\", \"partner_ref\": \"r47D0CB45E7_q04\", \"state\": \"draft\", \"date_planned\": \"2026-03-11\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.957349,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00007\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 14, \"price_unit\": 1805.98}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.958045,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00008\", \"partner_ref\": \"r47D0CB45E7_q05\", \"state\": \"draft\", \"date_planned\": \"2026-03-14\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.95871,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00008\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 8, \"price_unit\": 1387.83}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.959324,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\", \"P00002\", \"P00003\", \"P00004\", \"P00005\", \"P00006\", \"P00007\", \"P00008\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.960017,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00001\", \"product_code\": \"P47D0CB45E7-SAF-LSC-006\", \"qty\": 8, \"state\": \"draft\", \"workcenter_code\": \"P47D0CB45E7-WC01\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.9606578,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"mrp.production\", \"names\": [\"MO00001\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508336.961659,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 10, \"orders_rejected\": 0, \"units_purchased\": 103, \"units_manufactured\": 8, \"assembly_cost\": 248.0}}",
+   "ok": true
+  }
+ ]
+}

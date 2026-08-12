@@ -1,0 +1,137 @@
+{
+ "task": "erpbench/2003-easy-01-buy-only-baseline",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 16,
+ "walk_len": 16,
+ "budget_turns": 140,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 16}\n",
+ "trace": [
+  {
+   "ts": 1786508290.731483,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.7319272,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"PC2C2C551B8-SPP-USS-009\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.732291,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"PC2C2C551B8-SPP-USS-009\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.7331321,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"rC2C2C551B8_c01\", \"state\": \"draft\", \"commitment_date\": \"2026-03-07\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.73397,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"PC2C2C551B8-SPP-USS-009\", \"qty\": 12, \"price_unit\": 249.31}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.734682,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"rC2C2C551B8_c02\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.7355,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"PC2C2C551B8-SPP-USS-009\", \"qty\": 4, \"price_unit\": 249.31}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.7362518,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"rC2C2C551B8_c03\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.737014,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"PC2C2C551B8-SPP-USS-009\", \"qty\": 12, \"price_unit\": 249.31}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.738063,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"rC2C2C551B8_c04\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.7389061,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"PC2C2C551B8-SPP-USS-009\", \"qty\": 12, \"price_unit\": 249.31}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.739697,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.740462,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"rC2C2C551B8_q01\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.7415721,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"PC2C2C551B8-SPP-USS-009\", \"qty\": 10, \"price_unit\": 152.7}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.7422578,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508290.743428,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 4, \"orders_rejected\": 0, \"units_purchased\": 10, \"units_manufactured\": 0, \"assembly_cost\": 0}}",
+   "ok": true
+  }
+ ]
+}

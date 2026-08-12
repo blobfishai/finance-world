@@ -1,0 +1,578 @@
+{
+ "task": "erpbench/2162-hard-17-shared-component-subassemblies-branch-assigned",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 79,
+ "walk_len": 79,
+ "budget_turns": 644,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 79}\n",
+ "trace": [
+  {
+   "ts": 1786508382.080373,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.080893,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"P4222741BA4-FIR-CAF-003\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.081262,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"P4222741BA4-FIR-CAF-003\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.0821881,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"r4222741BA4_c01\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.0831091,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 32, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.084011,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"r4222741BA4_c02\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.084789,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 22, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.085505,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"r4222741BA4_c03\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.08622,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 21, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.08693,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"r4222741BA4_c04\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.08757,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 18, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.088248,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00005\", \"partner_ref\": \"r4222741BA4_c05\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.088861,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00005\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 18, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.089499,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00006\", \"partner_ref\": \"r4222741BA4_c06\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.090088,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00006\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 26, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.090828,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00007\", \"partner_ref\": \"r4222741BA4_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.0914571,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00007\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 19, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.0921102,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00008\", \"partner_ref\": \"r4222741BA4_c08\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.092748,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00008\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 32, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.093386,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00009\", \"partner_ref\": \"r4222741BA4_c09\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.0939991,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00009\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 23, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.094604,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00010\", \"partner_ref\": \"r4222741BA4_c10\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.0951738,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00010\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 19, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.095774,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00011\", \"partner_ref\": \"r4222741BA4_c11\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.09633,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00011\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 18, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.096971,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00012\", \"partner_ref\": \"r4222741BA4_c12\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.097705,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00012\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 27, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.0985081,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00013\", \"partner_ref\": \"r4222741BA4_c13\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.09916,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00013\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 20, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.099856,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00014\", \"partner_ref\": \"r4222741BA4_c14\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.100542,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00014\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 18, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.101215,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00015\", \"partner_ref\": \"r4222741BA4_c15\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.102117,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00015\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 22, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.102874,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00016\", \"partner_ref\": \"r4222741BA4_c16\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.1035788,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00016\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 27, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.104301,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00017\", \"partner_ref\": \"r4222741BA4_c17\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.105141,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00017\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 19, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.1058629,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00018\", \"partner_ref\": \"r4222741BA4_c18\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.106545,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00018\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 30, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.1071959,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00019\", \"partner_ref\": \"r4222741BA4_c19\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.107894,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00019\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 19, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.1085892,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00020\", \"partner_ref\": \"r4222741BA4_c20\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.1092649,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00020\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 19, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.109878,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00021\", \"partner_ref\": \"r4222741BA4_c21\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.110473,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00021\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 23, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.1111512,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00022\", \"partner_ref\": \"r4222741BA4_c22\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.111875,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00022\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 32, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.112559,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00023\", \"partner_ref\": \"r4222741BA4_c23\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.113228,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00023\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 32, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.113912,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00024\", \"partner_ref\": \"r4222741BA4_c24\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.116288,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00024\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 32, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.116865,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00025\", \"partner_ref\": \"r4222741BA4_c25\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.117557,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00025\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 32, \"price_unit\": 13092.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.118263,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\", \"S00005\", \"S00006\", \"S00007\", \"S00008\", \"S00009\", \"S00010\", \"S00011\", \"S00012\", \"S00013\", \"S00014\", \"S00015\", \"S00016\", \"S00017\", \"S00018\", \"S00019\", \"S00020\", \"S00021\", \"S00022\", \"S00023\", \"S00024\", \"S00025\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.119082,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"r4222741BA4_q07\", \"state\": \"draft\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.1197708,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"P4222741BA4-FIR-ACV-103\", \"qty\": 199, \"price_unit\": 271.12}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.1205041,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00002\", \"partner_ref\": \"r4222741BA4_q08\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.1211689,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00002\", \"product_code\": \"P4222741BA4-FIR-ACV-103\", \"qty\": 15, \"price_unit\": 265.18}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.121886,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00003\", \"partner_ref\": \"r4222741BA4_q09\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.122543,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00003\", \"product_code\": \"P4222741BA4-FIR-ACV-103\", \"qty\": 47, \"price_unit\": 250.58}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.12332,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00004\", \"partner_ref\": \"r4222741BA4_q11\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.123911,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00004\", \"product_code\": \"P4222741BA4-FIR-FSA-106\", \"qty\": 48, \"price_unit\": 38.83}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.124688,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00005\", \"partner_ref\": \"r4222741BA4_q12\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.12532,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00005\", \"product_code\": \"P4222741BA4-FIR-FSA-106\", \"qty\": 78, \"price_unit\": 41.64}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.126061,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00006\", \"partner_ref\": \"r4222741BA4_q15\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.1268458,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00006\", \"product_code\": \"P4222741BA4-FIR-SDP-114\", \"qty\": 250, \"price_unit\": 17.01}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.127414,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00007\", \"partner_ref\": \"r4222741BA4_q01\", \"state\": \"draft\", \"date_planned\": \"2026-03-11\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.1280158,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00007\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 74, \"price_unit\": 8632.18}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.1286259,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00008\", \"partner_ref\": \"r4222741BA4_q05\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.129259,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00008\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 61, \"price_unit\": 9941.27}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.129955,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00009\", \"partner_ref\": \"r4222741BA4_q06\", \"state\": \"draft\", \"date_planned\": \"2026-03-12\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.13053,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00009\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 91, \"price_unit\": 10485.18}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.131237,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\", \"P00002\", \"P00003\", \"P00004\", \"P00005\", \"P00006\", \"P00007\", \"P00008\", \"P00009\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.131862,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00001\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 75, \"state\": \"draft\", \"workcenter_code\": \"P4222741BA4-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S0",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.132433,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00002\", \"product_code\": \"P4222741BA4-FIR-CAF-003\", \"qty\": 59, \"state\": \"draft\", \"workcenter_code\": \"P4222741BA4-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S0",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.133121,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00003\", \"product_code\": \"P4222741BA4-SUBA-02\", \"qty\": 134, \"state\": \"draft\", \"workcenter_code\": \"P4222741BA4-WC02\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S0001",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.133829,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00004\", \"product_code\": \"P4222741BA4-SUBB-02\", \"qty\": 134, \"state\": \"draft\", \"workcenter_code\": \"P4222741BA4-WC03\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S0001",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.1344929,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"mrp.production\", \"names\": [\"MO00001\", \"MO00002\", \"MO00003\", \"MO00004\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508382.13555,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 25, \"orders_rejected\": 0, \"units_purchased\": 863, \"units_manufactured\": 402, \"assembly_cost\": 9782.0}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,371 @@
+[
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "res.partner",
+   "domain": [
+    [
+     "kind",
+     "=",
+     "customer"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "product.supplierinfo",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "PB85E130F33-LED-LSL-003"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "stock.quant",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "PB85E130F33-LED-LSL-003"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00001",
+    "partner_ref": "rB85E130F33_c01",
+    "state": "draft",
+    "commitment_date": "2026-03-09"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00001",
+    "product_code": "PB85E130F33-LED-LSL-003",
+    "qty": 5,
+    "price_unit": 156.92
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00002",
+    "partner_ref": "rB85E130F33_c02",
+    "state": "draft",
+    "commitment_date": "2026-03-11"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00002",
+    "product_code": "PB85E130F33-LED-LSL-003",
+    "qty": 11,
+    "price_unit": 156.92
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00003",
+    "partner_ref": "rB85E130F33_c03",
+    "state": "draft",
+    "commitment_date": "2026-03-11"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00003",
+    "product_code": "PB85E130F33-LED-LSL-003",
+    "qty": 13,
+    "price_unit": 156.92
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00004",
+    "partner_ref": "rB85E130F33_c04",
+    "state": "draft",
+    "commitment_date": "2026-03-12"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00004",
+    "product_code": "PB85E130F33-LED-LSL-003",
+    "qty": 13,
+    "price_unit": 156.92
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00005",
+    "partner_ref": "rB85E130F33_c05",
+    "state": "draft",
+    "commitment_date": "2026-03-12"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00005",
+    "product_code": "PB85E130F33-LED-LSL-003",
+    "qty": 13,
+    "price_unit": 156.92
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "sale.order",
+   "names": [
+    "S00001",
+    "S00002",
+    "S00003",
+    "S00004",
+    "S00005"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00001",
+    "partner_ref": "rB85E130F33_q07",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00001",
+    "product_code": "PB85E130F33-LED-PDL-104",
+    "qty": 75,
+    "price_unit": 7.85
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00002",
+    "partner_ref": "rB85E130F33_q10",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00002",
+    "product_code": "PB85E130F33-LED-OSM-118",
+    "qty": 44,
+    "price_unit": 17.24
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00003",
+    "partner_ref": "rB85E130F33_q13",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00003",
+    "product_code": "PB85E130F33-LED-SPC-122",
+    "qty": 29,
+    "price_unit": 9.54
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "purchase.order",
+   "names": [
+    "P00001",
+    "P00002",
+    "P00003"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00001",
+    "product_code": "PB85E130F33-LED-LSL-003",
+    "qty": 5,
+    "state": "draft",
+    "workcenter_code": "PB85E130F33-WC02",
+    "date_planned": "2026-03-07",
+    "origin": "S00001, S00002, S00003, S00004, S00005"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00002",
+    "product_code": "PB85E130F33-LED-LSL-003",
+    "qty": 5,
+    "state": "draft",
+    "workcenter_code": "PB85E130F33-WC01",
+    "date_planned": "2026-03-07",
+    "origin": "S00001, S00002, S00003, S00004, S00005"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00003",
+    "product_code": "PB85E130F33-LED-LSL-003",
+    "qty": 19,
+    "state": "draft",
+    "workcenter_code": "PB85E130F33-WC02",
+    "date_planned": "2026-03-07",
+    "origin": "S00001, S00002, S00003, S00004, S00005"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00004",
+    "product_code": "PB85E130F33-LED-LSL-003",
+    "qty": 20,
+    "state": "draft",
+    "workcenter_code": "PB85E130F33-WC01",
+    "date_planned": "2026-03-07",
+    "origin": "S00001, S00002, S00003, S00004, S00005"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "mrp.production",
+   "names": [
+    "MO00001",
+    "MO00002",
+    "MO00003",
+    "MO00004"
+   ]
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "orders_accepted": 5,
+    "orders_rejected": 0,
+    "units_purchased": 148,
+    "units_manufactured": 49,
+    "assembly_cost": 1639.0
+   }
+  }
+ }
+]

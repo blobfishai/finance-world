@@ -1,0 +1,102 @@
+{
+ "task": "erpbench/2036-medium-05-screened-buy-only-all-seeded",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 11,
+ "walk_len": 11,
+ "budget_turns": 100,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 11}\n",
+ "trace": [
+  {
+   "ts": 1786508301.096886,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508301.097676,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"P406362F903-LAB-WRK-300\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508301.098123,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"P406362F903-LAB-WRK-300\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508301.099046,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"r406362F903_c03\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508301.0998101,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"P406362F903-LAB-WRK-300\", \"qty\": 17, \"price_unit\": 1481.65}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508301.100565,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"r406362F903_c06\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508301.1013608,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"P406362F903-LAB-WRK-300\", \"qty\": 17, \"price_unit\": 1481.65}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508301.102037,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"r406362F903_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508301.102689,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"P406362F903-LAB-WRK-300\", \"qty\": 16, \"price_unit\": 1481.65}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508301.1033878,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508301.104618,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 3, \"orders_rejected\": 6, \"units_purchased\": 0, \"units_manufactured\": 0, \"assembly_cost\": 0}}",
+   "ok": true
+  }
+ ]
+}

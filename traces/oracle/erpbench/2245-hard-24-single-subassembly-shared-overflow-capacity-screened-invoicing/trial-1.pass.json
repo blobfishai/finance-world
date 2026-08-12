@@ -1,0 +1,172 @@
+{
+ "task": "erpbench/2245-hard-24-single-subassembly-shared-overflow-capacity-screened-invoicing",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 21,
+ "walk_len": 21,
+ "budget_turns": 180,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 21}\n",
+ "trace": [
+  {
+   "ts": 1786508435.8047411,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.805226,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"P01F7241AE5-ELV-LDA-110\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.805599,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"P01F7241AE5-ELV-LDA-110\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.806518,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"r01F7241AE5_c01\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.807374,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"P01F7241AE5-ELV-LDA-110\", \"qty\": 16, \"price_unit\": 3353.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.8081868,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"r01F7241AE5_c03\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.809043,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"P01F7241AE5-ELV-LDA-110\", \"qty\": 16, \"price_unit\": 3353.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.80981,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"r01F7241AE5_c04\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.810519,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"P01F7241AE5-ELV-LDA-110\", \"qty\": 19, \"price_unit\": 3353.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.8112352,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"r01F7241AE5_c06\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.8118742,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"P01F7241AE5-ELV-LDA-110\", \"qty\": 19, \"price_unit\": 3353.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.81257,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00005\", \"partner_ref\": \"r01F7241AE5_c09\", \"state\": \"draft\", \"commitment_date\": \"2026-03-16\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.813699,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00005\", \"product_code\": \"P01F7241AE5-ELV-LDA-110\", \"qty\": 16, \"price_unit\": 3353.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.815553,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\", \"S00005\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.816267,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"r01F7241AE5_q01\", \"state\": \"draft\", \"date_planned\": \"2026-03-11\", \"origin\": \"S00001, S00002, S00003, S00004, S00005\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.8168588,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"P01F7241AE5-ELV-LDA-110\", \"qty\": 12, \"price_unit\": 1639.5}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.8174982,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.818201,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00001\", \"product_code\": \"P01F7241AE5-ELV-LDA-110\", \"qty\": 2, \"state\": \"draft\", \"workcenter_code\": \"P01F7241AE5-WC02\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.818887,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00002\", \"product_code\": \"P01F7241AE5-SUB-02\", \"qty\": 2, \"state\": \"draft\", \"workcenter_code\": \"P01F7241AE5-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.8195589,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"mrp.production\", \"names\": [\"MO00001\", \"MO00002\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.8205922,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 5, \"orders_rejected\": 5, \"units_purchased\": 12, \"units_manufactured\": 4, \"assembly_cost\": 108.0}}",
+   "ok": true
+  }
+ ]
+}

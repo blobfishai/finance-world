@@ -1,0 +1,1111 @@
+[
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "res.partner",
+   "domain": [
+    [
+     "kind",
+     "=",
+     "customer"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "product.supplierinfo",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "P84B559B432-PKG-SWT-002"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "stock.quant",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "P84B559B432-PKG-SWT-002"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00001",
+    "partner_ref": "r84B559B432_c01",
+    "state": "draft",
+    "commitment_date": "2026-03-11"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00001",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 15,
+    "price_unit": 12648.84
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00002",
+    "partner_ref": "r84B559B432_c02",
+    "state": "draft",
+    "commitment_date": "2026-03-11"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00002",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 14,
+    "price_unit": 12648.84
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00003",
+    "partner_ref": "r84B559B432_c03",
+    "state": "draft",
+    "commitment_date": "2026-03-12"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00003",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 14,
+    "price_unit": 12648.84
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00004",
+    "partner_ref": "r84B559B432_c04",
+    "state": "draft",
+    "commitment_date": "2026-03-13"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00004",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 21,
+    "price_unit": 12648.84
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00005",
+    "partner_ref": "r84B559B432_c05",
+    "state": "draft",
+    "commitment_date": "2026-03-14"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00005",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 26,
+    "price_unit": 12648.84
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00006",
+    "partner_ref": "r84B559B432_c06",
+    "state": "draft",
+    "commitment_date": "2026-03-14"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00006",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 26,
+    "price_unit": 12648.84
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00007",
+    "partner_ref": "r84B559B432_c07",
+    "state": "draft",
+    "commitment_date": "2026-03-15"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00007",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 26,
+    "price_unit": 12648.84
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00008",
+    "partner_ref": "r84B559B432_c08",
+    "state": "draft",
+    "commitment_date": "2026-03-16"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00008",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 26,
+    "price_unit": 12648.84
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00009",
+    "partner_ref": "r84B559B432_c09",
+    "state": "draft",
+    "commitment_date": "2026-03-16"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00009",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 26,
+    "price_unit": 12648.84
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00010",
+    "partner_ref": "r84B559B432_c10",
+    "state": "draft",
+    "commitment_date": "2026-03-16"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00010",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 26,
+    "price_unit": 12648.84
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "sale.order",
+   "names": [
+    "S00001",
+    "S00002",
+    "S00003",
+    "S00004",
+    "S00005",
+    "S00006",
+    "S00007",
+    "S00008",
+    "S00009",
+    "S00010"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00001",
+    "partner_ref": "r84B559B432_q07",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00001",
+    "product_code": "P84B559B432-PKG-CBS-104",
+    "qty": 30,
+    "price_unit": 86.29
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00002",
+    "partner_ref": "r84B559B432_q08",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00002",
+    "product_code": "P84B559B432-PKG-CBS-104",
+    "qty": 92,
+    "price_unit": 78.21
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00003",
+    "partner_ref": "r84B559B432_q10",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00003",
+    "product_code": "P84B559B432-PKG-CBS-104",
+    "qty": 128,
+    "price_unit": 54.2
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00004",
+    "partner_ref": "r84B559B432_q12",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00004",
+    "product_code": "P84B559B432-PKG-HMI-107",
+    "qty": 16,
+    "price_unit": 299.91
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00005",
+    "partner_ref": "r84B559B432_q13",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00005",
+    "product_code": "P84B559B432-PKG-HMI-107",
+    "qty": 83,
+    "price_unit": 248.58
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00006",
+    "partner_ref": "r84B559B432_q14",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00006",
+    "product_code": "P84B559B432-PKG-HMI-107",
+    "qty": 23,
+    "price_unit": 399.71
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00007",
+    "partner_ref": "r84B559B432_q15",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00007",
+    "product_code": "P84B559B432-PKG-TBP-109",
+    "qty": 35,
+    "price_unit": 38.67
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00008",
+    "partner_ref": "r84B559B432_q17",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00008",
+    "product_code": "P84B559B432-PKG-TBP-109",
+    "qty": 48,
+    "price_unit": 27.17
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00009",
+    "partner_ref": "r84B559B432_q18",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00009",
+    "product_code": "P84B559B432-PKG-TBP-109",
+    "qty": 34,
+    "price_unit": 37.1
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00010",
+    "partner_ref": "r84B559B432_q19",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00010",
+    "product_code": "P84B559B432-PKG-SLC-110",
+    "qty": 10,
+    "price_unit": 278.07
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00011",
+    "partner_ref": "r84B559B432_q20",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00011",
+    "product_code": "P84B559B432-PKG-SLC-110",
+    "qty": 76,
+    "price_unit": 226.84
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00012",
+    "partner_ref": "r84B559B432_q21",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00012",
+    "product_code": "P84B559B432-PKG-SLC-110",
+    "qty": 39,
+    "price_unit": 251.41
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00013",
+    "partner_ref": "r84B559B432_q22",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00013",
+    "product_code": "P84B559B432-PKG-EWA-116",
+    "qty": 6,
+    "price_unit": 69.54
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00014",
+    "partner_ref": "r84B559B432_q23",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00014",
+    "product_code": "P84B559B432-PKG-EWA-116",
+    "qty": 22,
+    "price_unit": 55.67
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00015",
+    "partner_ref": "r84B559B432_q24",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00015",
+    "product_code": "P84B559B432-PKG-EWA-116",
+    "qty": 87,
+    "price_unit": 46.52
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00016",
+    "partner_ref": "r84B559B432_q26",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00016",
+    "product_code": "P84B559B432-PKG-ASV-118",
+    "qty": 12,
+    "price_unit": 92.86
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00017",
+    "partner_ref": "r84B559B432_q27",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00017",
+    "product_code": "P84B559B432-PKG-ASV-118",
+    "qty": 63,
+    "price_unit": 76.41
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00018",
+    "partner_ref": "r84B559B432_q29",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00018",
+    "product_code": "P84B559B432-PKG-ASV-118",
+    "qty": 44,
+    "price_unit": 73.26
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00019",
+    "partner_ref": "r84B559B432_q30",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00019",
+    "product_code": "P84B559B432-PKG-RDA-121",
+    "qty": 64,
+    "price_unit": 118.89
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00020",
+    "partner_ref": "r84B559B432_q31",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00020",
+    "product_code": "P84B559B432-PKG-RDA-121",
+    "qty": 25,
+    "price_unit": 113.3
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00021",
+    "partner_ref": "r84B559B432_q32",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00021",
+    "product_code": "P84B559B432-PKG-RDA-121",
+    "qty": 32,
+    "price_unit": 114.26
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00022",
+    "partner_ref": "r84B559B432_q34",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00022",
+    "product_code": "P84B559B432-PKG-PFC-130",
+    "qty": 45,
+    "price_unit": 141.19
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00023",
+    "partner_ref": "r84B559B432_q35",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00023",
+    "product_code": "P84B559B432-PKG-PFC-130",
+    "qty": 69,
+    "price_unit": 120.72
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00024",
+    "partner_ref": "r84B559B432_q36",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00024",
+    "product_code": "P84B559B432-PKG-PFC-130",
+    "qty": 10,
+    "price_unit": 178.21
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "purchase.order",
+   "names": [
+    "P00001",
+    "P00002",
+    "P00003",
+    "P00004",
+    "P00005",
+    "P00006",
+    "P00007",
+    "P00008",
+    "P00009",
+    "P00010",
+    "P00011",
+    "P00012",
+    "P00013",
+    "P00014",
+    "P00015",
+    "P00016",
+    "P00017",
+    "P00018",
+    "P00019",
+    "P00020",
+    "P00021",
+    "P00022",
+    "P00023",
+    "P00024"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00001",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 29,
+    "state": "draft",
+    "workcenter_code": "P84B559B432-WC01",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00002",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 14,
+    "state": "draft",
+    "workcenter_code": "P84B559B432-WC01",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00003",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 21,
+    "state": "draft",
+    "workcenter_code": "P84B559B432-WC01",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00004",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 52,
+    "state": "draft",
+    "workcenter_code": "P84B559B432-WC01",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00005",
+    "product_code": "P84B559B432-PKG-SWT-002",
+    "qty": 13,
+    "state": "draft",
+    "workcenter_code": "P84B559B432-WC01",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "mrp.production",
+   "names": [
+    "MO00001",
+    "MO00002",
+    "MO00003",
+    "MO00004",
+    "MO00005"
+   ]
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "orders_accepted": 10,
+    "orders_rejected": 0,
+    "units_purchased": 1093,
+    "units_manufactured": 129,
+    "assembly_cost": 3612.0
+   }
+  }
+ }
+]

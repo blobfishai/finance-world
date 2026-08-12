@@ -1,0 +1,654 @@
+[
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "res.partner",
+   "domain": [
+    [
+     "kind",
+     "=",
+     "customer"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "product.supplierinfo",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "P812DF855CB-SOL-FSP-008"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "stock.quant",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "P812DF855CB-SOL-FSP-008"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00001",
+    "partner_ref": "r812DF855CB_c01",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00001",
+    "product_code": "P812DF855CB-SOL-FSP-008",
+    "qty": 26,
+    "price_unit": 4302.66
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00002",
+    "partner_ref": "r812DF855CB_c03",
+    "state": "draft",
+    "commitment_date": "2026-03-13"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00002",
+    "product_code": "P812DF855CB-SOL-FSP-008",
+    "qty": 17,
+    "price_unit": 4302.66
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00003",
+    "partner_ref": "r812DF855CB_c04",
+    "state": "draft",
+    "commitment_date": "2026-03-13"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00003",
+    "product_code": "P812DF855CB-SOL-FSP-008",
+    "qty": 20,
+    "price_unit": 4302.66
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00004",
+    "partner_ref": "r812DF855CB_c05",
+    "state": "draft",
+    "commitment_date": "2026-03-14"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00004",
+    "product_code": "P812DF855CB-SOL-FSP-008",
+    "qty": 19,
+    "price_unit": 4302.66
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00005",
+    "partner_ref": "r812DF855CB_c06",
+    "state": "draft",
+    "commitment_date": "2026-03-14"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00005",
+    "product_code": "P812DF855CB-SOL-FSP-008",
+    "qty": 15,
+    "price_unit": 4302.66
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00006",
+    "partner_ref": "r812DF855CB_c07",
+    "state": "draft",
+    "commitment_date": "2026-03-15"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00006",
+    "product_code": "P812DF855CB-SOL-FSP-008",
+    "qty": 26,
+    "price_unit": 4302.66
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00007",
+    "partner_ref": "r812DF855CB_c08",
+    "state": "draft",
+    "commitment_date": "2026-03-15"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00007",
+    "product_code": "P812DF855CB-SOL-FSP-008",
+    "qty": 22,
+    "price_unit": 4302.66
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00008",
+    "partner_ref": "r812DF855CB_c09",
+    "state": "draft",
+    "commitment_date": "2026-03-16"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00008",
+    "product_code": "P812DF855CB-SOL-FSP-008",
+    "qty": 21,
+    "price_unit": 4302.66
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "sale.order",
+   "names": [
+    "S00001",
+    "S00002",
+    "S00003",
+    "S00004",
+    "S00005",
+    "S00006",
+    "S00007",
+    "S00008"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00001",
+    "partner_ref": "r812DF855CB_q06",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00001",
+    "product_code": "P812DF855CB-SOL-RHB-111",
+    "qty": 467,
+    "price_unit": 6.46
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00002",
+    "partner_ref": "r812DF855CB_q07",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00002",
+    "product_code": "P812DF855CB-SOL-RHB-111",
+    "qty": 183,
+    "price_unit": 6.91
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00003",
+    "partner_ref": "r812DF855CB_q10",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00003",
+    "product_code": "P812DF855CB-SOL-DCB-114",
+    "qty": 71,
+    "price_unit": 76.98
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00004",
+    "partner_ref": "r812DF855CB_q11",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00004",
+    "product_code": "P812DF855CB-SOL-DCB-114",
+    "qty": 35,
+    "price_unit": 52.98
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00005",
+    "partner_ref": "r812DF855CB_q13",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00005",
+    "product_code": "P812DF855CB-SOL-BPF-104",
+    "qty": 37,
+    "price_unit": 13.04
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00006",
+    "partner_ref": "r812DF855CB_q14",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00006",
+    "product_code": "P812DF855CB-SOL-BPF-104",
+    "qty": 52,
+    "price_unit": 10.62
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00007",
+    "partner_ref": "r812DF855CB_q17",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00007",
+    "product_code": "P812DF855CB-SOL-SIN-108",
+    "qty": 58,
+    "price_unit": 276.47
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00008",
+    "partner_ref": "r812DF855CB_q18",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00008",
+    "product_code": "P812DF855CB-SOL-SIN-108",
+    "qty": 51,
+    "price_unit": 401.49
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00009",
+    "partner_ref": "r812DF855CB_q01",
+    "state": "draft",
+    "date_planned": "2026-03-10",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00009",
+    "product_code": "P812DF855CB-SOL-FSP-008",
+    "qty": 14,
+    "price_unit": 2682.94
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "purchase.order",
+   "names": [
+    "P00001",
+    "P00002",
+    "P00003",
+    "P00004",
+    "P00005",
+    "P00006",
+    "P00007",
+    "P00008",
+    "P00009"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00001",
+    "product_code": "P812DF855CB-SOL-FSP-008",
+    "qty": 26,
+    "state": "draft",
+    "workcenter_code": "P812DF855CB-WC02",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00002",
+    "product_code": "P812DF855CB-SOL-FSP-008",
+    "qty": 13,
+    "state": "draft",
+    "workcenter_code": "P812DF855CB-WC01",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00003",
+    "product_code": "P812DF855CB-SOL-FSP-008",
+    "qty": 24,
+    "state": "draft",
+    "workcenter_code": "P812DF855CB-WC02",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00004",
+    "product_code": "P812DF855CB-SOL-FSP-008",
+    "qty": 34,
+    "state": "draft",
+    "workcenter_code": "P812DF855CB-WC01",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00005",
+    "product_code": "P812DF855CB-SOL-FSP-008",
+    "qty": 16,
+    "state": "draft",
+    "workcenter_code": "P812DF855CB-WC01",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00006",
+    "product_code": "P812DF855CB-RESMOD-02",
+    "qty": 113,
+    "state": "draft",
+    "workcenter_code": "P812DF855CB-WC01",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "mrp.production",
+   "names": [
+    "MO00001",
+    "MO00002",
+    "MO00003",
+    "MO00004",
+    "MO00005",
+    "MO00006"
+   ]
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "orders_accepted": 8,
+    "orders_rejected": 1,
+    "units_purchased": 968,
+    "units_manufactured": 226,
+    "assembly_cost": 5837.0
+   }
+  }
+ }
+]

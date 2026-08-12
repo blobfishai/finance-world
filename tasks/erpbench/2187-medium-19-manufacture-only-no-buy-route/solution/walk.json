@@ -1,0 +1,815 @@
+[
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "res.partner",
+   "domain": [
+    [
+     "kind",
+     "=",
+     "customer"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "product.supplierinfo",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "P0693B80F55-DCK-MDL-002"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "stock.quant",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "P0693B80F55-DCK-MDL-002"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00001",
+    "partner_ref": "r0693B80F55_c01",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00001",
+    "product_code": "P0693B80F55-DCK-MDL-002",
+    "qty": 24,
+    "price_unit": 4381.95
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00002",
+    "partner_ref": "r0693B80F55_c02",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00002",
+    "product_code": "P0693B80F55-DCK-MDL-002",
+    "qty": 17,
+    "price_unit": 4381.95
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00003",
+    "partner_ref": "r0693B80F55_c03",
+    "state": "draft",
+    "commitment_date": "2026-03-11"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00003",
+    "product_code": "P0693B80F55-DCK-MDL-002",
+    "qty": 18,
+    "price_unit": 4381.95
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00004",
+    "partner_ref": "r0693B80F55_c04",
+    "state": "draft",
+    "commitment_date": "2026-03-11"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00004",
+    "product_code": "P0693B80F55-DCK-MDL-002",
+    "qty": 14,
+    "price_unit": 4381.95
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00005",
+    "partner_ref": "r0693B80F55_c05",
+    "state": "draft",
+    "commitment_date": "2026-03-11"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00005",
+    "product_code": "P0693B80F55-DCK-MDL-002",
+    "qty": 15,
+    "price_unit": 4381.95
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00006",
+    "partner_ref": "r0693B80F55_c06",
+    "state": "draft",
+    "commitment_date": "2026-03-11"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00006",
+    "product_code": "P0693B80F55-DCK-MDL-002",
+    "qty": 21,
+    "price_unit": 4381.95
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00007",
+    "partner_ref": "r0693B80F55_c07",
+    "state": "draft",
+    "commitment_date": "2026-03-13"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00007",
+    "product_code": "P0693B80F55-DCK-MDL-002",
+    "qty": 16,
+    "price_unit": 4381.95
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00008",
+    "partner_ref": "r0693B80F55_c08",
+    "state": "draft",
+    "commitment_date": "2026-03-13"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00008",
+    "product_code": "P0693B80F55-DCK-MDL-002",
+    "qty": 23,
+    "price_unit": 4381.95
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00009",
+    "partner_ref": "r0693B80F55_c09",
+    "state": "draft",
+    "commitment_date": "2026-03-14"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00009",
+    "product_code": "P0693B80F55-DCK-MDL-002",
+    "qty": 14,
+    "price_unit": 4381.95
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "sale.order",
+   "names": [
+    "S00001",
+    "S00002",
+    "S00003",
+    "S00004",
+    "S00005",
+    "S00006",
+    "S00007",
+    "S00008",
+    "S00009"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00001",
+    "partner_ref": "r0693B80F55_q07",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00001",
+    "product_code": "P0693B80F55-DCK-HDA-107",
+    "qty": 41,
+    "price_unit": 37.31
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00002",
+    "partner_ref": "r0693B80F55_q08",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00002",
+    "product_code": "P0693B80F55-DCK-HDA-107",
+    "qty": 27,
+    "price_unit": 31.05
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00003",
+    "partner_ref": "r0693B80F55_q09",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00003",
+    "product_code": "P0693B80F55-DCK-HDA-107",
+    "qty": 200,
+    "price_unit": 35.2
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00004",
+    "partner_ref": "r0693B80F55_q10",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00004",
+    "product_code": "P0693B80F55-DCK-CTW-109",
+    "qty": 26,
+    "price_unit": 49.03
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00005",
+    "partner_ref": "r0693B80F55_q11",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00005",
+    "product_code": "P0693B80F55-DCK-CTW-109",
+    "qty": 85,
+    "price_unit": 41.04
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00006",
+    "partner_ref": "r0693B80F55_q12",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00006",
+    "product_code": "P0693B80F55-DCK-CTW-109",
+    "qty": 17,
+    "price_unit": 35.97
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00007",
+    "partner_ref": "r0693B80F55_q13",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00007",
+    "product_code": "P0693B80F55-DCK-SGP-116",
+    "qty": 31,
+    "price_unit": 79.18
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00008",
+    "partner_ref": "r0693B80F55_q14",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00008",
+    "product_code": "P0693B80F55-DCK-SGP-116",
+    "qty": 131,
+    "price_unit": 59.34
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00009",
+    "partner_ref": "r0693B80F55_q15",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00009",
+    "product_code": "P0693B80F55-DCK-SGP-116",
+    "qty": 92,
+    "price_unit": 61.95
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00010",
+    "partner_ref": "r0693B80F55_q16",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00010",
+    "product_code": "P0693B80F55-DCK-SGP-116",
+    "qty": 17,
+    "price_unit": 66.78
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00011",
+    "partner_ref": "r0693B80F55_q17",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00011",
+    "product_code": "P0693B80F55-DCK-IDP-123",
+    "qty": 39,
+    "price_unit": 96.34
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00012",
+    "partner_ref": "r0693B80F55_q18",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00012",
+    "product_code": "P0693B80F55-DCK-IDP-123",
+    "qty": 52,
+    "price_unit": 76.88
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00013",
+    "partner_ref": "r0693B80F55_q19",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00013",
+    "product_code": "P0693B80F55-DCK-IDP-123",
+    "qty": 35,
+    "price_unit": 93.1
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00014",
+    "partner_ref": "r0693B80F55_q21",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00014",
+    "product_code": "P0693B80F55-DCK-ARL-130",
+    "qty": 40,
+    "price_unit": 171.0
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00015",
+    "partner_ref": "r0693B80F55_q23",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00015",
+    "product_code": "P0693B80F55-DCK-ARL-130",
+    "qty": 92,
+    "price_unit": 157.43
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "purchase.order",
+   "names": [
+    "P00001",
+    "P00002",
+    "P00003",
+    "P00004",
+    "P00005",
+    "P00006",
+    "P00007",
+    "P00008",
+    "P00009",
+    "P00010",
+    "P00011",
+    "P00012",
+    "P00013",
+    "P00014",
+    "P00015"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00001",
+    "product_code": "P0693B80F55-DCK-MDL-002",
+    "qty": 17,
+    "state": "draft",
+    "workcenter_code": "P0693B80F55-WC01",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00002",
+    "product_code": "P0693B80F55-DCK-MDL-002",
+    "qty": 68,
+    "state": "draft",
+    "workcenter_code": "P0693B80F55-WC01",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00003",
+    "product_code": "P0693B80F55-DCK-MDL-002",
+    "qty": 39,
+    "state": "draft",
+    "workcenter_code": "P0693B80F55-WC01",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00004",
+    "product_code": "P0693B80F55-DCK-MDL-002",
+    "qty": 14,
+    "state": "draft",
+    "workcenter_code": "P0693B80F55-WC01",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "mrp.production",
+   "names": [
+    "MO00001",
+    "MO00002",
+    "MO00003",
+    "MO00004"
+   ]
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "orders_accepted": 9,
+    "orders_rejected": 0,
+    "units_purchased": 925,
+    "units_manufactured": 138,
+    "assembly_cost": 3864.0
+   }
+  }
+ }
+]

@@ -1,0 +1,591 @@
+[
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "res.partner",
+   "domain": [
+    [
+     "kind",
+     "=",
+     "customer"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "product.supplierinfo",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "P6B9B06B9A7-ROB-DPR-003"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "stock.quant",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "P6B9B06B9A7-ROB-DPR-003"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00001",
+    "partner_ref": "r6B9B06B9A7_c01",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00001",
+    "product_code": "P6B9B06B9A7-ROB-DPR-003",
+    "qty": 20,
+    "price_unit": 21767.4
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00002",
+    "partner_ref": "r6B9B06B9A7_c02",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00002",
+    "product_code": "P6B9B06B9A7-ROB-DPR-003",
+    "qty": 14,
+    "price_unit": 21767.4
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00003",
+    "partner_ref": "r6B9B06B9A7_c03",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00003",
+    "product_code": "P6B9B06B9A7-ROB-DPR-003",
+    "qty": 14,
+    "price_unit": 21767.4
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00004",
+    "partner_ref": "r6B9B06B9A7_c04",
+    "state": "draft",
+    "commitment_date": "2026-03-11"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00004",
+    "product_code": "P6B9B06B9A7-ROB-DPR-003",
+    "qty": 14,
+    "price_unit": 21767.4
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00005",
+    "partner_ref": "r6B9B06B9A7_c05",
+    "state": "draft",
+    "commitment_date": "2026-03-12"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00005",
+    "product_code": "P6B9B06B9A7-ROB-DPR-003",
+    "qty": 18,
+    "price_unit": 21767.4
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00006",
+    "partner_ref": "r6B9B06B9A7_c06",
+    "state": "draft",
+    "commitment_date": "2026-03-14"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00006",
+    "product_code": "P6B9B06B9A7-ROB-DPR-003",
+    "qty": 21,
+    "price_unit": 21767.4
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00007",
+    "partner_ref": "r6B9B06B9A7_c07",
+    "state": "draft",
+    "commitment_date": "2026-03-14"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00007",
+    "product_code": "P6B9B06B9A7-ROB-DPR-003",
+    "qty": 21,
+    "price_unit": 21767.4
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00008",
+    "partner_ref": "r6B9B06B9A7_c08",
+    "state": "draft",
+    "commitment_date": "2026-03-16"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00008",
+    "product_code": "P6B9B06B9A7-ROB-DPR-003",
+    "qty": 23,
+    "price_unit": 21767.4
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00009",
+    "partner_ref": "r6B9B06B9A7_c09",
+    "state": "draft",
+    "commitment_date": "2026-03-16"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00009",
+    "product_code": "P6B9B06B9A7-ROB-DPR-003",
+    "qty": 17,
+    "price_unit": 21767.4
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "sale.order",
+   "names": [
+    "S00001",
+    "S00002",
+    "S00003",
+    "S00004",
+    "S00005",
+    "S00006",
+    "S00007",
+    "S00008",
+    "S00009"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00001",
+    "partner_ref": "r6B9B06B9A7_q08",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00001",
+    "product_code": "P6B9B06B9A7-ROB-EAS-121",
+    "qty": 73,
+    "price_unit": 968.96
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00002",
+    "partner_ref": "r6B9B06B9A7_q10",
+    "state": "draft",
+    "date_planned": "2026-03-05",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00002",
+    "product_code": "P6B9B06B9A7-ROB-LGR-126",
+    "qty": 12,
+    "price_unit": 97.82
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00003",
+    "partner_ref": "r6B9B06B9A7_q11",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00003",
+    "product_code": "P6B9B06B9A7-ROB-LGR-126",
+    "qty": 95,
+    "price_unit": 85.17
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00004",
+    "partner_ref": "r6B9B06B9A7_q12",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00004",
+    "product_code": "P6B9B06B9A7-ROB-LGR-126",
+    "qty": 34,
+    "price_unit": 87.06
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00005",
+    "partner_ref": "r6B9B06B9A7_q15",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00005",
+    "product_code": "P6B9B06B9A7-ROB-TFL-108",
+    "qty": 17,
+    "price_unit": 109.62
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00006",
+    "partner_ref": "r6B9B06B9A7_q16",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00006",
+    "product_code": "P6B9B06B9A7-ROB-TFL-108",
+    "qty": 52,
+    "price_unit": 86.17
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00007",
+    "partner_ref": "r6B9B06B9A7_q19",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00007",
+    "product_code": "P6B9B06B9A7-ROB-VSG-114",
+    "qty": 148,
+    "price_unit": 193.88
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "purchase.order",
+   "names": [
+    "P00001",
+    "P00002",
+    "P00003",
+    "P00004",
+    "P00005",
+    "P00006",
+    "P00007"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00001",
+    "product_code": "P6B9B06B9A7-ROB-DPR-003",
+    "qty": 48,
+    "state": "draft",
+    "workcenter_code": "P6B9B06B9A7-WC02",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00002",
+    "product_code": "P6B9B06B9A7-ROB-DPR-003",
+    "qty": 14,
+    "state": "draft",
+    "workcenter_code": "P6B9B06B9A7-WC02",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00003",
+    "product_code": "P6B9B06B9A7-ROB-DPR-003",
+    "qty": 15,
+    "state": "draft",
+    "workcenter_code": "P6B9B06B9A7-WC02",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00004",
+    "product_code": "P6B9B06B9A7-SUB-02",
+    "qty": 77,
+    "state": "draft",
+    "workcenter_code": "P6B9B06B9A7-WC01",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "mrp.production",
+   "names": [
+    "MO00001",
+    "MO00002",
+    "MO00003",
+    "MO00004"
+   ]
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "orders_accepted": 9,
+    "orders_rejected": 0,
+    "units_purchased": 431,
+    "units_manufactured": 154,
+    "assembly_cost": 4004.0
+   }
+  }
+ }
+]

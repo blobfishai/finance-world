@@ -1,0 +1,348 @@
+[
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "res.partner",
+   "domain": [
+    [
+     "kind",
+     "=",
+     "customer"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "product.supplierinfo",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "PCDD341B78D-PKG-VFF-006"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "stock.quant",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "PCDD341B78D-PKG-VFF-006"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00001",
+    "partner_ref": "rCDD341B78D_c04",
+    "state": "draft",
+    "commitment_date": "2026-03-12"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00001",
+    "product_code": "PCDD341B78D-PKG-VFF-006",
+    "qty": 22,
+    "price_unit": 31305.01
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00002",
+    "partner_ref": "rCDD341B78D_c05",
+    "state": "draft",
+    "commitment_date": "2026-03-14"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00002",
+    "product_code": "PCDD341B78D-PKG-VFF-006",
+    "qty": 26,
+    "price_unit": 31305.01
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00003",
+    "partner_ref": "rCDD341B78D_c06",
+    "state": "draft",
+    "commitment_date": "2026-03-15"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00003",
+    "product_code": "PCDD341B78D-PKG-VFF-006",
+    "qty": 19,
+    "price_unit": 31305.01
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00004",
+    "partner_ref": "rCDD341B78D_c07",
+    "state": "draft",
+    "commitment_date": "2026-03-15"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00004",
+    "product_code": "PCDD341B78D-PKG-VFF-006",
+    "qty": 26,
+    "price_unit": 31305.01
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00005",
+    "partner_ref": "rCDD341B78D_c08",
+    "state": "draft",
+    "commitment_date": "2026-03-16"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00005",
+    "product_code": "PCDD341B78D-PKG-VFF-006",
+    "qty": 23,
+    "price_unit": 31305.01
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "sale.order",
+   "names": [
+    "S00001",
+    "S00002",
+    "S00003",
+    "S00004",
+    "S00005"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00001",
+    "partner_ref": "rCDD341B78D_q01",
+    "state": "draft",
+    "date_planned": "2026-03-11",
+    "origin": "S00001, S00002, S00003, S00004, S00005"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00001",
+    "product_code": "PCDD341B78D-PKG-VFF-006",
+    "qty": 13,
+    "price_unit": 21197.91
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00002",
+    "partner_ref": "rCDD341B78D_q02",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00002",
+    "product_code": "PCDD341B78D-PKG-VFF-006",
+    "qty": 16,
+    "price_unit": 28005.41
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00003",
+    "partner_ref": "rCDD341B78D_q04",
+    "state": "draft",
+    "date_planned": "2026-03-11",
+    "origin": "S00001, S00002, S00003, S00004, S00005"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00003",
+    "product_code": "PCDD341B78D-PKG-VFF-006",
+    "qty": 5,
+    "price_unit": 28309.77
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00004",
+    "partner_ref": "rCDD341B78D_q05",
+    "state": "draft",
+    "date_planned": "2026-03-13",
+    "origin": "S00001, S00002, S00003, S00004, S00005"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00004",
+    "product_code": "PCDD341B78D-PKG-VFF-006",
+    "qty": 9,
+    "price_unit": 25641.0
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "purchase.order",
+   "names": [
+    "P00001",
+    "P00002",
+    "P00003",
+    "P00004"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00001",
+    "product_code": "PCDD341B78D-PKG-VFF-006",
+    "qty": 5,
+    "state": "draft",
+    "workcenter_code": "PCDD341B78D-WC01",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "mrp.production",
+   "names": [
+    "MO00001"
+   ]
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "orders_accepted": 5,
+    "orders_rejected": 3,
+    "units_purchased": 43,
+    "units_manufactured": 5,
+    "assembly_cost": 140.0
+   }
+  }
+ }
+]

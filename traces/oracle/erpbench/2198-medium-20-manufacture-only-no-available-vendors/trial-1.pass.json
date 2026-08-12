@@ -1,0 +1,501 @@
+{
+ "task": "erpbench/2198-medium-20-manufacture-only-no-available-vendors",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 68,
+ "walk_len": 68,
+ "budget_turns": 556,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 68}\n",
+ "trace": [
+  {
+   "ts": 1786508406.072837,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.073328,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"P351DD4B632-TRF-IST-007\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.073725,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"P351DD4B632-TRF-IST-007\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.0745,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"r351DD4B632_c01\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.075273,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 26, \"price_unit\": 9458.99}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.07604,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"r351DD4B632_c02\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.076708,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 14, \"price_unit\": 9458.99}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.077536,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"r351DD4B632_c03\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.078273,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 24, \"price_unit\": 9458.99}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.0789251,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"r351DD4B632_c04\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.079554,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 26, \"price_unit\": 9458.99}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.080384,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00005\", \"partner_ref\": \"r351DD4B632_c05\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.081058,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00005\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 19, \"price_unit\": 9458.99}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.08237,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00006\", \"partner_ref\": \"r351DD4B632_c06\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.083054,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00006\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 26, \"price_unit\": 9458.99}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.083744,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00007\", \"partner_ref\": \"r351DD4B632_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.0844228,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00007\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 17, \"price_unit\": 9458.99}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.085001,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00008\", \"partner_ref\": \"r351DD4B632_c08\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.085634,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00008\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 23, \"price_unit\": 9458.99}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.086271,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00009\", \"partner_ref\": \"r351DD4B632_c09\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.087043,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00009\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 19, \"price_unit\": 9458.99}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.087701,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00010\", \"partner_ref\": \"r351DD4B632_c10\", \"state\": \"draft\", \"commitment_date\": \"2026-03-16\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.088367,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00010\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 26, \"price_unit\": 9458.99}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.089004,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\", \"S00005\", \"S00006\", \"S00007\", \"S00008\", \"S00009\", \"S00010\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.0895889,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"r351DD4B632_q02\", \"state\": \"draft\", \"date_planned\": \"2026-03-09\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.090212,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"P351DD4B632-TRF-PBL-106\", \"qty\": 248, \"price_unit\": 201.97}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.090894,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00002\", \"partner_ref\": \"r351DD4B632_q03\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.091587,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00002\", \"product_code\": \"P351DD4B632-TRF-PBL-106\", \"qty\": 134, \"price_unit\": 219.91}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.092282,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00003\", \"partner_ref\": \"r351DD4B632_q04\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.0929742,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00003\", \"product_code\": \"P351DD4B632-TRF-PBL-106\", \"qty\": 354, \"price_unit\": 253.43}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.0935822,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00004\", \"partner_ref\": \"r351DD4B632_q05\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.094165,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00004\", \"product_code\": \"P351DD4B632-TRF-TID-111\", \"qty\": 42, \"price_unit\": 92.1}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.094742,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00005\", \"partner_ref\": \"r351DD4B632_q06\", \"state\": \"draft\", \"date_planned\": \"2026-03-09\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.095367,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00005\", \"product_code\": \"P351DD4B632-TRF-TID-111\", \"qty\": 45, \"price_unit\": 63.28}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.0964859,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00006\", \"partner_ref\": \"r351DD4B632_q07\", \"state\": \"draft\", \"date_planned\": \"2026-03-09\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.097347,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00006\", \"product_code\": \"P351DD4B632-TRF-TID-111\", \"qty\": 79, \"price_unit\": 62.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.098047,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00007\", \"partner_ref\": \"r351DD4B632_q08\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.098656,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00007\", \"product_code\": \"P351DD4B632-TRF-TID-111\", \"qty\": 14, \"price_unit\": 86.35}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.099272,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00008\", \"partner_ref\": \"r351DD4B632_q09\", \"state\": \"draft\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.099948,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00008\", \"product_code\": \"P351DD4B632-TRF-NGR-125\", \"qty\": 10, \"price_unit\": 379.28}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.100588,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00009\", \"partner_ref\": \"r351DD4B632_q10\", \"state\": \"draft\", \"date_planned\": \"2026-03-09\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.101345,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00009\", \"product_code\": \"P351DD4B632-TRF-NGR-125\", \"qty\": 75, \"price_unit\": 305.5}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.102143,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00010\", \"partner_ref\": \"r351DD4B632_q11\", \"state\": \"draft\", \"date_planned\": \"2026-03-09\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.102806,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00010\", \"product_code\": \"P351DD4B632-TRF-NGR-125\", \"qty\": 43, \"price_unit\": 264.58}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.103478,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00011\", \"partner_ref\": \"r351DD4B632_q12\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.104349,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00011\", \"product_code\": \"P351DD4B632-TRF-NGR-125\", \"qty\": 54, \"price_unit\": 369.19}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.104955,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00012\", \"partner_ref\": \"r351DD4B632_q13\", \"state\": \"draft\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.105558,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00012\", \"product_code\": \"P351DD4B632-TRF-NRT-127\", \"qty\": 11, \"price_unit\": 7.2}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.106187,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00013\", \"partner_ref\": \"r351DD4B632_q14\", \"state\": \"draft\", \"date_planned\": \"2026-03-09\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.1068668,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00013\", \"product_code\": \"P351DD4B632-TRF-NRT-127\", \"qty\": 109, \"price_unit\": 5.01}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.107532,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00014\", \"partner_ref\": \"r351DD4B632_q15\", \"state\": \"draft\", \"date_planned\": \"2026-03-09\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.108268,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00014\", \"product_code\": \"P351DD4B632-TRF-NRT-127\", \"qty\": 22, \"price_unit\": 6.93}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.1089191,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00015\", \"partner_ref\": \"r351DD4B632_q16\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.109771,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00015\", \"product_code\": \"P351DD4B632-TRF-NRT-127\", \"qty\": 21, \"price_unit\": 4.89}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.110347,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00016\", \"partner_ref\": \"r351DD4B632_q18\", \"state\": \"draft\", \"date_planned\": \"2026-03-09\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.110931,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00016\", \"product_code\": \"P351DD4B632-TRF-MBT-130\", \"qty\": 59, \"price_unit\": 89.25}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.1115289,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00017\", \"partner_ref\": \"r351DD4B632_q19\", \"state\": \"draft\", \"date_planned\": \"2026-03-07\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.112121,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00017\", \"product_code\": \"P351DD4B632-TRF-MBT-130\", \"qty\": 56, \"price_unit\": 120.79}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.112781,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00018\", \"partner_ref\": \"r351DD4B632_q20\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.1134279,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00018\", \"product_code\": \"P351DD4B632-TRF-MBT-130\", \"qty\": 67, \"price_unit\": 130.04}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.114094,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\", \"P00002\", \"P00003\", \"P00004\", \"P00005\", \"P00006\", \"P00007\", \"P00008\", \"P00009\", \"P00010\", \"P00011\", \"P00012\", \"P00013\", \"P00014\", \"P00015\", \"P00016\", \"P00017\", \"P00018\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.1146822,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00001\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 56, \"state\": \"draft\", \"workcenter_code\": \"P351DD4B632-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.1153889,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00002\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 19, \"state\": \"draft\", \"workcenter_code\": \"P351DD4B632-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.116151,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00003\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 26, \"state\": \"draft\", \"workcenter_code\": \"P351DD4B632-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.1169212,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00004\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 59, \"state\": \"draft\", \"workcenter_code\": \"P351DD4B632-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.117596,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00005\", \"product_code\": \"P351DD4B632-TRF-IST-007\", \"qty\": 26, \"state\": \"draft\", \"workcenter_code\": \"P351DD4B632-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.120053,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"mrp.production\", \"names\": [\"MO00001\", \"MO00002\", \"MO00003\", \"MO00004\", \"MO00005\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508406.121069,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 10, \"orders_rejected\": 0, \"units_purchased\": 1443, \"units_manufactured\": 186, \"assembly_cost\": 5208.0}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,550 @@
+{
+ "task": "erpbench/2176-medium-18-manufacture-only-policy-forbidden",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 75,
+ "walk_len": 75,
+ "budget_turns": 612,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 75}\n",
+ "trace": [
+  {
+   "ts": 1786508391.416259,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.416762,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"P670BD8DE85-CLR-ASD-005\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.417147,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"P670BD8DE85-CLR-ASD-005\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.418231,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"r670BD8DE85_c01\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.419204,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"P670BD8DE85-CLR-ASD-005\", \"qty\": 14, \"price_unit\": 8466.03}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.420213,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"r670BD8DE85_c02\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.421041,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"P670BD8DE85-CLR-ASD-005\", \"qty\": 18, \"price_unit\": 8466.03}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.421865,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"r670BD8DE85_c03\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.422581,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"P670BD8DE85-CLR-ASD-005\", \"qty\": 15, \"price_unit\": 8466.03}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.423342,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"r670BD8DE85_c04\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.424,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"P670BD8DE85-CLR-ASD-005\", \"qty\": 26, \"price_unit\": 8466.03}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.424754,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00005\", \"partner_ref\": \"r670BD8DE85_c05\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4254458,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00005\", \"product_code\": \"P670BD8DE85-CLR-ASD-005\", \"qty\": 23, \"price_unit\": 8466.03}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.426178,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00006\", \"partner_ref\": \"r670BD8DE85_c06\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4268959,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00006\", \"product_code\": \"P670BD8DE85-CLR-ASD-005\", \"qty\": 19, \"price_unit\": 8466.03}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.427714,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00007\", \"partner_ref\": \"r670BD8DE85_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.428442,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00007\", \"product_code\": \"P670BD8DE85-CLR-ASD-005\", \"qty\": 14, \"price_unit\": 8466.03}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4292521,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00008\", \"partner_ref\": \"r670BD8DE85_c08\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.430007,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00008\", \"product_code\": \"P670BD8DE85-CLR-ASD-005\", \"qty\": 26, \"price_unit\": 8466.03}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4307761,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00009\", \"partner_ref\": \"r670BD8DE85_c09\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4315798,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00009\", \"product_code\": \"P670BD8DE85-CLR-ASD-005\", \"qty\": 19, \"price_unit\": 8466.03}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.432346,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00010\", \"partner_ref\": \"r670BD8DE85_c10\", \"state\": \"draft\", \"commitment_date\": \"2026-03-16\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4330292,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00010\", \"product_code\": \"P670BD8DE85-CLR-ASD-005\", \"qty\": 26, \"price_unit\": 8466.03}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.433901,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\", \"S00005\", \"S00006\", \"S00007\", \"S00008\", \"S00009\", \"S00010\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4347572,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"r670BD8DE85_q06\", \"state\": \"draft\", \"date_planned\": \"2026-03-05\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.436071,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"P670BD8DE85-CLR-GSG-110\", \"qty\": 115, \"price_unit\": 32.5}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.436983,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00002\", \"partner_ref\": \"r670BD8DE85_q07\", \"state\": \"draft\", \"date_planned\": \"2026-03-07\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.437967,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00002\", \"product_code\": \"P670BD8DE85-CLR-GSG-110\", \"qty\": 59, \"price_unit\": 32.07}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.438837,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00003\", \"partner_ref\": \"r670BD8DE85_q08\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.439578,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00003\", \"product_code\": \"P670BD8DE85-CLR-GSG-110\", \"qty\": 63, \"price_unit\": 22.33}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.440405,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00004\", \"partner_ref\": \"r670BD8DE85_q09\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4412851,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00004\", \"product_code\": \"P670BD8DE85-CLR-GSG-110\", \"qty\": 81, \"price_unit\": 23.1}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4422631,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00005\", \"partner_ref\": \"r670BD8DE85_q10\", \"state\": \"draft\", \"date_planned\": \"2026-03-05\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.442909,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00005\", \"product_code\": \"P670BD8DE85-CLR-ASN-112\", \"qty\": 103, \"price_unit\": 19.57}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4435682,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00006\", \"partner_ref\": \"r670BD8DE85_q11\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.444266,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00006\", \"product_code\": \"P670BD8DE85-CLR-ASN-112\", \"qty\": 76, \"price_unit\": 15.14}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.444979,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00007\", \"partner_ref\": \"r670BD8DE85_q12\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.445618,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00007\", \"product_code\": \"P670BD8DE85-CLR-ASN-112\", \"qty\": 315, \"price_unit\": 14.99}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.446408,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00008\", \"partner_ref\": \"r670BD8DE85_q13\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.447169,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00008\", \"product_code\": \"P670BD8DE85-CLR-ASN-112\", \"qty\": 320, \"price_unit\": 13.27}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.447967,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00009\", \"partner_ref\": \"r670BD8DE85_q15\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.448725,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00009\", \"product_code\": \"P670BD8DE85-CLR-PUV-114\", \"qty\": 41, \"price_unit\": 36.38}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4496481,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00010\", \"partner_ref\": \"r670BD8DE85_q16\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.45055,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00010\", \"product_code\": \"P670BD8DE85-CLR-PUV-114\", \"qty\": 8, \"price_unit\": 36.75}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4514859,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00011\", \"partner_ref\": \"r670BD8DE85_q17\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.452242,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00011\", \"product_code\": \"P670BD8DE85-CLR-PUV-114\", \"qty\": 108, \"price_unit\": 28.94}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.453203,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00012\", \"partner_ref\": \"r670BD8DE85_q19\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.454027,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00012\", \"product_code\": \"P670BD8DE85-CLR-WPD-121\", \"qty\": 77, \"price_unit\": 103.09}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.454957,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00013\", \"partner_ref\": \"r670BD8DE85_q20\", \"state\": \"draft\", \"date_planned\": \"2026-03-07\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.455748,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00013\", \"product_code\": \"P670BD8DE85-CLR-WPD-121\", \"qty\": 81, \"price_unit\": 106.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.458555,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00014\", \"partner_ref\": \"r670BD8DE85_q22\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.459323,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00014\", \"product_code\": \"P670BD8DE85-CLR-DCH-123\", \"qty\": 15, \"price_unit\": 48.68}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.46006,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00015\", \"partner_ref\": \"r670BD8DE85_q23\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4607391,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00015\", \"product_code\": \"P670BD8DE85-CLR-DCH-123\", \"qty\": 24, \"price_unit\": 44.71}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.461487,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00016\", \"partner_ref\": \"r670BD8DE85_q24\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.462208,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00016\", \"product_code\": \"P670BD8DE85-CLR-DCH-123\", \"qty\": 116, \"price_unit\": 31.47}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4630568,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00017\", \"partner_ref\": \"r670BD8DE85_q26\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4638238,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00017\", \"product_code\": \"P670BD8DE85-CLR-CRC-127\", \"qty\": 65, \"price_unit\": 25.25}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.464654,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00018\", \"partner_ref\": \"r670BD8DE85_q27\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4652622,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00018\", \"product_code\": \"P670BD8DE85-CLR-CRC-127\", \"qty\": 93, \"price_unit\": 34.66}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4659479,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00019\", \"partner_ref\": \"r670BD8DE85_q28\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.466582,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00019\", \"product_code\": \"P670BD8DE85-CLR-SDS-130\", \"qty\": 27, \"price_unit\": 15.28}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.467243,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00020\", \"partner_ref\": \"r670BD8DE85_q29\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4677901,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00020\", \"product_code\": \"P670BD8DE85-CLR-SDS-130\", \"qty\": 34, \"price_unit\": 14.59}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.468396,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00021\", \"partner_ref\": \"r670BD8DE85_q30\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.468941,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00021\", \"product_code\": \"P670BD8DE85-CLR-SDS-130\", \"qty\": 23, \"price_unit\": 17.25}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.469561,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00022\", \"partner_ref\": \"r670BD8DE85_q31\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4701009,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00022\", \"product_code\": \"P670BD8DE85-CLR-SDS-130\", \"qty\": 62, \"price_unit\": 10.93}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.4707341,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\", \"P00002\", \"P00003\", \"P00004\", \"P00005\", \"P00006\", \"P00007\", \"P00008\", \"P00009\", \"P00010\", \"P00011\", \"P00012\", \"P00013\", \"P00014\", \"P00015\", \"P00016\", \"P00017\", \"P00018\", \"P00019\", \"P00020\", \"P00021\", \"P00022\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.471333,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00001\", \"product_code\": \"P670BD8DE85-CLR-ASD-005\", \"qty\": 63, \"state\": \"draft\", \"workcenter_code\": \"P670BD8DE85-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.471959,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00002\", \"product_code\": \"P670BD8DE85-CLR-ASD-005\", \"qty\": 33, \"state\": \"draft\", \"workcenter_code\": \"P670BD8DE85-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.472758,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00003\", \"product_code\": \"P670BD8DE85-CLR-ASD-005\", \"qty\": 45, \"state\": \"draft\", \"workcenter_code\": \"P670BD8DE85-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.473418,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00004\", \"product_code\": \"P670BD8DE85-CLR-ASD-005\", \"qty\": 26, \"state\": \"draft\", \"workcenter_code\": \"P670BD8DE85-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.474098,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"mrp.production\", \"names\": [\"MO00001\", \"MO00002\", \"MO00003\", \"MO00004\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508391.475369,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 10, \"orders_rejected\": 0, \"units_purchased\": 1906, \"units_manufactured\": 167, \"assembly_cost\": 4676.0}}",
+   "ok": true
+  }
+ ]
+}

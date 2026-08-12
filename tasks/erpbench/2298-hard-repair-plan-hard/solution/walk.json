@@ -1,0 +1,1038 @@
+[
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "res.partner",
+   "domain": [
+    [
+     "kind",
+     "=",
+     "customer"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "product.supplierinfo",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "P6984A087C0-SOL-PSG-010"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "stock.quant",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "P6984A087C0-SOL-PSG-010"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00001",
+    "partner_ref": "r6984A087C0_c01",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00001",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 18,
+    "price_unit": 1826.78
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00002",
+    "partner_ref": "r6984A087C0_c02",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00002",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 16,
+    "price_unit": 1826.78
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00003",
+    "partner_ref": "r6984A087C0_c03",
+    "state": "draft",
+    "commitment_date": "2026-03-11"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00003",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 18,
+    "price_unit": 1826.78
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00004",
+    "partner_ref": "r6984A087C0_c04",
+    "state": "draft",
+    "commitment_date": "2026-03-12"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00004",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 17,
+    "price_unit": 1826.78
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00005",
+    "partner_ref": "r6984A087C0_c05",
+    "state": "draft",
+    "commitment_date": "2026-03-12"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00005",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 20,
+    "price_unit": 1826.78
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00006",
+    "partner_ref": "r6984A087C0_c06",
+    "state": "draft",
+    "commitment_date": "2026-03-12"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00006",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 17,
+    "price_unit": 1826.78
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00007",
+    "partner_ref": "r6984A087C0_c07",
+    "state": "draft",
+    "commitment_date": "2026-03-12"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00007",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 24,
+    "price_unit": 1826.78
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00008",
+    "partner_ref": "r6984A087C0_c08",
+    "state": "draft",
+    "commitment_date": "2026-03-13"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00008",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 27,
+    "price_unit": 1826.78
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00009",
+    "partner_ref": "r6984A087C0_c09",
+    "state": "draft",
+    "commitment_date": "2026-03-13"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00009",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 18,
+    "price_unit": 1826.78
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00010",
+    "partner_ref": "r6984A087C0_c10",
+    "state": "draft",
+    "commitment_date": "2026-03-14"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00010",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 15,
+    "price_unit": 1826.78
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "sale.order",
+   "names": [
+    "S00001",
+    "S00002",
+    "S00003",
+    "S00004",
+    "S00005",
+    "S00006",
+    "S00007",
+    "S00008",
+    "S00009",
+    "S00010"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00001",
+    "partner_ref": "r6984A087C0_q06",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00001",
+    "product_code": "P6984A087C0-SOL-EVA-103",
+    "qty": 39,
+    "price_unit": 18.82
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00002",
+    "partner_ref": "r6984A087C0_q07",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00002",
+    "product_code": "P6984A087C0-SOL-EVA-103",
+    "qty": 64,
+    "price_unit": 15.17
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00003",
+    "partner_ref": "r6984A087C0_q08",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00003",
+    "product_code": "P6984A087C0-SOL-EVA-103",
+    "qty": 42,
+    "price_unit": 12.99
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00004",
+    "partner_ref": "r6984A087C0_q09",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00004",
+    "product_code": "P6984A087C0-SOL-EVA-103",
+    "qty": 19,
+    "price_unit": 14.49
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00005",
+    "partner_ref": "r6984A087C0_q11",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00005",
+    "product_code": "P6984A087C0-SOL-SIN-108",
+    "qty": 59,
+    "price_unit": 233.94
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00006",
+    "partner_ref": "r6984A087C0_q13",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00006",
+    "product_code": "P6984A087C0-SOL-SIN-108",
+    "qty": 28,
+    "price_unit": 352.13
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00007",
+    "partner_ref": "r6984A087C0_q15",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00007",
+    "product_code": "P6984A087C0-SOL-GSF-112",
+    "qty": 132,
+    "price_unit": 10.64
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00008",
+    "partner_ref": "r6984A087C0_q16",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00008",
+    "product_code": "P6984A087C0-SOL-GSF-112",
+    "qty": 189,
+    "price_unit": 16.29
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00009",
+    "partner_ref": "r6984A087C0_q17",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00009",
+    "product_code": "P6984A087C0-SOL-GSF-112",
+    "qty": 31,
+    "price_unit": 13.25
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00010",
+    "partner_ref": "r6984A087C0_q19",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00010",
+    "product_code": "P6984A087C0-SOL-DCB-114",
+    "qty": 44,
+    "price_unit": 55.41
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00011",
+    "partner_ref": "r6984A087C0_q20",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00011",
+    "product_code": "P6984A087C0-SOL-DCB-114",
+    "qty": 18,
+    "price_unit": 76.63
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00012",
+    "partner_ref": "r6984A087C0_q21",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00012",
+    "product_code": "P6984A087C0-SOL-DCB-114",
+    "qty": 24,
+    "price_unit": 63.37
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00013",
+    "partner_ref": "r6984A087C0_q23",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00013",
+    "product_code": "P6984A087C0-SOL-ADS-115",
+    "qty": 46,
+    "price_unit": 40.59
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00014",
+    "partner_ref": "r6984A087C0_q24",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00014",
+    "product_code": "P6984A087C0-SOL-ADS-115",
+    "qty": 14,
+    "price_unit": 50.82
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00015",
+    "partner_ref": "r6984A087C0_q25",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00015",
+    "product_code": "P6984A087C0-SOL-ADS-115",
+    "qty": 19,
+    "price_unit": 46.75
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00016",
+    "partner_ref": "r6984A087C0_q26",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00016",
+    "product_code": "P6984A087C0-SOL-CTR-119",
+    "qty": 12,
+    "price_unit": 10.8
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00017",
+    "partner_ref": "r6984A087C0_q28",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00017",
+    "product_code": "P6984A087C0-SOL-CTR-119",
+    "qty": 47,
+    "price_unit": 7.93
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00018",
+    "partner_ref": "r6984A087C0_q29",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00018",
+    "product_code": "P6984A087C0-SOL-CTR-119",
+    "qty": 18,
+    "price_unit": 9.57
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00019",
+    "partner_ref": "r6984A087C0_q01",
+    "state": "draft",
+    "date_planned": "2026-03-11",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00019",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 11,
+    "price_unit": 864.69
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00020",
+    "partner_ref": "r6984A087C0_q02",
+    "state": "draft",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00020",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 12,
+    "price_unit": 1486.04
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00021",
+    "partner_ref": "r6984A087C0_q03",
+    "state": "draft",
+    "date_planned": "2026-03-10",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00021",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 9,
+    "price_unit": 1356.86
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00022",
+    "partner_ref": "r6984A087C0_q05",
+    "state": "draft",
+    "date_planned": "2026-03-11",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00022",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 17,
+    "price_unit": 1265.15
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "purchase.order",
+   "names": [
+    "P00001",
+    "P00002",
+    "P00003",
+    "P00004",
+    "P00005",
+    "P00006",
+    "P00007",
+    "P00008",
+    "P00009",
+    "P00010",
+    "P00011",
+    "P00012",
+    "P00013",
+    "P00014",
+    "P00015",
+    "P00016",
+    "P00017",
+    "P00018",
+    "P00019",
+    "P00020",
+    "P00021",
+    "P00022"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00001",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 27,
+    "state": "draft",
+    "workcenter_code": "P6984A087C0-WC02",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00002",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 7,
+    "state": "draft",
+    "workcenter_code": "P6984A087C0-WC03",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00003",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 18,
+    "state": "draft",
+    "workcenter_code": "P6984A087C0-WC02",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00004",
+    "product_code": "P6984A087C0-SOL-PSG-010",
+    "qty": 40,
+    "state": "draft",
+    "workcenter_code": "P6984A087C0-WC02",
+    "date_planned": "2026-03-08",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "mrp.production",
+   "names": [
+    "MO00001",
+    "MO00002",
+    "MO00003",
+    "MO00004"
+   ]
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "orders_accepted": 10,
+    "orders_rejected": 0,
+    "units_purchased": 894,
+    "units_manufactured": 92,
+    "assembly_cost": 3354.0
+   }
+  }
+ }
+]

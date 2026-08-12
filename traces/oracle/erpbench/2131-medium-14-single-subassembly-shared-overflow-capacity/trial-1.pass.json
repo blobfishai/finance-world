@@ -1,0 +1,354 @@
+{
+ "task": "erpbench/2131-medium-14-single-subassembly-shared-overflow-capacity",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 47,
+ "walk_len": 47,
+ "budget_turns": 388,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 47}\n",
+ "trace": [
+  {
+   "ts": 1786508361.578707,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.579202,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"PDFE2A5CD56-ELV-LDA-220\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.579572,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"PDFE2A5CD56-ELV-LDA-220\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.580791,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"rDFE2A5CD56_c01\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.5817542,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"PDFE2A5CD56-ELV-LDA-220\", \"qty\": 21, \"price_unit\": 4118.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.58254,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"rDFE2A5CD56_c02\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.5833468,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"PDFE2A5CD56-ELV-LDA-220\", \"qty\": 17, \"price_unit\": 4118.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.5841541,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"rDFE2A5CD56_c03\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.584759,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"PDFE2A5CD56-ELV-LDA-220\", \"qty\": 14, \"price_unit\": 4118.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.585462,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"rDFE2A5CD56_c04\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.586039,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"PDFE2A5CD56-ELV-LDA-220\", \"qty\": 18, \"price_unit\": 4118.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.586742,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00005\", \"partner_ref\": \"rDFE2A5CD56_c05\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.587785,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00005\", \"product_code\": \"PDFE2A5CD56-ELV-LDA-220\", \"qty\": 17, \"price_unit\": 4118.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.588473,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00006\", \"partner_ref\": \"rDFE2A5CD56_c06\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.5890172,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00006\", \"product_code\": \"PDFE2A5CD56-ELV-LDA-220\", \"qty\": 25, \"price_unit\": 4118.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.589678,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00007\", \"partner_ref\": \"rDFE2A5CD56_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.590226,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00007\", \"product_code\": \"PDFE2A5CD56-ELV-LDA-220\", \"qty\": 20, \"price_unit\": 4118.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.590914,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00008\", \"partner_ref\": \"rDFE2A5CD56_c08\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.591703,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00008\", \"product_code\": \"PDFE2A5CD56-ELV-LDA-220\", \"qty\": 26, \"price_unit\": 4118.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.592566,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00009\", \"partner_ref\": \"rDFE2A5CD56_c09\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.5933518,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00009\", \"product_code\": \"PDFE2A5CD56-ELV-LDA-220\", \"qty\": 26, \"price_unit\": 4118.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.594236,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00010\", \"partner_ref\": \"rDFE2A5CD56_c10\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.59486,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00010\", \"product_code\": \"PDFE2A5CD56-ELV-LDA-220\", \"qty\": 26, \"price_unit\": 4118.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.595507,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\", \"S00005\", \"S00006\", \"S00007\", \"S00008\", \"S00009\", \"S00010\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.5962172,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"rDFE2A5CD56_q09\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.596812,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"PDFE2A5CD56-ELV-LED-011\", \"qty\": 92, \"price_unit\": 169.1}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.597528,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00002\", \"partner_ref\": \"rDFE2A5CD56_q11\", \"state\": \"draft\", \"date_planned\": \"2026-03-07\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.598135,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00002\", \"product_code\": \"PDFE2A5CD56-ELV-BDK-012\", \"qty\": 36, \"price_unit\": 253.15}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.59884,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00003\", \"partner_ref\": \"rDFE2A5CD56_q12\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.599427,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00003\", \"product_code\": \"PDFE2A5CD56-ELV-BDK-012\", \"qty\": 65, \"price_unit\": 225.42}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.6002529,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00004\", \"partner_ref\": \"rDFE2A5CD56_q13\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.600883,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00004\", \"product_code\": \"PDFE2A5CD56-ELV-BDK-012\", \"qty\": 95, \"price_unit\": 295.83}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.601705,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00005\", \"partner_ref\": \"rDFE2A5CD56_q16\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.6024342,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00005\", \"product_code\": \"PDFE2A5CD56-ELV-SHV-002\", \"qty\": 61, \"price_unit\": 404.77}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.603201,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00006\", \"partner_ref\": \"rDFE2A5CD56_q17\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.603909,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00006\", \"product_code\": \"PDFE2A5CD56-ELV-SHV-002\", \"qty\": 32, \"price_unit\": 352.96}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.6046982,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00007\", \"partner_ref\": \"rDFE2A5CD56_q19\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.605454,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00007\", \"product_code\": \"PDFE2A5CD56-ELV-GOV-007\", \"qty\": 22, \"price_unit\": 454.65}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.606213,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00008\", \"partner_ref\": \"rDFE2A5CD56_q20\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.606831,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00008\", \"product_code\": \"PDFE2A5CD56-ELV-GOV-007\", \"qty\": 74, \"price_unit\": 481.56}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.607593,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\", \"P00002\", \"P00003\", \"P00004\", \"P00005\", \"P00006\", \"P00007\", \"P00008\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.608694,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00001\", \"product_code\": \"PDFE2A5CD56-ELV-LDA-220\", \"qty\": 52, \"state\": \"draft\", \"workcenter_code\": \"PDFE2A5CD56-WC02\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.609641,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00002\", \"product_code\": \"PDFE2A5CD56-ELV-LDA-220\", \"qty\": 35, \"state\": \"draft\", \"workcenter_code\": \"PDFE2A5CD56-WC02\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.610566,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00003\", \"product_code\": \"PDFE2A5CD56-ELV-LDA-220\", \"qty\": 13, \"state\": \"draft\", \"workcenter_code\": \"PDFE2A5CD56-WC02\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.611397,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00004\", \"product_code\": \"PDFE2A5CD56-SUB-02\", \"qty\": 100, \"state\": \"draft\", \"workcenter_code\": \"PDFE2A5CD56-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.612105,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"mrp.production\", \"names\": [\"MO00001\", \"MO00002\", \"MO00003\", \"MO00004\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508361.613228,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 10, \"orders_rejected\": 0, \"units_purchased\": 477, \"units_manufactured\": 200, \"assembly_cost\": 5400.0}}",
+   "ok": true
+  }
+ ]
+}

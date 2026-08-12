@@ -1,0 +1,74 @@
+{
+ "task": "erpbench/2054-medium-07-screened-buy-only-mixed-seeded-invoicing",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 7,
+ "walk_len": 7,
+ "budget_turns": 68,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 7}\n",
+ "trace": [
+  {
+   "ts": 1786508311.865247,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508311.865779,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"PDCABAB12EF-HVC-RTU-001\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508311.866189,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"PDCABAB12EF-HVC-RTU-001\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508311.866982,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"rDCABAB12EF_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-16\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508311.867732,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"PDCABAB12EF-HVC-RTU-001\", \"qty\": 19, \"price_unit\": 8324.74}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508311.868421,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508311.8694909,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 1, \"orders_rejected\": 7, \"units_purchased\": 0, \"units_manufactured\": 0, \"assembly_cost\": 0}}",
+   "ok": true
+  }
+ ]
+}

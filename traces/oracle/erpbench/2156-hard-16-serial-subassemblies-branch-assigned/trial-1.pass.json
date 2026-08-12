@@ -1,0 +1,536 @@
+{
+ "task": "erpbench/2156-hard-16-serial-subassemblies-branch-assigned",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 73,
+ "walk_len": 73,
+ "budget_turns": 596,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 73}\n",
+ "trace": [
+  {
+   "ts": 1786508378.002165,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.002743,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"P89A2925DE0-CMP-BST-008\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.003171,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"P89A2925DE0-CMP-BST-008\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.004074,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"r89A2925DE0_c01\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.004881,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 20, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.005623,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"r89A2925DE0_c02\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0062861,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 18, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0069451,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"r89A2925DE0_c03\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0075462,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 18, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.008193,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"r89A2925DE0_c04\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.008776,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 22, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.009397,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00005\", \"partner_ref\": \"r89A2925DE0_c05\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0099719,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00005\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 21, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.010586,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00006\", \"partner_ref\": \"r89A2925DE0_c06\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.011173,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00006\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 20, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.011932,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00007\", \"partner_ref\": \"r89A2925DE0_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0125608,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00007\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 22, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.013192,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00008\", \"partner_ref\": \"r89A2925DE0_c08\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.01376,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00008\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 22, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.014507,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00009\", \"partner_ref\": \"r89A2925DE0_c09\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0151029,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00009\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 19, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.015759,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00010\", \"partner_ref\": \"r89A2925DE0_c10\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.016458,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00010\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 20, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.017338,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00011\", \"partner_ref\": \"r89A2925DE0_c11\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.018015,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00011\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 30, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0187058,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00012\", \"partner_ref\": \"r89A2925DE0_c12\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0193212,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00012\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 32, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.019999,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00013\", \"partner_ref\": \"r89A2925DE0_c13\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.020601,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00013\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 32, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.021215,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00014\", \"partner_ref\": \"r89A2925DE0_c14\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0217888,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00014\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 32, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.022414,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00015\", \"partner_ref\": \"r89A2925DE0_c15\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0229802,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00015\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 32, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0235882,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00016\", \"partner_ref\": \"r89A2925DE0_c16\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0241568,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00016\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 32, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0247848,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00017\", \"partner_ref\": \"r89A2925DE0_c17\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.02547,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00017\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 32, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.026079,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00018\", \"partner_ref\": \"r89A2925DE0_c18\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.026746,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00018\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 32, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.02745,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00019\", \"partner_ref\": \"r89A2925DE0_c19\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.028106,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00019\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 32, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.028865,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00020\", \"partner_ref\": \"r89A2925DE0_c20\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.029554,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00020\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 32, \"price_unit\": 27655.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.030247,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\", \"S00005\", \"S00006\", \"S00007\", \"S00008\", \"S00009\", \"S00010\", \"S00011\", \"S00012\", \"S00013\", \"S00014\", \"S00015\", \"S00016\", \"S00017\", \"S00018\", \"S00019\", \"S00020\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.030965,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"r89A2925DE0_q09\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0316641,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"P89A2925DE0-CMP-EDM-102\", \"qty\": 108, \"price_unit\": 1296.51}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.032937,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00002\", \"partner_ref\": \"r89A2925DE0_q10\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.033739,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00002\", \"product_code\": \"P89A2925DE0-CMP-EDM-102\", \"qty\": 33, \"price_unit\": 1413.31}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.034496,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00003\", \"partner_ref\": \"r89A2925DE0_q13\", \"state\": \"draft\", \"date_planned\": \"2026-03-05\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0374951,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00003\", \"product_code\": \"P89A2925DE0-CMP-IAF-104\", \"qty\": 172, \"price_unit\": 19.55}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.038311,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00004\", \"partner_ref\": \"r89A2925DE0_q14\", \"state\": \"draft\", \"date_planned\": \"2026-03-05\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.039051,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00004\", \"product_code\": \"P89A2925DE0-CMP-IAF-104\", \"qty\": 99, \"price_unit\": 16.07}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0398679,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00005\", \"partner_ref\": \"r89A2925DE0_q17\", \"state\": \"draft\", \"date_planned\": \"2026-03-05\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.040572,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00005\", \"product_code\": \"P89A2925DE0-CMP-AHE-107\", \"qty\": 57, \"price_unit\": 232.24}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.041267,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00006\", \"partner_ref\": \"r89A2925DE0_q18\", \"state\": \"draft\", \"date_planned\": \"2026-03-05\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.041846,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00006\", \"product_code\": \"P89A2925DE0-CMP-AHE-107\", \"qty\": 80, \"price_unit\": 269.64}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.042472,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00007\", \"partner_ref\": \"r89A2925DE0_q01\", \"state\": \"draft\", \"date_planned\": \"2026-03-10\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.043081,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00007\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 27, \"price_unit\": 18413.34}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.043699,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00008\", \"partner_ref\": \"r89A2925DE0_q02\", \"state\": \"draft\", \"date_planned\": \"2026-03-09\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0442681,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00008\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 78, \"price_unit\": 26023.67}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.044885,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00009\", \"partner_ref\": \"r89A2925DE0_q04\", \"state\": \"draft\", \"date_planned\": \"2026-03-07\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.045453,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00009\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 19, \"price_unit\": 28071.12}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.046067,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00010\", \"partner_ref\": \"r89A2925DE0_q05\", \"state\": \"draft\", \"date_planned\": \"2026-03-10\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.046633,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00010\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 43, \"price_unit\": 21912.04}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.047241,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\", \"P00002\", \"P00003\", \"P00004\", \"P00005\", \"P00006\", \"P00007\", \"P00008\", \"P00009\", \"P00010\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.047848,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00001\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 38, \"state\": \"draft\", \"workcenter_code\": \"P89A2925DE0-WC03\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S0",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.048525,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00002\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 61, \"state\": \"draft\", \"workcenter_code\": \"P89A2925DE0-WC03\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S0",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0491478,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00003\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 42, \"state\": \"draft\", \"workcenter_code\": \"P89A2925DE0-WC03\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S0",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.049761,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00004\", \"product_code\": \"P89A2925DE0-CMP-BST-008\", \"qty\": 4, \"state\": \"draft\", \"workcenter_code\": \"P89A2925DE0-WC03\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.050365,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00005\", \"product_code\": \"P89A2925DE0-SUBA-01\", \"qty\": 145, \"state\": \"draft\", \"workcenter_code\": \"P89A2925DE0-WC02\", \"date_planned\": \"2026-03-03\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S0001",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.050966,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00006\", \"product_code\": \"P89A2925DE0-SUBB-02\", \"qty\": 145, \"state\": \"draft\", \"workcenter_code\": \"P89A2925DE0-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S0001",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.051549,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"mrp.production\", \"names\": [\"MO00001\", \"MO00002\", \"MO00003\", \"MO00004\", \"MO00005\", \"MO00006\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508378.0525272,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 20, \"orders_rejected\": 0, \"units_purchased\": 716, \"units_manufactured\": 435, \"assembly_cost\": 11020.0}}",
+   "ok": true
+  }
+ ]
+}

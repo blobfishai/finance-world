@@ -4,7 +4,7 @@ A simulated corporate-finance environment + benchmark ("world") for evaluating a
 AI agents, built for a frontier-lab finance team. Harbor-packaged, deterministic verifiers,
 no LLM judge in the reward path.
 
-Task families — **19**, in two layers:
+Task families — **20**, in two layers:
 
 *Read-and-reconcile* (ask the world a question it will not answer in one place):
 - **erp_qa** / **erp_qa_fb** — grounded AP/AR questions (balances, aged debt, open invoices,
@@ -33,6 +33,12 @@ business, and the verifier grades **the world it leaves behind**, not the story 
 - **anomaly_triage** — duplicate-disbursement screening, where the correct answer sits between
   paying a duplicate and rejecting a legitimate look-alike.
 - **collections_ops** — dunning letters and credit holds as governed write actions.
+- **erpbench** — procure-to-pay and make-or-buy planning against demand that on-hand stock
+  cannot cover: which customer orders to accept, which to reject, what to buy from which
+  vendor offer within its horizon-wide min/max, and what to manufacture on which workcentre.
+  Ported from agentic-labs/erp-bench, whose 300 tasks each boot a real Odoo in Docker; here
+  they run on an Odoo-shaped MCP surface (`mcp/servers/odoo_server.py`) and the same judgement
+  is graded as deterministic SQL over the world the agent leaves behind.
 
 Everything is simulation: all companies, balances, and documents in the world are synthetic
 (`SIMULATION ONLY`), grounded in researched-but-fictionalized scenarios.
@@ -47,10 +53,12 @@ Everything is simulation: all companies, balances, and documents in the world ar
   FinanceBenchmark raw extracts (1,000 customers, 1,000 vendors, ~6,900 subledger lines).
 - `mcp/` — **one MCP server per tool** over the task run's SQLite state:
   `erp` (D365-shaped, discovery-first) · `books` (QBO-shaped subsidiary) · `sheets` ·
-  `email` · `filings` (frozen real-EDGAR facts) · `docs` · `harness` (submit_answer only).
+  `email` · `filings` (frozen real-EDGAR facts) · `docs` · `odoo` (Odoo-19-shaped
+  procurement/manufacturing: `search_read` over `[field, op, value]` domains, `create`,
+  `write`, `action_confirm`) · `harness` (submit_answer only).
 - `tasks/<family>/<slug>/` — **Harbor task dirs** (`task.toml`, `instruction.md`,
   `environment/` incl. per-task `seed/` layers, `solution/` oracle walk, `tests/` verifier).
-  **1,250 tasks across 19 families.** Provenance is machine-readable and the three kinds are
+  **1,534 tasks across 20 families.** Provenance is machine-readable and the three kinds are
   never summed: a *ported* clone of a real source item, a *generated* instance of a ported
   pattern over another entity (`generated = true` + `pattern`), and an *escalated variant* of a
   ported task (`variant_of`). Conflating them is what let the parity ledger report 689%

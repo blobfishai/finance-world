@@ -1,0 +1,116 @@
+{
+ "task": "erpbench/2253-hard-25-shared-component-subassemblies-branch-assigned-screened-all-seeded",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 13,
+ "walk_len": 13,
+ "budget_turns": 116,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 13}\n",
+ "trace": [
+  {
+   "ts": 1786508440.953093,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508440.9535701,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"P8C3E89741E-FIR-FAC-009\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508440.953944,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"P8C3E89741E-FIR-FAC-009\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508440.954724,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"r8C3E89741E_c22\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508440.955568,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"P8C3E89741E-FIR-FAC-009\", \"qty\": 32, \"price_unit\": 4141.01}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508440.956214,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"r8C3E89741E_c23\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508440.956892,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"P8C3E89741E-FIR-FAC-009\", \"qty\": 24, \"price_unit\": 4141.01}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508440.9576378,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"r8C3E89741E_c24\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508440.958271,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"P8C3E89741E-FIR-FAC-009\", \"qty\": 32, \"price_unit\": 4141.01}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508440.958911,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"r8C3E89741E_c25\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508440.960046,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"P8C3E89741E-FIR-FAC-009\", \"qty\": 32, \"price_unit\": 4141.01}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508440.960744,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508440.961768,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 4, \"orders_rejected\": 21, \"units_purchased\": 0, \"units_manufactured\": 0, \"assembly_cost\": 0}}",
+   "ok": true
+  }
+ ]
+}

@@ -15,7 +15,7 @@ import json, shutil, sqlite3, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SERVERS = ["erp", "books", "sheets", "email", "filings", "docs", "harness"]
+SERVERS = ["erp", "books", "sheets", "email", "filings", "docs", "odoo", "harness"]
 
 def prepare(task_dir, run_dir):
     task_dir, run = Path(task_dir), Path(run_dir)

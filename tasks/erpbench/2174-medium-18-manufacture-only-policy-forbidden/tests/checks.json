@@ -1,0 +1,111 @@
+{
+ "answer_checks": [
+  {
+   "field": "assembly_cost",
+   "type": "number",
+   "expect": 3276.0,
+   "tol_abs": 16.38
+  },
+  {
+   "field": "orders_accepted",
+   "type": "number",
+   "expect": 8,
+   "tol_abs": 0
+  },
+  {
+   "field": "orders_rejected",
+   "type": "number",
+   "expect": 0,
+   "tol_abs": 0
+  },
+  {
+   "field": "units_purchased",
+   "type": "number",
+   "expect": 772,
+   "tol_abs": 0.01
+  },
+  {
+   "field": "units_manufactured",
+   "type": "number",
+   "expect": 117,
+   "tol_abs": 0.01
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "odoo"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "sql",
+   "name": "confirmed_sale_units",
+   "sql": "SELECT COALESCE(SUM(l.qty),0) FROM erpb_sale_order_lines l JOIN erpb_sale_orders o ON o.name=l.order_name WHERE o.state='sale'",
+   "expect": 136,
+   "tol_abs": 0.01
+  },
+  {
+   "type": "sql",
+   "name": "confirmed_purchase_units",
+   "sql": "SELECT COALESCE(SUM(l.qty),0) FROM erpb_purchase_order_lines l JOIN erpb_purchase_orders o ON o.name=l.order_name WHERE o.state='purchase'",
+   "expect": 772,
+   "tol_abs": 0.01
+  },
+  {
+   "type": "sql",
+   "name": "confirmed_manufacture_units",
+   "sql": "SELECT COALESCE(SUM(qty),0) FROM erpb_manufacturing_orders WHERE state='confirmed'",
+   "expect": 117,
+   "tol_abs": 0.01
+  },
+  {
+   "type": "sql",
+   "name": "mo_workcenters_exist",
+   "sql": "SELECT COUNT(*) FROM erpb_manufacturing_orders m WHERE m.state='confirmed' AND NOT EXISTS (SELECT 1 FROM erpb_workcenters w WHERE w.code=m.workcenter_code)",
+   "expect": 0
+  },
+  {
+   "type": "sql",
+   "name": "all_lines_at_list_price",
+   "sql": "SELECT COUNT(*) FROM erpb_sale_order_lines l JOIN erpb_sale_orders o ON o.name=l.order_name WHERE o.state='sale' AND ABS(l.price_unit-5129.79)>0.01",
+   "expect": 0
+  },
+  {
+   "type": "sql",
+   "name": "po_origin_links_to_so",
+   "sql": "SELECT COUNT(*) FROM erpb_purchase_orders p WHERE p.state='purchase' AND NOT EXISTS (SELECT 1 FROM erpb_sale_orders s WHERE s.state='sale' AND p.origin LIKE '%'||s.name||'%')",
+   "expect": 0
+  },
+  {
+   "type": "sql",
+   "name": "sale_commitment_dates_set",
+   "sql": "SELECT COUNT(*) FROM erpb_sale_orders WHERE state='sale' AND (commitment_date IS NULL OR commitment_date='')",
+   "expect": 0
+  },
+  {
+   "type": "sql",
+   "name": "purchase_dates_set",
+   "sql": "SELECT COUNT(*) FROM erpb_purchase_orders WHERE state='purchase' AND (date_planned IS NULL OR date_planned='')",
+   "expect": 0
+  },
+  {
+   "type": "sql",
+   "name": "po_lines_match_a_real_offer",
+   "sql": "SELECT COUNT(*) FROM erpb_purchase_order_lines l JOIN erpb_purchase_orders o ON o.name=l.order_name WHERE o.state='purchase' AND NOT EXISTS (SELECT 1 FROM erpb_vendor_offers v WHERE v.partner_ref=o.partner_ref AND v.product_code=l.product_code)",
+   "expect": 0
+  },
+  {
+   "type": "sql",
+   "name": "purchase_spend_matches_optimal",
+   "sql": "SELECT COALESCE(SUM(l.qty*l.price_unit),0) FROM erpb_purchase_order_lines l JOIN erpb_purchase_orders o ON o.name=l.order_name WHERE o.state='purchase'",
+   "expect": 70635.49,
+   "tol_rel": 0.005
+  }
+ ]
+}

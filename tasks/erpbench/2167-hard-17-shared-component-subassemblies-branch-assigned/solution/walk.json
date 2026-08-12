@@ -1,0 +1,1168 @@
+[
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "res.partner",
+   "domain": [
+    [
+     "kind",
+     "=",
+     "customer"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "product.supplierinfo",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "PD5DED1A1C2-FIR-WSP-001"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "search_read",
+  "args": {
+   "model": "stock.quant",
+   "domain": [
+    [
+     "product_code",
+     "=",
+     "PD5DED1A1C2-FIR-WSP-001"
+    ]
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00001",
+    "partner_ref": "rD5DED1A1C2_c01",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00001",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 19,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00002",
+    "partner_ref": "rD5DED1A1C2_c02",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00002",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 19,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00003",
+    "partner_ref": "rD5DED1A1C2_c03",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00003",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 19,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00004",
+    "partner_ref": "rD5DED1A1C2_c04",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00004",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 18,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00005",
+    "partner_ref": "rD5DED1A1C2_c05",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00005",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 24,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00006",
+    "partner_ref": "rD5DED1A1C2_c06",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00006",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 18,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00007",
+    "partner_ref": "rD5DED1A1C2_c07",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00007",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 20,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00008",
+    "partner_ref": "rD5DED1A1C2_c08",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00008",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 19,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00009",
+    "partner_ref": "rD5DED1A1C2_c09",
+    "state": "draft",
+    "commitment_date": "2026-03-10"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00009",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 24,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00010",
+    "partner_ref": "rD5DED1A1C2_c10",
+    "state": "draft",
+    "commitment_date": "2026-03-11"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00010",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 19,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00011",
+    "partner_ref": "rD5DED1A1C2_c11",
+    "state": "draft",
+    "commitment_date": "2026-03-11"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00011",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 26,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00012",
+    "partner_ref": "rD5DED1A1C2_c12",
+    "state": "draft",
+    "commitment_date": "2026-03-12"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00012",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 24,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00013",
+    "partner_ref": "rD5DED1A1C2_c13",
+    "state": "draft",
+    "commitment_date": "2026-03-12"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00013",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 21,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00014",
+    "partner_ref": "rD5DED1A1C2_c14",
+    "state": "draft",
+    "commitment_date": "2026-03-12"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00014",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 19,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00015",
+    "partner_ref": "rD5DED1A1C2_c15",
+    "state": "draft",
+    "commitment_date": "2026-03-12"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00015",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 24,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00016",
+    "partner_ref": "rD5DED1A1C2_c16",
+    "state": "draft",
+    "commitment_date": "2026-03-12"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00016",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 18,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00017",
+    "partner_ref": "rD5DED1A1C2_c17",
+    "state": "draft",
+    "commitment_date": "2026-03-13"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00017",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 20,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00018",
+    "partner_ref": "rD5DED1A1C2_c18",
+    "state": "draft",
+    "commitment_date": "2026-03-13"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00018",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 19,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00019",
+    "partner_ref": "rD5DED1A1C2_c19",
+    "state": "draft",
+    "commitment_date": "2026-03-13"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00019",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 19,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00020",
+    "partner_ref": "rD5DED1A1C2_c20",
+    "state": "draft",
+    "commitment_date": "2026-03-13"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00020",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 18,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00021",
+    "partner_ref": "rD5DED1A1C2_c21",
+    "state": "draft",
+    "commitment_date": "2026-03-13"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00021",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 18,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00022",
+    "partner_ref": "rD5DED1A1C2_c22",
+    "state": "draft",
+    "commitment_date": "2026-03-13"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00022",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 18,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00023",
+    "partner_ref": "rD5DED1A1C2_c23",
+    "state": "draft",
+    "commitment_date": "2026-03-14"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00023",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 21,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00024",
+    "partner_ref": "rD5DED1A1C2_c24",
+    "state": "draft",
+    "commitment_date": "2026-03-14"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00024",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 18,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00025",
+    "partner_ref": "rD5DED1A1C2_c25",
+    "state": "draft",
+    "commitment_date": "2026-03-14"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00025",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 20,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00026",
+    "partner_ref": "rD5DED1A1C2_c26",
+    "state": "draft",
+    "commitment_date": "2026-03-15"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00026",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 19,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00027",
+    "partner_ref": "rD5DED1A1C2_c27",
+    "state": "draft",
+    "commitment_date": "2026-03-15"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00027",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 18,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00028",
+    "partner_ref": "rD5DED1A1C2_c28",
+    "state": "draft",
+    "commitment_date": "2026-03-15"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00028",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 21,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00029",
+    "partner_ref": "rD5DED1A1C2_c29",
+    "state": "draft",
+    "commitment_date": "2026-03-15"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00029",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 22,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00030",
+    "partner_ref": "rD5DED1A1C2_c30",
+    "state": "draft",
+    "commitment_date": "2026-03-15"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00030",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 19,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order",
+   "values": {
+    "name": "S00031",
+    "partner_ref": "rD5DED1A1C2_c31",
+    "state": "draft",
+    "commitment_date": "2026-03-15"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "sale.order.line",
+   "values": {
+    "order_name": "S00031",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 19,
+    "price_unit": 4992.08
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "sale.order",
+   "names": [
+    "S00001",
+    "S00002",
+    "S00003",
+    "S00004",
+    "S00005",
+    "S00006",
+    "S00007",
+    "S00008",
+    "S00009",
+    "S00010",
+    "S00011",
+    "S00012",
+    "S00013",
+    "S00014",
+    "S00015",
+    "S00016",
+    "S00017",
+    "S00018",
+    "S00019",
+    "S00020",
+    "S00021",
+    "S00022",
+    "S00023",
+    "S00024",
+    "S00025",
+    "S00026",
+    "S00027",
+    "S00028",
+    "S00029",
+    "S00030",
+    "S00031"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00001",
+    "partner_ref": "rD5DED1A1C2_q07",
+    "state": "draft",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019, S00020, S00021, S00022, S00023, S00024, S00025, S00026, S00027, S00028, S00029, S00030, S00031"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00001",
+    "product_code": "PD5DED1A1C2-FIR-SHP-101",
+    "qty": 238,
+    "price_unit": 11.4
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00002",
+    "partner_ref": "rD5DED1A1C2_q08",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019, S00020, S00021, S00022, S00023, S00024, S00025, S00026, S00027, S00028, S00029, S00030, S00031"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00002",
+    "product_code": "PD5DED1A1C2-FIR-SHP-101",
+    "qty": 1639,
+    "price_unit": 7.58
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00003",
+    "partner_ref": "rD5DED1A1C2_q09",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019, S00020, S00021, S00022, S00023, S00024, S00025, S00026, S00027, S00028, S00029, S00030, S00031"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00003",
+    "product_code": "PD5DED1A1C2-FIR-SHP-101",
+    "qty": 283,
+    "price_unit": 8.84
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00004",
+    "partner_ref": "rD5DED1A1C2_q11",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019, S00020, S00021, S00022, S00023, S00024, S00025, S00026, S00027, S00028, S00029, S00030, S00031"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00004",
+    "product_code": "PD5DED1A1C2-FIR-BVS-109",
+    "qty": 146,
+    "price_unit": 97.64
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00005",
+    "partner_ref": "rD5DED1A1C2_q14",
+    "state": "draft",
+    "date_planned": "2026-03-06",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019, S00020, S00021, S00022, S00023, S00024, S00025, S00026, S00027, S00028, S00029, S00030, S00031"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00005",
+    "product_code": "PD5DED1A1C2-FIR-DNA-113",
+    "qty": 308,
+    "price_unit": 81.89
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00006",
+    "partner_ref": "rD5DED1A1C2_q01",
+    "state": "draft",
+    "date_planned": "2026-03-11",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019, S00020, S00021, S00022, S00023, S00024, S00025, S00026, S00027, S00028, S00029, S00030, S00031"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00006",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 207,
+    "price_unit": 2745.1
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order",
+   "values": {
+    "name": "P00007",
+    "partner_ref": "rD5DED1A1C2_q05",
+    "state": "draft",
+    "date_planned": "2026-03-11",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019, S00020, S00021, S00022, S00023, S00024, S00025, S00026, S00027, S00028, S00029, S00030, S00031"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "purchase.order.line",
+   "values": {
+    "order_name": "P00007",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 8,
+    "price_unit": 3522.91
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "purchase.order",
+   "names": [
+    "P00001",
+    "P00002",
+    "P00003",
+    "P00004",
+    "P00005",
+    "P00006",
+    "P00007"
+   ]
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00001",
+    "product_code": "PD5DED1A1C2-FIR-WSP-001",
+    "qty": 157,
+    "state": "draft",
+    "workcenter_code": "PD5DED1A1C2-WC01",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019, S00020, S00021, S00022, S00023, S00024, S00025, S00026, S00027, S00028, S00029, S00030, S00031"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00002",
+    "product_code": "PD5DED1A1C2-SUBA-02",
+    "qty": 157,
+    "state": "draft",
+    "workcenter_code": "PD5DED1A1C2-WC02",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019, S00020, S00021, S00022, S00023, S00024, S00025, S00026, S00027, S00028, S00029, S00030, S00031"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "create",
+  "args": {
+   "model": "mrp.production",
+   "values": {
+    "name": "MO00003",
+    "product_code": "PD5DED1A1C2-SUBB-02",
+    "qty": 157,
+    "state": "draft",
+    "workcenter_code": "PD5DED1A1C2-WC03",
+    "date_planned": "2026-03-04",
+    "origin": "S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019, S00020, S00021, S00022, S00023, S00024, S00025, S00026, S00027, S00028, S00029, S00030, S00031"
+   }
+  }
+ },
+ {
+  "server": "odoo",
+  "tool": "action_confirm",
+  "args": {
+   "model": "mrp.production",
+   "names": [
+    "MO00001",
+    "MO00002",
+    "MO00003"
+   ]
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "orders_accepted": 31,
+    "orders_rejected": 0,
+    "units_purchased": 2829,
+    "units_manufactured": 471,
+    "assembly_cost": 11461.0
+   }
+  }
+ }
+]

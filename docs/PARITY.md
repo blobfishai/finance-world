@@ -27,12 +27,17 @@ TheAgentCompany — 12 items
    addressable: 12       binding: bound 12                          ported: 9   (75%)
    variants   : 4 escalated from ported tasks (depth; excluded from the rate)
 agentic-labs/erp-bench — 300 items
-   class      : needs_surface 300
-   addressable: 0                                                   ported: 0
+   class      : judgement_port 300
+   addressable: 300      binding: bound 300                         ported: 285 (95%)
 ──────────────────────────────────────────────────────────────────────────
-TOTAL  items 563 · addressable 165 · ported 152  (92% of addressable)
+TOTAL  items 563 · addressable 465 · ported 436  (94% of addressable)
        + 1026 generated instances (breadth) · 4 escalated variants (depth)
 ```
+
+**The denominator grew from 165 to 465 on purpose.** ERP-Bench's 300 were `needs_surface`, and
+`needs_surface` items are excluded from addressable — which meant deciding not to build the
+surface quietly improved the coverage rate. Building it puts them back in scope. A number that
+only ever moves up is being managed, not measured.
 
 **Three buckets, never summed.** *Ported* = a real clone of a real source item, and the only
 thing the parity rate counts. *Instances* = the same pattern re-asked over another entity.
@@ -49,7 +54,7 @@ intend to close them, and we do not; counting them as "done" would be a lie. The
 **class**, with a reason.
 
 Addressable = `verbatim_gt` + `recomputable` + `judgement_port`. Against that, coverage is
-**152 of 165 (92%)**, and every one of the remaining 13 has a named blocker:
+**436 of 465 (94%)**, and every one of the remaining 29 has a named blocker:
 
 | blocker | items | what unblocks it |
 |---|---|---|
@@ -58,6 +63,7 @@ Addressable = `verbatim_gt` + `recomputable` + `judgement_port`. Against that, c
 | ~~FB `finance_qa` single-figure (`recomputable`)~~ | ~~28~~ **7** | **MOSTLY CLOSED** — `world/etl/clone_fb_finance.py` emits 21, each pinning value + period + source form as separate checks against the frozen SEC snapshot. The 7 left are named below and 4 of them are structurally unanswerable from XBRL |
 | ~~FB `business_brief`~~ | ~~25~~ **1** | **CLOSED but one** — `world/etl/clone_fb_brief.py` emits 24. FB grades brief *prose* with an LLM judge; the port keeps the judgement (scale, profitability, leverage, and whether we already carry exposure) and grades each field deterministically. The last one names **Discover Financial Services, which no longer files** — acquired by Capital One, so no XBRL exists to pin |
 | ~~TAC finance remaining~~ | ~~4~~ **3** | 9 of 12 done; the porting pattern is proven |
+| ERP-Bench `downpayment_required` scenarios | 15 | the invoicing/downpayment policy expressed as a scalar SQL assertion. Shipping them without it would state a policy in the prompt that the checks do not grade (A10.2) |
 
 **The brief port adds a mechanic FB does not have.** Every brief asks whether the subject is
 already a counterparty on our own books — answerable only from the ERP, never from the filings.
@@ -93,9 +99,14 @@ produced a build list, the build closed it, and re-running the ledger proved it.
 
 Three of the reasons are real, one is not.
 
-**Real.** ERP-Bench is Odoo procurement and manufacturing — a different business surface from
-this world's AP/AR/close/treasury. Porting its 300 needs an Odoo-shaped mock, which is a
-build, not a transcription.
+**~~Real~~ — RETIRED, the build happened.** This said ERP-Bench was Odoo procurement and
+manufacturing, a different business surface from AP/AR/close/treasury, and that porting its 300
+needed an Odoo-shaped mock: "a build, not a transcription". All true, and it was still doing the
+work of an excuse — the reason a thing is unbuilt does not stop it being unbuilt. The surface
+is now built and 285 of the 300 run. What made it tractable was reading the corpus properly
+rather than at the level of its README: the tasks look like they need a live Odoo, but their
+scenarios are declarative JSON and their optimal plans enumerate every intended order, so what
+looked like an infrastructure problem was a seeding problem.
 
 **Real.** FinanceBenchmark's own ground truths do not reconcile with its shipped data
 (`docs/AUDIT.md` A3), so blind replication imports its bugs. Every clone here recomputes truth
@@ -148,23 +159,42 @@ capability.** That is the next push.
 3. ~~**FB `business_brief` (25)**~~ — **DONE.** `clone_fb_brief.py` emits 24; the last names a
    registrant that no longer files.
 4. **TAC finance, remaining 3** — the porting pattern is proven; 9 of 12 done.
-5. **ERP-Bench (300)** — **DECIDED: build the surface.** These are already true Harbor
-   directories; the blocker is that each ships a full Odoo in Docker and drives it over
-   JSON-2. What ports cleanly is that `environment/scenario_data.json` is a **declarative world
-   spec** — vendors, products with min/max/price offers, BOMs, workcenters, stock, budgets,
-   invoicing policy — so the scenario seeds our world directly and the judgement (budget caps,
-   margin floors, vendor min/max, SO→PO lineage) becomes deterministic state-diff checks
-   instead of `odoolib` queries against a live server.
+5. ~~**ERP-Bench (300)**~~ — **BUILT: 285 of 300 run here.** `world/schema.sql` gained the
+   `erpb_*` procure-to-pay / make-or-buy surface, `mcp/servers/odoo_server.py` serves it shaped
+   from the wave-4 Odoo checkout (the `execute_kw` verb set from `odoo/service/model.py`, the
+   domain grammar from `odoo/osv/expression.py`), and `world/etl/clone_erpbench.py` emits the
+   tasks. **The verifier needed no new check types** — its `sql` state check already expresses
+   every ERP-Bench judgement as a scalar assertion.
 
-   Scope, measured rather than assumed — the 300 are not homogeneous:
+   Each scenario seeds itself: `scenario_data.json` is declarative, so it becomes `seed.sql`
+   through the per-task seed layer the world already had, and `optimal_plan.json` — which
+   enumerates the intended purchase orders and manufacturing orders with vendor, quantity and
+   unit cost — becomes the oracle walk. Both the buy-only and the manufacturing arms run.
 
-   | | tasks | needs |
-   |---|---|---|
-   | finished good is **bought** | 82 | procure-to-pay only: `sale.order`, `purchase.order`, vendor offers, budgets, downpayment/invoicing policy — a natural extension of the existing AP/vendor surface |
-   | finished good can be **manufactured** | 218 | + BOMs, workcenters, capacity scheduling, subassembly routing (all 218 carry workcenters) |
+   The 15 still out are the `downpayment_required` scenarios: their invoicing policy is not yet
+   a scalar assertion, and shipping them graded by anything looser would break the A10.2 rule —
+   a prompt that states a policy the checks do not grade.
 
-   By objective: `min_new_spend` 183 · `vendor_consolidation` 34 · `capacity_preservation` 31 ·
-   `repair_plan` 28 · `constraint_only` 24. Closing this takes addressable from 165 to 465.
+   Two grading bugs were caught by the oracle gate rather than shipped, both of the same kind
+   (**grading against a number that means something slightly different**):
+
+   - Spend was first graded against the sum of per-allocation `variable_cost`, which includes
+     the cost of on-hand stock consumed. It demanded purchasing the plan never intended, and
+     failed all 70 tasks in the first slice.
+   - Corrected to `optimal_new_spend`, it still failed every make-or-buy scenario, because that
+     figure also carries the workcentre assembly cost. PO lines are now graded against the
+     plan's own `purchase_orders` totals, with assembly cost graded as its own field.
+
+   The first oracle walk was also wrong in an instructive way: it bought every unit from the
+   single cheapest offer, which is not merely suboptimal but **invalid** — it ignores that
+   offer's `max_qty`. It "spent less than optimal", and the spend check caught it.
+
+   **On the margin floor**, which every scenario states in its policy block: there is no check
+   literally named for it, and that is worth stating rather than glossing. Margin is
+   `(revenue − new spend) / revenue`, and both terms are pinned exactly — revenue by
+   `confirmed_sale_units` at `all_lines_at_list_price`, spend by `purchase_spend_matches_optimal`.
+   The floor is therefore graded transitively and cannot be missed while both checks pass. It is
+   not an ungraded policy (A10.2); it is a graded one whose check has a different name.
 
 Parity is not the ceiling of this world — the hard layer is what makes it worth running. But
 parity is the claim a buyer can check, and it should have come first.

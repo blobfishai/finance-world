@@ -1,0 +1,172 @@
+{
+ "task": "erpbench/2243-hard-24-single-subassembly-shared-overflow-capacity-screened-invoicing",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 21,
+ "walk_len": 21,
+ "budget_turns": 180,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 21}\n",
+ "trace": [
+  {
+   "ts": 1786508434.5508769,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.55136,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"PE5D4587CA6-ELV-CFP-400\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.5517519,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"PE5D4587CA6-ELV-CFP-400\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.552591,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"rE5D4587CA6_c01\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.553321,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"PE5D4587CA6-ELV-CFP-400\", \"qty\": 22, \"price_unit\": 8053.3}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.5540018,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"rE5D4587CA6_c05\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.5546272,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"PE5D4587CA6-ELV-CFP-400\", \"qty\": 16, \"price_unit\": 8053.3}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.555321,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"rE5D4587CA6_c08\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.55597,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"PE5D4587CA6-ELV-CFP-400\", \"qty\": 19, \"price_unit\": 8053.3}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.5566201,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"rE5D4587CA6_c09\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.557278,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"PE5D4587CA6-ELV-CFP-400\", \"qty\": 22, \"price_unit\": 8053.3}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.5579789,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.5590742,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"rE5D4587CA6_q13\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.559718,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"PE5D4587CA6-ELV-BUF-016\", \"qty\": 8, \"price_unit\": 241.72}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.560378,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00002\", \"partner_ref\": \"rE5D4587CA6_q01\", \"state\": \"draft\", \"date_planned\": \"2026-03-11\", \"origin\": \"S00001, S00002, S00003, S00004\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.560997,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00002\", \"product_code\": \"PE5D4587CA6-ELV-CFP-400\", \"qty\": 6, \"price_unit\": 4757.93}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.5615969,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\", \"P00002\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.562219,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00001\", \"product_code\": \"PE5D4587CA6-ELV-CFP-400\", \"qty\": 3, \"state\": \"draft\", \"workcenter_code\": \"PE5D4587CA6-WC02\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.562897,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00002\", \"product_code\": \"PE5D4587CA6-SUB-02\", \"qty\": 3, \"state\": \"draft\", \"workcenter_code\": \"PE5D4587CA6-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.563633,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"mrp.production\", \"names\": [\"MO00001\", \"MO00002\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508434.564611,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 4, \"orders_rejected\": 5, \"units_purchased\": 14, \"units_manufactured\": 6, \"assembly_cost\": 162.0}}",
+   "ok": true
+  }
+ ]
+}

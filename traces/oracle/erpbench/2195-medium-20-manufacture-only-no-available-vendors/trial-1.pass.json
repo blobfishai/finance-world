@@ -1,0 +1,522 @@
+{
+ "task": "erpbench/2195-medium-20-manufacture-only-no-available-vendors",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 71,
+ "walk_len": 71,
+ "budget_turns": 580,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 71}\n",
+ "trace": [
+  {
+   "ts": 1786508404.111979,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.112493,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"PF473D7ED47-TRF-DRT-001\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1129,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"PF473D7ED47-TRF-DRT-001\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.113921,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"rF473D7ED47_c01\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.114618,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"PF473D7ED47-TRF-DRT-001\", \"qty\": 26, \"price_unit\": 19376.77}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1153972,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"rF473D7ED47_c02\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.116178,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"PF473D7ED47-TRF-DRT-001\", \"qty\": 25, \"price_unit\": 19376.77}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.116846,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"rF473D7ED47_c03\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.117492,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"PF473D7ED47-TRF-DRT-001\", \"qty\": 24, \"price_unit\": 19376.77}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1181371,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"rF473D7ED47_c04\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.118807,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"PF473D7ED47-TRF-DRT-001\", \"qty\": 18, \"price_unit\": 19376.77}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.119738,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00005\", \"partner_ref\": \"rF473D7ED47_c05\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.120522,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00005\", \"product_code\": \"PF473D7ED47-TRF-DRT-001\", \"qty\": 24, \"price_unit\": 19376.77}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1211588,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00006\", \"partner_ref\": \"rF473D7ED47_c06\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.121736,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00006\", \"product_code\": \"PF473D7ED47-TRF-DRT-001\", \"qty\": 14, \"price_unit\": 19376.77}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1223931,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00007\", \"partner_ref\": \"rF473D7ED47_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1230679,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00007\", \"product_code\": \"PF473D7ED47-TRF-DRT-001\", \"qty\": 15, \"price_unit\": 19376.77}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.123654,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00008\", \"partner_ref\": \"rF473D7ED47_c08\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1242828,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00008\", \"product_code\": \"PF473D7ED47-TRF-DRT-001\", \"qty\": 14, \"price_unit\": 19376.77}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1249878,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\", \"S00005\", \"S00006\", \"S00007\", \"S00008\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.125568,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"rF473D7ED47_q01\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.126173,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"PF473D7ED47-TRF-PBH-105\", \"qty\": 96, \"price_unit\": 466.79}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.126805,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00002\", \"partner_ref\": \"rF473D7ED47_q02\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.127386,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00002\", \"product_code\": \"PF473D7ED47-TRF-PBH-105\", \"qty\": 43, \"price_unit\": 398.29}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.12796,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00003\", \"partner_ref\": \"rF473D7ED47_q03\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.128602,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00003\", \"product_code\": \"PF473D7ED47-TRF-PBH-105\", \"qty\": 78, \"price_unit\": 284.02}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1291761,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00004\", \"partner_ref\": \"rF473D7ED47_q04\", \"state\": \"draft\", \"date_planned\": \"2026-03-07\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.12976,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00004\", \"product_code\": \"PF473D7ED47-TRF-PBH-105\", \"qty\": 49, \"price_unit\": 365.3}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1303282,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00005\", \"partner_ref\": \"rF473D7ED47_q05\", \"state\": \"draft\", \"date_planned\": \"2026-03-05\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1309152,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00005\", \"product_code\": \"PF473D7ED47-TRF-RCP-109\", \"qty\": 95, \"price_unit\": 362.02}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1315389,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00006\", \"partner_ref\": \"rF473D7ED47_q07\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.132215,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00006\", \"product_code\": \"PF473D7ED47-TRF-RCP-109\", \"qty\": 144, \"price_unit\": 301.06}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.132879,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00007\", \"partner_ref\": \"rF473D7ED47_q08\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1335008,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00007\", \"product_code\": \"PF473D7ED47-TRF-RCP-109\", \"qty\": 160, \"price_unit\": 273.76}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1341388,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00008\", \"partner_ref\": \"rF473D7ED47_q09\", \"state\": \"draft\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.134766,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00008\", \"product_code\": \"PF473D7ED47-TRF-BRP-110\", \"qty\": 25, \"price_unit\": 153.84}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.135357,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00009\", \"partner_ref\": \"rF473D7ED47_q10\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.136368,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00009\", \"product_code\": \"PF473D7ED47-TRF-BRP-110\", \"qty\": 44, \"price_unit\": 103.92}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1370082,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00010\", \"partner_ref\": \"rF473D7ED47_q11\", \"state\": \"draft\", \"date_planned\": \"2026-03-07\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.137588,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00010\", \"product_code\": \"PF473D7ED47-TRF-BRP-110\", \"qty\": 62, \"price_unit\": 145.98}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.13824,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00011\", \"partner_ref\": \"rF473D7ED47_q14\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.138884,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00011\", \"product_code\": \"PF473D7ED47-TRF-GTB-119\", \"qty\": 23, \"price_unit\": 43.37}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1395168,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00012\", \"partner_ref\": \"rF473D7ED47_q15\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.140142,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00012\", \"product_code\": \"PF473D7ED47-TRF-GTB-119\", \"qty\": 65, \"price_unit\": 36.6}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1407208,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00013\", \"partner_ref\": \"rF473D7ED47_q16\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.141385,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00013\", \"product_code\": \"PF473D7ED47-TRF-GTB-119\", \"qty\": 37, \"price_unit\": 40.1}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1420329,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00014\", \"partner_ref\": \"rF473D7ED47_q17\", \"state\": \"draft\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.142658,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00014\", \"product_code\": \"PF473D7ED47-TRF-THB-120\", \"qty\": 10, \"price_unit\": 1029.31}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.143279,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00015\", \"partner_ref\": \"rF473D7ED47_q18\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.143857,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00015\", \"product_code\": \"PF473D7ED47-TRF-THB-120\", \"qty\": 55, \"price_unit\": 925.84}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1444721,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00016\", \"partner_ref\": \"rF473D7ED47_q20\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.147625,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00016\", \"product_code\": \"PF473D7ED47-TRF-THB-120\", \"qty\": 66, \"price_unit\": 799.37}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.148231,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00017\", \"partner_ref\": \"rF473D7ED47_q21\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.148865,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00017\", \"product_code\": \"PF473D7ED47-TRF-OPC-122\", \"qty\": 8, \"price_unit\": 253.97}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.149512,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00018\", \"partner_ref\": \"rF473D7ED47_q23\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.150122,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00018\", \"product_code\": \"PF473D7ED47-TRF-OPC-122\", \"qty\": 94, \"price_unit\": 161.7}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.150749,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00019\", \"partner_ref\": \"rF473D7ED47_q24\", \"state\": \"draft\", \"date_planned\": \"2026-03-07\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1513631,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00019\", \"product_code\": \"PF473D7ED47-TRF-OPC-122\", \"qty\": 29, \"price_unit\": 215.07}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1519208,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00020\", \"partner_ref\": \"rF473D7ED47_q26\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.15251,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00020\", \"product_code\": \"PF473D7ED47-TRF-MBT-130\", \"qty\": 34, \"price_unit\": 140.53}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.153103,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00021\", \"partner_ref\": \"rF473D7ED47_q27\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1537158,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00021\", \"product_code\": \"PF473D7ED47-TRF-MBT-130\", \"qty\": 27, \"price_unit\": 153.45}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.154321,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00022\", \"partner_ref\": \"rF473D7ED47_q28\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.154942,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00022\", \"product_code\": \"PF473D7ED47-TRF-MBT-130\", \"qty\": 67, \"price_unit\": 124.94}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.155628,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\", \"P00002\", \"P00003\", \"P00004\", \"P00005\", \"P00006\", \"P00007\", \"P00008\", \"P00009\", \"P00010\", \"P00011\", \"P00012\", \"P00013\", \"P00014\", \"P00015\", \"P00016\", \"P00017\", \"P00018\", \"P00019\", \"P00020\", \"P00021\", \"P00022\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.156188,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00001\", \"product_code\": \"PF473D7ED47-TRF-DRT-001\", \"qty\": 50, \"state\": \"draft\", \"workcenter_code\": \"PF473D7ED47-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.1568089,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00002\", \"product_code\": \"PF473D7ED47-TRF-DRT-001\", \"qty\": 18, \"state\": \"draft\", \"workcenter_code\": \"PF473D7ED47-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.157425,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00003\", \"product_code\": \"PF473D7ED47-TRF-DRT-001\", \"qty\": 38, \"state\": \"draft\", \"workcenter_code\": \"PF473D7ED47-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.158039,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00004\", \"product_code\": \"PF473D7ED47-TRF-DRT-001\", \"qty\": 29, \"state\": \"draft\", \"workcenter_code\": \"PF473D7ED47-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.158668,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"mrp.production\", \"names\": [\"MO00001\", \"MO00002\", \"MO00003\", \"MO00004\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508404.15967,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 8, \"orders_rejected\": 0, \"units_purchased\": 1311, \"units_manufactured\": 135, \"assembly_cost\": 3780.0}}",
+   "ok": true
+  }
+ ]
+}

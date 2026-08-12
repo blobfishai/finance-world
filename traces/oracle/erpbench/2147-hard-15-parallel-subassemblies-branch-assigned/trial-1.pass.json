@@ -1,0 +1,718 @@
+{
+ "task": "erpbench/2147-hard-15-parallel-subassemblies-branch-assigned",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 99,
+ "walk_len": 99,
+ "budget_turns": 804,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 99}\n",
+ "trace": [
+  {
+   "ts": 1786508371.943721,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.944187,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"P13DAD0D6D6-BAT-LFP-002\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.944549,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"P13DAD0D6D6-BAT-LFP-002\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.945317,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"r13DAD0D6D6_c01\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.945986,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 19, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.946679,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"r13DAD0D6D6_c02\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.947346,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 18, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.947983,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"r13DAD0D6D6_c03\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.948639,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 18, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9495199,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"r13DAD0D6D6_c04\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.950239,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 27, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9509041,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00005\", \"partner_ref\": \"r13DAD0D6D6_c05\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.951544,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00005\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 32, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.952186,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00006\", \"partner_ref\": \"r13DAD0D6D6_c06\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.952759,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00006\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 28, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9534059,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00007\", \"partner_ref\": \"r13DAD0D6D6_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.95403,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00007\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 18, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.954628,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00008\", \"partner_ref\": \"r13DAD0D6D6_c08\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9552221,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00008\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 30, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.955928,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00009\", \"partner_ref\": \"r13DAD0D6D6_c09\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.956644,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00009\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 28, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.957301,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00010\", \"partner_ref\": \"r13DAD0D6D6_c10\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9582698,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00010\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 19, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9590452,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00011\", \"partner_ref\": \"r13DAD0D6D6_c11\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.959757,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00011\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 20, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9603589,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00012\", \"partner_ref\": \"r13DAD0D6D6_c12\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9609568,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00012\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 18, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9616861,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00013\", \"partner_ref\": \"r13DAD0D6D6_c13\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.962368,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00013\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 20, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9630919,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00014\", \"partner_ref\": \"r13DAD0D6D6_c14\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.963708,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00014\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 21, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.964363,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00015\", \"partner_ref\": \"r13DAD0D6D6_c15\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9649448,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00015\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 26, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.965549,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00016\", \"partner_ref\": \"r13DAD0D6D6_c16\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.966232,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00016\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 32, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.966882,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00017\", \"partner_ref\": \"r13DAD0D6D6_c17\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.967477,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00017\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 28, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9680488,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00018\", \"partner_ref\": \"r13DAD0D6D6_c18\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.968682,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00018\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 23, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.969339,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00019\", \"partner_ref\": \"r13DAD0D6D6_c19\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9699001,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00019\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 18, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.970686,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00020\", \"partner_ref\": \"r13DAD0D6D6_c20\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.971318,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00020\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 32, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.97195,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00021\", \"partner_ref\": \"r13DAD0D6D6_c21\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.972569,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00021\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 23, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9732459,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00022\", \"partner_ref\": \"r13DAD0D6D6_c22\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.973848,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00022\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 20, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.974506,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00023\", \"partner_ref\": \"r13DAD0D6D6_c23\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.975157,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00023\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 25, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.975873,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00024\", \"partner_ref\": \"r13DAD0D6D6_c24\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.978733,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00024\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 32, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.979512,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00025\", \"partner_ref\": \"r13DAD0D6D6_c25\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9802089,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00025\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 20, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9808571,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00026\", \"partner_ref\": \"r13DAD0D6D6_c26\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.981517,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00026\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 20, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.982219,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00027\", \"partner_ref\": \"r13DAD0D6D6_c27\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.982904,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00027\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 32, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.983573,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00028\", \"partner_ref\": \"r13DAD0D6D6_c28\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.984204,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00028\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 32, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.984864,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00029\", \"partner_ref\": \"r13DAD0D6D6_c29\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.985408,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00029\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 32, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.98604,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00030\", \"partner_ref\": \"r13DAD0D6D6_c30\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.986621,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00030\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 32, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.987222,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00031\", \"partner_ref\": \"r13DAD0D6D6_c31\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.987865,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00031\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 32, \"price_unit\": 5081.48}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.988564,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\", \"S00005\", \"S00006\", \"S00007\", \"S00008\", \"S00009\", \"S00010\", \"S00011\", \"S00012\", \"S00013\", \"S00014\", \"S00015\", \"S00016\", \"S00017\", \"S00018\", \"S00019\", \"S00020\", \"S00021\", \"S00022\", \"S00023\", \"S00024\", \"S00025\", \"S00026\", \"S0002",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9892101,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"r13DAD0D6D6_q09\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.989842,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"P13DAD0D6D6-BAT-CPE-114\", \"qty\": 272, \"price_unit\": 24.18}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.990411,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00002\", \"partner_ref\": \"r13DAD0D6D6_q10\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9909692,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00002\", \"product_code\": \"P13DAD0D6D6-BAT-CPE-114\", \"qty\": 131, \"price_unit\": 22.73}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9915688,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00003\", \"partner_ref\": \"r13DAD0D6D6_q13\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.992152,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00003\", \"product_code\": \"P13DAD0D6D6-BAT-PLC-101\", \"qty\": 769, \"price_unit\": 36.94}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.992735,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00004\", \"partner_ref\": \"r13DAD0D6D6_q14\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.993259,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00004\", \"product_code\": \"P13DAD0D6D6-BAT-PLC-101\", \"qty\": 445, \"price_unit\": 33.44}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.993804,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00005\", \"partner_ref\": \"r13DAD0D6D6_q16\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9943428,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00005\", \"product_code\": \"P13DAD0D6D6-BAT-CYL-102\", \"qty\": 267, \"price_unit\": 2.47}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.994883,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00006\", \"partner_ref\": \"r13DAD0D6D6_q17\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.995415,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00006\", \"product_code\": \"P13DAD0D6D6-BAT-CYL-102\", \"qty\": 2041, \"price_unit\": 2.88}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.99595,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00007\", \"partner_ref\": \"r13DAD0D6D6_q18\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.996486,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00007\", \"product_code\": \"P13DAD0D6D6-BAT-CIB-104\", \"qty\": 1244, \"price_unit\": 21.4}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9970229,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00008\", \"partner_ref\": \"r13DAD0D6D6_q19\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.997601,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00008\", \"product_code\": \"P13DAD0D6D6-BAT-CIB-104\", \"qty\": 35, \"price_unit\": 19.57}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.9982378,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00009\", \"partner_ref\": \"r13DAD0D6D6_q20\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.998775,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00009\", \"product_code\": \"P13DAD0D6D6-BAT-CIB-104\", \"qty\": 160, \"price_unit\": 22.69}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508371.999378,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00010\", \"partner_ref\": \"r13DAD0D6D6_q22\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508372.000074,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00010\", \"product_code\": \"P13DAD0D6D6-BAT-AEH-106\", \"qty\": 199, \"price_unit\": 102.72}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508372.0007749,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00011\", \"partner_ref\": \"r13DAD0D6D6_q01\", \"state\": \"draft\", \"date_planned\": \"2026-03-10\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508372.0013728,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00011\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 131, \"price_unit\": 3098.3}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508372.001976,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00012\", \"partner_ref\": \"r13DAD0D6D6_q02\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508372.002551,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00012\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 71, \"price_unit\": 4857.42}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508372.003139,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00013\", \"partner_ref\": \"r13DAD0D6D6_q05\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018, S00019",
+   "ok": true
+  },
+  {
+   "ts": 1786508372.0037172,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00013\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 55, \"price_unit\": 4361.0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508372.004319,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\", \"P00002\", \"P00003\", \"P00004\", \"P00005\", \"P00006\", \"P00007\", \"P00008\", \"P00009\", \"P00010\", \"P00011\", \"P00012\", \"P00013\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508372.004887,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00001\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 55, \"state\": \"draft\", \"workcenter_code\": \"P13DAD0D6D6-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S0",
+   "ok": true
+  },
+  {
+   "ts": 1786508372.005515,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00002\", \"product_code\": \"P13DAD0D6D6-BAT-LFP-002\", \"qty\": 153, \"state\": \"draft\", \"workcenter_code\": \"P13DAD0D6D6-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S",
+   "ok": true
+  },
+  {
+   "ts": 1786508372.0060868,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00003\", \"product_code\": \"P13DAD0D6D6-SUBA-02\", \"qty\": 208, \"state\": \"draft\", \"workcenter_code\": \"P13DAD0D6D6-WC02\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S0001",
+   "ok": true
+  },
+  {
+   "ts": 1786508372.0066502,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00004\", \"product_code\": \"P13DAD0D6D6-SUBB-02\", \"qty\": 208, \"state\": \"draft\", \"workcenter_code\": \"P13DAD0D6D6-WC03\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S0001",
+   "ok": true
+  },
+  {
+   "ts": 1786508372.0072262,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"mrp.production\", \"names\": [\"MO00001\", \"MO00002\", \"MO00003\", \"MO00004\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508372.008252,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 31, \"orders_rejected\": 0, \"units_purchased\": 5820, \"units_manufactured\": 624, \"assembly_cost\": 15184.0}}",
+   "ok": true
+  }
+ ]
+}

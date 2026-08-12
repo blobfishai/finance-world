@@ -449,6 +449,39 @@ The lesson is the one this repo keeps relearning: **a capability is only real on
 asks it a question.** The filings surface had passed every gate it had, because no gate had
 ever asked it for a quarter.
 
+### A17. Three ways to grade a procurement plan against the wrong number — CAUGHT BY THE GATE
+Porting ERP-Bench meant grading "did the agent plan this well?", and the plan's own JSON offers
+several plausible cost figures that mean subtly different things. All three mistakes below were
+caught by the oracle admission rule rather than shipped, which is the rule earning its keep: an
+oracle walk that cannot pass its own checks is a task that cannot be solved.
+
+**1. The oracle walk was invalid, not merely suboptimal.** The first walk bought every unit from
+the single cheapest vendor offer. That ignores the offer's `max_qty`, which is a horizon-wide
+cap — so the walk "beat" the optimal plan on cost by proposing a purchase no vendor would
+accept. All 70 tasks in the first slice failed the spend check. The walk is now built from the
+plan's own `purchase_orders` array, which names the vendor, quantity and unit cost of every line
+it intends. **A cheaper answer that violates a constraint is not a better answer**, and a spend
+check with no validity check would have rewarded exactly that.
+
+**2. `variable_cost` is not purchase spend.** Grading committed PO value against the sum of
+per-allocation `variable_cost` demanded purchasing the plan never intended, because that figure
+also carries the cost of on-hand stock consumed.
+
+**3. `optimal_new_spend` is not purchase spend either.** It additionally carries the workcentre
+assembly cost, so it over-demanded purchasing on every make-or-buy scenario — the buy-only
+tasks passed and the manufacturing ones failed by exactly the assembly total, which is what
+made the cause legible. PO lines are now graded against the plan's own `purchase_orders`
+totals, and assembly cost is graded as its own answer field.
+
+Two design rules came out of it, both already house rules applied in a new place:
+- The `assembly_cost` field is declared on **every** ERP-Bench task, 0 where nothing is
+  manufactured. A field that appeared only on make-or-buy scenarios would tell the model the
+  answer before it read the product's routes — the same leak as the `business_brief`
+  `internal_open_ar_usd` field (A16's sibling, fixed in the same session).
+- Scenarios whose stated invoicing/downpayment policy cannot yet be expressed as a scalar
+  assertion are **rejected, not shipped** (15 of 300). Shipping them would put a policy in the
+  prompt that the checks do not grade — A10.2 exactly.
+
 ### A12b. Validator cleanup is best-effort, not guaranteed — OPEN, known cost
 The A12 fix added `shutil.rmtree(...)` at the end of `sim/validate.py`'s per-task loop. It
 runs only when the task reaches the end of the body, and several paths `continue` before it,

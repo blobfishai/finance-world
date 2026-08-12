@@ -1,0 +1,102 @@
+{
+ "task": "erpbench/2035-medium-05-screened-buy-only-all-seeded",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 11,
+ "walk_len": 11,
+ "budget_turns": 100,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 11}\n",
+ "trace": [
+  {
+   "ts": 1786508300.48508,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508300.4856,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"P7B561D27DB-LAB-MLC-004\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508300.486006,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"P7B561D27DB-LAB-MLC-004\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508300.486838,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"r7B561D27DB_c05\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508300.487668,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"P7B561D27DB-LAB-MLC-004\", \"qty\": 21, \"price_unit\": 1019.86}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508300.488419,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"r7B561D27DB_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508300.489082,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"P7B561D27DB-LAB-MLC-004\", \"qty\": 20, \"price_unit\": 1019.86}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508300.4897358,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"r7B561D27DB_c09\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508300.490421,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"P7B561D27DB-LAB-MLC-004\", \"qty\": 20, \"price_unit\": 1019.86}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508300.4911628,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508300.492112,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 3, \"orders_rejected\": 7, \"units_purchased\": 0, \"units_manufactured\": 0, \"assembly_cost\": 0}}",
+   "ok": true
+  }
+ ]
+}

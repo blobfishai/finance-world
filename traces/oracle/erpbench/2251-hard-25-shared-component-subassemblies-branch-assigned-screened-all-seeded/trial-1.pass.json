@@ -1,0 +1,445 @@
+{
+ "task": "erpbench/2251-hard-25-shared-component-subassemblies-branch-assigned-screened-all-seeded",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 60,
+ "walk_len": 60,
+ "budget_turns": 492,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 60}\n",
+ "trace": [
+  {
+   "ts": 1786508439.579573,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.5800378,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"P63FC326E56-FIR-FDS-004\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.580409,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"P63FC326E56-FIR-FDS-004\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.581229,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"r63FC326E56_c06\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.581957,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 19, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.582679,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"r63FC326E56_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.583345,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 21, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.584007,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"r63FC326E56_c08\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.584661,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 19, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.585338,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"r63FC326E56_c09\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.586285,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 19, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.5869381,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00005\", \"partner_ref\": \"r63FC326E56_c10\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.587532,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00005\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 20, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.5882041,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00006\", \"partner_ref\": \"r63FC326E56_c11\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.588874,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00006\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 18, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.589556,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00007\", \"partner_ref\": \"r63FC326E56_c12\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.5901692,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00007\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 18, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.590795,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00008\", \"partner_ref\": \"r63FC326E56_c13\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.5913951,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00008\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 19, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.5920708,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00009\", \"partner_ref\": \"r63FC326E56_c14\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.592988,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00009\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 23, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.593708,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00010\", \"partner_ref\": \"r63FC326E56_c15\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.594343,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00010\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 21, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.59498,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00011\", \"partner_ref\": \"r63FC326E56_c16\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.595573,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00011\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 30, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.5962071,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00012\", \"partner_ref\": \"r63FC326E56_c17\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.596842,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00012\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 22, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.597607,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00013\", \"partner_ref\": \"r63FC326E56_c18\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.598284,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00013\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 23, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.5992079,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00014\", \"partner_ref\": \"r63FC326E56_c19\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.599936,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00014\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 23, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.60078,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00015\", \"partner_ref\": \"r63FC326E56_c20\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.6015098,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00015\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 23, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.6022289,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00016\", \"partner_ref\": \"r63FC326E56_c21\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.6028218,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00016\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 18, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.603446,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00017\", \"partner_ref\": \"r63FC326E56_c22\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.6040409,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00017\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 20, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.6048598,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00018\", \"partner_ref\": \"r63FC326E56_c23\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.605464,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00018\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 26, \"price_unit\": 8458.32}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.606118,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\", \"S00005\", \"S00006\", \"S00007\", \"S00008\", \"S00009\", \"S00010\", \"S00011\", \"S00012\", \"S00013\", \"S00014\", \"S00015\", \"S00016\", \"S00017\", \"S00018\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.6067379,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"r63FC326E56_q08\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.607326,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"P63FC326E56-FIR-SHP-101\", \"qty\": 205, \"price_unit\": 11.66}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.607987,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00002\", \"partner_ref\": \"r63FC326E56_q09\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.608756,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00002\", \"product_code\": \"P63FC326E56-FIR-SHP-101\", \"qty\": 629, \"price_unit\": 7.63}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.609598,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00003\", \"partner_ref\": \"r63FC326E56_q10\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.610328,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00003\", \"product_code\": \"P63FC326E56-FIR-SHP-101\", \"qty\": 364, \"price_unit\": 7.74}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.6110551,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00004\", \"partner_ref\": \"r63FC326E56_q12\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.61166,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00004\", \"product_code\": \"P63FC326E56-FIR-FSA-106\", \"qty\": 75, \"price_unit\": 28.34}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.612285,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00005\", \"partner_ref\": \"r63FC326E56_q16\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.612885,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00005\", \"product_code\": \"P63FC326E56-FIR-BVS-109\", \"qty\": 84, \"price_unit\": 100.41}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.613568,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00006\", \"partner_ref\": \"r63FC326E56_q01\", \"state\": \"draft\", \"date_planned\": \"2026-03-10\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.614223,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00006\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 66, \"price_unit\": 4435.76}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.614944,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00007\", \"partner_ref\": \"r63FC326E56_q07\", \"state\": \"draft\", \"date_planned\": \"2026-03-14\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012, S00013, S00014, S00015, S00016, S00017, S00018\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.615812,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00007\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 24, \"price_unit\": 6757.71}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.616506,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\", \"P00002\", \"P00003\", \"P00004\", \"P00005\", \"P00006\", \"P00007\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.617134,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00001\", \"product_code\": \"P63FC326E56-FIR-FDS-004\", \"qty\": 89, \"state\": \"draft\", \"workcenter_code\": \"P63FC326E56-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S0",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.617803,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00002\", \"product_code\": \"P63FC326E56-SUBA-02\", \"qty\": 89, \"state\": \"draft\", \"workcenter_code\": \"P63FC326E56-WC02\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.618428,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00003\", \"product_code\": \"P63FC326E56-SUBB-02\", \"qty\": 89, \"state\": \"draft\", \"workcenter_code\": \"P63FC326E56-WC03\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008, S00009, S00010, S00011, S00012",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.619052,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"mrp.production\", \"names\": [\"MO00001\", \"MO00002\", \"MO00003\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508439.620119,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 18, \"orders_rejected\": 5, \"units_purchased\": 1447, \"units_manufactured\": 267, \"assembly_cost\": 6497.0}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,634 @@
+{
+ "task": "erpbench/2186-medium-19-manufacture-only-no-buy-route",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 87,
+ "walk_len": 87,
+ "budget_turns": 708,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 87}\n",
+ "trace": [
+  {
+   "ts": 1786508398.0202482,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0207412,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"P929AC101E5-DCK-HDL-001\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0211358,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"P929AC101E5-DCK-HDL-001\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.021987,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"r929AC101E5_c01\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.022659,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"P929AC101E5-DCK-HDL-001\", \"qty\": 16, \"price_unit\": 7106.33}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.02351,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"r929AC101E5_c02\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.024201,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"P929AC101E5-DCK-HDL-001\", \"qty\": 16, \"price_unit\": 7106.33}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.024905,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"r929AC101E5_c03\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.025582,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"P929AC101E5-DCK-HDL-001\", \"qty\": 22, \"price_unit\": 7106.33}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.026293,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"r929AC101E5_c04\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.026901,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"P929AC101E5-DCK-HDL-001\", \"qty\": 26, \"price_unit\": 7106.33}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0275478,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00005\", \"partner_ref\": \"r929AC101E5_c05\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0280929,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00005\", \"product_code\": \"P929AC101E5-DCK-HDL-001\", \"qty\": 26, \"price_unit\": 7106.33}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0287528,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00006\", \"partner_ref\": \"r929AC101E5_c06\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0294158,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00006\", \"product_code\": \"P929AC101E5-DCK-HDL-001\", \"qty\": 26, \"price_unit\": 7106.33}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0300741,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00007\", \"partner_ref\": \"r929AC101E5_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-16\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.030679,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00007\", \"product_code\": \"P929AC101E5-DCK-HDL-001\", \"qty\": 26, \"price_unit\": 7106.33}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.03139,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00008\", \"partner_ref\": \"r929AC101E5_c08\", \"state\": \"draft\", \"commitment_date\": \"2026-03-16\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.03197,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00008\", \"product_code\": \"P929AC101E5-DCK-HDL-001\", \"qty\": 26, \"price_unit\": 7106.33}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.03263,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\", \"S00005\", \"S00006\", \"S00007\", \"S00008\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.033345,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"r929AC101E5_q07\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.033972,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"P929AC101E5-DCK-HPU-101\", \"qty\": 23, \"price_unit\": 807.77}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0346339,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00002\", \"partner_ref\": \"r929AC101E5_q08\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0351832,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00002\", \"product_code\": \"P929AC101E5-DCK-HPU-101\", \"qty\": 32, \"price_unit\": 670.83}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.035826,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00003\", \"partner_ref\": \"r929AC101E5_q09\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0364769,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00003\", \"product_code\": \"P929AC101E5-DCK-HPU-101\", \"qty\": 59, \"price_unit\": 533.72}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0371552,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00004\", \"partner_ref\": \"r929AC101E5_q10\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.037826,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00004\", \"product_code\": \"P929AC101E5-DCK-HPU-101\", \"qty\": 30, \"price_unit\": 856.05}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.038497,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00005\", \"partner_ref\": \"r929AC101E5_q11\", \"state\": \"draft\", \"date_planned\": \"2026-03-05\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.039096,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00005\", \"product_code\": \"P929AC101E5-DCK-DBL-106\", \"qty\": 60, \"price_unit\": 40.42}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0398028,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00006\", \"partner_ref\": \"r929AC101E5_q12\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.040416,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00006\", \"product_code\": \"P929AC101E5-DCK-DBL-106\", \"qty\": 174, \"price_unit\": 27.46}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0410938,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00007\", \"partner_ref\": \"r929AC101E5_q13\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.041706,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00007\", \"product_code\": \"P929AC101E5-DCK-DBL-106\", \"qty\": 47, \"price_unit\": 41.75}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.042376,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00008\", \"partner_ref\": \"r929AC101E5_q15\", \"state\": \"draft\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.04302,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00008\", \"product_code\": \"P929AC101E5-DCK-CTW-109\", \"qty\": 24, \"price_unit\": 50.35}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.043655,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00009\", \"partner_ref\": \"r929AC101E5_q16\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.044278,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00009\", \"product_code\": \"P929AC101E5-DCK-CTW-109\", \"qty\": 85, \"price_unit\": 39.76}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.044957,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00010\", \"partner_ref\": \"r929AC101E5_q17\", \"state\": \"draft\", \"date_planned\": \"2026-03-07\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.045564,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00010\", \"product_code\": \"P929AC101E5-DCK-CTW-109\", \"qty\": 33, \"price_unit\": 46.58}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0462852,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00011\", \"partner_ref\": \"r929AC101E5_q18\", \"state\": \"draft\", \"date_planned\": \"2026-03-05\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.046906,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00011\", \"product_code\": \"P929AC101E5-DCK-WSF-111\", \"qty\": 70, \"price_unit\": 25.96}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.047532,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00012\", \"partner_ref\": \"r929AC101E5_q19\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.048222,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00012\", \"product_code\": \"P929AC101E5-DCK-WSF-111\", \"qty\": 129, \"price_unit\": 16.74}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.049152,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00013\", \"partner_ref\": \"r929AC101E5_q20\", \"state\": \"draft\", \"date_planned\": \"2026-03-07\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.049917,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00013\", \"product_code\": \"P929AC101E5-DCK-WSF-111\", \"qty\": 25, \"price_unit\": 22.2}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.050713,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00014\", \"partner_ref\": \"r929AC101E5_q21\", \"state\": \"draft\", \"date_planned\": \"2026-03-07\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.051403,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00014\", \"product_code\": \"P929AC101E5-DCK-WSF-111\", \"qty\": 55, \"price_unit\": 24.97}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.052212,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00015\", \"partner_ref\": \"r929AC101E5_q22\", \"state\": \"draft\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0528672,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00015\", \"product_code\": \"P929AC101E5-DCK-TSA-115\", \"qty\": 36, \"price_unit\": 85.29}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.055536,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00016\", \"partner_ref\": \"r929AC101E5_q23\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0563252,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00016\", \"product_code\": \"P929AC101E5-DCK-TSA-115\", \"qty\": 197, \"price_unit\": 93.18}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0570948,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00017\", \"partner_ref\": \"r929AC101E5_q24\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.057718,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00017\", \"product_code\": \"P929AC101E5-DCK-TSA-115\", \"qty\": 14, \"price_unit\": 66.1}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0584419,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00018\", \"partner_ref\": \"r929AC101E5_q25\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.059107,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00018\", \"product_code\": \"P929AC101E5-DCK-TSA-115\", \"qty\": 41, \"price_unit\": 65.12}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0598269,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00019\", \"partner_ref\": \"r929AC101E5_q26\", \"state\": \"draft\", \"date_planned\": \"2026-03-05\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.06041,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00019\", \"product_code\": \"P929AC101E5-DCK-IDP-123\", \"qty\": 58, \"price_unit\": 104.37}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0610938,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00020\", \"partner_ref\": \"r929AC101E5_q27\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.061756,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00020\", \"product_code\": \"P929AC101E5-DCK-IDP-123\", \"qty\": 19, \"price_unit\": 89.74}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.062428,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00021\", \"partner_ref\": \"r929AC101E5_q28\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.063,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00021\", \"product_code\": \"P929AC101E5-DCK-IDP-123\", \"qty\": 42, \"price_unit\": 59.74}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.063661,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00022\", \"partner_ref\": \"r929AC101E5_q29\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.064276,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00022\", \"product_code\": \"P929AC101E5-DCK-IDP-123\", \"qty\": 22, \"price_unit\": 79.73}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.064966,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00023\", \"partner_ref\": \"r929AC101E5_q30\", \"state\": \"draft\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.065609,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00023\", \"product_code\": \"P929AC101E5-DCK-HHS-124\", \"qty\": 16, \"price_unit\": 52.05}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.066319,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00024\", \"partner_ref\": \"r929AC101E5_q31\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.066973,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00024\", \"product_code\": \"P929AC101E5-DCK-HHS-124\", \"qty\": 55, \"price_unit\": 46.89}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.067682,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00025\", \"partner_ref\": \"r929AC101E5_q32\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0683,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00025\", \"product_code\": \"P929AC101E5-DCK-HHS-124\", \"qty\": 18, \"price_unit\": 55.81}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0689259,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00026\", \"partner_ref\": \"r929AC101E5_q33\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.069556,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00026\", \"product_code\": \"P929AC101E5-DCK-HHS-124\", \"qty\": 47, \"price_unit\": 39.95}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.070518,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00027\", \"partner_ref\": \"r929AC101E5_q34\", \"state\": \"draft\", \"date_planned\": \"2026-03-05\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.071337,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00027\", \"product_code\": \"P929AC101E5-DCK-FDS-128\", \"qty\": 85, \"price_unit\": 171.47}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0721989,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00028\", \"partner_ref\": \"r929AC101E5_q35\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.072851,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00028\", \"product_code\": \"P929AC101E5-DCK-FDS-128\", \"qty\": 67, \"price_unit\": 111.13}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.073557,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00029\", \"partner_ref\": \"r929AC101E5_q36\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0741498,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00029\", \"product_code\": \"P929AC101E5-DCK-FDS-128\", \"qty\": 23, \"price_unit\": 181.62}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.074826,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00030\", \"partner_ref\": \"r929AC101E5_q37\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.075479,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00030\", \"product_code\": \"P929AC101E5-DCK-FDS-128\", \"qty\": 114, \"price_unit\": 122.24}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0761778,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\", \"P00002\", \"P00003\", \"P00004\", \"P00005\", \"P00006\", \"P00007\", \"P00008\", \"P00009\", \"P00010\", \"P00011\", \"P00012\", \"P00013\", \"P00014\", \"P00015\", \"P00016\", \"P00017\", \"P00018\", \"P00019\", \"P00020\", \"P00021\", \"P00022\", \"P00023\", \"P00024\", \"P00025\", \"P00026\", \"P",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.076889,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00001\", \"product_code\": \"P929AC101E5-DCK-HDL-001\", \"qty\": 18, \"state\": \"draft\", \"workcenter_code\": \"P929AC101E5-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.077545,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00002\", \"product_code\": \"P929AC101E5-DCK-HDL-001\", \"qty\": 26, \"state\": \"draft\", \"workcenter_code\": \"P929AC101E5-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.078165,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00003\", \"product_code\": \"P929AC101E5-DCK-HDL-001\", \"qty\": 52, \"state\": \"draft\", \"workcenter_code\": \"P929AC101E5-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.0788321,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00004\", \"product_code\": \"P929AC101E5-DCK-HDL-001\", \"qty\": 52, \"state\": \"draft\", \"workcenter_code\": \"P929AC101E5-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007, S00008\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.079477,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"mrp.production\", \"names\": [\"MO00001\", \"MO00002\", \"MO00003\", \"MO00004\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508398.080538,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 8, \"orders_rejected\": 0, \"units_purchased\": 1700, \"units_manufactured\": 148, \"assembly_cost\": 4144.0}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,214 @@
+{
+ "task": "erpbench/2244-hard-24-single-subassembly-shared-overflow-capacity-screened-invoicing",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 27,
+ "walk_len": 27,
+ "budget_turns": 228,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 27}\n",
+ "trace": [
+  {
+   "ts": 1786508435.170153,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.1706529,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"P37C7ADEF43-ELV-GTC-100\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.171056,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"P37C7ADEF43-ELV-GTC-100\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.171992,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"r37C7ADEF43_c02\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.172765,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"P37C7ADEF43-ELV-GTC-100\", \"qty\": 16, \"price_unit\": 8705.63}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.173532,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"r37C7ADEF43_c03\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.174214,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"P37C7ADEF43-ELV-GTC-100\", \"qty\": 15, \"price_unit\": 8705.63}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.174888,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"r37C7ADEF43_c05\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.1755688,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"P37C7ADEF43-ELV-GTC-100\", \"qty\": 15, \"price_unit\": 8705.63}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.176264,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"r37C7ADEF43_c06\", \"state\": \"draft\", \"commitment_date\": \"2026-03-13\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.1769018,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"P37C7ADEF43-ELV-GTC-100\", \"qty\": 21, \"price_unit\": 8705.63}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.1775858,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00005\", \"partner_ref\": \"r37C7ADEF43_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.178282,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00005\", \"product_code\": \"P37C7ADEF43-ELV-GTC-100\", \"qty\": 15, \"price_unit\": 8705.63}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.179678,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00006\", \"partner_ref\": \"r37C7ADEF43_c08\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.180425,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00006\", \"product_code\": \"P37C7ADEF43-ELV-GTC-100\", \"qty\": 22, \"price_unit\": 8705.63}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.181172,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\", \"S00005\", \"S00006\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.18183,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"r37C7ADEF43_q06\", \"state\": \"draft\", \"date_planned\": \"2026-03-06\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.182464,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"P37C7ADEF43-ELV-BDK-012\", \"qty\": 9, \"price_unit\": 318.87}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.183166,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00002\", \"partner_ref\": \"r37C7ADEF43_q01\", \"state\": \"draft\", \"date_planned\": \"2026-03-11\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.183796,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00002\", \"product_code\": \"P37C7ADEF43-ELV-GTC-100\", \"qty\": 23, \"price_unit\": 5757.8}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.184431,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00003\", \"partner_ref\": \"r37C7ADEF43_q05\", \"state\": \"draft\", \"date_planned\": \"2026-03-08\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.185122,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00003\", \"product_code\": \"P37C7ADEF43-ELV-GTC-100\", \"qty\": 8, \"price_unit\": 9873.73}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.1858292,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\", \"P00002\", \"P00003\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.1864462,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00001\", \"product_code\": \"P37C7ADEF43-ELV-GTC-100\", \"qty\": 4, \"state\": \"draft\", \"workcenter_code\": \"P37C7ADEF43-WC02\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.187059,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00002\", \"product_code\": \"P37C7ADEF43-SUB-02\", \"qty\": 4, \"state\": \"draft\", \"workcenter_code\": \"P37C7ADEF43-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.1876411,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"mrp.production\", \"names\": [\"MO00001\", \"MO00002\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508435.188839,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 6, \"orders_rejected\": 2, \"units_purchased\": 40, \"units_manufactured\": 8, \"assembly_cost\": 216.0}}",
+   "ok": true
+  }
+ ]
+}

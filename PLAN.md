@@ -78,7 +78,19 @@ AR this week?") must have a single defensible answer the verifier computes.
 **Done when:** seed builds reproducibly (`create_db` script, hash-pinned), oracle can compute
 every planned ground truth, world clock frozen.
 
-### Stage 4 — Task ladder (WAVE 1.5: 18 TASKS, 18/18 ORACLE-GREEN 2026-08-10)
+### Stage 4 — Task ladder (1,534 TASKS ACROSS 20 FAMILIES, ALL ORACLE-GREEN 2026-08-11)
+
+Corpus parity is **436 of 465 addressable (94%)** — FinanceBenchmark 142/153, TheAgentCompany
+9/12, ERP-Bench 285/300 — plus 1,026 generated instances and 4 escalated variants, counted in
+separate buckets that are never summed (`docs/PARITY.md`, `docs/AUDIT.md` A15). Every one of
+the 29 items still out has a named blocker, and 5 of them are questions no filing or ledger can
+answer, which belong as grounded-refusal traps rather than gaps.
+
+ERP-Bench's 300 were the last corpus at zero. They are not a different world any more: the
+`erpb_*` procure-to-pay / make-or-buy surface and `mcp/servers/odoo_server.py` serve them, and
+their judgement grades as deterministic SQL with no new verifier machinery.
+
+#### (superseded) WAVE 1.5: 18 tasks, 18/18 oracle-green 2026-08-10
 Wave 1.5 added 6 workflow-anchored tasks from `research/workflow-mock-mapping.md`, all
 zero-new-server, exact GTs: bank_rec (4-bucket statement-vs-books taxonomy), cash_app
 (remittance emails + lockbox; no-remittance deposit must stay unapplied), cross_system/

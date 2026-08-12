@@ -1,0 +1,24 @@
+schema_version = "1.4"
+
+[task]
+name = "erpbench/2149-hard-15-parallel-subassemblies-branch-assigned"
+version = "0.1.0"
+description = "ERP-Bench procurement scenario 2149 — Solar Storage Battery Wall-Mount."
+authors = ["nario-ai"]
+keywords = ["finance", "procurement", "erp-bench-clone"]
+
+[metadata]
+family = "erpbench"
+origin = "clone of agentic-labs/erp-bench task 2149_hard_15_parallel_subassemblies_branch_assigned; instruction carried verbatim, scenario seeded from its own environment/scenario_data.json, ground truth derived from its solution/optimal_plan.json. The source boots a real Odoo in Docker and grades with odoolib; this runs on the world's Odoo-shaped surface and grades the same judgement as deterministic SQL state assertions (docs/PARITY.md)"
+generated = false
+difficulty = "medium"
+acceptance_label = "pending_calibration"
+walk_len = 98
+
+[verifier]
+timeout_sec = 300
+[agent]
+timeout_sec = 1800
+[environment]
+cpus = 1
+memory_mb = 1024

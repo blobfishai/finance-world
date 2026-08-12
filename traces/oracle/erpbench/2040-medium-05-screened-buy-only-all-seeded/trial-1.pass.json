@@ -1,0 +1,88 @@
+{
+ "task": "erpbench/2040-medium-05-screened-buy-only-all-seeded",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 9,
+ "walk_len": 9,
+ "budget_turns": 84,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 9}\n",
+ "trace": [
+  {
+   "ts": 1786508303.491322,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508303.491885,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"PC1FDC1EB14-LAB-WLB-005\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508303.492291,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"PC1FDC1EB14-LAB-WLB-005\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508303.4932191,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"rC1FDC1EB14_c08\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508303.4940832,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"PC1FDC1EB14-LAB-WLB-005\", \"qty\": 17, \"price_unit\": 1987.27}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508303.4948192,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"rC1FDC1EB14_c09\", \"state\": \"draft\", \"commitment_date\": \"2026-03-16\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508303.4954891,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"PC1FDC1EB14-LAB-WLB-005\", \"qty\": 22, \"price_unit\": 1987.27}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508303.496119,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508303.4971871,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 2, \"orders_rejected\": 8, \"units_purchased\": 0, \"units_manufactured\": 0, \"assembly_cost\": 0}}",
+   "ok": true
+  }
+ ]
+}

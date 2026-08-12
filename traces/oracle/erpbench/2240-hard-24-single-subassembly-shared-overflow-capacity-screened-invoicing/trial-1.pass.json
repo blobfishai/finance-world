@@ -1,0 +1,200 @@
+{
+ "task": "erpbench/2240-hard-24-single-subassembly-shared-overflow-capacity-screened-invoicing",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 25,
+ "walk_len": 25,
+ "budget_turns": 212,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 25}\n",
+ "trace": [
+  {
+   "ts": 1786508432.718932,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.719429,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"P8BEA4424C8-ELV-CFP-250\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.719848,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"P8BEA4424C8-ELV-CFP-250\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.720717,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"r8BEA4424C8_c01\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.721437,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"P8BEA4424C8-ELV-CFP-250\", \"qty\": 21, \"price_unit\": 6665.61}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.722168,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"r8BEA4424C8_c03\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.7228422,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"P8BEA4424C8-ELV-CFP-250\", \"qty\": 15, \"price_unit\": 6665.61}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.7234828,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"r8BEA4424C8_c04\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.724226,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"P8BEA4424C8-ELV-CFP-250\", \"qty\": 24, \"price_unit\": 6665.61}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.724888,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"r8BEA4424C8_c05\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.725504,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"P8BEA4424C8-ELV-CFP-250\", \"qty\": 19, \"price_unit\": 6665.61}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.726121,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00005\", \"partner_ref\": \"r8BEA4424C8_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.727103,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00005\", \"product_code\": \"P8BEA4424C8-ELV-CFP-250\", \"qty\": 18, \"price_unit\": 6665.61}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.727715,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00006\", \"partner_ref\": \"r8BEA4424C8_c09\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.7282739,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00006\", \"product_code\": \"P8BEA4424C8-ELV-CFP-250\", \"qty\": 22, \"price_unit\": 6665.61}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.728865,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00007\", \"partner_ref\": \"r8BEA4424C8_c10\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.729428,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00007\", \"product_code\": \"P8BEA4424C8-ELV-CFP-250\", \"qty\": 25, \"price_unit\": 6665.61}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.7300391,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\", \"S00005\", \"S00006\", \"S00007\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.7306721,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"r8BEA4424C8_q01\", \"state\": \"draft\", \"date_planned\": \"2026-03-11\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.73129,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"P8BEA4424C8-ELV-CFP-250\", \"qty\": 47, \"price_unit\": 4340.17}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.7318652,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.7324722,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00001\", \"product_code\": \"P8BEA4424C8-ELV-CFP-250\", \"qty\": 3, \"state\": \"draft\", \"workcenter_code\": \"P8BEA4424C8-WC02\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.733074,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"mrp.production\", \"values\": {\"name\": \"MO00002\", \"product_code\": \"P8BEA4424C8-SUB-02\", \"qty\": 3, \"state\": \"draft\", \"workcenter_code\": \"P8BEA4424C8-WC01\", \"date_planned\": \"2026-03-04\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006, S00007\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.733663,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"mrp.production\", \"names\": [\"MO00001\", \"MO00002\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508432.734648,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 7, \"orders_rejected\": 3, \"units_purchased\": 47, \"units_manufactured\": 6, \"assembly_cost\": 162.0}}",
+   "ok": true
+  }
+ ]
+}

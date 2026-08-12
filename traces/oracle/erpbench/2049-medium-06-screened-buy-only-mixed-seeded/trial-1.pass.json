@@ -1,0 +1,179 @@
+{
+ "task": "erpbench/2049-medium-06-screened-buy-only-mixed-seeded",
+ "family": "erpbench",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "harness",
+  "odoo"
+ ],
+ "n_tool_calls": 22,
+ "walk_len": 22,
+ "budget_turns": 188,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 22}\n",
+ "trace": [
+  {
+   "ts": 1786508308.878022,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"res.partner\", \"domain\": [[\"kind\", \"=\", \"customer\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.87852,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"product.supplierinfo\", \"domain\": [[\"product_code\", \"=\", \"PD7436C9A50-CBL-TRK-010\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.878915,
+   "server": "odoo",
+   "tool": "search_read",
+   "args": "{\"model\": \"stock.quant\", \"domain\": [[\"product_code\", \"=\", \"PD7436C9A50-CBL-TRK-010\"]]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.8797948,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00001\", \"partner_ref\": \"rD7436C9A50_c02\", \"state\": \"draft\", \"commitment_date\": \"2026-03-10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.8805969,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00001\", \"product_code\": \"PD7436C9A50-CBL-TRK-010\", \"qty\": 16, \"price_unit\": 480.47}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.8815029,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00002\", \"partner_ref\": \"rD7436C9A50_c05\", \"state\": \"draft\", \"commitment_date\": \"2026-03-11\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.8822982,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00002\", \"product_code\": \"PD7436C9A50-CBL-TRK-010\", \"qty\": 16, \"price_unit\": 480.47}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.883032,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00003\", \"partner_ref\": \"rD7436C9A50_c06\", \"state\": \"draft\", \"commitment_date\": \"2026-03-12\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.883683,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00003\", \"product_code\": \"PD7436C9A50-CBL-TRK-010\", \"qty\": 18, \"price_unit\": 480.47}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.884314,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00004\", \"partner_ref\": \"rD7436C9A50_c07\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.885022,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00004\", \"product_code\": \"PD7436C9A50-CBL-TRK-010\", \"qty\": 24, \"price_unit\": 480.47}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.885781,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00005\", \"partner_ref\": \"rD7436C9A50_c08\", \"state\": \"draft\", \"commitment_date\": \"2026-03-14\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.886966,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00005\", \"product_code\": \"PD7436C9A50-CBL-TRK-010\", \"qty\": 19, \"price_unit\": 480.47}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.887986,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order\", \"values\": {\"name\": \"S00006\", \"partner_ref\": \"rD7436C9A50_c10\", \"state\": \"draft\", \"commitment_date\": \"2026-03-15\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.889059,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"sale.order.line\", \"values\": {\"order_name\": \"S00006\", \"product_code\": \"PD7436C9A50-CBL-TRK-010\", \"qty\": 19, \"price_unit\": 480.47}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.88991,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"sale.order\", \"names\": [\"S00001\", \"S00002\", \"S00003\", \"S00004\", \"S00005\", \"S00006\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.890652,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00001\", \"partner_ref\": \"rD7436C9A50_q01\", \"state\": \"draft\", \"date_planned\": \"2026-03-10\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.8915598,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00001\", \"product_code\": \"PD7436C9A50-CBL-TRK-010\", \"qty\": 19, \"price_unit\": 249.04}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.892333,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order\", \"values\": {\"name\": \"P00002\", \"partner_ref\": \"rD7436C9A50_q04\", \"state\": \"draft\", \"date_planned\": \"2026-03-14\", \"origin\": \"S00001, S00002, S00003, S00004, S00005, S00006\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.893514,
+   "server": "odoo",
+   "tool": "create",
+   "args": "{\"model\": \"purchase.order.line\", \"values\": {\"order_name\": \"P00002\", \"product_code\": \"PD7436C9A50-CBL-TRK-010\", \"qty\": 13, \"price_unit\": 284.19}}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.8942552,
+   "server": "odoo",
+   "tool": "action_confirm",
+   "args": "{\"model\": \"purchase.order\", \"names\": [\"P00001\", \"P00002\"]}",
+   "ok": true
+  },
+  {
+   "ts": 1786508308.895447,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"orders_accepted\": 6, \"orders_rejected\": 4, \"units_purchased\": 32, \"units_manufactured\": 0, \"assembly_cost\": 0}}",
+   "ok": true
+  }
+ ]
+}
