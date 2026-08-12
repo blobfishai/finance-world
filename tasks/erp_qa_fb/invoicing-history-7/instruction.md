@@ -1,10 +1,3 @@
 **Casey Morgan · AR & Collections · Teams**
 
 What is the total number of invoices for Cave Wholesales in USMF as of March 2, 2026
-
----
-
-Reply with `submit_answer`:
-
-- `invoice_count` (number)
-- `invoiced_total` (number)

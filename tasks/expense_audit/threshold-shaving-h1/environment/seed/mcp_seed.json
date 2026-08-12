@@ -812,5 +812,31 @@
     "yes"
    ]
   }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "shaving_employee",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 2,
+   "field": "shaving_claim_count",
+   "type": "number",
+   "description": ""
+  },
+  {
+   "ordinal": 3,
+   "field": "shaving_total",
+   "type": "number",
+   "description": ""
+  },
+  {
+   "ordinal": 4,
+   "field": "detector_triggered",
+   "type": "yes/no",
+   "description": "did the threshold-shaving detector trigger"
+  }
  ]
 }

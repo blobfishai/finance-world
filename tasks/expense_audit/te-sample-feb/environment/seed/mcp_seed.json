@@ -1,16 +1,164 @@
 {
-  "sheet_files": [
-    {"name": "expense-export-2026-02.xlsx", "owner": "people.ops", "modified_at": "2026-03-01T09:00:00Z", "description": "February expense report export (all submitted claims)"}
-  ],
-  "sheet_rows": [
-    {"file": "expense-export-2026-02.xlsx", "row_no": 1, "cells": ["Report", "Employee", "Date", "Category", "Amount USD", "Receipt attached", "Pre-approval", "Notes"]},
-    {"file": "expense-export-2026-02.xlsx", "row_no": 2, "cells": ["EXP-1040", "R. Vale", "2026-02-03", "Meals", 48.20, "yes", "n/a", "client lunch"]},
-    {"file": "expense-export-2026-02.xlsx", "row_no": 3, "cells": ["EXP-1041", "P. Shah", "2026-02-05", "Airfare", 412.00, "yes", "n/a", "economy, domestic"]},
-    {"file": "expense-export-2026-02.xlsx", "row_no": 4, "cells": ["EXP-1042", "K. Osei", "2026-02-09", "Meals", 132.90, "yes", "n/a", "team dinner, single day"]},
-    {"file": "expense-export-2026-02.xlsx", "row_no": 5, "cells": ["EXP-1043", "J. Blake", "2026-02-11", "Lodging", 289.00, "yes", "n/a", "conference hotel"]},
-    {"file": "expense-export-2026-02.xlsx", "row_no": 6, "cells": ["EXP-1047", "D. Kim", "2026-02-17", "Airfare", 1386.00, "yes", "none", "business class, transcontinental"]},
-    {"file": "expense-export-2026-02.xlsx", "row_no": 7, "cells": ["EXP-1049", "R. Vale", "2026-02-20", "Ground transport", 64.50, "yes", "n/a", "airport taxi"]},
-    {"file": "expense-export-2026-02.xlsx", "row_no": 8, "cells": ["EXP-1051", "K. Osei", "2026-02-24", "Supplies", 68.50, "no", "n/a", "receipt lost"]},
-    {"file": "expense-export-2026-02.xlsx", "row_no": 9, "cells": ["EXP-1052", "P. Shah", "2026-02-26", "Meals", 22.10, "no", "n/a", "coffee, under receipt threshold"]}
-  ]
+ "sheet_files": [
+  {
+   "name": "expense-export-2026-02.xlsx",
+   "owner": "people.ops",
+   "modified_at": "2026-03-01T09:00:00Z",
+   "description": "February expense report export (all submitted claims)"
+  }
+ ],
+ "sheet_rows": [
+  {
+   "file": "expense-export-2026-02.xlsx",
+   "row_no": 1,
+   "cells": [
+    "Report",
+    "Employee",
+    "Date",
+    "Category",
+    "Amount USD",
+    "Receipt attached",
+    "Pre-approval",
+    "Notes"
+   ]
+  },
+  {
+   "file": "expense-export-2026-02.xlsx",
+   "row_no": 2,
+   "cells": [
+    "EXP-1040",
+    "R. Vale",
+    "2026-02-03",
+    "Meals",
+    48.2,
+    "yes",
+    "n/a",
+    "client lunch"
+   ]
+  },
+  {
+   "file": "expense-export-2026-02.xlsx",
+   "row_no": 3,
+   "cells": [
+    "EXP-1041",
+    "P. Shah",
+    "2026-02-05",
+    "Airfare",
+    412.0,
+    "yes",
+    "n/a",
+    "economy, domestic"
+   ]
+  },
+  {
+   "file": "expense-export-2026-02.xlsx",
+   "row_no": 4,
+   "cells": [
+    "EXP-1042",
+    "K. Osei",
+    "2026-02-09",
+    "Meals",
+    132.9,
+    "yes",
+    "n/a",
+    "team dinner, single day"
+   ]
+  },
+  {
+   "file": "expense-export-2026-02.xlsx",
+   "row_no": 5,
+   "cells": [
+    "EXP-1043",
+    "J. Blake",
+    "2026-02-11",
+    "Lodging",
+    289.0,
+    "yes",
+    "n/a",
+    "conference hotel"
+   ]
+  },
+  {
+   "file": "expense-export-2026-02.xlsx",
+   "row_no": 6,
+   "cells": [
+    "EXP-1047",
+    "D. Kim",
+    "2026-02-17",
+    "Airfare",
+    1386.0,
+    "yes",
+    "none",
+    "business class, transcontinental"
+   ]
+  },
+  {
+   "file": "expense-export-2026-02.xlsx",
+   "row_no": 7,
+   "cells": [
+    "EXP-1049",
+    "R. Vale",
+    "2026-02-20",
+    "Ground transport",
+    64.5,
+    "yes",
+    "n/a",
+    "airport taxi"
+   ]
+  },
+  {
+   "file": "expense-export-2026-02.xlsx",
+   "row_no": 8,
+   "cells": [
+    "EXP-1051",
+    "K. Osei",
+    "2026-02-24",
+    "Supplies",
+    68.5,
+    "no",
+    "n/a",
+    "receipt lost"
+   ]
+  },
+  {
+   "file": "expense-export-2026-02.xlsx",
+   "row_no": 9,
+   "cells": [
+    "EXP-1052",
+    "P. Shah",
+    "2026-02-26",
+    "Meals",
+    22.1,
+    "no",
+    "n/a",
+    "coffee, under receipt threshold"
+   ]
+  }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "violation_count",
+   "type": "number",
+   "description": ""
+  },
+  {
+   "ordinal": 2,
+   "field": "violating_report_ids",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 3,
+   "field": "out_of_policy_amount",
+   "type": "number",
+   "description": ""
+  },
+  {
+   "ordinal": 4,
+   "field": "worst_violation_rule",
+   "type": "text",
+   "description": ""
+  }
+ ]
 }

@@ -1178,12 +1178,17 @@ def emit(out_dir, name, query, scenario, segment, fields, steps, sqls=None, inst
     (d / "tests/checks.json").write_text(json.dumps(checks, indent=1) + "\n")
 
     who = "Priya Shah · AP Manager" if segment == "AP" else "Casey Morgan · AR & Collections"
-    lines = [f"**{who} · Teams**", "", query.strip(), "", "---", "",
-             "Reply with `submit_answer`:", ""]
-    for k, (v, kind) in fields.items():
-        lines.append(f"- `{k}` ({'number' if kind == 'number' else 'text'})")
-    lines.append("")
-    (d / "instruction.md").write_text("\n".join(lines))
+    # Question only. The reporting contract is served by the harness `reporting_fields` tool
+    # from the seeded `answer_schema` — see sim/naturalize_prompts.py.
+    (d / "instruction.md").write_text(f"**{who} · Teams**\n\n{query.strip()}\n")
+    seedf = d / "environment/seed/mcp_seed.json"
+    seedf.parent.mkdir(parents=True, exist_ok=True)
+    payload = json.loads(seedf.read_text()) if seedf.exists() else {}
+    payload["answer_schema"] = [
+        {"ordinal": i, "field": k, "type": "number" if kind == "number" else "text",
+         "description": ""}
+        for i, (k, (_v, kind)) in enumerate(fields.items(), start=1)]
+    seedf.write_text(json.dumps(payload, indent=1) + "\n")
 
     if instance_of:
         description = f"FinanceBenchmark erp_qa pattern instance — {segment} / {scenario}."

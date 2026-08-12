@@ -1,13 +1,3 @@
 **Robin Vale · Treasury · Teams 09:05**
 
 Receipts for 24-28 Feb: bank against books. Anything not lining up? Classify whatever you find.
-
----
-
-Reply with `submit_answer`:
-
-- `matched_count` (number)
-- `discrepancy_ref` (text)
-- `discrepancy_amount` (number)
-- `bank_only_ref` (text)
-- `books_only_ref` (text)

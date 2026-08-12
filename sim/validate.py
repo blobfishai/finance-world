@@ -102,18 +102,37 @@ def main():
             if not check(srv in tools, name, "S3", f"unknown server {srv!r}"): continue
             check(tool in tools[srv], name, "S3", f"{srv} has no tool {tool!r}")
 
-        # S4 prompt/verifier drift + S5 required servers
+        # S4 contract/verifier drift + S5 required servers
+        #
+        # The invariant is "the agent is told, somewhere it can see, every field it will be
+        # graded on". That used to mean the instruction text, because the field list was
+        # stapled to the prompt. The contract now lives on the reporting tool
+        # (`answer_schema` -> harness `reporting_fields`), so the guard reads the schema —
+        # repointed, not relaxed. A graded field absent from the schema is ungradeable in
+        # practice: nothing would ever tell the agent to file it.
         checks = json.loads((t / "tests/checks.json").read_text())
+        seed = t / "environment/seed/mcp_seed.json"
+        schema = set()
+        if seed.exists():
+            try:
+                schema = {r["field"].lower()
+                          for r in json.loads(seed.read_text()).get("answer_schema", [])}
+            except Exception:
+                schema = set()
         instr = (t / "instruction.md").read_text().lower()
         for c in checks.get("answer_checks", []):
-            check(c["field"].lower() in instr, name, "S4",
-                  f"answer field {c['field']!r} never mentioned in instruction.md")
+            f = c["field"].lower()
+            check(f in schema or f in instr, name, "S4",
+                  f"answer field {c['field']!r} is graded but appears in neither the task's "
+                  f"answer_schema nor its instruction — nothing would tell the agent to file it")
         for sd in steps_of(t):                      # each later turn states its own fields
             sc = json.loads((sd / "checks.json").read_text())
             si = (sd / "instruction.md").read_text().lower() if (sd / "instruction.md").exists() else ""
             for c in sc.get("answer_checks", []):
-                check(c["field"].lower() in si, name, "S4",
-                      f"step {sd.name}: field {c['field']!r} not in its instruction.md")
+                f = c["field"].lower()
+                check(f in schema or f in si, name, "S4",
+                      f"step {sd.name}: field {c['field']!r} in neither answer_schema nor "
+                      f"its instruction")
             checks.setdefault("trace_checks", []).extend(sc.get("trace_checks", []))
         walk_servers = {s["server"] for s in walk}
         for c in checks.get("trace_checks", []):

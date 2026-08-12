@@ -482,6 +482,47 @@ Two design rules came out of it, both already house rules applied in a new place
   assertion are **rejected, not shipped** (15 of 300). Shipping them would put a policy in the
   prompt that the checks do not grade — A10.2 exactly.
 
+### A18. Naturalising the prompts truncated 286 of them — FIXED, and found only by being asked
+The answer contract used to be stapled to the end of every instruction ("Reply with
+`submit_answer`: - `dormant_count` (number) ..."). No colleague types that, and worse, it hands
+over the decomposition: being told to file `overpayment_usd` AND `underpayment_usd` separately
+reveals there are two directions of error before the model has looked at anything. It moved to
+the reporting tool — `answer_schema`, served by the harness `reporting_fields` tool — and 1,534
+instruction files were rewritten by script.
+
+The script matched the WHOLE LINE containing the lead-in phrase and deleted it. Where the
+lead-in sat alone on its line, correct — 1,249 tasks. Where a task put real instruction on the
+same line, the instruction went with it:
+
+| lost text | tasks |
+|---|---|
+| `Work in the \`odoo\` ERP. When the plan is committed,` | **284** |
+| `When the run is committed,` | 1 |
+| `...rounded to two decimals.` | 1 |
+
+So every ERP-Bench task silently lost the sentence naming **which of the eight MCP servers to
+work in**, and one prompt ended mid-sentence at "rounded to".
+
+**Nothing in the gate would have caught this.** The oracle does not read instructions — it
+replays a fixed walk — so all 284 still scored 1. `sim/validate.py` checks that graded fields
+are declared, not that the prose still parses as English. A prompt can lose a sentence and
+every automated check stays green, because no check reads the prompt *as a prompt*.
+
+It was found because Sam asked to see the tasks and spot-check what they prompt. The fix that
+mattered was not the regex: it was diffing every instruction against its committed version and
+listing each removed line that was not part of the answer block. That took one command and
+should have run before the refactor was reported as done — six oracle spot-checks were run
+instead, and none of the six happened to be an ERP-Bench task.
+
+Standing rule from this: **a bulk rewrite of authored text is not verified by its outputs
+passing; it is verified by diffing what it removed.** The parser now preserves any prose before
+the lead-in, the 284 were re-emitted from the corrected emitter, and the other two are restored.
+
+A second, sharper cost: a validation gate was running while the tasks were being edited under
+it. Whatever it printed would have described a tree that no longer existed. It was killed
+rather than reported. **A gate that ran against a moving tree is not evidence**, and the honest
+move is to throw the run away, not to quote it.
+
 ### A12b. Validator cleanup is best-effort, not guaranteed — OPEN, known cost
 The A12 fix added `shutil.rmtree(...)` at the end of `sim/validate.py`'s per-task loop. It
 runs only when the task reaches the end of the body, and several paths `continue` before it,

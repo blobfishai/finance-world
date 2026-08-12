@@ -15,16 +15,3 @@ off the mandate, by name, so I can raise the ERP access revocations in the same 
 One more for Friday's run: there's a supplier payment that has been going out on a Band B
 signature. Tell me the largest single payment we can still release without going to the CFO or
 to Halvard.
-
----
-
-Reply with `submit_answer`:
-
-- `valid_mandate_rows` (number) — rows on the register that are still valid today
-- `authorised_signatory_count` (number) — individuals authorised to sign today
-- `authorised_signatories` (text) — their names, nothing else
-- `expired_delegation` (text) — the row still shown as Active whose authority has run out, and
-  who holds it
-- `departed_signatory` (text) — the signatory who is no longer an employee
-- `max_release_without_band_a` (number) — USD, the largest single payment that can be released
-  today without a Band A signature

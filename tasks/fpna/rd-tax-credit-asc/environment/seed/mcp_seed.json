@@ -20,57 +20,347 @@
   }
  ],
  "sheet_rows": [
-  {"file": "rd-wage-detail-2025.xlsx", "row_no": 1,
-   "cells": ["Employee ID", "Employee", "Project / activity", "Activity class", "Work location", "2025 W-2 wages USD", "Project time %"]},
-  {"file": "rd-wage-detail-2025.xlsx", "row_no": 2,
-   "cells": ["E-3101", "Priya Nandakumar", "Adaptive audio pipeline - new signal-processing algorithms", "qualified research", "Austin, TX (US)", 186000.0, 80.0]},
-  {"file": "rd-wage-detail-2025.xlsx", "row_no": 3,
-   "cells": ["E-3102", "Tomasz Wieczorek", "Experimental thermal redesign of the console chassis", "qualified research", "Austin, TX (US)", 172000.0, 65.0]},
-  {"file": "rd-wage-detail-2025.xlsx", "row_no": 4,
-   "cells": ["E-3103", "Grace Odhiambo", "On-device inference engine prototyping", "qualified research", "Seattle, WA (US)", 164000.0, 75.0]},
-  {"file": "rd-wage-detail-2025.xlsx", "row_no": 5,
-   "cells": ["E-3104", "Daniel Fischbach", "Periodic testing of production units against release spec", "quality control testing", "Austin, TX (US)", 118000.0, 40.0]},
-  {"file": "rd-wage-detail-2025.xlsx", "row_no": 6,
-   "cells": ["E-3105", "Mei-Ling Chow", "Haptics latency research programme", "qualified research", "Taipei (TW)", 158000.0, 70.0]},
-  {"file": "rd-wage-detail-2025.xlsx", "row_no": 7,
-   "cells": ["E-3106", "Owen Traore", "Compiler optimisation for the developer toolchain", "qualified research", "Austin, TX (US)", 146000.0, 60.0]},
-  {"file": "rd-wage-detail-2025.xlsx", "row_no": 8,
-   "cells": ["E-3107", "Hannah Lindgren", "Concept testing and pricing research for the 2026 refresh", "market research", "Austin, TX (US)", 152000.0, 25.0]},
-  {"file": "rd-wage-detail-2025.xlsx", "row_no": 9,
-   "cells": ["TOTAL", "", "", "", "", 1096000.0, ""]},
-  {"file": "rd-wage-detail-2025.xlsx", "row_no": 10,
-   "cells": ["", "", "SIMULATION ONLY - synthetic payroll detail. Project time % is per the R&D cost centre time records; it is not a qualification determination.", "", "", "", ""]},
-
-  {"file": "rd-nonwage-costs-2025.xlsx", "row_no": 1,
-   "cells": ["Cost ID", "Cost category", "Description", "Counterparty", "Where performed", "Amount USD"]},
-  {"file": "rd-nonwage-costs-2025.xlsx", "row_no": 2,
-   "cells": ["C-01", "supplies", "Prototype boards, silicon samples and materials consumed in test builds", "various", "Austin, TX (US)", 96450.0]},
-  {"file": "rd-nonwage-costs-2025.xlsx", "row_no": 3,
-   "cells": ["C-02", "computer rental", "Simulation compute leased by the hour; hardware sits in the provider's data centre, provider unrelated to CES", "Northwind Cloud Services", "Ashburn, VA (US)", 58200.0]},
-  {"file": "rd-nonwage-costs-2025.xlsx", "row_no": 4,
-   "cells": ["C-03", "contract research", "Audio codec development under a fixed-fee contract; CES bears the risk of failure and retains rights in the results", "Belmont Applied Research LLC", "Boulder, CO (US)", 240000.0]},
-  {"file": "rd-nonwage-costs-2025.xlsx", "row_no": 5,
-   "cells": ["C-04", "contract research", "Acoustic chamber measurement campaign, work carried out at the lab's own facility", "Kilbrannan Labs Ltd", "Cork (IE)", 88000.0]},
-  {"file": "rd-nonwage-costs-2025.xlsx", "row_no": 6,
-   "cells": ["C-05", "depreciation", "Depreciation on lab test equipment placed in service 2023", "n/a", "Austin, TX (US)", 74300.0]},
-  {"file": "rd-nonwage-costs-2025.xlsx", "row_no": 7,
-   "cells": ["C-06", "legal", "Patent application and prosecution fees on the audio pipeline filings", "Harlow & Speight LLP", "Austin, TX (US)", 31900.0]},
-  {"file": "rd-nonwage-costs-2025.xlsx", "row_no": 8,
-   "cells": ["TOTAL", "", "", "", "", 588850.0]},
-  {"file": "rd-nonwage-costs-2025.xlsx", "row_no": 9,
-   "cells": ["", "", "SIMULATION ONLY - GL extract, R&D cost centre 4400, as booked. No qualification filter applied.", "", "", ""]},
-
-  {"file": "rd-qre-history.xlsx", "row_no": 1,
-   "cells": ["Tax year", "Total R&D cost centre spend USD", "Qualified research expenses (QRE) USD", "Note"]},
-  {"file": "rd-qre-history.xlsx", "row_no": 2,
-   "cells": [2021, 1180000.0, 0.0, "Programme's first year. Development performed in full by Kilbrannan Labs at Cork; no research carried out in the United States."]},
-  {"file": "rd-qre-history.xlsx", "row_no": 3,
-   "cells": [2022, 1042300.0, 612400.0, "Austin team stood up in March; as filed."]},
-  {"file": "rd-qre-history.xlsx", "row_no": 4,
-   "cells": [2023, 1168900.0, 703800.0, "As filed."]},
-  {"file": "rd-qre-history.xlsx", "row_no": 5,
-   "cells": [2024, 1241500.0, 758600.0, "As filed."]},
-  {"file": "rd-qre-history.xlsx", "row_no": 6,
-   "cells": ["", "", "", "SIMULATION ONLY - maintained by Tax from the programme's first year. QRE column is the figure taken on the filed return for that year."]}
+  {
+   "file": "rd-wage-detail-2025.xlsx",
+   "row_no": 1,
+   "cells": [
+    "Employee ID",
+    "Employee",
+    "Project / activity",
+    "Activity class",
+    "Work location",
+    "2025 W-2 wages USD",
+    "Project time %"
+   ]
+  },
+  {
+   "file": "rd-wage-detail-2025.xlsx",
+   "row_no": 2,
+   "cells": [
+    "E-3101",
+    "Priya Nandakumar",
+    "Adaptive audio pipeline - new signal-processing algorithms",
+    "qualified research",
+    "Austin, TX (US)",
+    186000.0,
+    80.0
+   ]
+  },
+  {
+   "file": "rd-wage-detail-2025.xlsx",
+   "row_no": 3,
+   "cells": [
+    "E-3102",
+    "Tomasz Wieczorek",
+    "Experimental thermal redesign of the console chassis",
+    "qualified research",
+    "Austin, TX (US)",
+    172000.0,
+    65.0
+   ]
+  },
+  {
+   "file": "rd-wage-detail-2025.xlsx",
+   "row_no": 4,
+   "cells": [
+    "E-3103",
+    "Grace Odhiambo",
+    "On-device inference engine prototyping",
+    "qualified research",
+    "Seattle, WA (US)",
+    164000.0,
+    75.0
+   ]
+  },
+  {
+   "file": "rd-wage-detail-2025.xlsx",
+   "row_no": 5,
+   "cells": [
+    "E-3104",
+    "Daniel Fischbach",
+    "Periodic testing of production units against release spec",
+    "quality control testing",
+    "Austin, TX (US)",
+    118000.0,
+    40.0
+   ]
+  },
+  {
+   "file": "rd-wage-detail-2025.xlsx",
+   "row_no": 6,
+   "cells": [
+    "E-3105",
+    "Mei-Ling Chow",
+    "Haptics latency research programme",
+    "qualified research",
+    "Taipei (TW)",
+    158000.0,
+    70.0
+   ]
+  },
+  {
+   "file": "rd-wage-detail-2025.xlsx",
+   "row_no": 7,
+   "cells": [
+    "E-3106",
+    "Owen Traore",
+    "Compiler optimisation for the developer toolchain",
+    "qualified research",
+    "Austin, TX (US)",
+    146000.0,
+    60.0
+   ]
+  },
+  {
+   "file": "rd-wage-detail-2025.xlsx",
+   "row_no": 8,
+   "cells": [
+    "E-3107",
+    "Hannah Lindgren",
+    "Concept testing and pricing research for the 2026 refresh",
+    "market research",
+    "Austin, TX (US)",
+    152000.0,
+    25.0
+   ]
+  },
+  {
+   "file": "rd-wage-detail-2025.xlsx",
+   "row_no": 9,
+   "cells": [
+    "TOTAL",
+    "",
+    "",
+    "",
+    "",
+    1096000.0,
+    ""
+   ]
+  },
+  {
+   "file": "rd-wage-detail-2025.xlsx",
+   "row_no": 10,
+   "cells": [
+    "",
+    "",
+    "SIMULATION ONLY - synthetic payroll detail. Project time % is per the R&D cost centre time records; it is not a qualification determination.",
+    "",
+    "",
+    "",
+    ""
+   ]
+  },
+  {
+   "file": "rd-nonwage-costs-2025.xlsx",
+   "row_no": 1,
+   "cells": [
+    "Cost ID",
+    "Cost category",
+    "Description",
+    "Counterparty",
+    "Where performed",
+    "Amount USD"
+   ]
+  },
+  {
+   "file": "rd-nonwage-costs-2025.xlsx",
+   "row_no": 2,
+   "cells": [
+    "C-01",
+    "supplies",
+    "Prototype boards, silicon samples and materials consumed in test builds",
+    "various",
+    "Austin, TX (US)",
+    96450.0
+   ]
+  },
+  {
+   "file": "rd-nonwage-costs-2025.xlsx",
+   "row_no": 3,
+   "cells": [
+    "C-02",
+    "computer rental",
+    "Simulation compute leased by the hour; hardware sits in the provider's data centre, provider unrelated to CES",
+    "Northwind Cloud Services",
+    "Ashburn, VA (US)",
+    58200.0
+   ]
+  },
+  {
+   "file": "rd-nonwage-costs-2025.xlsx",
+   "row_no": 4,
+   "cells": [
+    "C-03",
+    "contract research",
+    "Audio codec development under a fixed-fee contract; CES bears the risk of failure and retains rights in the results",
+    "Belmont Applied Research LLC",
+    "Boulder, CO (US)",
+    240000.0
+   ]
+  },
+  {
+   "file": "rd-nonwage-costs-2025.xlsx",
+   "row_no": 5,
+   "cells": [
+    "C-04",
+    "contract research",
+    "Acoustic chamber measurement campaign, work carried out at the lab's own facility",
+    "Kilbrannan Labs Ltd",
+    "Cork (IE)",
+    88000.0
+   ]
+  },
+  {
+   "file": "rd-nonwage-costs-2025.xlsx",
+   "row_no": 6,
+   "cells": [
+    "C-05",
+    "depreciation",
+    "Depreciation on lab test equipment placed in service 2023",
+    "n/a",
+    "Austin, TX (US)",
+    74300.0
+   ]
+  },
+  {
+   "file": "rd-nonwage-costs-2025.xlsx",
+   "row_no": 7,
+   "cells": [
+    "C-06",
+    "legal",
+    "Patent application and prosecution fees on the audio pipeline filings",
+    "Harlow & Speight LLP",
+    "Austin, TX (US)",
+    31900.0
+   ]
+  },
+  {
+   "file": "rd-nonwage-costs-2025.xlsx",
+   "row_no": 8,
+   "cells": [
+    "TOTAL",
+    "",
+    "",
+    "",
+    "",
+    588850.0
+   ]
+  },
+  {
+   "file": "rd-nonwage-costs-2025.xlsx",
+   "row_no": 9,
+   "cells": [
+    "",
+    "",
+    "SIMULATION ONLY - GL extract, R&D cost centre 4400, as booked. No qualification filter applied.",
+    "",
+    "",
+    ""
+   ]
+  },
+  {
+   "file": "rd-qre-history.xlsx",
+   "row_no": 1,
+   "cells": [
+    "Tax year",
+    "Total R&D cost centre spend USD",
+    "Qualified research expenses (QRE) USD",
+    "Note"
+   ]
+  },
+  {
+   "file": "rd-qre-history.xlsx",
+   "row_no": 2,
+   "cells": [
+    2021,
+    1180000.0,
+    0.0,
+    "Programme's first year. Development performed in full by Kilbrannan Labs at Cork; no research carried out in the United States."
+   ]
+  },
+  {
+   "file": "rd-qre-history.xlsx",
+   "row_no": 3,
+   "cells": [
+    2022,
+    1042300.0,
+    612400.0,
+    "Austin team stood up in March; as filed."
+   ]
+  },
+  {
+   "file": "rd-qre-history.xlsx",
+   "row_no": 4,
+   "cells": [
+    2023,
+    1168900.0,
+    703800.0,
+    "As filed."
+   ]
+  },
+  {
+   "file": "rd-qre-history.xlsx",
+   "row_no": 5,
+   "cells": [
+    2024,
+    1241500.0,
+    758600.0,
+    "As filed."
+   ]
+  },
+  {
+   "file": "rd-qre-history.xlsx",
+   "row_no": 6,
+   "cells": [
+    "",
+    "",
+    "",
+    "SIMULATION ONLY - maintained by Tax from the programme's first year. QRE column is the figure taken on the filed return for that year."
+   ]
+  }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "qualified_wages",
+   "type": "number",
+   "description": "USD wages for qualified services in the credit year"
+  },
+  {
+   "ordinal": 2,
+   "field": "current_year_qre",
+   "type": "number",
+   "description": "USD total qualified research expenses for the credit year"
+  },
+  {
+   "ordinal": 3,
+   "field": "base_period_years",
+   "type": "text",
+   "description": "the tax years that make up the ASC base period"
+  },
+  {
+   "ordinal": 4,
+   "field": "prior_three_year_qre_total",
+   "type": "number",
+   "description": "USD qualified research expenses across those base-period years"
+  },
+  {
+   "ordinal": 5,
+   "field": "base_amount",
+   "type": "number",
+   "description": "USD the credit year's QREs must exceed before any credit arises"
+  },
+  {
+   "ordinal": 6,
+   "field": "asc_credit",
+   "type": "number",
+   "description": "USD alternative simplified credit for the credit year"
+  },
+  {
+   "ordinal": 7,
+   "field": "reduced_credit_elected",
+   "type": "yes/no",
+   "description": "whether we are electing the reduced credit under \u00a7280C"
+  }
  ]
 }

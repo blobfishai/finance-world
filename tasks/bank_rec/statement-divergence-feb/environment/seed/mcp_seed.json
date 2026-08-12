@@ -239,5 +239,37 @@
     "ACH BATCH SETTLEMENT"
    ]
   }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "matched_count",
+   "type": "number",
+   "description": ""
+  },
+  {
+   "ordinal": 2,
+   "field": "discrepancy_ref",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 3,
+   "field": "discrepancy_amount",
+   "type": "number",
+   "description": ""
+  },
+  {
+   "ordinal": 4,
+   "field": "bank_only_ref",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 5,
+   "field": "books_only_ref",
+   "type": "text",
+   "description": ""
+  }
  ]
 }

@@ -1,15 +1,35 @@
 {
-  "email_messages": [
-    {
-      "id": "em-0090",
-      "folder": "inbox",
-      "from_addr": "ar@fourthcoffee-east-sim.example",
-      "to_addr": "ap@contoso-sim.example",
-      "subject": "Fourth Coffee East — February statement of account",
-      "sent_at": "2026-02-28T16:05:00Z",
-      "body": "Hi Contoso AP team,\n\nAttached is our February statement. Reminder that the two recent invoices carry negotiated 2/10 net 30 terms — remit within the discount window to capture the 2% early-payment discount.\n\nCatherine\nFourth Coffee East, AR desk (SIMULATION)",
-      "attachment_name": "statement-fourthcoffee-east-2026-02.csv",
-      "attachment_text": "Invoice,Invoice date,Terms,Amount,Open\nVINV-900001,2026-02-25,2/10 net 30,12480.00,12480.00\nVINV-900002,2026-02-28,2/10 net 30,9375.50,9375.50\nVINV-000219,2026-02-04,due on receipt,35053.39,35053.39"
-    }
-  ]
+ "email_messages": [
+  {
+   "id": "em-0090",
+   "folder": "inbox",
+   "from_addr": "ar@fourthcoffee-east-sim.example",
+   "to_addr": "ap@contoso-sim.example",
+   "subject": "Fourth Coffee East \u2014 February statement of account",
+   "sent_at": "2026-02-28T16:05:00Z",
+   "body": "Hi Contoso AP team,\n\nAttached is our February statement. Reminder that the two recent invoices carry negotiated 2/10 net 30 terms \u2014 remit within the discount window to capture the 2% early-payment discount.\n\nCatherine\nFourth Coffee East, AR desk (SIMULATION)",
+   "attachment_name": "statement-fourthcoffee-east-2026-02.csv",
+   "attachment_text": "Invoice,Invoice date,Terms,Amount,Open\nVINV-900001,2026-02-25,2/10 net 30,12480.00,12480.00\nVINV-900002,2026-02-28,2/10 net 30,9375.50,9375.50\nVINV-000219,2026-02-04,due on receipt,35053.39,35053.39"
+  }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "has_active_discount",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 2,
+   "field": "qualifying_invoices",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 3,
+   "field": "potential_discount_usd",
+   "type": "text",
+   "description": ""
+  }
+ ]
 }

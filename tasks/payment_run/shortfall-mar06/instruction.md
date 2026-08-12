@@ -10,12 +10,4 @@ a reason on it.
 
 Check the AP mailbox before you build it. Something came in this week.
 
----
-
-When the run is committed, reply with `submit_answer`:
-
-- `run_id` (text) — the committed run
-- `total_paid` (number) — USD
-- `paid_invoices` (text) — comma-separated invoice numbers you paid
-- `unpaid_invoices` (text) — comma-separated invoice numbers you did not pay
-- `shortfall` (number) — eligible net minus available cash, USD
+Commit the run when you're done.

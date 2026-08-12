@@ -1,0 +1,34 @@
+{
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "dormant_count",
+   "type": "number",
+   "description": "vendors meeting the SOP's dormancy definition"
+  },
+  {
+   "ordinal": 2,
+   "field": "dormant_vendors",
+   "type": "text",
+   "description": "their account numbers, comma-separated"
+  },
+  {
+   "ordinal": 3,
+   "field": "cutoff_date",
+   "type": "text",
+   "description": "the date the 12-month test measures against"
+  },
+  {
+   "ordinal": 4,
+   "field": "unused_vendors",
+   "type": "text",
+   "description": "account numbers reported separately under \u00a73, or \"none\""
+  },
+  {
+   "ordinal": 5,
+   "field": "out_of_scope_vendors",
+   "type": "text",
+   "description": "account numbers excluded as already actioned, or \"none\""
+  }
+ ]
+}

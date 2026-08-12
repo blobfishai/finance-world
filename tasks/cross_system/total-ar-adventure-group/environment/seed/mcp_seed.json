@@ -1,12 +1,65 @@
 {
-  "books_customers": [
-    {"id": "BC-114", "display_name": "Adventure Works Cycles - Direct", "erp_ref": "SYNCUS-0002", "email": "ap@adventure-works-sim.example"}
-  ],
-  "books_invoices": [
-    {"id": "bi-1041", "customer_id": "BC-114", "doc_number": "CD-1041", "txn_date": "2026-01-20", "due_date": "2026-02-19", "amount": 14900.00, "balance": 14900.00, "status": "Open", "memo": "Direct-channel accessories order"},
-    {"id": "bi-1055", "customer_id": "BC-114", "doc_number": "CD-1055", "txn_date": "2026-02-12", "due_date": "2026-03-14", "amount": 7300.00, "balance": 7300.00, "status": "Open", "memo": "February direct-channel order"}
-  ],
-  "books_credit_memos": [
-    {"id": "bcm-2007", "customer_id": "BC-114", "doc_number": "CM-2007", "txn_date": "2026-02-25", "amount": 3150.00, "remaining": 3150.00, "memo": "Returned merchandise batch - not yet applied to an invoice"}
-  ]
+ "books_customers": [
+  {
+   "id": "BC-114",
+   "display_name": "Adventure Works Cycles - Direct",
+   "erp_ref": "SYNCUS-0002",
+   "email": "ap@adventure-works-sim.example"
+  }
+ ],
+ "books_invoices": [
+  {
+   "id": "bi-1041",
+   "customer_id": "BC-114",
+   "doc_number": "CD-1041",
+   "txn_date": "2026-01-20",
+   "due_date": "2026-02-19",
+   "amount": 14900.0,
+   "balance": 14900.0,
+   "status": "Open",
+   "memo": "Direct-channel accessories order"
+  },
+  {
+   "id": "bi-1055",
+   "customer_id": "BC-114",
+   "doc_number": "CD-1055",
+   "txn_date": "2026-02-12",
+   "due_date": "2026-03-14",
+   "amount": 7300.0,
+   "balance": 7300.0,
+   "status": "Open",
+   "memo": "February direct-channel order"
+  }
+ ],
+ "books_credit_memos": [
+  {
+   "id": "bcm-2007",
+   "customer_id": "BC-114",
+   "doc_number": "CM-2007",
+   "txn_date": "2026-02-25",
+   "amount": 3150.0,
+   "remaining": 3150.0,
+   "memo": "Returned merchandise batch - not yet applied to an invoice"
+  }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "erp_open_balance",
+   "type": "number",
+   "description": ""
+  },
+  {
+   "ordinal": 2,
+   "field": "subsidiary_net_balance",
+   "type": "number",
+   "description": ""
+  },
+  {
+   "ordinal": 3,
+   "field": "combined_exposure",
+   "type": "number",
+   "description": ""
+  }
+ ]
 }

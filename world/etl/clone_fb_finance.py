@@ -247,11 +247,16 @@ def emit(out_dir, slug, question, fields, steps, note, source_id):
             checks["answer_checks"].append({"field": k, "type": "contains_all", "expect": [str(v)]})
     (d / "tests/checks.json").write_text(json.dumps(checks, indent=1) + "\n")
 
-    lines = ["**Dana Kim · Credit Manager · Teams**", "", question.strip(), "", "---", "",
-             "Reply with `submit_answer`:", ""]
-    for k, (v, kind) in fields.items():
-        lines.append(f"- `{k}` ({'number' if kind == 'number' else 'text'})")
-    (d / "instruction.md").write_text("\n".join(lines) + "\n")
+    # The prompt is the question and nothing else. The reporting contract lives on the tool
+    # (`answer_schema` -> harness `reporting_fields`), not stapled to the human's message —
+    # see sim/naturalize_prompts.py for why.
+    (d / "instruction.md").write_text(
+        "**Dana Kim · Credit Manager · Teams**\n\n" + question.strip() + "\n")
+    (d / "environment/seed").mkdir(parents=True, exist_ok=True)
+    (d / "environment/seed/mcp_seed.json").write_text(json.dumps({"answer_schema": [
+        {"ordinal": i, "field": k, "type": "number" if kind == "number" else "text",
+         "description": ""}
+        for i, (k, (_v, kind)) in enumerate(fields.items(), start=1)]}, indent=1) + "\n")
 
     (d / "task.toml").write_text(f'''schema_version = "1.4"
 

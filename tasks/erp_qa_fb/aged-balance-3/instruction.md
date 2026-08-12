@@ -1,10 +1,3 @@
 **Casey Morgan · AR & Collections · Teams**
 
 Show me the aging breakdown for Graphic Design Institute North in USMF as of March 2, 2026: current, 1–30, 31–60, 61–90, 90+ days as of March 2, 2026
-
----
-
-Reply with `submit_answer`:
-
-- `open_invoice_count` (number)
-- `aged_balance` (text)

@@ -11,17 +11,3 @@ form, and we reprice them ourselves now under FIN-POL-022.
 The other thing I got burned on in Q4: external audit picked up a reimbursement we paid out
 tax-free that shouldn't have been, and it cost me a W-2c. So before you send me a number, look
 at the dates and not just the amounts.
-
----
-
-Reply with `submit_answer`:
-
-- `perdiem_due` (number) — USD, total M&IE per diem actually due across the February trips
-  once repriced
-- `conference_mie_rate` (number) — the full daily M&IE rate you applied to the summit trip
-- `nonaccountable_amount` (number) — USD I have to run through payroll as taxable wages
-  instead of reimbursing tax-free (0 if there is none)
-- `reimbursable_total` (number) — USD of accountable-plan reimbursement for AP to pay out
-- `structural_exception_line` (text) — the line that passes every per-line limit and still
-  can't be paid the normal way
-- `structural_exception_reason` (text) — one sentence on why

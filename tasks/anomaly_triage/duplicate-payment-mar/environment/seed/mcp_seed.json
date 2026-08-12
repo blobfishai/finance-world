@@ -22,5 +22,43 @@
    "attachment_name": null,
    "attachment_text": null
   }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "run_id",
+   "type": "text",
+   "description": "the committed run"
+  },
+  {
+   "ordinal": 2,
+   "field": "duplicate_found",
+   "type": "yes/no",
+   "description": "did the screen find a duplicate"
+  },
+  {
+   "ordinal": 3,
+   "field": "duplicate_invoice",
+   "type": "text",
+   "description": "the invoice number rejected as a duplicate, or \"none\""
+  },
+  {
+   "ordinal": 4,
+   "field": "duplicate_of",
+   "type": "text",
+   "description": "the already-settled invoice it duplicates, or \"none\""
+  },
+  {
+   "ordinal": 5,
+   "field": "total_paid",
+   "type": "number",
+   "description": "USD actually paid"
+  },
+  {
+   "ordinal": 6,
+   "field": "amount_prevented",
+   "type": "number",
+   "description": "USD of duplicate disbursement prevented"
+  }
  ]
 }

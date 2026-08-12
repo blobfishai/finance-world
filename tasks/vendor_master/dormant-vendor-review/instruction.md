@@ -6,13 +6,3 @@ looks and last quarter's numbers had to be restated because two different findin
 counted in the same bucket.
 
 Use today as the review date.
-
----
-
-Reply with `submit_answer`:
-
-- `dormant_count` (number) — vendors meeting the SOP's dormancy definition
-- `dormant_vendors` (text) — their account numbers, comma-separated
-- `cutoff_date` (text) — the date the 12-month test measures against
-- `unused_vendors` (text) — account numbers reported separately under §3, or "none"
-- `out_of_scope_vendors` (text) — account numbers excluded as already actioned, or "none"

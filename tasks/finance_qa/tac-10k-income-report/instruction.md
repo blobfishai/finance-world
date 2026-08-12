@@ -11,16 +11,3 @@ turned out we'd measured this year against a prior-year number they no longer re
 basis.
 
 So: their numbers, off the filing they actually stand behind, and tell me which filing that is.
-
----
-
-Reply with `submit_answer`:
-
-- `revenue` (number) — USD, FY2025
-- `cost_of_revenue` (number) — USD, FY2025
-- `gross_profit` (number) — USD, FY2025
-- `operating_income` (number) — USD, FY2025
-- `net_income` (number) — USD, FY2025
-- `operating_margin_pct` (number) — operating income / revenue, in percent
-- `revenue_growth_pct` (number) — FY2025 revenue against FY2024, in percent
-- `source_form` (text) — the filing the figures are taken from

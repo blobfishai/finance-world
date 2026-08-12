@@ -544,5 +544,49 @@
     "Register total"
    ]
   }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "statement_total_usd",
+   "type": "number",
+   "description": "total invoiced per their statement"
+  },
+  {
+   "ordinal": 2,
+   "field": "applied_total_usd",
+   "type": "number",
+   "description": "total we paid that applies to invoices on that statement"
+  },
+  {
+   "ordinal": 3,
+   "field": "net_variance_usd",
+   "type": "number",
+   "description": "statement total less applied total; positive means we are behind"
+  },
+  {
+   "ordinal": 4,
+   "field": "exception_invoices",
+   "type": "text",
+   "description": "the invoice numbers that do not reconcile, comma-separated, invoice numbers only and nothing else"
+  },
+  {
+   "ordinal": 5,
+   "field": "overpaid_usd",
+   "type": "number",
+   "description": "gross overpaid across those invoices, as a positive number"
+  },
+  {
+   "ordinal": 6,
+   "field": "underpaid_usd",
+   "type": "number",
+   "description": "gross underpaid across those invoices, as a positive number"
+  },
+  {
+   "ordinal": 7,
+   "field": "out_of_scope_payment",
+   "type": "text",
+   "description": "the payment that does not belong to this statement, and the invoice its reference names"
+  }
  ]
 }

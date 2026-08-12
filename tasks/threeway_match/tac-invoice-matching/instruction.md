@@ -12,17 +12,3 @@ drive. Do the proper reconciliation per SOP-AP-11, not their version of it.
 I need this two ways round, because two different people action it: anything we still owe them
 goes into the Q1 accrual on Monday, and anything we've paid twice I want to raise with them
 while we still have leverage over the Q2 allocation. Don't hand me one net number.
-
----
-
-Reply with `submit_answer`:
-
-- `statement_total_usd` (number) — total invoiced per their statement
-- `applied_total_usd` (number) — total we paid that applies to invoices on that statement
-- `net_variance_usd` (number) — statement total less applied total; positive means we are behind
-- `exception_invoices` (text) — the invoice numbers that do not reconcile, comma-separated,
-  invoice numbers only and nothing else
-- `overpaid_usd` (number) — gross overpaid across those invoices, as a positive number
-- `underpaid_usd` (number) — gross underpaid across those invoices, as a positive number
-- `out_of_scope_payment` (text) — the payment that does not belong to this statement, and the
-  invoice its reference names

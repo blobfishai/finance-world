@@ -1,65 +1,369 @@
 {
  "sheet_files": [
-  {"name": "bank-mandate-register-2026.xlsx", "owner": "treasury.ops", "modified_at": "2026-02-27T16:20:00Z",
-   "description": "First National operating account USMF-OPER - authorised signatory register, maintained by hand by Treasury Operations"},
-  {"name": "hr-personnel-extract-2026-03-01.xlsx", "owner": "people.ops", "modified_at": "2026-03-01T07:05:00Z",
-   "description": "Finance function personnel extract as at 1 March 2026 - employment status, job title and status effective dates"}
+  {
+   "name": "bank-mandate-register-2026.xlsx",
+   "owner": "treasury.ops",
+   "modified_at": "2026-02-27T16:20:00Z",
+   "description": "First National operating account USMF-OPER - authorised signatory register, maintained by hand by Treasury Operations"
+  },
+  {
+   "name": "hr-personnel-extract-2026-03-01.xlsx",
+   "owner": "people.ops",
+   "modified_at": "2026-03-01T07:05:00Z",
+   "description": "Finance function personnel extract as at 1 March 2026 - employment status, job title and status effective dates"
+  }
  ],
  "sheet_rows": [
-  {"file": "bank-mandate-register-2026.xlsx", "row_no": 1,
-   "cells": ["Mandate row", "Employee ID", "Name", "Role on mandate", "Authority band", "Single-signature limit USD", "Effective from", "Expires", "Register status"]},
-  {"file": "bank-mandate-register-2026.xlsx", "row_no": 2,
-   "cells": ["SIG-01", "E-2001", "Marguerite Okonjo", "Chief Financial Officer", "A", 1000000, "2024-05-01", "", "Active"]},
-  {"file": "bank-mandate-register-2026.xlsx", "row_no": 3,
-   "cells": ["SIG-02", "E-2002", "Halvard Brekke", "Corporate Controller", "A", 500000, "2024-09-16", "", "Active"]},
-  {"file": "bank-mandate-register-2026.xlsx", "row_no": 4,
-   "cells": ["SIG-03", "E-2003", "Priya Shah", "AP Manager - supplier payments", "C", 50000, "2025-02-03", "", "Active"]},
-  {"file": "bank-mandate-register-2026.xlsx", "row_no": 5,
-   "cells": ["SIG-04", "E-2003", "Priya Shah", "Payment-run release - Treasury backup", "C", 50000, "2025-07-14", "", "Active"]},
-  {"file": "bank-mandate-register-2026.xlsx", "row_no": 6,
-   "cells": ["SIG-05", "E-2004", "Desmond Achebe", "Treasury Analyst", "C", 50000, "2025-06-01", "", "Active"]},
-  {"file": "bank-mandate-register-2026.xlsx", "row_no": 7,
-   "cells": ["SIG-06", "E-2005", "Corinne Vasquez", "Director of Financial Reporting", "B", 250000, "2025-03-17", "", "Active"]},
-  {"file": "bank-mandate-register-2026.xlsx", "row_no": 8,
-   "cells": ["SIG-07", "E-2006", "Toma Larsen", "Assistant Treasurer - interim cover", "B", 250000, "2025-11-03", "2026-02-28", "Active"]},
-  {"file": "bank-mandate-register-2026.xlsx", "row_no": 9,
-   "cells": ["SIG-08", "E-2007", "Ines Fabbri", "Financial Systems Manager - project access", "C", 50000, "2025-08-11", "2025-12-31", "Lapsed"]},
-
-  {"file": "hr-personnel-extract-2026-03-01.xlsx", "row_no": 1,
-   "cells": ["Employee ID", "Name", "Job title", "Department", "Employment status", "Status effective", "Work location", "Notes"]},
-  {"file": "hr-personnel-extract-2026-03-01.xlsx", "row_no": 2,
-   "cells": ["E-2001", "Marguerite Okonjo", "Chief Financial Officer", "Finance", "Active", "2024-04-15", "Redmond WA", ""]},
-  {"file": "hr-personnel-extract-2026-03-01.xlsx", "row_no": 3,
-   "cells": ["E-2002", "Halvard Brekke", "Corporate Controller", "Finance - Control", "Active", "2026-02-16", "Redmond WA", "returned from parental leave 16 Feb 2026"]},
-  {"file": "hr-personnel-extract-2026-03-01.xlsx", "row_no": 4,
-   "cells": ["E-2003", "Priya Shah", "AP Manager", "Finance - AP", "Active", "2025-01-20", "Redmond WA", ""]},
-  {"file": "hr-personnel-extract-2026-03-01.xlsx", "row_no": 5,
-   "cells": ["E-2004", "Desmond Achebe", "Treasury Analyst", "Finance - Treasury", "Active", "2025-05-19", "Redmond WA", ""]},
-  {"file": "hr-personnel-extract-2026-03-01.xlsx", "row_no": 6,
-   "cells": ["E-2005", "Corinne Vasquez", "Director of Financial Reporting", "Finance - Reporting", "Leaver", "2026-02-13", "Redmond WA", "resigned; final working day 13 Feb 2026, offboarding checklist still open"]},
-  {"file": "hr-personnel-extract-2026-03-01.xlsx", "row_no": 7,
-   "cells": ["E-2006", "Toma Larsen", "Assistant Treasurer", "Finance - Treasury", "Active", "2024-11-04", "Redmond WA", "covered the Controller vacancy Nov 2025 - Feb 2026"]},
-  {"file": "hr-personnel-extract-2026-03-01.xlsx", "row_no": 8,
-   "cells": ["E-2007", "Ines Fabbri", "Financial Systems Manager", "Finance - Systems", "Active", "2023-09-01", "Redmond WA", ""]},
-  {"file": "hr-personnel-extract-2026-03-01.xlsx", "row_no": 9,
-   "cells": ["E-2008", "Rakel Nystrom", "FP&A Manager", "Finance - FP&A", "Active", "2025-10-06", "Redmond WA", ""]},
-  {"file": "hr-personnel-extract-2026-03-01.xlsx", "row_no": 10,
-   "cells": ["E-2009", "Ola Bergstrom", "Senior Accountant", "Finance - Control", "Leaver", "2026-01-30", "Redmond WA", "final working day 30 Jan 2026"]},
-  {"file": "hr-personnel-extract-2026-03-01.xlsx", "row_no": 11,
-   "cells": ["E-2010", "Nyla Ferreira", "Treasury Manager", "Finance - Treasury", "Active", "2025-04-07", "Redmond WA", "administers the bank mandates; not a signatory (segregation of duties)"]}
+  {
+   "file": "bank-mandate-register-2026.xlsx",
+   "row_no": 1,
+   "cells": [
+    "Mandate row",
+    "Employee ID",
+    "Name",
+    "Role on mandate",
+    "Authority band",
+    "Single-signature limit USD",
+    "Effective from",
+    "Expires",
+    "Register status"
+   ]
+  },
+  {
+   "file": "bank-mandate-register-2026.xlsx",
+   "row_no": 2,
+   "cells": [
+    "SIG-01",
+    "E-2001",
+    "Marguerite Okonjo",
+    "Chief Financial Officer",
+    "A",
+    1000000,
+    "2024-05-01",
+    "",
+    "Active"
+   ]
+  },
+  {
+   "file": "bank-mandate-register-2026.xlsx",
+   "row_no": 3,
+   "cells": [
+    "SIG-02",
+    "E-2002",
+    "Halvard Brekke",
+    "Corporate Controller",
+    "A",
+    500000,
+    "2024-09-16",
+    "",
+    "Active"
+   ]
+  },
+  {
+   "file": "bank-mandate-register-2026.xlsx",
+   "row_no": 4,
+   "cells": [
+    "SIG-03",
+    "E-2003",
+    "Priya Shah",
+    "AP Manager - supplier payments",
+    "C",
+    50000,
+    "2025-02-03",
+    "",
+    "Active"
+   ]
+  },
+  {
+   "file": "bank-mandate-register-2026.xlsx",
+   "row_no": 5,
+   "cells": [
+    "SIG-04",
+    "E-2003",
+    "Priya Shah",
+    "Payment-run release - Treasury backup",
+    "C",
+    50000,
+    "2025-07-14",
+    "",
+    "Active"
+   ]
+  },
+  {
+   "file": "bank-mandate-register-2026.xlsx",
+   "row_no": 6,
+   "cells": [
+    "SIG-05",
+    "E-2004",
+    "Desmond Achebe",
+    "Treasury Analyst",
+    "C",
+    50000,
+    "2025-06-01",
+    "",
+    "Active"
+   ]
+  },
+  {
+   "file": "bank-mandate-register-2026.xlsx",
+   "row_no": 7,
+   "cells": [
+    "SIG-06",
+    "E-2005",
+    "Corinne Vasquez",
+    "Director of Financial Reporting",
+    "B",
+    250000,
+    "2025-03-17",
+    "",
+    "Active"
+   ]
+  },
+  {
+   "file": "bank-mandate-register-2026.xlsx",
+   "row_no": 8,
+   "cells": [
+    "SIG-07",
+    "E-2006",
+    "Toma Larsen",
+    "Assistant Treasurer - interim cover",
+    "B",
+    250000,
+    "2025-11-03",
+    "2026-02-28",
+    "Active"
+   ]
+  },
+  {
+   "file": "bank-mandate-register-2026.xlsx",
+   "row_no": 9,
+   "cells": [
+    "SIG-08",
+    "E-2007",
+    "Ines Fabbri",
+    "Financial Systems Manager - project access",
+    "C",
+    50000,
+    "2025-08-11",
+    "2025-12-31",
+    "Lapsed"
+   ]
+  },
+  {
+   "file": "hr-personnel-extract-2026-03-01.xlsx",
+   "row_no": 1,
+   "cells": [
+    "Employee ID",
+    "Name",
+    "Job title",
+    "Department",
+    "Employment status",
+    "Status effective",
+    "Work location",
+    "Notes"
+   ]
+  },
+  {
+   "file": "hr-personnel-extract-2026-03-01.xlsx",
+   "row_no": 2,
+   "cells": [
+    "E-2001",
+    "Marguerite Okonjo",
+    "Chief Financial Officer",
+    "Finance",
+    "Active",
+    "2024-04-15",
+    "Redmond WA",
+    ""
+   ]
+  },
+  {
+   "file": "hr-personnel-extract-2026-03-01.xlsx",
+   "row_no": 3,
+   "cells": [
+    "E-2002",
+    "Halvard Brekke",
+    "Corporate Controller",
+    "Finance - Control",
+    "Active",
+    "2026-02-16",
+    "Redmond WA",
+    "returned from parental leave 16 Feb 2026"
+   ]
+  },
+  {
+   "file": "hr-personnel-extract-2026-03-01.xlsx",
+   "row_no": 4,
+   "cells": [
+    "E-2003",
+    "Priya Shah",
+    "AP Manager",
+    "Finance - AP",
+    "Active",
+    "2025-01-20",
+    "Redmond WA",
+    ""
+   ]
+  },
+  {
+   "file": "hr-personnel-extract-2026-03-01.xlsx",
+   "row_no": 5,
+   "cells": [
+    "E-2004",
+    "Desmond Achebe",
+    "Treasury Analyst",
+    "Finance - Treasury",
+    "Active",
+    "2025-05-19",
+    "Redmond WA",
+    ""
+   ]
+  },
+  {
+   "file": "hr-personnel-extract-2026-03-01.xlsx",
+   "row_no": 6,
+   "cells": [
+    "E-2005",
+    "Corinne Vasquez",
+    "Director of Financial Reporting",
+    "Finance - Reporting",
+    "Leaver",
+    "2026-02-13",
+    "Redmond WA",
+    "resigned; final working day 13 Feb 2026, offboarding checklist still open"
+   ]
+  },
+  {
+   "file": "hr-personnel-extract-2026-03-01.xlsx",
+   "row_no": 7,
+   "cells": [
+    "E-2006",
+    "Toma Larsen",
+    "Assistant Treasurer",
+    "Finance - Treasury",
+    "Active",
+    "2024-11-04",
+    "Redmond WA",
+    "covered the Controller vacancy Nov 2025 - Feb 2026"
+   ]
+  },
+  {
+   "file": "hr-personnel-extract-2026-03-01.xlsx",
+   "row_no": 8,
+   "cells": [
+    "E-2007",
+    "Ines Fabbri",
+    "Financial Systems Manager",
+    "Finance - Systems",
+    "Active",
+    "2023-09-01",
+    "Redmond WA",
+    ""
+   ]
+  },
+  {
+   "file": "hr-personnel-extract-2026-03-01.xlsx",
+   "row_no": 9,
+   "cells": [
+    "E-2008",
+    "Rakel Nystrom",
+    "FP&A Manager",
+    "Finance - FP&A",
+    "Active",
+    "2025-10-06",
+    "Redmond WA",
+    ""
+   ]
+  },
+  {
+   "file": "hr-personnel-extract-2026-03-01.xlsx",
+   "row_no": 10,
+   "cells": [
+    "E-2009",
+    "Ola Bergstrom",
+    "Senior Accountant",
+    "Finance - Control",
+    "Leaver",
+    "2026-01-30",
+    "Redmond WA",
+    "final working day 30 Jan 2026"
+   ]
+  },
+  {
+   "file": "hr-personnel-extract-2026-03-01.xlsx",
+   "row_no": 11,
+   "cells": [
+    "E-2010",
+    "Nyla Ferreira",
+    "Treasury Manager",
+    "Finance - Treasury",
+    "Active",
+    "2025-04-07",
+    "Redmond WA",
+    "administers the bank mandates; not a signatory (segregation of duties)"
+   ]
+  }
  ],
  "email_messages": [
-  {"id": "em-3101", "folder": "inbox",
-   "from_addr": "mandates@firstnational-sim.example", "to_addr": "treasury@contoso-sim.example",
+  {
+   "id": "em-3101",
+   "folder": "inbox",
+   "from_addr": "mandates@firstnational-sim.example",
+   "to_addr": "treasury@contoso-sim.example",
    "subject": "Annual mandate refresh - account USMF-OPER - certification due 6 March",
    "sent_at": "2026-02-27T09:14:00Z",
    "body": "SIMULATION ONLY.\n\nOur annual refresh of the signing mandate on your operating account (USMF-OPER) falls due this week.\n\nPlease return a certified list of the individuals authorised to sign as at 2 March 2026, stating for each one the single-signature limit you wish us to hold. Anyone not on the certified list will be removed from the mandate on receipt, and their payment-release access closed the same day.\n\nWe hold one specimen signature per individual. Where a person acts in more than one capacity for you, that is still one signatory to us - please certify the number of individuals, not the number of internal roles.\n\nCertification is due by close of business Friday 6 March 2026.\n\nMandate Services, First National (SIMULATION)",
-   "attachment_name": null, "attachment_text": null},
-  {"id": "em-3102", "folder": "inbox",
-   "from_addr": "a.dawes@contoso-sim.example", "to_addr": "treasury@contoso-sim.example",
+   "attachment_name": null,
+   "attachment_text": null
+  },
+  {
+   "id": "em-3102",
+   "folder": "inbox",
+   "from_addr": "a.dawes@contoso-sim.example",
+   "to_addr": "treasury@contoso-sim.example",
    "subject": "RE: Annual mandate refresh - account USMF-OPER",
    "sent_at": "2026-03-01T18:42:00Z",
    "body": "SIMULATION ONLY.\n\nI keep the register on the shared drive and I went through it the week before last, so it should be fine to certify straight off it - just take the rows marked Active and send those. I make it seven.\n\nI'll tidy the older rows up after the refresh goes back.\n\nAndre Dawes, Treasury Operations (SIMULATION)",
-   "attachment_name": null, "attachment_text": null}
+   "attachment_name": null,
+   "attachment_text": null
+  }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "valid_mandate_rows",
+   "type": "number",
+   "description": "rows on the register that are still valid today"
+  },
+  {
+   "ordinal": 2,
+   "field": "authorised_signatory_count",
+   "type": "number",
+   "description": "individuals authorised to sign today"
+  },
+  {
+   "ordinal": 3,
+   "field": "authorised_signatories",
+   "type": "text",
+   "description": "their names, nothing else"
+  },
+  {
+   "ordinal": 4,
+   "field": "expired_delegation",
+   "type": "text",
+   "description": "the row still shown as Active whose authority has run out, and who holds it"
+  },
+  {
+   "ordinal": 5,
+   "field": "departed_signatory",
+   "type": "text",
+   "description": "the signatory who is no longer an employee"
+  },
+  {
+   "ordinal": 6,
+   "field": "max_release_without_band_a",
+   "type": "number",
+   "description": "USD, the largest single payment that can be released today without a Band A signature"
+  }
  ]
 }

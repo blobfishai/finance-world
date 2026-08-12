@@ -7,13 +7,3 @@ reclass between expense accounts, no cash impact.
 Can you book the correction and tell me where it landed? January's numbers have already gone
 out, so be careful about the dating — check the calendar before you date it, ours doesn't
 track the calendar month.
-
----
-
-Reply with `submit_answer`:
-
-- `journal_id` — the correction journal
-- `posting_period` — the period it was booked into
-- `january_status` — the status of period 2026-01 in the ERP
-- `journal_state` — the state of the correction journal
-- `amount` — USD reclassified

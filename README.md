@@ -98,6 +98,34 @@ against the current world build.
 - `traces/<model>/<family>/<slug>/trial-N.(pass|fail).json` — real model traces, failures included.
 - `reports/` — `summary.json` + per-model failure reports.
 
+## The prompt is a message; the contract is on the tool
+
+An instruction is what a colleague would actually send — a request, its constraints, and the
+war story behind them. It does **not** list the fields to be filled in:
+
+```
+**Marcus Bell · AP Controls · Teams 09:30**
+
+Quarterly vendor hygiene review for the REVIEW group — can you work out which ones need
+deactivating? Follow SOP-AP-11 to the letter on this, the definition is fussier than it
+looks and last quarter's numbers had to be restated because two different findings got
+counted in the same bucket.
+
+Use today as the review date.
+```
+
+What must be filed lives on the reporting tool, where it lives in a real deployment: each task
+seeds an `answer_schema`, and the harness server serves it through `reporting_fields`. The
+agent discovers the contract by inspecting the system, and `submit_answer` reports what is
+still outstanding.
+
+This is a difficulty setting, not a cosmetic one. A prompt that asks for `overpayment_usd` and
+`underpayment_usd` separately has already told the model there are two directions of error;
+`duplicate_invoice` + `duplicate_of` has already told it a duplicate exists. `sim/validate.py`'s
+S4 drift guard moved with the contract — a graded field must appear in the schema or the
+instruction, so the invariant ("the agent is told, somewhere it can see, what it is graded on")
+is repointed rather than relaxed.
+
 ## Per-task seeding (the core mechanic)
 
 Every task carries its own seed layers in `environment/seed/`:

@@ -105,6 +105,19 @@ CREATE TABLE docs_documents(
 -- ============ Harness (answers are state; verified deterministically) ============
 CREATE TABLE answers(field TEXT PRIMARY KEY, value TEXT, submitted_at TEXT);
 
+-- The reporting contract: what this task requires filed, and in what shape.
+--
+-- This used to be stapled onto the end of the human's message ("Reply with `submit_answer`:
+-- - `dormant_count` (number) ..."), which no colleague would ever type and which handed the
+-- model the decomposition for free — being told to report `overpayment_usd` AND
+-- `underpayment_usd` separately reveals there are two directions of error before you look.
+--
+-- It belongs where it belongs in a real deployment: on the reporting tool. The harness server
+-- exposes it through `reporting_fields`, so the agent discovers the contract by inspecting the
+-- system, exactly as it would any other API, and the prompt is free to be a message.
+CREATE TABLE answer_schema(
+  ordinal INTEGER, field TEXT PRIMARY KEY, type TEXT, description TEXT);
+
 -- ============ Write-and-approve surface (hard layer M1/M2/M7) ============
 -- Chart of accounts (Odoo account.account / ERPNext Account). account_type vocabulary is
 -- Odoo's, truncated: asset_receivable, asset_cash, asset_current, liability_payable,

@@ -11,14 +11,3 @@ my eyeball version?
 
 Two things I care about: I don't want to fund a correction for something that isn't actually
 wrong, and if anyone was short-paid I need the name today so it goes on the off-cycle run.
-
----
-
-Reply with `submit_answer`:
-
-- `discrepancy_employee_ids` — employee IDs of the lines that are genuinely wrong
-- `overpayment_usd` — total gross overpaid across those lines
-- `underpayment_usd` — total gross underpaid across those lines, as a positive number
-- `net_variance_usd` — signed net for the accrual: gross paid minus gross owed, so a
-  net overpayment is positive and a net underpayment is negative
-- `underpaid_employee` — the employee ID and name of whoever was short-paid

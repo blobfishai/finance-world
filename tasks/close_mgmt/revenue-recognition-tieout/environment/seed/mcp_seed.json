@@ -967,5 +967,37 @@
     "JE-2026-09-REV"
    ]
   }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "flagged_contracts",
+   "type": "text",
+   "description": "every contract ID with a recognition exception, comma-separated"
+  },
+  {
+   "ordinal": 2,
+   "field": "amount_exceptions",
+   "type": "text",
+   "description": "the contract IDs whose recognised total does not tie"
+  },
+  {
+   "ordinal": 3,
+   "field": "timing_exceptions",
+   "type": "text",
+   "description": "the contract IDs whose total ties but whose schedule does not"
+  },
+  {
+   "ordinal": 4,
+   "field": "over_recognised_usd",
+   "type": "number",
+   "description": "USD recognised in excess of contract value, across the amount exceptions"
+  },
+  {
+   "ordinal": 5,
+   "field": "under_recognised_usd",
+   "type": "number",
+   "description": "USD short of contract value, across the amount exceptions"
+  }
  ]
 }

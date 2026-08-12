@@ -42,20 +42,35 @@ Four things there are not how the ask arrives in real life:
 **Casey Morgan · AR & Collections · Teams 09:14**
 
 Fourth Coffee East just called about their account. What are we carrying on them right now?
-
----
-
-Reply with `submit_answer`:
-
-- `customer_account` (text)
-- `outstanding_balance` (number)
-- `open_invoice_count` (number)
 ```
 
 A named colleague, a channel and a time, one or two sentences, no method, no hints, no
-warning about the seven other Fourth Coffees. The only artificial element left is the reply
-contract — kept deliberately, because deterministic grading needs a schema and real teams
-do have reporting conventions.
+warning about the seven other Fourth Coffees.
+
+### The last artificial element, and how it was removed
+
+This section used to end differently. It said the reply contract — the `Reply with
+`submit_answer`:` block and its field list — was "the only artificial element left, kept
+deliberately, because deterministic grading needs a schema and real teams do have reporting
+conventions."
+
+Both halves of that were true and the conclusion was still wrong. Deterministic grading does
+need a schema, and real teams do have reporting conventions — but a reporting convention lives
+in **the reporting system**, not in the sentence your colleague types. Leaving it on the prompt
+was not a concession to determinism, it was putting the schema in the wrong place, and it cost
+more than realism: it handed over the decomposition. A prompt asking for `overpayment_usd` and
+`underpayment_usd` separately has already revealed that there are two directions of error;
+`duplicate_invoice` + `duplicate_of` has already revealed that a duplicate exists. The task
+degrades from "work out what is wrong" to "fill in these blanks".
+
+The contract now lives on the tool. Each task seeds an `answer_schema`; the harness server
+serves it through `reporting_fields`; the agent reads it the way it would read any API's schema
+before filing into it. Grading is unchanged and just as deterministic. The prompt is free to be
+a message, and the model has to work out the shape of the answer for itself.
+
+(`sim/naturalize_prompts.py` performed the migration; `docs/AUDIT.md` A18 records what it broke
+on the way — it truncated 286 prompts, which no automated gate caught, because no gate reads a
+prompt as prose.)
 
 All 82 were rewritten this way; the 47 benchmark clones keep Microsoft's question verbatim
 and simply lose my wrapper, arriving as a Teams ping from the AP or AR lead.

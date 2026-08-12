@@ -4300,5 +4300,25 @@
     "withdrawn - front-loaded, see FIN-FPA-04 s4"
    ]
   }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "flagged_ids",
+   "type": "text",
+   "description": "the flagged exceptions, comma-separated, each as `Department_Category_YYYYMM`"
+  },
+  {
+   "ordinal": 2,
+   "field": "flagged_count",
+   "type": "number",
+   "description": "how many"
+  },
+  {
+   "ordinal": 3,
+   "field": "unfavourable_total_usd",
+   "type": "number",
+   "description": "USD, the total unfavourable variance across the flagged items"
+  }
  ]
 }

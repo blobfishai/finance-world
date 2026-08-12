@@ -10,13 +10,3 @@ about the categories that don't bill the way they're budgeted. If the policy wou
 I don't want it on my page — I'd rather defend a short list than explain a long one.
 
 IDs in the usual Department_Category_YYYYMM shape so I can paste them straight into the deck.
-
----
-
-Reply with `submit_answer`:
-
-- `flagged_ids` (text) — the flagged exceptions, comma-separated, each as
-  `Department_Category_YYYYMM`
-- `flagged_count` (number) — how many
-- `unfavourable_total_usd` (number) — USD, the total unfavourable variance across the
-  flagged items

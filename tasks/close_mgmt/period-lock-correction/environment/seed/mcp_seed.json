@@ -1,0 +1,34 @@
+{
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "journal_id",
+   "type": "text",
+   "description": "the correction journal"
+  },
+  {
+   "ordinal": 2,
+   "field": "posting_period",
+   "type": "text",
+   "description": "the period it was booked into"
+  },
+  {
+   "ordinal": 3,
+   "field": "january_status",
+   "type": "text",
+   "description": "the status of period 2026-01 in the ERP"
+  },
+  {
+   "ordinal": 4,
+   "field": "journal_state",
+   "type": "text",
+   "description": "the state of the correction journal"
+  },
+  {
+   "ordinal": 5,
+   "field": "amount",
+   "type": "number",
+   "description": "USD reclassified"
+  }
+ ]
+}

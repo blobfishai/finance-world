@@ -177,14 +177,20 @@ def emit(out_dir, slug, subject, fields, steps, note, source_id, seed_sql=None):
             checks["answer_checks"].append({"field": k, "type": "contains_all", "expect": [str(v)]})
     (d / "tests/checks.json").write_text(json.dumps(checks, indent=1) + "\n")
 
-    lines = [PERSONA, "",
-             f"Putting together the counterparty brief on {subject}. I need the public numbers "
-             f"— scale, profitability and the leverage picture — and, importantly, whether we "
-             f"already have any exposure to them on our own books. Don't assume either way, "
-             f"check.", "", "---", "", "Reply with `submit_answer`:", ""]
-    for k, (v, kind) in fields.items():
-        lines.append(f"- `{k}` ({'number' if kind == 'number' else 'text'})")
-    (d / "instruction.md").write_text("\n".join(lines) + "\n")
+    # Message only — the reporting contract is on the tool (see sim/naturalize_prompts.py).
+    (d / "instruction.md").write_text(
+        f"{PERSONA}\n\nPutting together the counterparty brief on {subject}. I need the public "
+        f"numbers — scale, profitability and the leverage picture — and, importantly, whether "
+        f"we already have any exposure to them on our own books. Don't assume either way, "
+        f"check.\n")
+    seedf = d / "environment/seed/mcp_seed.json"
+    seedf.parent.mkdir(parents=True, exist_ok=True)
+    payload = json.loads(seedf.read_text()) if seedf.exists() else {}
+    payload["answer_schema"] = [
+        {"ordinal": i, "field": k, "type": "number" if kind == "number" else "text",
+         "description": ""}
+        for i, (k, (_v, kind)) in enumerate(fields.items(), start=1)]
+    seedf.write_text(json.dumps(payload, indent=1) + "\n")
 
     (d / "task.toml").write_text(f'''schema_version = "1.4"
 

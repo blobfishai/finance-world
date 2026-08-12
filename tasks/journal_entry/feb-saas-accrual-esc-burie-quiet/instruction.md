@@ -9,13 +9,3 @@ the paperwork on that one, they re-papered the agreement recently.
 
 Tell me where it ends up — I need to know what's actually booked before I sign off the
 close, not what's been keyed.
-
----
-
-Reply with `submit_answer`:
-
-- `journal_id` — the journal you raised
-- `accrual_amount` — USD
-- `service_days` — days of service accrued in February
-- `journal_state` — the state the journal is actually in
-- `next_step` — what has to happen before it is booked, and who does it

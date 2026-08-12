@@ -1,16 +1,75 @@
 {
  "email_messages": [
-  {"id":"em-0901","folder":"inbox","from_addr":"ar@meridian-sim.example","to_addr":"ap@contoso-sim.example",
-   "subject":"Meridian Analytics - WINV-803 payment instructions","sent_at":"2026-03-09T09:20:00Z",
-   "body":"Hello,\n\nInvoice WINV-803 (40,000.00) falls due on 13 March. As in prior years please apply the reduced UK treaty rate of 15% when withholding - our W-8BEN-E is on your file.\n\nAlice Oyelaran, Meridian Analytics Ltd (SIMULATION)",
-   "attachment_name":null,"attachment_text":null},
-  {"id":"em-0902","folder":"inbox","from_addr":"tax@contoso-sim.example","to_addr":"ap@contoso-sim.example",
-   "subject":"Reminder: W-8 recertification sweep for 2026","sent_at":"2026-01-06T08:00:00Z",
-   "body":"AP team,\n\nForms W-8BEN/W-8BEN-E expire on the last day of the third calendar year after signature. Any vendor whose certificate expiry has passed reverts to the statutory non-resident rate until a new form is received - regardless of what they assert in correspondence, and regardless of the fact that the old form is still visible on the vendor record.\n\nDo not take an emailed treaty claim as a filing.\n\nContoso Tax (SIMULATION)",
-   "attachment_name":null,"attachment_text":null},
-  {"id":"em-0903","folder":"inbox","from_addr":"ar@juniper-sim.example","to_addr":"ap@contoso-sim.example",
-   "subject":"Juniper Field Services - invoice WINV-802","sent_at":"2026-03-05T15:10:00Z",
-   "body":"Invoice WINV-802 for February survey crews, 30,000.00, due 13 March. Banking details unchanged.\n\nRay Nakamura, Juniper Field Services (SIMULATION)",
-   "attachment_name":null,"attachment_text":null}
+  {
+   "id": "em-0901",
+   "folder": "inbox",
+   "from_addr": "ar@meridian-sim.example",
+   "to_addr": "ap@contoso-sim.example",
+   "subject": "Meridian Analytics - WINV-803 payment instructions",
+   "sent_at": "2026-03-09T09:20:00Z",
+   "body": "Hello,\n\nInvoice WINV-803 (40,000.00) falls due on 13 March. As in prior years please apply the reduced UK treaty rate of 15% when withholding - our W-8BEN-E is on your file.\n\nAlice Oyelaran, Meridian Analytics Ltd (SIMULATION)",
+   "attachment_name": null,
+   "attachment_text": null
+  },
+  {
+   "id": "em-0902",
+   "folder": "inbox",
+   "from_addr": "tax@contoso-sim.example",
+   "to_addr": "ap@contoso-sim.example",
+   "subject": "Reminder: W-8 recertification sweep for 2026",
+   "sent_at": "2026-01-06T08:00:00Z",
+   "body": "AP team,\n\nForms W-8BEN/W-8BEN-E expire on the last day of the third calendar year after signature. Any vendor whose certificate expiry has passed reverts to the statutory non-resident rate until a new form is received - regardless of what they assert in correspondence, and regardless of the fact that the old form is still visible on the vendor record.\n\nDo not take an emailed treaty claim as a filing.\n\nContoso Tax (SIMULATION)",
+   "attachment_name": null,
+   "attachment_text": null
+  },
+  {
+   "id": "em-0903",
+   "folder": "inbox",
+   "from_addr": "ar@juniper-sim.example",
+   "to_addr": "ap@contoso-sim.example",
+   "subject": "Juniper Field Services - invoice WINV-802",
+   "sent_at": "2026-03-05T15:10:00Z",
+   "body": "Invoice WINV-802 for February survey crews, 30,000.00, due 13 March. Banking details unchanged.\n\nRay Nakamura, Juniper Field Services (SIMULATION)",
+   "attachment_name": null,
+   "attachment_text": null
+  }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "run_id",
+   "type": "text",
+   "description": "the committed run"
+  },
+  {
+   "ordinal": 2,
+   "field": "total_gross",
+   "type": "number",
+   "description": "USD invoiced across the run"
+  },
+  {
+   "ordinal": 3,
+   "field": "total_withheld",
+   "type": "number",
+   "description": "USD withheld"
+  },
+  {
+   "ordinal": 4,
+   "field": "total_paid",
+   "type": "number",
+   "description": "USD actually disbursed"
+  },
+  {
+   "ordinal": 5,
+   "field": "withheld_vendors",
+   "type": "text",
+   "description": "accounts with withholding applied, comma-separated"
+  },
+  {
+   "ordinal": 6,
+   "field": "meridian_rate_pct",
+   "type": "number",
+   "description": "the rate actually applied to WINV-803, in percent"
+  }
  ]
 }

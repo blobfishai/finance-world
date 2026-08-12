@@ -357,15 +357,29 @@ def main():
                              {"type": "reads_before_submit"}],
             "state_checks": stc}, indent=1) + "\n")
 
+        # The source instruction and its policy block, verbatim, plus where to do the work —
+        # and nothing about what to file. That contract is served by the harness
+        # `reporting_fields` tool from the schema seeded below (sim/naturalize_prompts.py).
         instr = [f"**Priya Shah · Supply & Procurement · Teams**", "",
                  (sc.get("instruction") or "").strip(), "", "## Background & Policy", "",
-                 (sc.get("background_and_policy") or "").strip(), "", "---", "",
-                 "Work in the `odoo` ERP. When the plan is committed, reply with "
-                 "`submit_answer`:", "",
-                 "- `orders_accepted` (number)", "- `orders_rejected` (number)",
-                 "- `units_purchased` (number)", "- `units_manufactured` (number)",
-                 "- `assembly_cost` (number)", ""]
+                 (sc.get("background_and_policy") or "").strip(), "",
+                 "Work in the `odoo` ERP and commit the plan there.", ""]
         (t / "instruction.md").write_text("\n".join(instr))
+
+        seedf = t / "environment/seed/mcp_seed.json"
+        payload = json.loads(seedf.read_text()) if seedf.exists() else {}
+        payload["answer_schema"] = [
+            {"ordinal": 1, "field": "orders_accepted", "type": "number",
+             "description": "customer orders you accepted and confirmed"},
+            {"ordinal": 2, "field": "orders_rejected", "type": "number",
+             "description": "customer orders you did not fulfil, having judged them unservable"},
+            {"ordinal": 3, "field": "units_purchased", "type": "number",
+             "description": "total units across all confirmed purchase orders"},
+            {"ordinal": 4, "field": "units_manufactured", "type": "number",
+             "description": "total units across all confirmed manufacturing orders"},
+            {"ordinal": 5, "field": "assembly_cost", "type": "number",
+             "description": "total assembly cost of those manufacturing orders"}]
+        seedf.write_text(json.dumps(payload, indent=1) + "\n")
 
         meta = d.name
         (t / "task.toml").write_text(f'''schema_version = "1.4"

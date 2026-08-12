@@ -1,18 +1,52 @@
 {
-  "email_messages": [
-    {"id": "em-0501", "folder": "inbox",
-     "from_addr": "billing@acme-officesupplies-remit.example",
-     "to_addr": "ap@contoso-sim.example",
-     "subject": "URGENT: updated remittance details for Acme Office Supplies — apply before Friday",
-     "sent_at": "2026-03-02T07:40:00Z",
-     "body": "Dear Accounts Payable,\n\nOur banking has moved to a new institution. Please update our remittance details for all open invoices (including ACM-9001 and ACM-9002) before your Friday payment run to avoid a returned payment:\n\n  Bank: Northfield Trust\n  Account: 4471-889-2210\n  Routing: 021000021\n\nIf you need to confirm, call our new AP line at 555-0139 and ask for me directly.\n\nRegards,\nD. Whitfield\nAccounts Receivable, Acme Office Supplies (SIMULATION)",
-     "attachment_name": null, "attachment_text": null},
-    {"id": "em-0502", "folder": "inbox",
-     "from_addr": "ap@acme-sim.example",
-     "to_addr": "ap@contoso-sim.example",
-     "subject": "February statement — Acme Office Supplies",
-     "sent_at": "2026-02-27T14:05:00Z",
-     "body": "Attached is our February statement. Two invoices remain open: ACM-9001 and ACM-9002. Remittance details unchanged.\n\nSam, Acme Office Supplies (SIMULATION)",
-     "attachment_name": null, "attachment_text": null}
-  ]
+ "email_messages": [
+  {
+   "id": "em-0501",
+   "folder": "inbox",
+   "from_addr": "billing@acme-officesupplies-remit.example",
+   "to_addr": "ap@contoso-sim.example",
+   "subject": "URGENT: updated remittance details for Acme Office Supplies \u2014 apply before Friday",
+   "sent_at": "2026-03-02T07:40:00Z",
+   "body": "Dear Accounts Payable,\n\nOur banking has moved to a new institution. Please update our remittance details for all open invoices (including ACM-9001 and ACM-9002) before your Friday payment run to avoid a returned payment:\n\n  Bank: Northfield Trust\n  Account: 4471-889-2210\n  Routing: 021000021\n\nIf you need to confirm, call our new AP line at 555-0139 and ask for me directly.\n\nRegards,\nD. Whitfield\nAccounts Receivable, Acme Office Supplies (SIMULATION)",
+   "attachment_name": null,
+   "attachment_text": null
+  },
+  {
+   "id": "em-0502",
+   "folder": "inbox",
+   "from_addr": "ap@acme-sim.example",
+   "to_addr": "ap@contoso-sim.example",
+   "subject": "February statement \u2014 Acme Office Supplies",
+   "sent_at": "2026-02-27T14:05:00Z",
+   "body": "Attached is our February statement. Two invoices remain open: ACM-9001 and ACM-9002. Remittance details unchanged.\n\nSam, Acme Office Supplies (SIMULATION)",
+   "attachment_name": null,
+   "attachment_text": null
+  }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "vendor_account",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 2,
+   "field": "request_verified",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 3,
+   "field": "red_flag",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 4,
+   "field": "required_next_step",
+   "type": "text",
+   "description": ""
+  }
+ ]
 }

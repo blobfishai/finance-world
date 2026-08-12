@@ -1,0 +1,34 @@
+{
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "journal_id",
+   "type": "text",
+   "description": "the journal you raised"
+  },
+  {
+   "ordinal": 2,
+   "field": "accrual_amount",
+   "type": "number",
+   "description": "USD"
+  },
+  {
+   "ordinal": 3,
+   "field": "service_days",
+   "type": "number",
+   "description": "days of service accrued in February"
+  },
+  {
+   "ordinal": 4,
+   "field": "journal_state",
+   "type": "text",
+   "description": "the state the journal is actually in"
+  },
+  {
+   "ordinal": 5,
+   "field": "next_step",
+   "type": "text",
+   "description": "what has to happen before it is booked, and who does it"
+  }
+ ]
+}

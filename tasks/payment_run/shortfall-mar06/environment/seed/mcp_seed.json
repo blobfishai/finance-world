@@ -33,5 +33,37 @@
    "attachment_name": "northwind-feb-statement.txt",
    "attachment_text": "NORTHWIND PAPER SUPPLY - STATEMENT (SIMULATION)\nInvoice PINV-101  2026-02-28  60,000.00  terms 2/10 net 30\nInvoice PINV-107  2026-02-05  20,000.00  terms net 30\n"
   }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "run_id",
+   "type": "text",
+   "description": "the committed run"
+  },
+  {
+   "ordinal": 2,
+   "field": "total_paid",
+   "type": "number",
+   "description": "USD"
+  },
+  {
+   "ordinal": 3,
+   "field": "paid_invoices",
+   "type": "text",
+   "description": "comma-separated invoice numbers you paid"
+  },
+  {
+   "ordinal": 4,
+   "field": "unpaid_invoices",
+   "type": "text",
+   "description": "comma-separated invoice numbers you did not pay"
+  },
+  {
+   "ordinal": 5,
+   "field": "shortfall",
+   "type": "number",
+   "description": "eligible net minus available cash, USD"
+  }
  ]
 }

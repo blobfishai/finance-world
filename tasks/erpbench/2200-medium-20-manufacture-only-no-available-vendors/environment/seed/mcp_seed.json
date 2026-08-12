@@ -1,0 +1,34 @@
+{
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "orders_accepted",
+   "type": "number",
+   "description": "customer orders you accepted and confirmed"
+  },
+  {
+   "ordinal": 2,
+   "field": "orders_rejected",
+   "type": "number",
+   "description": "customer orders you did not fulfil, having judged them unservable"
+  },
+  {
+   "ordinal": 3,
+   "field": "units_purchased",
+   "type": "number",
+   "description": "total units across all confirmed purchase orders"
+  },
+  {
+   "ordinal": 4,
+   "field": "units_manufactured",
+   "type": "number",
+   "description": "total units across all confirmed manufacturing orders"
+  },
+  {
+   "ordinal": 5,
+   "field": "assembly_cost",
+   "type": "number",
+   "description": "total assembly cost of those manufacturing orders"
+  }
+ ]
+}

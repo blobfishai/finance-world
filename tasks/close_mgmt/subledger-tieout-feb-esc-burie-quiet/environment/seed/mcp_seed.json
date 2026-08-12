@@ -1,11 +1,88 @@
 {
-  "sheet_files": [
-    {"name": "CESP-close-recon-2026-02.xlsx", "owner": "jordan.blake", "modified_at": "2026-03-01T19:20:00Z", "description": "CESP February close reconciliation workbook"}
-  ],
-  "sheet_rows": [
-    {"file": "CESP-close-recon-2026-02.xlsx", "row_no": 1, "cells": ["Subledger", "GL account", "Workbook balance USD", "Prepared by", "Status"]},
-    {"file": "CESP-close-recon-2026-02.xlsx", "row_no": 2, "cells": ["AR", "130100", 128500.00, "Jordan Blake", "tied"]},
-    {"file": "CESP-close-recon-2026-02.xlsx", "row_no": 3, "cells": ["AP", "200100", 78000.00, "Jordan Blake", "in progress"]},
-    {"file": "CESP-close-recon-2026-02.xlsx", "row_no": 4, "cells": ["Cash", "110100", 412300.00, "Robin Vale", "tied"]}
-  ]
+ "sheet_files": [
+  {
+   "name": "CESP-close-recon-2026-02.xlsx",
+   "owner": "jordan.blake",
+   "modified_at": "2026-03-01T19:20:00Z",
+   "description": "CESP February close reconciliation workbook"
+  }
+ ],
+ "sheet_rows": [
+  {
+   "file": "CESP-close-recon-2026-02.xlsx",
+   "row_no": 1,
+   "cells": [
+    "Subledger",
+    "GL account",
+    "Workbook balance USD",
+    "Prepared by",
+    "Status"
+   ]
+  },
+  {
+   "file": "CESP-close-recon-2026-02.xlsx",
+   "row_no": 2,
+   "cells": [
+    "AR",
+    "130100",
+    128500.0,
+    "Jordan Blake",
+    "tied"
+   ]
+  },
+  {
+   "file": "CESP-close-recon-2026-02.xlsx",
+   "row_no": 3,
+   "cells": [
+    "AP",
+    "200100",
+    78000.0,
+    "Jordan Blake",
+    "in progress"
+   ]
+  },
+  {
+   "file": "CESP-close-recon-2026-02.xlsx",
+   "row_no": 4,
+   "cells": [
+    "Cash",
+    "110100",
+    412300.0,
+    "Robin Vale",
+    "tied"
+   ]
+  }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "erp_ar_balance",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 2,
+   "field": "erp_ap_balance",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 3,
+   "field": "unreconciled_subledger",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 4,
+   "field": "variance_amount",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 5,
+   "field": "blocking_task_owner",
+   "type": "text",
+   "description": ""
+  }
+ ]
 }

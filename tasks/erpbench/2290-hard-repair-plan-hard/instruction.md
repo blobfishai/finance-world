@@ -50,12 +50,4 @@ Capacity constraints:
 - Use one consolidated PO per supplier offer (do not split a single offer across multiple POs).
 - Check each vendor's Internal Notes in Odoo for maximum order quantity limits.
 
----
-
-Work in the `odoo` ERP. When the plan is committed, reply with `submit_answer`:
-
-- `orders_accepted` (number)
-- `orders_rejected` (number)
-- `units_purchased` (number)
-- `units_manufactured` (number)
-- `assembly_cost` (number)
+Work in the `odoo` ERP and commit the plan there.

@@ -1,14 +1,85 @@
 {
-  "filings_companies": [
-    {"cik": "0000034088", "ticker": "XOM", "name": "Exxon Mobil Corporation"}
-  ],
-  "filings_facts": [
-    {"cik": "0000034088", "concept": "AssetsCurrent", "unit": "USD", "fy": "2022", "fp": "FY", "period_end": "2022-12-31", "value": 97631000000, "form": "10-K", "filed": "2024-02-28", "accession": "0000034088-24-000018"},
-    {"cik": "0000034088", "concept": "AssetsCurrent", "unit": "USD", "fy": "2023", "fp": "FY", "period_end": "2023-12-31", "value": 96609000000, "form": "10-K", "filed": "2025-02-19", "accession": "0000034088-25-000021"},
-    {"cik": "0000034088", "concept": "AssetsCurrent", "unit": "USD", "fy": "2024", "fp": "FY", "period_end": "2024-12-31", "value": 91990000000, "form": "10-K", "filed": "2026-02-18", "accession": "0000034088-26-000015"}
-  ],
-  "filings_documents": [
-    {"cik": "0000034088", "form": "10-K", "filed": "2025-02-19", "accession": "0000034088-25-000021", "title": "Exxon Mobil Corporation Annual Report (FY2024)", "excerpt": "Total current assets as of December 31, 2024 and 2023 are reported on the consolidated balance sheet."},
-    {"cik": "0000034088", "form": "10-K", "filed": "2026-02-18", "accession": "0000034088-26-000015", "title": "Exxon Mobil Corporation Annual Report (FY2025)", "excerpt": "Comparative balance sheet restates December 31, 2024 figures unchanged."}
-  ]
+ "filings_companies": [
+  {
+   "cik": "0000034088",
+   "ticker": "XOM",
+   "name": "Exxon Mobil Corporation"
+  }
+ ],
+ "filings_facts": [
+  {
+   "cik": "0000034088",
+   "concept": "AssetsCurrent",
+   "unit": "USD",
+   "fy": "2022",
+   "fp": "FY",
+   "period_end": "2022-12-31",
+   "value": 97631000000,
+   "form": "10-K",
+   "filed": "2024-02-28",
+   "accession": "0000034088-24-000018"
+  },
+  {
+   "cik": "0000034088",
+   "concept": "AssetsCurrent",
+   "unit": "USD",
+   "fy": "2023",
+   "fp": "FY",
+   "period_end": "2023-12-31",
+   "value": 96609000000,
+   "form": "10-K",
+   "filed": "2025-02-19",
+   "accession": "0000034088-25-000021"
+  },
+  {
+   "cik": "0000034088",
+   "concept": "AssetsCurrent",
+   "unit": "USD",
+   "fy": "2024",
+   "fp": "FY",
+   "period_end": "2024-12-31",
+   "value": 91990000000,
+   "form": "10-K",
+   "filed": "2026-02-18",
+   "accession": "0000034088-26-000015"
+  }
+ ],
+ "filings_documents": [
+  {
+   "cik": "0000034088",
+   "form": "10-K",
+   "filed": "2025-02-19",
+   "accession": "0000034088-25-000021",
+   "title": "Exxon Mobil Corporation Annual Report (FY2024)",
+   "excerpt": "Total current assets as of December 31, 2024 and 2023 are reported on the consolidated balance sheet."
+  },
+  {
+   "cik": "0000034088",
+   "form": "10-K",
+   "filed": "2026-02-18",
+   "accession": "0000034088-26-000015",
+   "title": "Exxon Mobil Corporation Annual Report (FY2025)",
+   "excerpt": "Comparative balance sheet restates December 31, 2024 figures unchanged."
+  }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "current_assets_usd",
+   "type": "number",
+   "description": ""
+  },
+  {
+   "ordinal": 2,
+   "field": "period_end",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 3,
+   "field": "source_form",
+   "type": "text",
+   "description": ""
+  }
+ ]
 }

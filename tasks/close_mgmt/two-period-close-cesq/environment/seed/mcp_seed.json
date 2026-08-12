@@ -54,5 +54,49 @@
     "includes January late-posted repair QINV-002; prepared 02-26"
    ]
   }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "jan_erp_ap",
+   "type": "number",
+   "description": ""
+  },
+  {
+   "ordinal": 2,
+   "field": "jan_workbook_ap",
+   "type": "number",
+   "description": ""
+  },
+  {
+   "ordinal": 3,
+   "field": "jan_variance",
+   "type": "number",
+   "description": ""
+  },
+  {
+   "ordinal": 4,
+   "field": "feb_erp_ap",
+   "type": "number",
+   "description": "USD \u2014 CESQ open AP per the ERP as of 2026-02-28"
+  },
+  {
+   "ordinal": 5,
+   "field": "feb_workbook_ap",
+   "type": "number",
+   "description": "USD"
+  },
+  {
+   "ordinal": 6,
+   "field": "feb_variance",
+   "type": "number",
+   "description": "USD"
+  },
+  {
+   "ordinal": 7,
+   "field": "jan_item_resolved",
+   "type": "yes/no",
+   "description": "is January's missing invoice now in the workbook?"
+  }
  ]
 }

@@ -1,16 +1,119 @@
 {
-  "filings_companies": [
-    {"cik": "0000018230", "ticker": "CAT", "name": "Caterpillar Inc."}
-  ],
-  "filings_facts": [
-    {"cik": "0000018230", "concept": "LongTermDebtNoncurrent", "unit": "USD", "fy": "2022", "fp": "FY", "period_end": "2022-12-31", "value": 25714000000, "form": "10-K", "filed": "2024-02-16", "accession": "0000018230-24-000012"},
-    {"cik": "0000018230", "concept": "LongTermDebtNoncurrent", "unit": "USD", "fy": "2023", "fp": "FY", "period_end": "2023-12-31", "value": 24472000000, "form": "10-K", "filed": "2025-02-14", "accession": "0000018230-25-000014"},
-    {"cik": "0000018230", "concept": "LongTermDebtNoncurrent", "unit": "USD", "fy": "2024", "fp": "FY", "period_end": "2024-12-31", "value": 27351000000, "form": "10-K", "filed": "2026-02-13", "accession": "0000018230-26-000011"},
-    {"cik": "0000018230", "concept": "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest", "unit": "USD", "fy": "2022", "fp": "FY", "period_end": "2022-12-31", "value": 15891000000, "form": "10-K", "filed": "2024-02-16", "accession": "0000018230-24-000012"},
-    {"cik": "0000018230", "concept": "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest", "unit": "USD", "fy": "2023", "fp": "FY", "period_end": "2023-12-31", "value": 19503000000, "form": "10-K", "filed": "2025-02-14", "accession": "0000018230-25-000014"},
-    {"cik": "0000018230", "concept": "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest", "unit": "USD", "fy": "2024", "fp": "FY", "period_end": "2024-12-31", "value": 19494000000, "form": "10-K", "filed": "2026-02-13", "accession": "0000018230-26-000011"}
-  ],
-  "filings_documents": [
-    {"cik": "0000018230", "form": "10-K", "filed": "2026-02-13", "accession": "0000018230-26-000011", "title": "Caterpillar Inc. Annual Report (FY2024/FY2025 comparatives)", "excerpt": "Long-term debt due after one year and total shareholders' equity including noncontrolling interests are presented on the consolidated balance sheet."}
-  ]
+ "filings_companies": [
+  {
+   "cik": "0000018230",
+   "ticker": "CAT",
+   "name": "Caterpillar Inc."
+  }
+ ],
+ "filings_facts": [
+  {
+   "cik": "0000018230",
+   "concept": "LongTermDebtNoncurrent",
+   "unit": "USD",
+   "fy": "2022",
+   "fp": "FY",
+   "period_end": "2022-12-31",
+   "value": 25714000000,
+   "form": "10-K",
+   "filed": "2024-02-16",
+   "accession": "0000018230-24-000012"
+  },
+  {
+   "cik": "0000018230",
+   "concept": "LongTermDebtNoncurrent",
+   "unit": "USD",
+   "fy": "2023",
+   "fp": "FY",
+   "period_end": "2023-12-31",
+   "value": 24472000000,
+   "form": "10-K",
+   "filed": "2025-02-14",
+   "accession": "0000018230-25-000014"
+  },
+  {
+   "cik": "0000018230",
+   "concept": "LongTermDebtNoncurrent",
+   "unit": "USD",
+   "fy": "2024",
+   "fp": "FY",
+   "period_end": "2024-12-31",
+   "value": 27351000000,
+   "form": "10-K",
+   "filed": "2026-02-13",
+   "accession": "0000018230-26-000011"
+  },
+  {
+   "cik": "0000018230",
+   "concept": "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest",
+   "unit": "USD",
+   "fy": "2022",
+   "fp": "FY",
+   "period_end": "2022-12-31",
+   "value": 15891000000,
+   "form": "10-K",
+   "filed": "2024-02-16",
+   "accession": "0000018230-24-000012"
+  },
+  {
+   "cik": "0000018230",
+   "concept": "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest",
+   "unit": "USD",
+   "fy": "2023",
+   "fp": "FY",
+   "period_end": "2023-12-31",
+   "value": 19503000000,
+   "form": "10-K",
+   "filed": "2025-02-14",
+   "accession": "0000018230-25-000014"
+  },
+  {
+   "cik": "0000018230",
+   "concept": "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest",
+   "unit": "USD",
+   "fy": "2024",
+   "fp": "FY",
+   "period_end": "2024-12-31",
+   "value": 19494000000,
+   "form": "10-K",
+   "filed": "2026-02-13",
+   "accession": "0000018230-26-000011"
+  }
+ ],
+ "filings_documents": [
+  {
+   "cik": "0000018230",
+   "form": "10-K",
+   "filed": "2026-02-13",
+   "accession": "0000018230-26-000011",
+   "title": "Caterpillar Inc. Annual Report (FY2024/FY2025 comparatives)",
+   "excerpt": "Long-term debt due after one year and total shareholders' equity including noncontrolling interests are presented on the consolidated balance sheet."
+  }
+ ],
+ "answer_schema": [
+  {
+   "ordinal": 1,
+   "field": "lt_debt_fy2024",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 2,
+   "field": "equity_fy2024",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 3,
+   "field": "lt_de_ratio_3yr_avg",
+   "type": "text",
+   "description": ""
+  },
+  {
+   "ordinal": 4,
+   "field": "internal_ar_relationship",
+   "type": "text",
+   "description": ""
+  }
+ ]
 }

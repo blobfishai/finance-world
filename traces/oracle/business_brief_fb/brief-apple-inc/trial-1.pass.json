@@ -18,54 +18,54 @@
  "budget_turns": 68,
  "num_turns": null,
  "agent_error": false,
- "duration_s": 0.3,
+ "duration_s": 0.2,
  "cost_usd": null,
  "final_text": "{\"walk_steps\": 7}\n",
  "trace": [
   {
-   "ts": 1786505279.754621,
+   "ts": 1786512597.5629172,
    "server": "filings",
    "tool": "lookup_company",
    "args": "{\"query\": \"Apple Inc\"}",
    "ok": true
   },
   {
-   "ts": 1786505279.7555358,
+   "ts": 1786512597.564051,
    "server": "filings",
    "tool": "get_company_concept",
    "args": "{\"ticker\": \"AAPL\", \"concept\": \"Revenues\"}",
    "ok": true
   },
   {
-   "ts": 1786505279.7563698,
+   "ts": 1786512597.564857,
    "server": "filings",
    "tool": "get_company_concept",
    "args": "{\"ticker\": \"AAPL\", \"concept\": \"NetIncomeLoss\"}",
    "ok": true
   },
   {
-   "ts": 1786505279.757178,
+   "ts": 1786512597.565705,
    "server": "filings",
    "tool": "get_company_concept",
    "args": "{\"ticker\": \"AAPL\", \"concept\": \"LongTermDebtNoncurrent\"}",
    "ok": true
   },
   {
-   "ts": 1786505279.758251,
+   "ts": 1786512597.566887,
    "server": "filings",
    "tool": "get_company_concept",
    "args": "{\"ticker\": \"AAPL\", \"concept\": \"StockholdersEquity\"}",
    "ok": true
   },
   {
-   "ts": 1786505279.759298,
+   "ts": 1786512597.567965,
    "server": "erp",
    "tool": "data_find_entities",
    "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Apple\"}}",
    "ok": true
   },
   {
-   "ts": 1786505279.761326,
+   "ts": 1786512597.5696902,
    "server": "harness",
    "tool": "submit_answer",
    "args": "{\"answers\": {\"revenue_fy2025\": 416161000000.0, \"net_income_fy2025\": 112010000000.0, \"lt_de_ratio_3yr_avg\": 1.3671, \"internal_ar_relationship\": \"BRF-00\", \"internal_open_ar_usd\": 41732}}",
