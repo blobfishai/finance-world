@@ -24,3 +24,8 @@ __pycache__/
 *.pyc
 .venv/
 traces_archive/
+
+# vendored research corpus — 59 shallow checkouts, 1.3 GB, kept on disk as the cited
+# fact-source for research/*.md but never committed. INDEX.md (the hand-written map) stays.
+research/external/repos/*
+!research/external/repos/INDEX.md
