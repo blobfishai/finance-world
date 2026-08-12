@@ -10,6 +10,7 @@ keywords = ["finance", "bank_rec", "ach-return", "ar"]
 [metadata]
 family = "bank_rec"
 origin = "escalated variant of bank_rec/ach-return-mar via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: gap found in repo sweep (research/external/repos/INDEX.md): payment failure after settlement — ACH returns/reversals"
+variant_of = "bank_rec/ach-return-mar"
 difficulty = "hard"
 acceptance_label = "pending_calibration"
 doc_mode = "buried"

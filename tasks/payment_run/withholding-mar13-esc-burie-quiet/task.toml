@@ -10,6 +10,7 @@ keywords = ["finance", "payment_run", "withholding", "tax", "ap", "write"]
 [metadata]
 family = "payment_run"
 origin = "escalated variant of payment_run/withholding-mar13 via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: closes tracked coverage gap erpnext.withholding_tax; Tax Withholding Category + certificate model from research/erp-mcp-tool-census.md (ERPNext); rates are US statutory (IRC 3406 backup 24%, IRC 1441 non-resident 30%, treaty-reduced 15%); docs/HARD-LAYER-DESIGN.md M1/M3/M4/M5"
+variant_of = "payment_run/withholding-mar13"
 difficulty = "hard"
 acceptance_label = "pending_calibration"
 doc_mode = "buried"

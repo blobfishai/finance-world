@@ -3,13 +3,15 @@ schema_version = "1.4"
 [task]
 name = "erp_qa_gen/collections-tasks-contoso-pharmaceuticals-ce"
 version = "0.1.0"
-description = "FinanceBenchmark erp_qa clone — AR / Collections Tasks."
+description = "FinanceBenchmark erp_qa pattern instance — AR / Collections Tasks."
 authors = ["nario-ai"]
-keywords = ["finance", "erp_qa", "financebenchmark-clone"]
+keywords = ["finance", "erp_qa", "financebenchmark-pattern-instance"]
 
 [metadata]
 family = "erp_qa_gen"
-origin = "clone of microsoft/FinanceBenchmark erp_qa (AR / Collections Tasks); question verbatim, ground truth recomputed in-world (docs/AUDIT.md A3)"
+origin = "generated instance of the microsoft/FinanceBenchmark erp_qa pattern (AR / Collections Tasks), entity substituted into the benchmark's phrasing by world/etl/sweep_erp_qa.py — NOT a verbatim benchmark question. Ground truth recomputed in-world (docs/AUDIT.md A3). Counted as patterns x instances, never as benchmark parity (docs/PARITY.md)"
+generated = true
+pattern = "Collections Tasks|h_collections_tasks"
 difficulty = "medium"
 acceptance_label = "pending_calibration"
 walk_len = 2

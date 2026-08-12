@@ -16,18 +16,30 @@
 the live world, and prints this. Re-run it; do not edit it.
 
 ```
+world capability: 47 tables · 708 named parties · 7 servers · 68 filing companies
+
 microsoft/FinanceBenchmark — 251 items
-   class      : verbatim_gt 100 · not_agentic 90 · recomputable 36 · judgement_port 25
-   addressable: 161      binding: bound 161                        runs here: 35  (22%)
+   class      : verbatim_gt 100 · not_agentic 98 · recomputable 28 · judgement_port 25
+   addressable: 153      binding: bound 152 · absent_entity 1       ported: 97  (63%)
+   instances  : 1026 generated over 27 patterns (breadth; excluded from the rate)
 TheAgentCompany — 12 items
    class      : judgement_port 12
-   addressable: 12       binding: bound 12                          runs here: 8   (67%)
+   addressable: 12       binding: bound 12                          ported: 9   (75%)
+   variants   : 4 escalated from ported tasks (depth; excluded from the rate)
 agentic-labs/erp-bench — 300 items
    class      : needs_surface 300
-   addressable: 0                                                   runs here: 0
+   addressable: 0                                                   ported: 0
 ──────────────────────────────────────────────────────────────────────────
-TOTAL  items 563 · addressable 173 · running here 44  (25% of addressable)
+TOTAL  items 563 · addressable 165 · ported 107  (65% of addressable)
+       + 1026 generated instances (breadth) · 4 escalated variants (depth)
 ```
+
+**Three buckets, never summed.** *Ported* = a real clone of a real source item, and the only
+thing the parity rate counts. *Instances* = the same pattern re-asked over another entity.
+*Variants* = a ported task made harder to retrieve, same ground truth. Summing them is not a
+rounding error, it is a category error: it claims coverage of source items that were never
+covered. This ledger reported **689% of addressable** until 2026-08-11 because 1,026 generated
+instances carried byte-identical provenance to real clones (`docs/AUDIT.md` A15).
 
 **The denominator matters more than the numerator.** The crude "7% of 563" was itself
 misleading: 300 of those items need an Odoo surface, and 90 of FinanceBenchmark's
@@ -37,20 +49,22 @@ intend to close them, and we do not; counting them as "done" would be a lie. The
 **class**, with a reason.
 
 Addressable = `verbatim_gt` + `recomputable` + `judgement_port`. Against that, coverage is
-**44 of 173 (25%)**, and every one of the remaining 129 has a named blocker:
+**107 of 165 (65%)**, and every one of the remaining 58 has a named blocker:
 
 | blocker | items | what unblocks it |
 |---|---|---|
-| FB `erp_qa` questions not yet emitted by the cloner | 65 | handlers for the rejected intent classes (in flight) |
-| ~~FB items naming companies absent from the shared world~~ | ~~31~~ **0** | **CLOSED** — `world/etl/fetch_filings.py` freezes real SEC XBRL facts for the 14 companies the questions name; 4,342 annual facts, every value carrying its accession |
+| ~~FB `erp_qa` questions not yet emitted by the cloner~~ | ~~65~~ **3** | **NEARLY CLOSED** — the ten rejected intent classes got handlers; 97 of 100 now emit. The last 3 are the genuinely degenerate ones (a year before the ledger begins; a typo'd question FB itself ships) and should ship as documented exclusions, not silent zeros |
+| ~~FB items naming companies absent from the shared world~~ | ~~31~~ **0** | **CLOSED** — `world/etl/fetch_filings.py` freezes real SEC XBRL facts; 68 filing companies in-world |
+| FB `finance_qa` single-figure (`recomputable`) | 28 | a filings-snapshot cloner; the frozen `filings` surface already serves this shape |
 | FB `business_brief` | 25 | a brief emitter grading required fields per-section |
-| TAC finance remaining | 4 | the porting pattern is proven; 8 of 12 done |
+| ~~TAC finance remaining~~ | ~~4~~ **3** | 9 of 12 done; the porting pattern is proven |
 
 The 31 unbindable items were a *useful* failure: filings had been seeded per task, so the
 binder correctly reported those companies absent from the shared world and named exactly
-which snapshot to build. That build is done — **161 of 161 addressable FB items now bind** —
-which is the pipeline working as intended: the ledger produced a build list, the build closed
-it, and re-running the ledger proved it rather than asserting it.
+which snapshot to build. That build is done — **152 of 153 addressable FB items bind**, the
+one `absent_entity` being a question about a company the world deliberately does not hold,
+which is an empty-answer trap rather than a gap. The pipeline working as intended: the ledger
+produced a build list, the build closed it, and re-running the ledger proved it.
 
 ## Why the gap exists, without excuses
 

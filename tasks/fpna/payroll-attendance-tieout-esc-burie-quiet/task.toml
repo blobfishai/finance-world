@@ -10,6 +10,7 @@ keywords = ["finance", "fpna", "payroll", "attendance", "reconciliation", "contr
 [metadata]
 family = "fpna"
 origin = "escalated variant of fpna/payroll-attendance-tieout via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: port of research/external/repos/TheAgentCompany/workspaces/tasks/finance-check-attendance-payroll (attendance x rate -> earnings, with the rate card held in a source separate from attendance); reframed from 'compute earnings' to 'tie out what payroll actually paid' per docs/HARD-LAYER-DESIGN.md M3 (objective non-collapse), M4 (money re-derived from hours x approved rate, never read back off the register) and M5 (the LWOP payability rule exists only in SOP-PAY-04, not as a field on either workbook)"
+variant_of = "fpna/payroll-attendance-tieout"
 difficulty = "hard"
 acceptance_label = "pending_calibration"
 doc_mode = "buried"

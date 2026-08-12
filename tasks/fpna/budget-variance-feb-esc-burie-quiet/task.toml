@@ -10,6 +10,7 @@ keywords = ["finance", "fpna", "budget", "variance", "exception-reporting", "sea
 [metadata]
 family = "fpna"
 origin = "escalated variant of fpna/budget-variance-feb via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: port of research/external/repos/TheAgentCompany/workspaces/tasks/finance-budget-variance (task.md + evaluator.py: budget vs actual by department/category/month, variance amount and %, flag >10% AND >$5,000, 'adjust for identified seasonal spending variations', identifiers as Department_Category_YYYYMM); the source's vague seasonality clause is resolved here into FIN-FPA-04 s4; docs/HARD-LAYER-DESIGN.md M3 (dual-limb non-collapse) and M5 (the front-loaded list has no field in either workbook and lives only in the policy document)"
+variant_of = "fpna/budget-variance-feb"
 difficulty = "hard"
 acceptance_label = "pending_calibration"
 doc_mode = "buried"

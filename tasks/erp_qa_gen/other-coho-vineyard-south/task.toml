@@ -3,13 +3,15 @@ schema_version = "1.4"
 [task]
 name = "erp_qa_gen/other-coho-vineyard-south"
 version = "0.1.0"
-description = "FinanceBenchmark erp_qa clone — AP / Other."
+description = "FinanceBenchmark erp_qa pattern instance — AP / Other."
 authors = ["nario-ai"]
-keywords = ["finance", "erp_qa", "financebenchmark-clone"]
+keywords = ["finance", "erp_qa", "financebenchmark-pattern-instance"]
 
 [metadata]
 family = "erp_qa_gen"
-origin = "clone of microsoft/FinanceBenchmark erp_qa (AP / Other); question verbatim, ground truth recomputed in-world (docs/AUDIT.md A3)"
+origin = "generated instance of the microsoft/FinanceBenchmark erp_qa pattern (AP / Other), entity substituted into the benchmark's phrasing by world/etl/sweep_erp_qa.py — NOT a verbatim benchmark question. Ground truth recomputed in-world (docs/AUDIT.md A3). Counted as patterns x instances, never as benchmark parity (docs/PARITY.md)"
+generated = true
+pattern = "Other|h_vendor_spend"
 difficulty = "medium"
 acceptance_label = "pending_calibration"
 walk_len = 2

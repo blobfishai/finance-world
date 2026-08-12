@@ -138,7 +138,7 @@ def main():
             if a.dry_run:
                 made += 1; per_pattern[key] = per_pattern.get(key, 0) + 1; continue
             try:
-                C.emit(out_dir, slug, q2, sc, seg, fields, steps, sqls)
+                C.emit(out_dir, slug, q2, sc, seg, fields, steps, sqls, instance_of=key)
             except Exception:
                 skipped += 1; continue
             # Judge the EMITTED checks, not the handler's field dict. The two disagreed on

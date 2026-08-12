@@ -3,13 +3,15 @@ schema_version = "1.4"
 [task]
 name = "erp_qa_gen/aged-balance-trey-research-west"
 version = "0.1.0"
-description = "FinanceBenchmark erp_qa clone — AR / Aged Balance."
+description = "FinanceBenchmark erp_qa pattern instance — AR / Aged Balance."
 authors = ["nario-ai"]
-keywords = ["finance", "erp_qa", "financebenchmark-clone"]
+keywords = ["finance", "erp_qa", "financebenchmark-pattern-instance"]
 
 [metadata]
 family = "erp_qa_gen"
-origin = "clone of microsoft/FinanceBenchmark erp_qa (AR / Aged Balance); question verbatim, ground truth recomputed in-world (docs/AUDIT.md A3)"
+origin = "generated instance of the microsoft/FinanceBenchmark erp_qa pattern (AR / Aged Balance), entity substituted into the benchmark's phrasing by world/etl/sweep_erp_qa.py — NOT a verbatim benchmark question. Ground truth recomputed in-world (docs/AUDIT.md A3). Counted as patterns x instances, never as benchmark parity (docs/PARITY.md)"
+generated = true
+pattern = "Aged Balance|h_customer_balance"
 difficulty = "medium"
 acceptance_label = "pending_calibration"
 walk_len = 2

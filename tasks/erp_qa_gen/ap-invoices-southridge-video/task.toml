@@ -3,13 +3,15 @@ schema_version = "1.4"
 [task]
 name = "erp_qa_gen/ap-invoices-southridge-video"
 version = "0.1.0"
-description = "FinanceBenchmark erp_qa clone — AP / AP Invoices."
+description = "FinanceBenchmark erp_qa pattern instance — AP / AP Invoices."
 authors = ["nario-ai"]
-keywords = ["finance", "erp_qa", "financebenchmark-clone"]
+keywords = ["finance", "erp_qa", "financebenchmark-pattern-instance"]
 
 [metadata]
 family = "erp_qa_gen"
-origin = "clone of microsoft/FinanceBenchmark erp_qa (AP / AP Invoices); question verbatim, ground truth recomputed in-world (docs/AUDIT.md A3)"
+origin = "generated instance of the microsoft/FinanceBenchmark erp_qa pattern (AP / AP Invoices), entity substituted into the benchmark's phrasing by world/etl/sweep_erp_qa.py — NOT a verbatim benchmark question. Ground truth recomputed in-world (docs/AUDIT.md A3). Counted as patterns x instances, never as benchmark parity (docs/PARITY.md)"
+generated = true
+pattern = "AP Invoices|h_ap_invoices"
 difficulty = "medium"
 acceptance_label = "pending_calibration"
 walk_len = 2

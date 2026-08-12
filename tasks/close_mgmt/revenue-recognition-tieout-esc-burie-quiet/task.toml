@@ -10,6 +10,7 @@ keywords = ["finance", "close_mgmt", "revenue-recognition", "cut-off", "tie-out"
 [metadata]
 family = "close_mgmt"
 origin = "escalated variant of close_mgmt/revenue-recognition-tieout via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: port of research/external/repos/TheAgentCompany/workspaces/tasks/finance-revenue-reconciliation (contracts.xlsx + revenue_schedule.xlsx, flag contracts where recognised revenue misses contract value beyond tolerance OR the schedule does not align with the contract term); the source's LLM-judged RocketChat notification and file-writing checkpoints are dropped for deterministic answer checks, and its single flagged list is split into the two finding classes its own task.md names; docs/HARD-LAYER-DESIGN.md M3 (non-collapse) / M4 (recomputed from the schedule, never read off the register's cached column) / M5 (tolerance and term-alignment rule live only in RAP-04); source checkpoint 1 (asserting the ownCloud path appears in the trajectory) is also dropped as environment-specific - the equivalent here is the required_servers/reads_before_submit trace check"
+variant_of = "close_mgmt/revenue-recognition-tieout"
 difficulty = "hard"
 acceptance_label = "pending_calibration"
 doc_mode = "buried"

@@ -369,6 +369,43 @@ question may not be rebound to a near neighbour), now from the other direction: 
 generator may not squat on identifiers a task already owns.** Three variants of one rule, all
 found the hard way, all cheap to prevent once stated.
 
+### A15. The parity ledger counted generated instances as benchmark coverage — FIXED
+`python3 ingest/run.py` reported **1,123 FinanceBenchmark items running here against 153
+addressable — 734%**, and a grand total of **689% of addressable**. A coverage number above
+100% is not a small error; it is the document disproving itself in its own headline, and
+`docs/PARITY.md` is precisely the artefact a buyer checks first.
+
+Cause: `world/etl/sweep_erp_qa.py` generates additional *instances* of an FB question pattern
+over other entities, and emits them through the cloner's `emit()`. That writer stamped one
+provenance for both products, so a generated instance was byte-identical in metadata to a real
+clone — `origin = "clone of microsoft/FinanceBenchmark erp_qa (...); question verbatim"` — on a
+task whose question is **not** verbatim and whose entity FB never asked about. `shipped()`
+matched on that string, so all 1,026 instances counted as ported benchmark items.
+
+The intent was already correct and written down twice. The sweep's own docstring says
+instances "go to their own family so they never inflate the FinanceBenchmark parity number",
+and PARITY.md said they were "excluded from every parity number above". Both were false in
+code. **A stated invariant that nothing enforces is a comment, not a control** — the same
+lesson as A11, where the property "a task must require reading" was believed rather than
+checked.
+
+Fixed in three places, so the invariant now holds by construction:
+- `emit(..., instance_of=)` writes distinct provenance and stamps `generated = true` +
+  `pattern = "<scenario>|<handler>"`.
+- `grow_tasks.py` stamps `variant_of` on escalated variants — the same bug in miniature, which
+  had TheAgentCompany reporting **13 ported against 12 addressable (108%)**.
+- `ingest/run.py` counts three buckets and never sums them: ported (the only thing the rate
+  counts), instances (breadth), variants (depth).
+
+Backfilled onto 1,026 instances and 30 variants without touching a ground truth, a check or an
+instruction — each instance's pattern key recovered by re-running the cloner's router over its
+question, so backfilled labels share the vocabulary of fresh output (1,026/1,026 routed).
+
+True number after the fix: **107 of 165 addressable (65%)** — FB 97/153, TAC 9/12 — plus 1,026
+instances over 27 patterns and 4 variants. The honest number was *better* than the 25% the doc
+had been claiming from a stale hand-edit; the bug was hiding real progress as well as
+manufacturing fake progress.
+
 ### A12b. Validator cleanup is best-effort, not guaranteed — OPEN, known cost
 The A12 fix added `shutil.rmtree(...)` at the end of `sim/validate.py`'s per-task loop. It
 runs only when the task reaches the end of the body, and several paths `continue` before it,

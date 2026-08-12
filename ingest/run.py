@@ -18,22 +18,39 @@ from bind import bind
 ADAPTERS = ["financebenchmark", "theagentcompany", "erpbench"]
 
 def shipped():
-    """What already runs here, by the source it was ported from."""
-    out = collections.Counter()
+    """What already runs here, by the source it was ported from.
+
+    Ported clones and generated instances are counted SEPARATELY and never summed into the
+    parity rate. A generated instance re-asks a pattern the benchmark established, over a
+    different entity; it is breadth, not coverage of a new benchmark item. Counting the 1,026
+    sweep instances as FinanceBenchmark clones is what made this ledger report 689% of
+    addressable (docs/AUDIT.md A15) - a number that discredits the whole document.
+    """
+    ports, insts, patterns = collections.Counter(), collections.Counter(), collections.defaultdict(set)
+    varis = collections.Counter()
     for t in ROOT.glob("tasks/*/*/task.toml"):
         meta = tomllib.loads(t.read_text()).get("metadata", {})
         origin = (meta.get("origin") or "") + " " + t.parent.name
-        if "FinanceBenchmark" in origin or t.parent.parent.name == "erp_qa_fb":
-            out["microsoft/FinanceBenchmark"] += 1
+        if "FinanceBenchmark" in origin or t.parent.parent.name in ("erp_qa_fb", "erp_qa_gen"):
+            repo = "microsoft/FinanceBenchmark"
         elif "TheAgentCompany" in origin:
-            out["TheAgentCompany"] += 1
+            repo = "TheAgentCompany"
         elif "erp-bench" in origin or "ERP-Bench" in origin:
-            out["agentic-labs/erp-bench"] += 1
-    return out
+            repo = "agentic-labs/erp-bench"
+        else:
+            continue
+        if meta.get("variant_of"):
+            varis[repo] += 1
+        elif meta.get("generated"):
+            insts[repo] += 1
+            patterns[repo].add(meta.get("pattern") or "unlabelled")
+        else:
+            ports[repo] += 1
+    return ports, insts, patterns, varis
 
 def main(detail=False):
     world = World()
-    ship = shipped()
+    ship, insts, patterns, varis = shipped()
     print(f"world capability: {len(world.tables)} tables · {len(world.parties)} named parties · "
           f"{len(world.servers)} servers · {len(world.filings)} filing companies\n")
     grand = collections.Counter()
@@ -52,9 +69,16 @@ def main(detail=False):
         print(f"   class     : " + " · ".join(f"{k} {v}" for k, v in cls.most_common()))
         print(f"   addressable: {len(addressable)}   (excludes not_agentic / needs_surface)")
         print(f"   binding   : " + (" · ".join(f"{k} {v}" for k, v in binds.most_common()) or "n/a"))
-        print(f"   runs here : {run_here}   -> {run_here/len(addressable)*100:.0f}% of addressable"
-              if addressable else "   runs here : 0")
+        print(f"   ported    : {run_here}   -> {run_here/len(addressable)*100:.0f}% of addressable"
+              if addressable else "   ported    : 0")
+        if insts.get(repo):
+            print(f"   instances : {insts[repo]} generated over {len(patterns[repo])} patterns "
+                  f"(breadth; excluded from the rate above)")
+        if varis.get(repo):
+            print(f"   variants  : {varis[repo]} escalated from ported tasks "
+                  f"(depth; excluded from the rate above)")
         grand["items"] += len(specs); grand["addressable"] += len(addressable); grand["runs"] += run_here
+        grand["insts"] += insts.get(repo, 0); grand["varis"] += varis.get(repo, 0)
         if detail:
             for s in addressable:
                 if s.bind_status != "bound":
@@ -66,8 +90,10 @@ def main(detail=False):
         print()
     print("=" * 74)
     print(f"TOTAL  items {grand['items']} · addressable {grand['addressable']} · "
-          f"running here {grand['runs']} "
+          f"ported {grand['runs']} "
           f"({grand['runs']/max(grand['addressable'],1)*100:.0f}% of addressable)")
+    print(f"       + {grand['insts']} generated instances (breadth) · {grand['varis']} escalated "
+          f"variants (depth) — counted separately by design")
 
 if __name__ == "__main__":
     a = argparse.ArgumentParser(); a.add_argument("--detail", action="store_true")

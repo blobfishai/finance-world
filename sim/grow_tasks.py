@@ -105,6 +105,13 @@ def grow(task_dir: Path, levers, dry_run=False):
     toml = re.sub(r'origin = "', 'origin = "escalated variant of '
                   f'{task_dir.parent.name}/{name} via sim/grow_tasks.py '
                   f'({"; ".join(applied)}); ground truth unchanged. Base: ', toml, count=1)
+    # A variant re-asks its base's question through harder retrieval. It is depth on an
+    # already-covered source item, never a newly covered one - so it is stamped and counted
+    # in its own bucket. Without this, escalating a ported task reports parity above 100%
+    # (docs/AUDIT.md A15).
+    toml = re.sub(r'^variant = .*\n', '', toml, flags=re.M)
+    toml = re.sub(r'^(difficulty = )', f'variant_of = "{task_dir.parent.name}/{name}"\n\\1',
+                  toml, count=1, flags=re.M)
     (dest / "task.toml").write_text(toml)
     return dest, "; ".join(applied)
 

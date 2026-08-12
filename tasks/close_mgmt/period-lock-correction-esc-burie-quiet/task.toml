@@ -10,6 +10,7 @@ keywords = ["finance", "close_mgmt", "period-lock", "reclass", "journal_entry", 
 [metadata]
 family = "close_mgmt"
 origin = "escalated variant of close_mgmt/period-lock-correction via sim/grow_tasks.py (buried_docs: governing policy hidden in the adjacent-policy library; quiet_prompt: explicit policy pointers removed from the ask); ground truth unchanged. Base: closes tracked coverage gap erpnext.period_close_lock (sim/coverage.py); period-status model from research/odoo-domain.md (Odoo company lock dates) and research/erp-mcp-tool-census.md (mcp-erp close_period/reopen_period); docs/HARD-LAYER-DESIGN.md M1/M3/M5"
+variant_of = "close_mgmt/period-lock-correction"
 difficulty = "medium"
 acceptance_label = "pending_calibration"
 doc_mode = "buried"
