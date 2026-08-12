@@ -1,0 +1,221 @@
+{
+ "task": "erp_qa_gen/credit-limit-proseware-east",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:credit_limit:off(got=100000.0)",
+  "answer:open_balance:off(got=5321.5)",
+  "answer:credit_utilisation_pct:off(got=5.3215)"
+ ],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 27,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 20,
+ "agent_error": false,
+ "duration_s": 137.2,
+ "cost_usd": null,
+ "final_text": "All fields submitted. Here's the final answer:\n\n| Field | Value |\n|---|---|\n| **credit_limit** | $100,000.00 |\n| **open_balance** | $5,321.50 |\n| **credit_utilisation_pct** | 5.32% |\n\n**Data sources:**\n- **Credit limit:** `Customers` entity \u2014 Proseware East (SYNCUS-0076), `credit_max` = 100,000.00 USD\n- **Open balance:** Live AgedBalances computation on the customer form (as_of = 2026-03-02) \u2014 `total_open` = 5,321.50 USD, consisting of one overdue invoice (CIV-000260, Support Services, 90+ days past due)\n- **Utilisation:** 5,321.50 \u00f7 100,000.00 = 5.3215%",
+ "trace": [
+  {
+   "ts": 1786496234.9806678,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496234.9809458,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496238.281367,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496238.282191,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Proseware East\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496251.1103098,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496251.111346,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0076\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496265.890304,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer open balance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496265.893366,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, SUM(amount - settled) as open_balance FROM erp_customertransactions WHERE account = 'SYNCUS-0076' AND dataareaid = 'USMF' AND closed = 0 GROUP BY account\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496269.265345,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496271.953921,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0076\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496296.732877,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit utilisation SYNCUS\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496296.736511,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0076' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496300.5040371,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496300.5199392,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0076\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496307.952571,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"credit limit customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496307.961431,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496312.1067278,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786496312.112129,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE account = 'SYNCUS-0076'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496324.240656,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496326.844822,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496329.407776,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"SYNCUS-0076\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496333.773719,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 76}",
+   "ok": true
+  },
+  {
+   "ts": 1786496336.6650481,
+   "server": "erp",
+   "tool": "form_open_or_close_tab",
+   "args": "{\"form_id\": \"fh-1\", \"tab\": \"Credit and collections\", \"open\": true}",
+   "ok": true
+  },
+  {
+   "ts": 1786496339.6233878,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"control\": \"AgedBalances\", \"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496347.5823061,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496356.3758469,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 100000, \"open_balance\": 5321.5, \"credit_utilisation_pct\": 5.3215}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496358.4511628,
+   "server": "harness",
+   "tool": "list_submitted",
+   "args": "{}",
+   "ok": true
+  }
+ ]
+}

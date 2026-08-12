@@ -1,0 +1,188 @@
+{
+ "task": "erp_qa_gen/credit-limit-city-power-light-east",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:credit_limit:off(got=100000.0)",
+  "answer:open_balance:off(got=30035.26)",
+  "answer:credit_utilisation_pct:off(got=30.04)"
+ ],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 22,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 18,
+ "agent_error": false,
+ "duration_s": 178.7,
+ "cost_usd": null,
+ "final_text": "The answer has been submitted. Here's a summary:\n\n| Field | Value |\n|---|---|\n| **credit_limit** | $100,000.00 |\n| **open_balance** | $30,035.26 |\n| **credit_utilisation_pct** | 30.04% |\n\n**Notes:**\n- **SYNCUS-0061** = City Power & Light East (Las Vegas, NV), credit limit $100,000.\n- The only open transaction as of March 2, 2026 is invoice **CIV-000203** (License Fee, $30,035.26, dated 2026-02-09, due 2026-03-26).\n- **SYNCUS-0741** is actually **Fourth Coffee East** (Atlanta, GA), a different customer with a $10,000 credit limit \u2014 it is not City Power & Light East.",
+ "trace": [
+  {
+   "ts": 1786495817.28429,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495817.2847989,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495820.21952,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495820.2206562,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"City Power & Light East\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495830.682973,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE account = 'SYNCUS-0741'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495838.194599,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"SYNCUS invoice transaction\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495838.195379,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0741' LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495840.9902878,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495843.502381,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE invoice = 'SYNCUS-0741' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495846.355862,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM CustomerTransactions WHERE invoice = 'SYNCUS-0741' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786495848.99726,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'erp_%'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786495851.6897888,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"invoice\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495854.467496,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495892.3047261,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0061\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495902.6167412,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495906.252907,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0061\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495906.253657,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495920.385108,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer group\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495923.117245,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0741\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495923.117756,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0061\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495962.344308,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, name, credit_max FROM erp_customers WHERE dataareaid = 'USMF' AND (account = 'SYNCUS-0061' OR account = 'SYNCUS-0741')\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495982.23067,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 100000.0, \"open_balance\": 30035.26, \"credit_utilisation_pct\": 30.04}}",
+   "ok": true
+  }
+ ]
+}

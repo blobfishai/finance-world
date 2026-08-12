@@ -1,0 +1,103 @@
+{
+ "task": "erp_qa_fb/customer-setup-5",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 11,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 9,
+ "agent_error": false,
+ "duration_s": 25.3,
+ "cost_usd": null,
+ "final_text": "All three fields have been submitted. Forest Wholesales (account US-003, USMF) has the following contact information on file:\n\n| Field | Value |\n|---|---|\n| Contact Name | Ana |\n| Contact Email | ana@forest-sim.example |\n| Phone Number | 555-0100 |",
+ "trace": [
+  {
+   "ts": 1786494232.1362681,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer contacts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494232.137151,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Forest Wholesales contact\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494232.138195,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE name LIKE '%Forest%' LIMIT 10\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494236.025612,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494236.026155,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Forest Wholesales USMF\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494239.432441,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494241.2267468,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494243.431082,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"name\", \"value\": \"Forest\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494245.449826,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 1001}",
+   "ok": true
+  },
+  {
+   "ts": 1786494247.930787,
+   "server": "erp",
+   "tool": "form_open_or_close_tab",
+   "args": "{\"form_id\": \"fh-1\", \"tab\": \"Contact information\", \"open\": true}",
+   "ok": true
+  },
+  {
+   "ts": 1786494251.302337,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"contact_name\": \"Ana\", \"contact_email\": \"ana@forest-sim.example\", \"phone_number\": \"555-0100\"}}",
+   "ok": true
+  }
+ ]
+}

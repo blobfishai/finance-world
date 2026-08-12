@@ -1,0 +1,145 @@
+{
+ "task": "erp_qa_gen/credit-limit-school-of-fine-art-east",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:credit_limit:off(got=25000.0)",
+  "answer:open_balance:off(got=51478.73)",
+  "answer:credit_utilisation_pct:off(got=205.91)"
+ ],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 16,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 10,
+ "agent_error": false,
+ "duration_s": 98.3,
+ "cost_usd": null,
+ "final_text": "The answer has been submitted. Here's a summary:\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $25,000.00 |\n| **Open Balance** | $51,478.73 |\n| **Credit Utilisation %** | 205.91% |\n\nSchool of Fine Art East (SYNCUS-0077) is significantly over its credit limit of $25,000 \u2014 with two open invoices totaling $51,478.73, the utilisation stands at over 205% as of March 2, 2026. The bulk ($49,763.45) comes from a recent invoice (CIV-000263, due March 3, 2026), plus an older $1,715.28 invoice (CIV-000267) that is over 90 days past due.",
+ "trace": [
+  {
+   "ts": 1786496252.122773,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496252.123988,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit utilisation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496257.67504,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496257.6758232,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"CustomerAccount\": \"SYNCUS-0741\"}}",
+   "ok": false,
+   "note": "unknown field CustomerAccount"
+  },
+  {
+   "ts": 1786496260.131679,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496263.8340201,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"name\": \"School of Fine Art East\"}, \"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496263.834978,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0077\"}, \"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496277.349675,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496277.350337,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496283.92558,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0077' AND dataareaid = 'USMF' ORDER BY trans_date DESC LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496283.926317,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account = 'SYNCUS-0077' AND dataareaid = 'USMF' ORDER BY as_of DESC LIMIT 50\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786496287.596148,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0077\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496287.597352,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0077\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496319.072761,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit utilisation open balance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496319.100878,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496337.8257148,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 25000.0, \"open_balance\": 51478.73, \"credit_utilisation_pct\": 205.91}}",
+   "ok": true
+  }
+ ]
+}

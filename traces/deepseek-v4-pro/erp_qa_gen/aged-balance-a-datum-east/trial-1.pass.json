@@ -1,0 +1,83 @@
+{
+ "task": "erp_qa_gen/aged-balance-a-datum-east",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 8,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 6,
+ "agent_error": false,
+ "duration_s": 31.3,
+ "cost_usd": null,
+ "final_text": "Done. Here's the summary:\n\n| Field | Value |\n|---|---|\n| **Open invoice count** | 4 |\n| **Open balance** | $49,795.65 |\n\nThe total comes from two \"A. Datum East\" customers in USMF: SYNCUS-0057 (Denver, $18,840.18) and SYNCUS-0729 (Pittsburgh, $30,955.47), all in USD with none of the four open invoices yet settled.",
+ "trace": [
+  {
+   "ts": 1786494508.254359,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494508.255378,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'A. Datum East'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494511.357501,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"A. Datum East\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494511.358032,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494515.381585,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account IN ('SYNCUS-0057', 'SYNCUS-0729') AND dataareaid = 'USMF' AND closed = 0 AND trans_date <= '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786494518.2581089,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0057\", \"dataareaid\": \"USMF\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494518.260225,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0729\", \"dataareaid\": \"USMF\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494530.842578,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"open_invoice_count\": 4, \"open_balance\": 49795.65}}",
+   "ok": true
+  }
+ ]
+}

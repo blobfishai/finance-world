@@ -1,0 +1,105 @@
+{
+ "task": "erp_qa_gen/credit-limit-woodgrove-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 11,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 11,
+ "agent_error": false,
+ "duration_s": 48.5,
+ "cost_usd": null,
+ "final_text": "**Summary:**\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $10,000.00 |\n| **Open Balance** (as of Mar 2, 2026) | $49,768.20 |\n| **Available Credit** | -$39,768.20 |\n\n**Details:**\n\n- **Customer:** Woodgrove South, account SYNCUS-0056 in USMF (Omaha, NE). Credit max is $10,000 with rating \"Excellent\" and status \"Open.\"\n- **Open transactions** (closed=0, trans_date \u2264 2026-03-02):\n  - Invoice CIV-000188 (Consulting Services, 2025-03-31): $23,779.13 \u2013 $16,966.18 settled = **$6,812.95** open\n  - Invoice CIV-000190 (License Fee, 2025-09-12): $42,955.25 \u2013 $0.00 settled = **$42,955.25** open\n- **Open Balance:** $6,812.95 + $42,955.25 = **$49,768.20**\n- **Available Credit:** $10,000.00 \u2013 $49,768.20 = **\u2013$39,768.20** (customer is significantly over its credit limit)",
+ "trace": [
+  {
+   "ts": 1786496404.832882,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE customer_account LIKE '%SYNCUS-0056%' OR name LIKE '%Woodgrove South%'\"}",
+   "ok": false,
+   "note": "OperationalError('no such column: customer_account')"
+  },
+  {
+   "ts": 1786496404.8334851,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit available credit calculation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496408.400522,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496412.306934,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496415.304532,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Woodgrove South\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496419.6150641,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496423.543293,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0056' AND dataareaid = 'USMF' AND trans_date <= '2026-03-02' AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496427.344317,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0056\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496434.074683,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496437.8262131,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786496442.35067,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 10000.0, \"open_balance\": 49768.2, \"available_credit\": -39768.2}}",
+   "ok": true
+  }
+ ]
+}

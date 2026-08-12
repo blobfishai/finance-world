@@ -1,0 +1,193 @@
+{
+ "task": "erp_qa_fb/aged-balance-6",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:total_past_due:off(got=0.0)",
+  "answer:not_yet_due:off(got=0.0)"
+ ],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 23,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 21,
+ "agent_error": false,
+ "duration_s": 94.2,
+ "cost_usd": null,
+ "final_text": "Here's the breakdown for **Birch Company (US-027)** in USMF as of March 2, 2026:\n\n| Bucket | Amount |\n|---|---|\n| **Not yet due** | $0.00 |\n| **1\u201330 days** | $0.00 |\n| **31\u201360 days** | $0.00 |\n| **61\u201390 days** | $0.00 |\n| **Over 90 days** | $0.00 |\n| **Total past due** | $0.00 |\n\n**How I arrived at this:**\n\n- Birch Company (account `US-027`) exists in the USMF customer master with a $120,000 credit limit and Net30 terms.\n- The **Aged Balances Snapshot** (run `AGE-2026-03-01`, the closest run to your date) contains no entry for `US-027`.\n- A search of all **Customer Transactions** (invoices and payments) across 5,804 records returned no transactions for account `US-027` \u2014 only substring matches on `SYNCUS-0270` through `SYNCUS-0279`, which are separate entities.\n- With no open invoices on file, Birch Company has **zero outstanding receivables** across all aging buckets.",
+ "trace": [
+  {
+   "ts": 1786494088.016348,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494088.0171452,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"aged receivables overdue policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494090.5366158,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Birch\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494093.711165,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494093.711352,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"aged balances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494096.050862,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account = 'US-027' AND dataareaid = 'USMF' ORDER BY as_of DESC LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786494097.97751,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"US-027\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494103.371698,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"US-027\", \"dataareaid\": \"USMF\"}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494103.3731542,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"US-027\"}, \"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494108.002774,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"page\": 2}",
+   "ok": true
+  },
+  {
+   "ts": 1786494112.022366,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'US-027' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786494114.171387,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Customer aged balances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494116.922923,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Birch\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494120.7862542,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"US-027\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494125.752083,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494130.25919,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions WHERE account = 'US-027' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786494149.049619,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customer transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494151.3494558,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Customer transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494154.077754,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Birch\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494156.763011,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"US-027\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494161.56097,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"page\": 2, \"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"US-027\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494167.254078,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494171.190285,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_past_due\": 0, \"not_yet_due\": 0, \"over_90_days\": 0}}",
+   "ok": true
+  }
+ ]
+}

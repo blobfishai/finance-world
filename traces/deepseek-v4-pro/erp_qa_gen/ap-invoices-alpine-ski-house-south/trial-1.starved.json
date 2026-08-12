@@ -1,0 +1,492 @@
+{
+ "task": "erp_qa_gen/ap-invoices-alpine-ski-house-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": true,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:open_invoice_count:missing",
+  "answer:open_invoice_total:missing",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp",
+  "sheets"
+ ],
+ "n_tool_calls": 64,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 40,
+ "agent_error": false,
+ "duration_s": 145.6,
+ "cost_usd": null,
+ "final_text": "",
+ "trace": [
+  {
+   "ts": 1786494800.812234,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice pending approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494800.812536,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494804.216608,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494804.2174878,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Vendors\", \"filters\": {\"name\": \"Alpine Ski House South\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494808.704735,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {\"dataareaid\": \"USMF\", \"status\": \"pending\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494811.092895,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {\"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494815.364067,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice journal pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494815.3642828,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494819.171656,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approvalrequests LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approvalrequests')"
+  },
+  {
+   "ts": 1786494819.171833,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494822.761794,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor invoice approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494822.7619882,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494822.762578,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions WHERE dataareaid = 'USMF' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786494825.789556,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494825.790032,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortrans LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortrans')"
+  },
+  {
+   "ts": 1786494830.86381,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"account\": \"SYNVEN-0031\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494830.865579,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"account\": \"SYNVEN-0703\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494830.865995,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"PurchaseOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494836.3855722,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor invoice journal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494836.3858979,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice register approval workflow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494839.153151,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalPolicies\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494839.153682,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"LedgerJournals\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494843.950274,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All vendors\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494847.0051289,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Alpine Ski House South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494849.670401,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 31}",
+   "ok": true
+  },
+  {
+   "ts": 1786494851.9520588,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"OpenTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494855.3990211,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494858.8118038,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494858.812507,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"vendor invoice approval pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494861.552572,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"approval workflow invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494861.552809,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice register\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494864.6114051,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'erp_%' ORDER BY name\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786494866.9575648,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM erp_sqlite_master WHERE type='table' ORDER BY name\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_sqlite_master')"
+  },
+  {
+   "ts": 1786494870.397803,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_ledgerjournals WHERE dataareaid = 'USMF' AND state = 'draft' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_ledgerjournals')"
+  },
+  {
+   "ts": 1786494870.398442,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PurchaseOrders\", \"filters\": {\"vendor\": \"SYNVEN-0031\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494870.398962,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PurchaseOrders\", \"filters\": {\"vendor\": \"SYNVEN-0703\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494874.978307,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {\"dataareaid\": \"USMF\", \"state\": \"draft\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494874.978515,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice header\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494879.4835498,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"PaymentRuns\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494879.484232,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentRuns\", \"filters\": {\"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494886.866841,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494889.724451,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494889.725079,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494891.451912,
+   "server": "docs",
+   "tool": "list_document_types",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786494891.4524028,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786494898.552781,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786494898.553731,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Alpine Ski House South'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494903.457451,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Vendor transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494905.6958048,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Alpine Ski House South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494908.4787278,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"account\", \"value\": \"SYNVEN-0031\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494914.259532,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approvalrequests LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approvalrequests')"
+  },
+  {
+   "ts": 1786494914.260096,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approvalpolicies LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approvalpolicies')"
+  },
+  {
+   "ts": 1786494917.029485,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions WHERE dataareaid = 'USMF' AND account IN ('SYNVEN-0031', 'SYNVEN-0703') LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786494919.230755,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor')"
+  },
+  {
+   "ts": 1786494921.250036,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendors LIMIT 5\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494924.000426,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions WHERE dataareaid = 'USMF' AND account IN ('SYNVEN-0031', 'SYNVEN-0703') AND closed = 0 LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786494926.022283,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor_transactions LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_transactions')"
+  },
+  {
+   "ts": 1786494929.596695,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"approval invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494929.5968661,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"pending vendor\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494933.842449,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"LedgerJournalLines\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494933.84296,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {\"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494939.324068,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending vendor invoice journal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494939.324312,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"workflow work item\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494941.963864,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Alpine Ski House South approval\"}",
+   "ok": true
+  }
+ ]
+}

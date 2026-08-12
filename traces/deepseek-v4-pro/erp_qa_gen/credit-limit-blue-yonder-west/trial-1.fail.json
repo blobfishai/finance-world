@@ -1,0 +1,136 @@
+{
+ "task": "erp_qa_gen/credit-limit-blue-yonder-west",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:open_balance:off(got=41304.64)",
+  "answer:credit_utilisation_pct:off(got=413.05)"
+ ],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 15,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 10,
+ "agent_error": false,
+ "duration_s": 55.1,
+ "cost_usd": null,
+ "final_text": "All three values are submitted:\n\n| Field | Value |\n|---|---|\n| **credit_limit** | $10,000.00 |\n| **open_balance** | $41,304.64 |\n| **credit_utilisation_pct** | 413.05% |\n\nBlue Yonder West (SYNCUS-0088) has a $10,000 credit limit but a single open invoice (CIV-000307, Support Services, dated June 2025) for $41,304.64 \u2014 putting them well over their limit at 413%.",
+ "trace": [
+  {
+   "ts": 1786495800.834223,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495800.8344882,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495803.825166,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495803.826138,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Blue Yonder\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495810.472172,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495810.472691,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495814.401505,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0088' AND dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495814.4021,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account = 'SYNCUS-0088' AND dataareaid = 'USMF' ORDER BY as_of DESC LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786495817.669089,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0088\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495817.6702569,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0088\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495827.872273,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0088' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495830.7789261,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"SYNCUS-0741\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495830.7803352,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495838.887599,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"page\": 2, \"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0088\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495846.501878,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 10000.0, \"open_balance\": 41304.64, \"credit_utilisation_pct\": 413.05}}",
+   "ok": true
+  }
+ ]
+}

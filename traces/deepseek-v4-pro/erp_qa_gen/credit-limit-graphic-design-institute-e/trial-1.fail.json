@@ -1,0 +1,93 @@
+{
+ "task": "erp_qa_gen/credit-limit-graphic-design-institute-e",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:open_balance:off(got=49140.18)",
+  "answer:credit_utilisation_pct:off(got=491.4)"
+ ],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 9,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 8,
+ "agent_error": false,
+ "duration_s": 60.3,
+ "cost_usd": null,
+ "final_text": "All three fields submitted:\n\n| Field | Value |\n|---|---|\n| **credit_limit** | $10,000.00 |\n| **open_balance** | $49,140.18 |\n| **credit_utilisation_pct** | 491.40% |\n\nGraphic Design Institute East (SYNCUS-0070) has two open invoices \u2014 CIV-000240 ($19,164.73, dated Feb 28, 2026) and CIV-000241 ($29,975.45, dated Jan 3, 2026) \u2014 totalling $49,140.18 against a $10,000 credit limit, putting them at over 4.9\u00d7 their limit.",
+ "trace": [
+  {
+   "ts": 1786495968.744349,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495968.745537,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit utilisation SYNCUS\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495971.6976168,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495971.698754,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495976.834548,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Graphic Design Institute\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495983.4250581,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495986.227809,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0070' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495988.31601,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0070\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496016.6614232,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 10000.0, \"open_balance\": 49140.18, \"credit_utilisation_pct\": 491.4}}",
+   "ok": true
+  }
+ ]
+}

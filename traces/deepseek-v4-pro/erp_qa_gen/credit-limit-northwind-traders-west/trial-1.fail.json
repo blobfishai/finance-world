@@ -1,0 +1,162 @@
+{
+ "task": "erp_qa_gen/credit-limit-northwind-traders-west",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:credit_limit:off(got=250000.0)",
+  "answer:open_balance:off(got=47271.15)",
+  "answer:credit_utilisation_pct:off(got=18.91)"
+ ],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 18,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 16,
+ "agent_error": false,
+ "duration_s": 97.9,
+ "cost_usd": null,
+ "final_text": "The submission has been recorded. Here's a summary:\n\n| Field | Value | Source |\n|---|---|---|\n| **Credit Limit** | $250,000.00 | `Customers` entity \u2014 `credit_max` for SYNCUS-0103 |\n| **Open Balance** | $47,271.15 | Open transactions (CIV-000362: $38,216.63 + CIV-000364: $9,054.52), confirmed by AgedBalancesSnapshot AGE-2026-03-01 |\n| **Credit Utilisation %** | **18.91%** | ($47,271.15 \u00f7 $250,000.00) \u00d7 100 |\n\n**Note:** SYNCUS-0741 resolves to \"Fourth Coffee East\" in the ERP, not Northwind Traders West. The parenthetical \"(SYNCUS-0103)\" in the question correctly identifies the Northwind Traders West account, which is what I used for all calculations.",
+ "trace": [
+  {
+   "ts": 1786496135.4351518,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496135.4355788,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496137.992946,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496140.160487,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496143.10927,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Northwind Traders West\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496153.2622652,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496156.723105,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, SUM(amount - settled) as open_balance FROM erp_customertransactions WHERE account = 'SYNCUS-0103' AND closed = 0 AND dataareaid = 'USMF' GROUP BY account\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496159.5709078,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, SUM(amount - settled) as open_balance FROM customertransactions WHERE account = 'SYNCUS-0103' AND closed = 0 AND dataareaid = 'USMF' GROUP BY account\"}",
+   "ok": false,
+   "note": "ValueError('table customertransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786496162.565839,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, SUM(amount - settled) as open_balance FROM erp_customertransactions WHERE account = 'SYNCUS-0103' AND closed = 0 AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496167.486331,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, SUM(amount - settled) as open_balance FROM \\\"CustomerTransactions\\\" WHERE account = 'SYNCUS-0103' AND closed = 0 AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: CustomerTransactions')"
+  },
+  {
+   "ts": 1786496170.11033,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0103\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496184.097364,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"SYNCUS-0741\"}",
+   "ok": false,
+   "note": "not found"
+  },
+  {
+   "ts": 1786496184.0980852,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0741\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496193.1644642,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit utilisation policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496193.165045,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0103' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496202.162753,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496204.881484,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0103\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496219.556192,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 250000, \"open_balance\": 47271.15, \"credit_utilisation_pct\": 18.91}}",
+   "ok": true
+  }
+ ]
+}

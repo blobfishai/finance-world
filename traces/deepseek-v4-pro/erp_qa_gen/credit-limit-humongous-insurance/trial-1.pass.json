@@ -1,0 +1,83 @@
+{
+ "task": "erp_qa_gen/credit-limit-humongous-insurance",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 8,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 9,
+ "agent_error": false,
+ "duration_s": 35.9,
+ "cost_usd": null,
+ "final_text": "The answer has been submitted. Here's a summary:\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $250,000.00 |\n| **Open Balance** | $86,929.26 |\n| **Available Credit** | $163,070.74 |\n\nThe open balance consists of two unpaid invoices as of March 2, 2026: CIV-000047 (\"Cloud Services\", $38,568.43 from Feb 2026) and CIV-000050 (\"Professional Services\", $48,360.83 from Jul 2025). All earlier invoices have been fully settled via payments.",
+ "trace": [
+  {
+   "ts": 1786495976.6286342,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE customer_account = 'SYNCUS-0015'\"}",
+   "ok": false,
+   "note": "OperationalError('no such column: customer_account')"
+  },
+  {
+   "ts": 1786495978.471761,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495980.586207,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495982.712924,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0015\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495986.6332989,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495988.835244,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0015' AND dataareaid = 'USMF' AND trans_date <= '2026-03-02' ORDER BY trans_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495991.033767,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0015\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496002.133687,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 250000.0, \"open_balance\": 86929.26, \"available_credit\": 163070.74}}",
+   "ok": true
+  }
+ ]
+}

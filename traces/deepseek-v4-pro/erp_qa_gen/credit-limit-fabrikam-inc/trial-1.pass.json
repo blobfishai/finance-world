@@ -1,0 +1,147 @@
+{
+ "task": "erp_qa_gen/credit-limit-fabrikam-inc",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 17,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 14,
+ "agent_error": false,
+ "duration_s": 73.8,
+ "cost_usd": null,
+ "final_text": "All fields submitted successfully. Here's the summary for **Fabrikam, Inc. (SYNCUS-0012)** as of March 2, 2026:\n\n| Metric | Value |\n|---|---|\n| **Credit Limit** | $25,000.00 |\n| **Open Balance** | $36,986.78 |\n| **Available Credit** | -$11,986.78 |\n\nThe customer has exceeded their credit limit by $11,986.78. Their open balance consists entirely of invoice CIV-000039 (License Fee, dated September 24, 2025) which is over 90 days past due. The customer is also on COD terms with a \"Poor\" credit rating.",
+ "trace": [
+  {
+   "ts": 1786495894.075443,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495894.076274,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit available credit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495897.143829,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495900.97716,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0012\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495905.962219,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495905.9627059,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495910.793966,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0012' AND dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495910.794452,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account = 'SYNCUS-0012' AND dataareaid = 'USMF' ORDER BY as_of DESC LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786495915.7981708,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0012\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495915.798945,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0012\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495924.165508,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit available credit calculation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495932.6026042,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495935.221408,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495939.146614,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 12}",
+   "ok": true
+  },
+  {
+   "ts": 1786495943.53513,
+   "server": "erp",
+   "tool": "form_open_or_close_tab",
+   "args": "{\"form_id\": \"fh-1\", \"tab\": \"Credit and collections\", \"open\": true}",
+   "ok": true
+  },
+  {
+   "ts": 1786495951.395999,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"AgedBalances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495956.872488,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 25000.0, \"open_balance\": 36986.78, \"available_credit\": -11986.78}}",
+   "ok": true
+  }
+ ]
+}

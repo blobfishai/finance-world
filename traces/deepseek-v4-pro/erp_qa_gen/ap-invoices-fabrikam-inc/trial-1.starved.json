@@ -1,0 +1,517 @@
+{
+ "task": "erp_qa_gen/ap-invoices-fabrikam-inc",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": true,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:open_invoice_count:missing",
+  "answer:open_invoice_total:missing",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp"
+ ],
+ "n_tool_calls": 68,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 40,
+ "agent_error": false,
+ "duration_s": 166.9,
+ "cost_usd": null,
+ "final_text": "",
+ "trace": [
+  {
+   "ts": 1786494942.85476,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoices pending approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494942.8550909,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494942.855219,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"Fabrikam vendor\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494949.627445,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494949.627975,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Vendors\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494949.628105,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending vendor invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494952.801936,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Vendors\", \"filters\": {\"name\": \"Fabrikam\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494952.8025851,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {\"dataareaid\": \"USMF\", \"status\": \"Pending\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494956.570349,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {\"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494960.8587651,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice journal pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494960.8589828,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice workflow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494960.859093,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494963.597667,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494963.598181,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"LedgerJournals\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494968.4104042,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_ledgerjournals WHERE dataareaid = 'USMF' AND state = 'draft' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_ledgerjournals')"
+  },
+  {
+   "ts": 1786494968.410899,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approvalrequests WHERE dataareaid = 'USMF' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approvalrequests')"
+  },
+  {
+   "ts": 1786494970.7182589,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' ORDER BY name\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786494973.034365,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendors WHERE dataareaid = 'USMF' AND name = 'Fabrikam, Inc.' LIMIT 5\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494975.958139,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approvalrequests LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approvalrequests')"
+  },
+  {
+   "ts": 1786494975.958617,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_ledgerjournals WHERE dataareaid = 'USMF' AND state = 'draft' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_ledgerjournals')"
+  },
+  {
+   "ts": 1786494979.993601,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {\"dataareaid\": \"USMF\", \"state\": \"draft\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494979.99379,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending vendor invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494983.03056,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor invoice approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494983.030751,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494983.030856,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"invoice approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494987.128698,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All vendors\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494991.15459,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice header\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494991.154999,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice journal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494993.7857332,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494993.7863,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalPolicies\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494998.076118,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 12}",
+   "ok": true
+  },
+  {
+   "ts": 1786495000.603231,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"OpenTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495004.2276921,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495004.2285728,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"vendor invoice approval pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495008.608541,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"VendInvoiceInfoTable\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495008.6087239,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending vendor\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495012.225148,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"VendInvoiceInfo\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495012.225371,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"VendInvoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495022.940848,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice header pending workflow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495022.9412868,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice table\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495027.580611,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"vendor invoice approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495027.580767,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"pending invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495032.205985,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Vendor transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495036.036261,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495036.036942,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"PurchaseOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495040.006142,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PurchaseOrders\", \"filters\": {\"vendor\": \"SYNVEN-0012\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495044.675349,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All purchase orders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495048.64205,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495048.64219,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495055.3469691,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions WHERE account = 'SYNVEN-0012' AND dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786495057.78164,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor_transactions WHERE account = 'SYNVEN-0012' AND dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_transactions')"
+  },
+  {
+   "ts": 1786495060.292104,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"account\": \"SYNVEN-0012\", \"dataareaid\": \"USMF\", \"closed\": \"0\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495065.7763042,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {\"dataareaid\": \"USMF\", \"state\": \"draft\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495065.776969,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {\"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495071.3441339,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"invoice approval workflow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495071.344634,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"pending approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495073.4997,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495076.176176,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE CustomerRef IN (SELECT Id FROM Customer WHERE DisplayName LIKE 'Fabrikam%')\"}",
+   "ok": false,
+   "note": "QueryParserError: unsupported syntax. Use SELECT * FROM <Entity> [WHERE <Field> = '<value>'] with entities Customer, Invoice, CreditMemo, Payment"
+  },
+  {
+   "ts": 1786495081.1984699,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"VendInvoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495081.198626,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495085.89625,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {\"status\": \"Submitted\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495085.896968,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {\"doc_type\": \"Vendor invoice\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495090.647595,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice register\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495090.647962,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice pool\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495093.358114,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approvalrequests LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approvalrequests')"
+  },
+  {
+   "ts": 1786495097.038225,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approval_requests LIMIT 200\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495097.039037,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approval LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approval')"
+  },
+  {
+   "ts": 1786495101.432659,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"VendEditInvoice\"}",
+   "ok": false,
+   "note": "no menu item 'VendEditInvoice'"
+  }
+ ]
+}

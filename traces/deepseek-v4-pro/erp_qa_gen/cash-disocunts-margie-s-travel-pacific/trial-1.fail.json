@@ -1,0 +1,141 @@
+{
+ "task": "erp_qa_gen/cash-disocunts-margie-s-travel-pacific",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:has_active_cash_discount:wrong_polarity(got=no, want=yes)"
+ ],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 16,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 7,
+ "agent_error": false,
+ "duration_s": 65.8,
+ "cost_usd": null,
+ "final_text": "Answer submitted:\n\n- **has_active_cash_discount**: `\"No\"` \u2014 The only invoice with cash discount terms (CIV-000542, code \"10D5\" \u2192 \"14D2\") has expired discount windows as of March 2, 2026.\n- **discounted_open_invoice_count**: `1` \u2014 One open invoice (CIV-000542) carries a cash discount code, even though its window is no longer active.",
+ "trace": [
+  {
+   "ts": 1786495500.6179829,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer invoices open\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495500.618264,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"payment terms cash discount\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495500.618908,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"cash discount terms policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495500.619659,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer WHERE name LIKE '%Margie%Travel%Pacific%'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer')"
+  },
+  {
+   "ts": 1786495505.114154,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495505.1147048,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495505.115128,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CashDiscounts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495505.115584,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"PaymentTerms\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495505.116608,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Margie's Travel Pacific\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495511.5135412,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0158\", \"dataareaid\": \"USMF\", \"closed\": 0, \"txn_type\": \"Invoice\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495511.51441,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net45\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495511.5149682,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CashDiscounts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495537.11028,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"cash discount active window invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495537.110982,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495549.255407,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"code\": \"14D2\"}, \"entity\": \"CashDiscounts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495556.1479092,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"has_active_cash_discount\": \"No\", \"discounted_open_invoice_count\": 1}}",
+   "ok": true
+  }
+ ]
+}

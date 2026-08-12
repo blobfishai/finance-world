@@ -1,0 +1,464 @@
+{
+ "task": "erp_qa_gen/ap-invoices-contoso-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": true,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:open_invoice_count:missing",
+  "answer:open_invoice_total:missing",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [
+  "docs",
+  "email",
+  "erp",
+  "sheets"
+ ],
+ "n_tool_calls": 61,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 40,
+ "agent_error": false,
+ "duration_s": 133.2,
+ "cost_usd": null,
+ "final_text": "",
+ "trace": [
+  {
+   "ts": 1786494863.0776682,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending vendor invoices approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494863.077968,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice journal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494868.408175,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494868.408702,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Vendors\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494868.4094532,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Vendors\", \"filters\": {\"name\": \"Contoso South\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494872.095196,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {\"status\": \"Pending\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494875.0476549,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494878.735944,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending vendor invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494878.736106,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor invoice approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494881.647539,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494881.6477308,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494885.183784,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approvalrequests LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approvalrequests')"
+  },
+  {
+   "ts": 1786494886.932302,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' ORDER BY name\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786494888.7441301,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendors LIMIT 5\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494891.500725,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT DISTINCT dataareaid FROM erp_vendors\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494891.5013618,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approvalrequests LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approvalrequests')"
+  },
+  {
+   "ts": 1786494894.286678,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494894.286895,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice header\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494897.489034,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494897.489547,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"PurchaseOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494900.84193,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions WHERE account IN ('SYNVEN-0037', 'SYNVEN-0709') LIMIT 20\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786494900.842294,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending vendor invoice journal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494903.812331,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"account\": \"SYNVEN-0037\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494903.814292,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"account\": \"SYNVEN-0709\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494907.4225438,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"LedgerJournals\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494907.4230201,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"LedgerJournalLines\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494910.916703,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494910.9171588,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vend invoice pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494915.519045,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"status\": \"Submitted\"}, \"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494915.519569,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"status\": \"Draft\"}, \"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494915.51999,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"dataareaid\": \"USMF\"}, \"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494918.7938051,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"VendInvoiceInfo\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494918.7940412,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice journal approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494921.97371,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All vendors\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494924.21753,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Contoso South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494930.3675609,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_ledgerjournals WHERE state = 'draft' AND dataareaid = 'USMF' LIMIT 20\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_ledgerjournals')"
+  },
+  {
+   "ts": 1786494932.542906,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {\"state\": \"draft\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494935.192235,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {\"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494937.857285,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"ApprovalPolicies\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494937.8579252,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalPolicies\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494942.918823,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 37}",
+   "ok": true
+  },
+  {
+   "ts": 1786494945.596854,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"control\": \"OpenTransactions\", \"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494950.041934,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"VendInvoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494950.042142,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"invoice journal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494952.942545,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_purchaseorders WHERE vendor IN ('SYNVEN-0037', 'SYNVEN-0709') AND dataareaid = 'USMF' LIMIT 20\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_purchaseorders')"
+  },
+  {
+   "ts": 1786494956.585033,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"vendor\": \"SYNVEN-0037\"}, \"entity\": \"PurchaseOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494956.585634,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"vendor\": \"SYNVEN-0709\"}, \"entity\": \"PurchaseOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494962.021379,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice header pending workflow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494962.022224,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendors WHERE name LIKE '%Contoso South%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494966.052326,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"pending vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494968.206377,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786494972.344023,
+   "server": "erp",
+   "tool": "api_invoke_action",
+   "args": "{\"action\": \"ContosoCashDiscountForecast\", \"parameters\": {\"vendor_account\": \"SYNVEN-0037\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494972.345282,
+   "server": "erp",
+   "tool": "api_invoke_action",
+   "args": "{\"action\": \"ContosoCashDiscountForecast\", \"parameters\": {\"vendor_account\": \"SYNVEN-0709\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494975.784724,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"invoice approval pending vendor\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494978.0304909,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494978.030967,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494979.766486,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786494982.036509,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Contoso South pending approval invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494984.0546591,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Contoso South invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494986.18711,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786494991.491082,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Vendor transactions\"}",
+   "ok": true
+  }
+ ]
+}

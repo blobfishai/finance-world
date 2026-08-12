@@ -1,0 +1,105 @@
+{
+ "task": "erp_qa_fb/sales-orders-9",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 11,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 10,
+ "agent_error": false,
+ "duration_s": 30.3,
+ "cost_usd": null,
+ "final_text": "Here's the summary:\n\n- **Birch Company** (account `US-027`) has exactly **1 sales order** in USMF as of March 2, 2026.\n- That single order is **sales order #724**, dated February 18, 2026, with an amount of **$15,400.00** \u2014 making it both the largest and the only one.\n\n| Field | Value |\n|---|---|\n| `order_count` | 1 |\n| `largest_sales_order_id` | 724 |\n| `largest_order_amount` | 15400.00 |",
+ "trace": [
+  {
+   "ts": 1786494490.6305122,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"sales orders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494490.6310751,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494492.810008,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"SalesOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494492.810518,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494494.851682,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Birch\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494497.418168,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM SalesOrders WHERE account = 'US-027' AND dataareaid = 'USMF' ORDER BY amount DESC LIMIT 5\"}",
+   "ok": false,
+   "note": "ValueError('table SalesOrders is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786494499.591232,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_SalesOrders WHERE account = 'US-027' AND dataareaid = 'USMF' ORDER BY amount DESC LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_SalesOrders')"
+  },
+  {
+   "ts": 1786494502.1611981,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"SalesOrders\", \"filters\": {\"account\": \"US-027\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494506.291003,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"customer_name\": \"Birch Company\", \"dataareaid\": \"USMF\"}, \"entity\": \"SalesOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494511.080739,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_salesorders WHERE account = 'US-027' AND dataareaid = 'USMF' ORDER BY amount DESC\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_salesorders')"
+  },
+  {
+   "ts": 1786494513.7025971,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"order_count\": 1, \"largest_sales_order_id\": \"724\", \"largest_order_amount\": 15400.0}}",
+   "ok": true
+  }
+ ]
+}

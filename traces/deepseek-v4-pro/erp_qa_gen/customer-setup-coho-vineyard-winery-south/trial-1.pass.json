@@ -1,0 +1,83 @@
+{
+ "task": "erp_qa_gen/customer-setup-coho-vineyard-winery-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 8,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 7,
+ "agent_error": false,
+ "duration_s": 31.5,
+ "cost_usd": null,
+ "final_text": "The answer has been submitted:\n\n- **payment_terms**: `Net15`\n- **customer_account**: `SYNCUS-0036`\n\nThe customer record for Coho Vineyard & Winery South in USMF shows `Net15` as the assigned payment terms, along with a cash discount code of `2%10N30`, a credit limit of $250,000, and the account is currently in \"Open\" hold status.",
+ "trace": [
+  {
+   "ts": 1786496556.0447922,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496558.959806,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"CustomerAccount\": \"SYNCUS-0036\"}}",
+   "ok": false,
+   "note": "unknown field CustomerAccount"
+  },
+  {
+   "ts": 1786496562.0756102,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0036\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496566.633641,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Coho Vineyard payment terms SYNCUS-0036\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496566.634202,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"payment terms policy customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496573.102038,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496573.10324,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"template\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496577.307275,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"payment_terms\": \"Net15\", \"customer_account\": \"SYNCUS-0036\"}}",
+   "ok": true
+  }
+ ]
+}

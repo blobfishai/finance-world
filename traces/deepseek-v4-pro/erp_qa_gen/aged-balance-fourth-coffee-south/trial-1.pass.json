@@ -1,0 +1,233 @@
+{
+ "task": "erp_qa_gen/aged-balance-fourth-coffee-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 29,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 24,
+ "agent_error": false,
+ "duration_s": 131.1,
+ "cost_usd": null,
+ "final_text": "Here's the aging breakdown for **Fourth Coffee South** in USMF as of **March 2, 2026** (two accounts share this name):\n\n| Bucket | SYNCUS-0041 (Baltimore) | SYNCUS-0713 (Portland) | Combined |\n|---|---|---|---|\n| **Current (not yet due)** | $0.00 | $0.00 | **$0.00** |\n| 1\u201330 days | $49,350.14 | $0.00 | $49,350.14 |\n| 31\u201360 days | $0.00 | $0.00 | $0.00 |\n| 61\u201390 days | $0.00 | $0.00 | $0.00 |\n| **90+ days** | $0.00 | $24,435.89 | **$24,435.89** |\n| **Total Past Due** | $49,350.14 | $24,435.89 | **$73,786.03** |\n\n**Submitted:**\n- `not_yet_due`: **$0.00**\n- `total_past_due`: **$73,786.03**\n- `over_90_days`: **$24,435.89**",
+ "trace": [
+  {
+   "ts": 1786494575.771656,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494575.7725172,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"aging policy collections\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494578.2778811,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494578.2785542,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494580.3108869,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Fourth Coffee South\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494584.137245,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account IN ('SYNCUS-0041', 'SYNCUS-0713') AND dataareaid = 'USMF' ORDER BY as_of DESC LIMIT 50\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786494586.774962,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0041\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494586.775732,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0713\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494591.183312,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"as_of\": \"2026-03-02\", \"dataareaid\": \"USMF\"}, \"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494591.183607,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customer aging\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494595.765465,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Customer aged balances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494598.044784,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Fourth Coffee South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494604.410767,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494606.715749,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account IN ('SYNCUS-0041', 'SYNCUS-0713') AND dataareaid = 'USMF' AND closed = 0 ORDER BY due_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786494609.4369159,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0041\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494609.438881,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0713\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494621.682878,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Fourth Coffee South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494634.295817,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494636.6194592,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"value\": \"Fourth Coffee South\", \"form_id\": \"fh-2\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494642.829578,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"activities collections\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494645.553271,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerPools\", \"filters\": {\"account\": \"SYNCUS-0041\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494645.553967,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerPools\", \"filters\": {\"account\": \"SYNCUS-0713\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494648.4439611,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Fourth Coffee South'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494657.487836,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-2\", \"row\": 41}",
+   "ok": true
+  },
+  {
+   "ts": 1786494659.972664,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-2\", \"control\": \"AgedBalances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494663.919193,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-2\", \"row\": 713}",
+   "ok": true
+  },
+  {
+   "ts": 1786494666.0725372,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-2\", \"control\": \"AgedBalances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494681.2201118,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Fourth Coffee\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494698.1110988,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_past_due\": 73786.03, \"not_yet_due\": 0, \"over_90_days\": 24435.89}}",
+   "ok": true
+  }
+ ]
+}

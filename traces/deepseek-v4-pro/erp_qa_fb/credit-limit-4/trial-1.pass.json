@@ -1,0 +1,105 @@
+{
+ "task": "erp_qa_fb/credit-limit-4",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 11,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 11,
+ "agent_error": false,
+ "duration_s": 38.7,
+ "cost_usd": null,
+ "final_text": "**Summary for Humongous Insurance International (SYNCUS-0883) \u2013 USMF as of March 2, 2026:**\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $25,000.00 |\n| **Open Balance** | $47,897.88 |\n| **Available Credit** | -$22,897.88 |\n\n**Details:**\n- The credit limit comes from the customer master (`credit_max` = 25,000.00).\n- The open balance consists of one unsettled invoice: **CIV-003050** (License Fee, dated 2025-09-27, $47,897.88). All other invoices have been paid in full.\n- The Aged Balances Snapshot (as of 2026-03-01) confirms the entire $47,897.88 sits in the 90+ days bucket.\n- Available credit = $25,000.00 \u2212 $47,897.88 = **\u2212$22,897.88**, meaning the customer has exceeded their credit limit by nearly $23K.",
+ "trace": [
+  {
+   "ts": 1786494164.42079,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer accounts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494164.424902,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE account_number LIKE '%SYNCUS-0883%' OR name LIKE '%Humongous%' LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such column: account_number')"
+  },
+  {
+   "ts": 1786494166.278365,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494168.0646532,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0883\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494171.784659,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494174.351163,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions WHERE account = 'SYNCUS-0883' AND dataareaid = 'USMF' AND closed = 0 ORDER BY trans_date ASC LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786494176.526865,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0883\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494184.533603,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494186.6174028,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0883\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494189.891636,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"available credit limit calculation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494192.404265,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 25000.0, \"open_balance\": 47897.88, \"available_credit\": -22897.88}}",
+   "ok": true
+  }
+ ]
+}

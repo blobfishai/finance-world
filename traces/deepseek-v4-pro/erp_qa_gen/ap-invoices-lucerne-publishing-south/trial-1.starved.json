@@ -1,0 +1,448 @@
+{
+ "task": "erp_qa_gen/ap-invoices-lucerne-publishing-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": true,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:open_invoice_count:missing",
+  "answer:open_invoice_total:missing",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [
+  "docs",
+  "email",
+  "erp",
+  "sheets"
+ ],
+ "n_tool_calls": 59,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 40,
+ "agent_error": false,
+ "duration_s": 120.3,
+ "cost_usd": null,
+ "final_text": "",
+ "trace": [
+  {
+   "ts": 1786494946.4054,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor pending invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494946.4057019,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494949.082481,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Vendors\", \"filters\": {\"name\": \"Lucerne Publishing South\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494949.082717,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending vendor invoice approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494953.337132,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494953.337375,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice pending approval journal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494956.486342,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {\"status\": \"pending\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494959.0322502,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494962.2887528,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending vendor invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494962.288929,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor invoice approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494964.862258,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice journal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494964.862494,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494968.010464,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_ApprovalRequests LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_ApprovalRequests')"
+  },
+  {
+   "ts": 1786494968.010946,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_VendorTransactions WHERE dataareaid = 'USMF' LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_VendorTransactions')"
+  },
+  {
+   "ts": 1786494970.718293,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494974.203966,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494974.20414,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494977.4178739,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"account\": \"SYNVEN-0045\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494977.41973,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"account\": \"SYNVEN-0717\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494981.53652,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice pending approval workflow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494981.536702,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494984.805897,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"ApprovalPolicies\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494984.807063,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"PurchaseOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494987.454968,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PurchaseOrders\", \"filters\": {\"vendor\": \"SYNVEN-0045\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494987.4557781,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PurchaseOrders\", \"filters\": {\"vendor\": \"SYNVEN-0717\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494989.91043,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All vendors\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494991.928239,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Lucerne Publishing South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494996.126697,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 45}",
+   "ok": true
+  },
+  {
+   "ts": 1786494998.308594,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"control\": \"OpenTransactions\", \"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495001.324749,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495003.592628,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"pending invoice approval vendor\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495003.593029,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending vendor invoices workflow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495005.9985652,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"pending vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495005.9987369,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495008.761395,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice journal pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495008.761647,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice header\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495010.889508,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"LedgerJournals\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495013.719164,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"VendInvoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495013.719382,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"Vend\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495019.874225,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' ORDER BY name\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786495022.1024551,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_Vendors WHERE dataareaid = 'USMF' AND name LIKE '%Lucerne%' LIMIT 10\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495025.1842408,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_VendorTransactions WHERE dataareaid = 'USMF' AND account IN ('SYNVEN-0045', 'SYNVEN-0717') AND closed = 0 AND txn_type = 'Invoice'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_VendorTransactions')"
+  },
+  {
+   "ts": 1786495027.7452228,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_Vendors WHERE name = 'Lucerne Publishing South'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495030.770553,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"VendorInvoiceJournal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495030.770765,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending vendor\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495033.377305,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Lucerne Publishing South pending approval invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495033.378159,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"Lucerne Publishing South pending invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495036.098282,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {\"state\": \"draft\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495038.074972,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalPolicies\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495042.582795,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"sop\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495042.583485,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495044.673017,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786495047.820947,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"PaymentRunLines\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495050.464777,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentRunLines\", \"filters\": {\"vendor\": \"SYNVEN-0045\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495050.465303,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentRunLines\", \"filters\": {\"vendor\": \"SYNVEN-0717\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495052.970015,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495057.4540858,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Vendor transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495059.577437,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"value\": \"Lucerne Publishing South\", \"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495062.0573308,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"account\", \"value\": \"SYNVEN-0045\"}",
+   "ok": true
+  }
+ ]
+}

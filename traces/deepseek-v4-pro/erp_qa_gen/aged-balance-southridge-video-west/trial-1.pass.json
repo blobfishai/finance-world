@@ -1,0 +1,128 @@
+{
+ "task": "erp_qa_gen/aged-balance-southridge-video-west",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 14,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 9,
+ "agent_error": false,
+ "duration_s": 43.3,
+ "cost_usd": null,
+ "final_text": "**Answer submitted:**\n\n| Field | Value |\n|---|---|\n| **open_invoice_count** | 2 |\n| **open_balance** | $82,246.56 |\n\nThe two open invoices for Southridge Video West (SYNCUS-0106, Fort Worth) are:\n\n- **CIV-000373** \u2014 $42,328.25 (Monthly Subscription, due 2025-07-04)\n- **CIV-000374** \u2014 $39,918.31 (Product Sale, due 2026-02-17)\n\nBoth remained unsettled and open as of March 2, 2026. The Omaha entity (SYNCUS-0778) has no open balance \u2014 all invoices are fully paid.",
+ "trace": [
+  {
+   "ts": 1786494756.547895,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494756.548715,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Southridge Video West collections\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494758.7084448,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Southridge Video West\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494762.4038012,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494766.4907598,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM CustomerTransactions WHERE account = 'SYNCUS-0106' AND dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786494766.490925,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM CustomerTransactions WHERE account = 'SYNCUS-0778' AND dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786494769.165396,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0106' AND dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786494769.165931,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0778' AND dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786494773.4848828,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0106\", \"dataareaid\": \"USMF\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494773.4869099,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0778\", \"dataareaid\": \"USMF\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494782.642476,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0778\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494782.643233,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0106\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494782.643918,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0778\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494790.679371,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"open_invoice_count\": 2, \"open_balance\": 82246.56}}",
+   "ok": true
+  }
+ ]
+}

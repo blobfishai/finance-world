@@ -1,0 +1,118 @@
+{
+ "task": "erp_qa_gen/aged-balance-graphic-design-institute-e",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 13,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 10,
+ "agent_error": false,
+ "duration_s": 59.0,
+ "cost_usd": null,
+ "final_text": "Here's a summary of the findings:\n\n**Graphic Design Institute East (USMF)** \u2014 there are two customer records with this name, but only one has an outstanding balance:\n\n| Account | Location | Open Invoices |\n|---------|----------|---------------|\n| SYNCUS-0070 | Fort Worth, TX | 2 |\n| SYNCUS-0742 | Phoenix, AZ | 0 |\n\nThe two open invoices for SYNCUS-0070, both unsettled and dated before March 2, 2026:\n\n| Invoice | Date | Description | Amount |\n|---------|------|-------------|--------|\n| CIV-000241 | 2026-01-03 | Annual Subscription | $29,975.45 |\n| CIV-000240 | 2026-02-28 | Training Services | $19,164.73 |\n\n**Results submitted:**\n\n- **`open_invoice_count`**: 2\n- **`open_balance`**: $49,140.18",
+ "trace": [
+  {
+   "ts": 1786494594.186112,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494594.186384,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer invoice open transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494596.222655,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Graphic Design Institute East\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494598.0232372,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494601.333517,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account IN ('SYNCUS-0070', 'SYNCUS-0742') AND closed = 0 AND trans_date <= '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786494605.570762,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0070\", \"closed\": \"0\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494605.572775,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0742\", \"closed\": \"0\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494617.010876,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0742\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494631.788795,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"customer balance duplicate name\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494631.789396,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494634.498534,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0070\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494634.49928,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0742\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494640.644454,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"open_invoice_count\": 2, \"open_balance\": 49140.18}}",
+   "ok": true
+  }
+ ]
+}

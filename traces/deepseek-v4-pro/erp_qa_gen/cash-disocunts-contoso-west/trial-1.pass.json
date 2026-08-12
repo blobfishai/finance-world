@@ -1,0 +1,99 @@
+{
+ "task": "erp_qa_gen/cash-disocunts-contoso-west",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 10,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 6,
+ "agent_error": false,
+ "duration_s": 36.9,
+ "cost_usd": null,
+ "final_text": "**Submitted:**\n\n- **has_active_cash_discount:** Yes  \n- **discounted_open_invoice_count:** 1  \n\nOnly invoice **CIV-000326** (License Fee, $12,229.61, dated 2026-03-01) has an active cash discount term \u2014 `1%15N45` \u2014 and was still open and within its 15-day discount window as of March 2, 2026. The other two open invoices carry no cash discount code.",
+ "trace": [
+  {
+   "ts": 1786495460.081296,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0093\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495460.08244,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE name LIKE '%Contoso West%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495465.5391219,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"cash discount terms invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495465.539695,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_custinvoice WHERE account = 'SYNCUS-0093' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_custinvoice')"
+  },
+  {
+   "ts": 1786495465.539807,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"cash_disc_codes\"}",
+   "ok": false,
+   "note": "unknown entity type 'cash_disc_codes'"
+  },
+  {
+   "ts": 1786495469.3665888,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0093' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495469.3674939,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CashDiscounts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495469.3680341,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495472.635113,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0093\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495487.9634612,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"has_active_cash_discount\": \"Yes\", \"discounted_open_invoice_count\": 1}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,107 @@
+{
+ "task": "erp_qa_gen/credit-limit-woodgrove-west",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:credit_limit:off(got=50000.0)",
+  "answer:open_balance:off(got=24145.13)",
+  "answer:credit_utilisation_pct:off(got=48.29)"
+ ],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 11,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 8,
+ "agent_error": false,
+ "duration_s": 50.9,
+ "cost_usd": null,
+ "final_text": "All three values have been submitted:\n\n| Field | Value |\n|---|---|\n| **credit_limit** | $50,000.00 |\n| **open_balance** | $24,145.13 |\n| **credit_utilisation_pct** | 48.29% |\n\nWoodgrove West (SYNCUS-0112) has a $50,000 credit limit and a single open invoice (CIV-000393 for $24,145.13 dating from November 2025, now 61-90 days past due), putting them at **48.29% utilisation** as of March 2, 2026.",
+ "trace": [
+  {
+   "ts": 1786496430.573793,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496430.574111,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer account\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496435.035807,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496435.0383072,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496440.951581,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Woodgrove West\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496440.9526742,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0112\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496449.9334269,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496449.934732,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0112' AND dataareaid = 'USMF' ORDER BY trans_date DESC LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496453.40273,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0112\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496463.712778,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0112\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496469.685706,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 50000, \"open_balance\": 24145.13, \"credit_utilisation_pct\": 48.29}}",
+   "ok": true
+  }
+ ]
+}

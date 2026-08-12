@@ -1,0 +1,61 @@
+{
+ "task": "erp_qa_gen/customer-setup-contoso-pharmaceuticals-ea",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 5,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 5,
+ "agent_error": false,
+ "duration_s": 23.4,
+ "cost_usd": null,
+ "final_text": "**Results for \"Contoso Pharmaceuticals East\" in USMF:**\n\n| Account | Location | Phone |\n|---------|----------|-------|\n| SYNCUS-0066 | Philadelphia, PA | **215-555-0108** |\n| SYNCUS-0738 | Milwaukee, WI | **414-555-0187** |\n\nBoth records are active (`Open` hold status) and reside in USMF. There are two matching customers with that exact name \u2014 I've reported both phone numbers.",
+ "trace": [
+  {
+   "ts": 1786496589.239939,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496592.361929,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Contoso Pharmaceuticals East\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496598.691526,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Contoso Pharmaceuticals East\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496598.693931,
+   "server": "harness",
+   "tool": "list_submitted",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786496602.952682,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"215-555-0108 (SYNCUS-0066, Philadelphia, PA); 414-555-0187 (SYNCUS-0738, Milwaukee, WI)\"}}",
+   "ok": true
+  }
+ ]
+}

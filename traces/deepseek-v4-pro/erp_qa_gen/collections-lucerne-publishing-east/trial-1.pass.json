@@ -1,0 +1,126 @@
+{
+ "task": "erp_qa_gen/collections-lucerne-publishing-east",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 14,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 12,
+ "agent_error": false,
+ "duration_s": 41.3,
+ "cost_usd": null,
+ "final_text": "**Summary:**\n\nFor **Lucerne Publishing East (SYNCUS-0073)** in USMF as of March 2, 2026:\n\n| Field | Value |\n|---|---|\n| **Collection letter count** | **3** |\n| **Current letter level** | **3** |\n\nThe three letters were sent on:\n- Letter 1 \u2014 October 16, 2025\n- Letter 2 \u2014 November 6, 2025\n- Letter 3 \u2014 November 27, 2025\n\nAll three have status \"Sent,\" and no letter 4 or \"Collection\" has been issued.",
+ "trace": [
+  {
+   "ts": 1786495607.707995,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495607.708402,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"collection letter\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495610.0385668,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495610.039194,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CollectionLetters\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495613.0876129,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0073\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495615.9721,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_collectionletters WHERE account = 'SYNCUS-0073' AND dataareaid = 'USMF' ORDER BY letter_date DESC LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_collectionletters')"
+  },
+  {
+   "ts": 1786495618.185775,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM collection_letters WHERE account = 'SYNCUS-0073' AND dataareaid = 'USMF' ORDER BY letter_date DESC LIMIT 200\"}",
+   "ok": false,
+   "note": "ValueError('table collection_letters is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786495620.544487,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CollectionLetters\", \"filters\": {\"account\": \"SYNCUS-0073\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495629.907747,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"collection letter level policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495629.907926,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"collection letters\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495631.924534,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Collection letter journal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495634.3196318,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"account\", \"value\": \"SYNCUS-0073\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495639.589335,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495641.462661,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"collection_letter_count\": 3, \"current_letter_level\": \"3\"}}",
+   "ok": true
+  }
+ ]
+}

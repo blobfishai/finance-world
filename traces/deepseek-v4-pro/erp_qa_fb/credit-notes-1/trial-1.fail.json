@@ -1,0 +1,179 @@
+{
+ "task": "erp_qa_fb/credit-notes-1",
+ "family": "erp_qa_fb",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:unapplied_credit_total:expected_none(got=$0.00)"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 21,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 13,
+ "agent_error": false,
+ "duration_s": 45.1,
+ "cost_usd": null,
+ "final_text": "**Summary:**\n\n- **Litware Asia** is customer `SYNCUS-0352` in USMF. Its five AR transactions consist of four invoices and one payment \u2014 none are credit notes (`CreditNote`). QBO also returns no credit memos for this customer.  \n- **Unapplied credit note count:** 0  \n- **Unapplied credit total:** $0.00",
+ "trace": [
+  {
+   "ts": 1786494182.53882,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0352\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494182.539364,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"credit notes\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494182.5401962,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer WHERE name LIKE '%Liteware%Asia%'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer')"
+  },
+  {
+   "ts": 1786494186.296799,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Liteware Asia\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494186.2970319,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"credit note CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494186.2974699,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit note unapplied\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494188.879179,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Liteware\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494188.8797922,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494191.180524,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE name LIKE '%Liteware%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494193.76458,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE name LIKE '%Lite%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494193.76548,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE name LIKE '%Asia%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494197.956594,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0352' AND dataareaid = 'USMF' AND closed = 0 AND amount < 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786494199.9689732,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0352\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494205.467399,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0352\"}, \"page\": 2}",
+   "ok": true
+  },
+  {
+   "ts": 1786494205.467998,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT DISTINCT txn_type FROM erp_customertransactions LIMIT 50\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786494208.457806,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"txn_type\": \"Credit\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494208.4598038,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0352\", \"txn_type\": \"Credit\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494210.9440389,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0352\", \"txn_type\": \"CreditNote\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494214.927614,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0352 credit note\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494214.928365,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM CreditMemo WHERE CustomerRef = 'SYNCUS-0352'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494218.8508239,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"unapplied_credit_note_count\": 0, \"unapplied_credit_total\": \"$0.00\"}}",
+   "ok": true
+  }
+ ]
+}

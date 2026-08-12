@@ -1,0 +1,90 @@
+{
+ "task": "erp_qa_gen/credit-limit-alpine-ski-house-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 9,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 9,
+ "agent_error": false,
+ "duration_s": 34.2,
+ "cost_usd": null,
+ "final_text": "Here are the results for **Alpine Ski House South (SYNCUS-0031)** in USMF as of March 2, 2026:\n\n| Field | Value |\n|---|---|\n| **Credit limit** | $500,000.00 |\n| **Open balance** | $40,059.60 |\n| **Available credit** | $459,940.40 |\n\n**Details:**\n\n- **Customer:** Alpine Ski House South, Boston, MA \u2014 credit rating \"Poor\", on Net45 terms, currently on hold (\"Open\").\n- **Open transaction:** Invoice CIV-000106 (\"License Fee\"), dated Feb 28, 2026, due Apr 14, 2026, for $40,059.60 with no settlements yet applied.\n- **Available credit** = Credit limit ($500,000.00) \u2212 Open balance ($40,059.60) = **$459,940.40**.",
+ "trace": [
+  {
+   "ts": 1786495782.077773,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495782.079231,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Alpine Ski House South'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495784.520525,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495786.927998,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0031\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495791.7401578,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495794.3428411,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0031\", \"dataareaid\": \"USMF\", \"closed\": \"0\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495798.2611232,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit available credit calculation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495803.213825,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0031\", \"dataareaid\": \"USMF\", \"closed\": \"0\"}, \"page\": 2, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495806.458539,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 500000.0, \"open_balance\": 40059.6, \"available_credit\": 459940.4}}",
+   "ok": true
+  }
+ ]
+}

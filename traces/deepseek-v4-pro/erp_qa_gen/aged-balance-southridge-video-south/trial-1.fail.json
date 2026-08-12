@@ -1,0 +1,234 @@
+{
+ "task": "erp_qa_gen/aged-balance-southridge-video-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:total_past_due:off(got=13905.76)",
+  "answer:over_90_days:off(got=2808.69)"
+ ],
+ "servers_used": [
+  "docs",
+  "email",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 29,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 22,
+ "agent_error": false,
+ "duration_s": 121.6,
+ "cost_usd": null,
+ "final_text": "Here's the summary for **Southridge Video South (SYNCUS-0050)** in USMF as of **March 2, 2026**:\n\n| Field | Value |\n|---|---|\n| `not_yet_due` (current) | $0.00 |\n| 1\u201330 days | $11,097.07 |\n| 31\u201360 days | $0.00 |\n| 61\u201390 days | $0.00 |\n| `over_90_days` | $2,808.69 |\n| `total_past_due` | $13,905.76 |\n\nThe aging was computed live from open transactions \u2014 the $11,097.07 in the 1\u201330 bucket comes from invoice CIV-000167 (due Feb 26, 2026, partially settled), and the $2,808.69 in the 90+ bucket is invoice CIV-000171 (due May 28, 2025, fully open).\n\n> **Note:** There is a second \"Southridge Video South\" (SYNCUS-0722, Omaha) also in USMF with a single 90+ balance of $439.46. If that's the one you needed instead, let me know and I'll switch.",
+ "trace": [
+  {
+   "ts": 1786494740.85241,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494740.852845,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"aged receivables\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494744.042764,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494744.0432682,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494744.0436878,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494747.4531882,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Southridge Video South\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494747.454435,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_AgedBalancesSnapshot WHERE dataareaid = 'USMF' AND as_of = '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_AgedBalancesSnapshot')"
+  },
+  {
+   "ts": 1786494752.093078,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"dataareaid\": \"USMF\", \"as_of\": \"2026-03-02\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494755.339811,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"dataareaid\": \"USMF\", \"account\": \"SYNCUS-0050\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494755.340632,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"dataareaid\": \"USMF\", \"account\": \"SYNCUS-0722\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494763.352326,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"dataareaid\": \"USMF\", \"account\": \"SYNCUS-0050\", \"closed\": \"0\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494763.3551009,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"dataareaid\": \"USMF\", \"account\": \"SYNCUS-0722\", \"closed\": \"0\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494771.949198,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customer aging\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494771.949524,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"collections\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494773.917353,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Customer aged balances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494775.912035,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Southridge Video South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494797.511723,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Southridge Video South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494797.512585,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Southridge Video South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494803.393709,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 35}",
+   "ok": true
+  },
+  {
+   "ts": 1786494805.6630201,
+   "server": "erp",
+   "tool": "form_open_or_close_tab",
+   "args": "{\"form_id\": \"fh-1\", \"tab\": \"General\", \"open\": true}",
+   "ok": true
+  },
+  {
+   "ts": 1786494814.650655,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494816.769547,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494819.2516081,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Southridge Video South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494822.430283,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 50}",
+   "ok": true
+  },
+  {
+   "ts": 1786494824.612722,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"AgedBalances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494828.273087,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 722}",
+   "ok": true
+  },
+  {
+   "ts": 1786494830.5207639,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"AgedBalances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494851.0198421,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_past_due\": 13905.76, \"not_yet_due\": 0, \"over_90_days\": 2808.69}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494853.04987,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  }
+ ]
+}

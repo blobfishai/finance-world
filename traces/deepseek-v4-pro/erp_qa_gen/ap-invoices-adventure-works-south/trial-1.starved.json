@@ -1,0 +1,419 @@
+{
+ "task": "erp_qa_gen/ap-invoices-adventure-works-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": true,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:open_invoice_count:missing",
+  "answer:open_invoice_total:missing",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp"
+ ],
+ "n_tool_calls": 55,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 40,
+ "agent_error": false,
+ "duration_s": 146.9,
+ "cost_usd": null,
+ "final_text": "",
+ "trace": [
+  {
+   "ts": 1786494800.5237298,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice pending approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494800.524006,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494800.524742,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Adventure Works South approval invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494803.500139,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494803.501065,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Vendors\", \"filters\": {\"name\": \"Adventure Works South\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494811.166605,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approvalrequests WHERE dataareaid = 'USMF' AND status = 'pending' AND (doc_id LIKE '%SYNVEN-0030%' OR doc_id LIKE '%SYNVEN-0702%' OR doc_id LIKE '%Adventure%')\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approvalrequests')"
+  },
+  {
+   "ts": 1786494813.2595892,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {\"dataareaid\": \"USMF\", \"status\": \"pending\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494815.8311691,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {\"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494819.5735629,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice journal pending approval workflow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494819.573789,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending vendor invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494823.226063,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending vendor invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494823.2262871,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor invoice approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494823.226447,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"purchase order lines status approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494825.0964391,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"PurchaseOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494828.231018,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PurchaseOrders\", \"filters\": {\"dataareaid\": \"USMF\", \"vendor\": \"SYNVEN-0030\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494828.231654,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PurchaseOrders\", \"filters\": {\"dataareaid\": \"USMF\", \"vendor\": \"SYNVEN-0702\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494832.8666828,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494832.866922,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice header pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494836.50069,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions WHERE dataareaid = 'USMF' AND vendor IN ('SYNVEN-0030', 'SYNVEN-0702')\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786494838.612782,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494843.2143629,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice pending workflow approval status\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494843.2150102,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"ApprovalPolicies\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494846.692806,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalPolicies\", \"filters\": {\"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494851.270842,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice register pending approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494851.2710242,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494853.451019,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Vendor transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494856.337023,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"account\", \"value\": \"SYNVEN-0030\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494859.2982552,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"account\", \"value\": \"SYNVEN-0702\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494864.2133389,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494864.2143161,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE DocNumber LIKE '%Adventure%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494868.462784,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"invoice approval pending workflow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494868.462987,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"workflow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494872.01612,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494875.290824,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"approval invoice pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494880.129097,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approvalpolicies WHERE dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approvalpolicies')"
+  },
+  {
+   "ts": 1786494880.129631,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494882.02585,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786494887.547768,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"LedgerJournals\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494892.764781,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice header lines pending workflow status\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494896.836163,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All vendors\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494899.24136,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-2\", \"column\": \"name\", \"value\": \"Adventure Works South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494903.6592371,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494903.661647,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All purchase orders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494907.9561799,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {\"dataareaid\": \"USMF\", \"state\": \"draft\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494910.5602062,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Adventure Works South%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494910.5609531,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494916.254246,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Adventure Works South approval invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494919.1015658,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-2\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494921.2556748,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All vendors\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494923.660637,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"name\", \"value\": \"Adventure Works South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494925.877343,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 30}",
+   "ok": true
+  },
+  {
+   "ts": 1786494928.4320881,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"OpenTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494930.709237,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 702}",
+   "ok": true
+  },
+  {
+   "ts": 1786494932.85186,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"OpenTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494941.655166,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {\"dataareaid\": \"USMF\"}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,75 @@
+{
+ "task": "erp_qa_gen/collections-proseware-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 7,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 6,
+ "agent_error": false,
+ "duration_s": 20.8,
+ "cost_usd": null,
+ "final_text": "**Summary:**\n\nProseware South (SYNCUS-0048) in USMF has had three collection letters issued, all in 2025:\n\n| Letter Level | Date | Fee | Status |\n|--------------|------|-----|--------|\n| 1 | 2025-04-23 | $0.00 | Sent |\n| 2 | 2025-05-14 | $25.00 | Sent |\n| 3 | 2025-06-04 | $40.00 | Sent |\n\n- **Collection letter count:** 3\n- **Current letter level:** 3 (the highest level sent as of March 2, 2026)",
+ "trace": [
+  {
+   "ts": 1786495648.9064682,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"collection letters\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495648.906791,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer collection status\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495651.283133,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CollectionLetters\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495651.284014,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0048\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495653.6511328,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0048\", \"dataareaid\": \"USMF\"}, \"entity\": \"CollectionLetters\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495658.385084,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"collection letter policy level\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495661.6523871,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"collection_letter_count\": 3, \"current_letter_level\": \"3\"}}",
+   "ok": true
+  }
+ ]
+}

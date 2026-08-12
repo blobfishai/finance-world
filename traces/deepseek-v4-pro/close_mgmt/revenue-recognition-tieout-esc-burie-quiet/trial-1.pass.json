@@ -1,0 +1,89 @@
+{
+ "task": "close_mgmt/revenue-recognition-tieout-esc-burie-quiet",
+ "family": "close_mgmt",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 9,
+ "walk_len": 9,
+ "budget_turns": 84,
+ "num_turns": 5,
+ "agent_error": false,
+ "duration_s": 74.5,
+ "cost_usd": null,
+ "final_text": "All submitted. Here's the tie-out summary for Iris:\n\n---\n\n### RAP-04 FY26 Tie-Out Results\n\n**Four contracts flagged** out of seven:\n\n| Contract | Issue | Direction | USD |\n|---|---|---|---|\n| **CTR-2047** | Cedar Line Media \u2014 schedule sums to $88K vs $96K contract. Nov/Dec posted at $4K instead of $8K. | Under | $8,000 |\n| **CTR-2052** | Alder & Roe \u2014 schedule at $13,125/mo sums to $157.5K vs $150K contract. | Over | $7,500 |\n| **CTR-2055** | Bellhaven \u2014 term ends 2026-03-31 but schedule runs through 2026-04 (13 months on a 12-month contract). | Timing only | \u2014 |\n| **CTR-2058** | Quill River \u2014 term ends 2026-06-30 but schedule stops at 2026-02 (8 months posted on a 12-month contract). | Timing only | \u2014 |\n\nThree contracts (CTR-2041, CTR-2044, CTR-2061) are clean. CTR-2044's $36 rounding drift is inside the $180 band.\n\nOver- and under-recognised are kept separate: **$7,500 over** / **$8,000 under**. Not netted.",
+ "trace": [
+  {
+   "ts": 1786494016.943084,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"RAP-04\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494016.9436522,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494016.9440541,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786494019.692169,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"policy--revenue-recognition-tieout\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494019.692634,
+   "server": "sheets",
+   "tool": "workbook_worksheets",
+   "args": "{\"item\": \"contract-register-fy26.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494019.693013,
+   "server": "sheets",
+   "tool": "workbook_worksheets",
+   "args": "{\"item\": \"revenue-schedule-fy26.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494023.691658,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"contract-register-fy26.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494023.69265,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"revenue-schedule-fy26.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494079.001602,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"flagged_contracts\": \"CTR-2047,CTR-2052,CTR-2055,CTR-2058\", \"amount_exceptions\": \"CTR-2047,CTR-2052\", \"timing_exceptions\": \"CTR-2055,CTR-2058\", \"over_recognised_usd\": 7500.0, \"under_recognised_usd\": 8000.0}}",
+   "ok": true
+  }
+ ]
+}

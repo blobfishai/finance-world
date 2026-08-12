@@ -1,0 +1,486 @@
+{
+ "task": "erp_qa_gen/ap-invoices-southridge-video",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": true,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:open_invoice_count:missing",
+  "answer:open_invoice_total:missing",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp"
+ ],
+ "n_tool_calls": 63,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 40,
+ "agent_error": false,
+ "duration_s": 139.1,
+ "cost_usd": null,
+ "final_text": "",
+ "trace": [
+  {
+   "ts": 1786495067.1824179,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoices pending approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495067.1827352,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice header\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495070.5594728,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495070.560441,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Vendors\", \"filters\": {\"name\": \"Southridge\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495076.142014,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {\"dataareaid\": \"USMF\", \"status\": \"Pending\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495076.142238,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending vendor invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495078.509223,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {\"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495082.408042,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approvalrequests WHERE dataareaid = 'USMF' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approvalrequests')"
+  },
+  {
+   "ts": 1786495082.408513,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495085.886364,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions WHERE dataareaid = 'USMF' AND account = 'SYNVEN-0022' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786495085.8866172,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending vendor invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495089.182442,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"account\": \"SYNVEN-0022\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495089.1826282,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495094.707367,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495094.7075908,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice journal pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495098.2199721,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' ORDER BY name\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786495100.862505,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM erp_sqlite_master WHERE type='table' ORDER BY name\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_sqlite_master')"
+  },
+  {
+   "ts": 1786495103.494047,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {}, \"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495106.307416,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495106.3076348,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"invoice approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495109.771057,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice journal register vendor\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495109.771314,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice header unposted pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495114.4639628,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions WHERE dataareaid = 'USMF' AND account = 'SYNVEN-0022' AND txn_type = 'Invoice' AND closed = 0 LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786495114.47046,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All vendors\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495119.3191922,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 22}",
+   "ok": true
+  },
+  {
+   "ts": 1786495121.7755232,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"OpenTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495126.604057,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor_invoices LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor_invoices')"
+  },
+  {
+   "ts": 1786495126.6045299,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_pending_invoices LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_pending_invoices')"
+  },
+  {
+   "ts": 1786495126.604909,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approval LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approval')"
+  },
+  {
+   "ts": 1786495129.460696,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"VendInvoiceInfo\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495129.460953,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice table header lines\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495133.099296,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalPolicies\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495133.0994592,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Pending vendor invoices\"}",
+   "ok": false,
+   "note": "no menu item 'Pending vendor invoices'"
+  },
+  {
+   "ts": 1786495137.10011,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"vendor invoice approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495137.102676,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All purchase orders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495141.657439,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-2\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495141.6830862,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Vendor transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495146.815386,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-2\", \"column\": \"account\", \"value\": \"SYNVEN-0022\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495146.817599,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"VendInvoiceInfoTable VendInvoiceInfoLine\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495149.697825,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"vendor invoice pending approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495149.697952,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"pending invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495151.423403,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786495156.286335,
+   "server": "erp",
+   "tool": "api_invoke_action",
+   "args": "{\"action\": \"ContosoCashDiscountForecast\", \"parameters\": {\"vendor_account\": \"SYNVEN-0022\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495156.286697,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Vendor WHERE DisplayName LIKE 'Southridge Video'\"}",
+   "ok": false,
+   "note": "Invalid entity. Entities: Customer, Invoice, CreditMemo, Payment"
+  },
+  {
+   "ts": 1786495160.1836329,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"LedgerJournals\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495163.791352,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_ledgerjournals WHERE dataareaid = 'USMF' AND state = 'draft' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_ledgerjournals')"
+  },
+  {
+   "ts": 1786495166.0934138,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {\"dataareaid\": \"USMF\", \"state\": \"draft\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495167.991015,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {\"dataareaid\": \"USMF\"}, \"page\": 1}",
+   "ok": true
+  },
+  {
+   "ts": 1786495170.1881568,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournalLines\", \"filters\": {\"dataareaid\": \"USMF\"}, \"page\": 1}",
+   "ok": false,
+   "note": "unknown field dataareaid"
+  },
+  {
+   "ts": 1786495173.399383,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournalLines\", \"filters\": {}, \"page\": 1}",
+   "ok": true
+  },
+  {
+   "ts": 1786495176.9631832,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-2\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495179.023787,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All purchase orders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495181.249002,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-2\", \"column\": \"vendor\", \"value\": \"SYNVEN-0022\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495184.1979892,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-2\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495187.80227,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"status\": \"Submitted\"}, \"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495187.802779,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"status\": \"Open\"}, \"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495187.803266,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"status\": \"Approved\"}, \"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495191.0080352,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Southridge Video pending approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495191.0086899,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"pending approval invoice vendor\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495192.870185,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Southridge Video invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495197.447215,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendor LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendor')"
+  },
+  {
+   "ts": 1786495197.447734,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortable LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortable')"
+  },
+  {
+   "ts": 1786495201.2968981,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All vendors\"}",
+   "ok": true
+  }
+ ]
+}

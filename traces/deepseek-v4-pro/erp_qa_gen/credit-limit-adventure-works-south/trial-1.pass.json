@@ -1,0 +1,154 @@
+{
+ "task": "erp_qa_gen/credit-limit-adventure-works-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 18,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 15,
+ "agent_error": false,
+ "duration_s": 52.8,
+ "cost_usd": null,
+ "final_text": "Here's a summary of what I found for **Adventure Works South (SYNCUS-0030)** in USMF as of March 2, 2026:\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $50,000.00 |\n| **Open Balance** | $51,741.47 |\n| **Available Credit** | \u2212$1,741.47 |\n\n**Details:**\n\n- The credit limit (`credit_max`) on the customer master is **$50,000.00**.\n- Two open invoices contribute to the balance:\n  - **CIV-000102** (Monthly Subscription, dated 2025-10-28): $18,359.05\n  - **CIV-000104** (Training Services, dated 2025-11-14): $33,382.42\n- A third invoice (CIV-000103) was fully paid by payment ARPM000071 in December 2025.\n- The customer's open balance of **$51,741.47** exceeds the $50,000 credit limit, resulting in **\u2212$1,741.47** of available credit \u2014 they are over their limit.",
+ "trace": [
+  {
+   "ts": 1786495727.5886369,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495727.589417,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit available credit customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495730.1405282,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495730.141043,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"customerAccount\": \"SYNCUS-0030\"}}",
+   "ok": false,
+   "note": "unknown field customerAccount"
+  },
+  {
+   "ts": 1786495732.2925801,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0030\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495735.702694,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495738.688944,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0030' AND dataareaid = 'USMF' AND closed = 0 AND trans_date <= '2026-03-02' ORDER BY trans_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495740.789441,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0030\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495748.7881222,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495748.788851,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495750.7095191,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495753.741617,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"account\", \"value\": \"SYNCUS-0030\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495756.3874109,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 30}",
+   "ok": true
+  },
+  {
+   "ts": 1786495760.405931,
+   "server": "erp",
+   "tool": "form_open_or_close_tab",
+   "args": "{\"form_id\": \"fh-1\", \"tab\": \"Credit and collections\", \"open\": true}",
+   "ok": true
+  },
+  {
+   "ts": 1786495760.408278,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"OpenTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495764.3341079,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"available credit credit limit calculation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495768.6166558,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 50000.0, \"open_balance\": 51741.47, \"available_credit\": -1741.47}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495771.422283,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  }
+ ]
+}

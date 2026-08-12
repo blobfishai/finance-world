@@ -1,0 +1,121 @@
+{
+ "task": "erp_qa_gen/credit-limit-southridge-video-west",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:credit_limit:off(got=50000.0)",
+  "answer:open_balance:off(got=82246.56)",
+  "answer:credit_utilisation_pct:off(got=164.49)"
+ ],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 13,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 12,
+ "agent_error": false,
+ "duration_s": 100.4,
+ "cost_usd": null,
+ "final_text": "All three values have been submitted:\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $50,000.00 |\n| **Open Balance** | $82,246.56 |\n| **Credit Utilisation %** | 164.49% |\n\n**Details:** Southridge Video West (SYNCUS-0106) has two open invoices as of March 2, 2026 \u2014 CIV-000373 ($42,328.25 from May 2025) and CIV-000374 ($39,918.31 from January 2026) \u2014 totaling $82,246.56 against a $50,000 credit limit. The Aged Balances Snapshot from March 1, 2026 confirms the same $82,246.56 total due, meaning the account is significantly over its credit limit at 164.49% utilisation.",
+ "trace": [
+  {
+   "ts": 1786496281.0137432,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496281.0140128,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer account\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496283.766657,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496286.691042,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496292.007307,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"name\": \"Southridge Video West\"}, \"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496305.479977,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0106\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496322.4875479,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496322.500621,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit utilisation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496324.966947,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0106\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496350.5446851,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496360.7675169,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496367.719718,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 50000.0, \"open_balance\": 82246.56, \"credit_utilisation_pct\": 164.49}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496369.598065,
+   "server": "harness",
+   "tool": "list_submitted",
+   "args": "{}",
+   "ok": true
+  }
+ ]
+}

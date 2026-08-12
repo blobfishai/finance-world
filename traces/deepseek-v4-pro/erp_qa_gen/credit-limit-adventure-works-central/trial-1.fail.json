@@ -1,0 +1,293 @@
+{
+ "task": "erp_qa_gen/credit-limit-adventure-works-central",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:credit_limit:off(got=50000.0)",
+  "answer:open_balance:off(got=51508.11)",
+  "answer:credit_utilisation_pct:off(got=103.02)"
+ ],
+ "servers_used": [
+  "docs",
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 37,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 29,
+ "agent_error": false,
+ "duration_s": 168.6,
+ "cost_usd": null,
+ "final_text": "Here's a summary of my findings for **Adventure Works Central (SYNCUS-0114)** in USMF as of March 2, 2026:\n\n| Metric | Value |\n|---|---|\n| **Credit Limit** | $50,000.00 |\n| **Open Balance** | $51,508.11 |\n| **Credit Utilisation %** | **103.02%** |\n\n**Details:**\n\n- The credit limit of $50,000.00 comes from the `credit_max` field on the customer master.\n- The open balance of $51,508.11 is comprised of two open invoices:\n  - **CIV-000399** (Annual Subscription, dated 2025-10-19): $14,235.34 open (partially settled)\n  - **CIV-000401** (License Fee, dated 2025-12-26): $37,272.77 open (unsettled)\n- Both the live Collections view and the Aged Balances Snapshot (AGE-2026-03-01) confirm the $51,508.11 total.\n- At 103.02%, Adventure Works Central is **over** their credit limit.",
+ "trace": [
+  {
+   "ts": 1786495724.354771,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495724.3550699,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495726.186403,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495728.190599,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure Works Central\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495733.792892,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0741\"}, \"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495743.709429,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495743.7095768,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495746.732926,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0114' AND dataareaid = 'USMF' AND trans_date <= '2026-03-02' AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495746.75581,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495749.215714,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Adventure Works Central\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495749.21837,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0114\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495756.9381802,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 114}",
+   "ok": true
+  },
+  {
+   "ts": 1786495760.366142,
+   "server": "erp",
+   "tool": "form_open_or_close_tab",
+   "args": "{\"form_id\": \"fh-1\", \"tab\": \"Credit and collections\", \"open\": true}",
+   "ok": true
+  },
+  {
+   "ts": 1786495766.22842,
+   "server": "erp",
+   "tool": "form_find_controls",
+   "args": "{\"form_id\": \"fh-1\", \"search\": \"SYNCUS-0741\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495766.229121,
+   "server": "erp",
+   "tool": "form_find_controls",
+   "args": "{\"form_id\": \"fh-1\", \"search\": \"0741\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495775.00461,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"OpenTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495786.7814488,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0741\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495786.7821078,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495789.108456,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Adventure Works Central credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495789.108917,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit utilisation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495797.627628,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"value\": \"SYNCUS-0741\", \"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495804.4590988,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"control\": \"AgedBalances\", \"form_id\": \"fh-1\"}",
+   "ok": false,
+   "note": "AttributeError(\"'NoneType' object has no attribute 'get'\")"
+  },
+  {
+   "ts": 1786495807.0737002,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"SYNCUS-0114\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495809.9451609,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"control\": \"Collections\", \"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495822.013345,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495824.105896,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786495827.360105,
+   "server": "erp",
+   "tool": "form_open_or_close_tab",
+   "args": "{\"open\": true, \"form_id\": \"fh-1\", \"tab\": \"General\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495831.147347,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495831.14756,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"SYNCUS\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495836.8209689,
+   "server": "erp",
+   "tool": "form_find_controls",
+   "args": "{\"form_id\": \"fh-1\", \"search\": \"credit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495840.052632,
+   "server": "sheets",
+   "tool": "list_drive_items",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786495843.8069298,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"SYNCUS-0741\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495843.807585,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Adventure Works Central credit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495850.678827,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0114\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495864.816013,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"credit limit code\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495877.681796,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 50000.0, \"open_balance\": 51508.11, \"credit_utilisation_pct\": 103.02}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495880.03005,
+   "server": "harness",
+   "tool": "list_submitted",
+   "args": "{}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,119 @@
+{
+ "task": "erp_qa_gen/collections-contoso-pharmaceuticals-so",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 13,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 10,
+ "agent_error": false,
+ "duration_s": 43.0,
+ "cost_usd": null,
+ "final_text": "**Answer submitted:**\n\n- **`collection_letter_count`**: 3\n- **`current_letter_level`**: \"3\"\n\nThe three collection letters for Contoso Pharmaceuticals South (SYNCUS-0038) in USMF are:\n\n| Level | Date | Status |\n|-------|------|--------|\n| 1 | 2025-03-19 | Sent |\n| 2 | 2025-04-09 | Sent |\n| 3 | 2025-04-30 | Sent |\n\nNo level 4 or \"Collection\" letter exists for this customer, so as of March 2, 2026, they remain at **level 3**.",
+ "trace": [
+  {
+   "ts": 1786495573.197015,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer collection letter\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495573.197469,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer account\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495575.969731,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CollectionLetters\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495575.970307,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495578.731074,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0038\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495578.732058,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CollectionLetters\", \"filters\": {\"account\": \"SYNCUS-0038\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495587.106823,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"collection letter level policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495589.2758038,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495592.86926,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_collectionletters WHERE account = 'SYNCUS-0038' AND dataareaid = 'USMF' ORDER BY letter_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_collectionletters')"
+  },
+  {
+   "ts": 1786495595.278507,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM collectionletters WHERE account = 'SYNCUS-0038' AND dataareaid = 'USMF' ORDER BY letter_date\"}",
+   "ok": false,
+   "note": "ValueError('table collectionletters is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786495601.721907,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CollectionLetters\", \"filters\": {\"account\": \"SYNCUS-0038\", \"letter_code\": \"4\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495601.722867,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CollectionLetters\", \"filters\": {\"account\": \"SYNCUS-0038\", \"letter_code\": \"Collection\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495605.6887639,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"collection_letter_count\": 3, \"current_letter_level\": \"3\"}}",
+   "ok": true
+  }
+ ]
+}

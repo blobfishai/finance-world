@@ -1,0 +1,127 @@
+{
+ "task": "erp_qa_gen/aged-balance-adventure-works-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 14,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 9,
+ "agent_error": false,
+ "duration_s": 55.4,
+ "cost_usd": null,
+ "final_text": "Done. Here's the aging breakdown for **Adventure Works South** (SYNCUS-0030, Fort Worth, TX) in USMF as of March 2, 2026:\n\n| Bucket | Amount |\n|---|---|\n| **Current (not yet due)** | $0.00 |\n| 1\u201330 days | $0.00 |\n| 31\u201360 days | $0.00 |\n| **61\u201390 days** | $51,741.47 |\n| **90+ days** | $0.00 |\n| **Total Past Due** | **$51,741.47** |\n\nThe two open invoices driving this \u2014 CIV-000102 ($18,359.05, due 12/12/2025) and CIV-000104 ($33,382.42, due 12/29/2025) \u2014 both land squarely in the 61\u201390 day bucket.",
+ "trace": [
+  {
+   "ts": 1786494523.006308,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494523.007701,
+   "server": "books",
+   "tool": "report_aged_receivables",
+   "args": "{\"as_of\": \"2026-03-02\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494526.9874141,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Adventure Works South\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494531.225044,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494531.225544,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494533.827918,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0030\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494533.828728,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0702\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494541.4410172,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account = 'SYNCUS-0030' ORDER BY as_of DESC LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786494541.441494,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0030' AND dataareaid = 'USMF' ORDER BY trans_date DESC LIMIT 50\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786494541.4418728,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0702' AND dataareaid = 'USMF' ORDER BY trans_date DESC LIMIT 50\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786494545.4352489,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0030\", \"as_of\": \"2026-03-02\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494545.438493,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0030\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494561.364634,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0702\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494568.4974122,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_past_due\": 51741.47, \"not_yet_due\": 0.0, \"over_90_days\": 0.0}}",
+   "ok": true
+  }
+ ]
+}

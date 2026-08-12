@@ -1,0 +1,259 @@
+{
+ "task": "erp_qa_gen/credit-limit-lucerne-publishing-east",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:credit_limit:off(got=500000.0)",
+  "answer:open_balance:off(got=38231.19)",
+  "answer:credit_utilisation_pct:off(got=7.65)"
+ ],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 32,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 28,
+ "agent_error": false,
+ "duration_s": 238.4,
+ "cost_usd": null,
+ "final_text": "Here's the summary of my findings:\n\n---\n\n### Lucerne Publishing East (SYNCUS-0073) \u2014 USMF, as of March 2, 2026\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $500,000.00 |\n| **Open Balance** | $38,231.19 |\n| **Credit Utilisation** | **7.65%** |\n\nThe open balance consists of a single outstanding invoice \u2014 **CIV-000247** (Annual Subscription, dated 2025-10-16, $38,231.19) \u2014 which was already 90+ days past due as of March 2, 2026. Three collection letters (1, 2, and 3) have been sent with no settlement to date.",
+ "trace": [
+  {
+   "ts": 1786496019.37587,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496019.376159,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496022.017035,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496024.3409941,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Lucerne Publishing East\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496033.776914,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0741\"}, \"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496052.866357,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0741 credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496052.8669991,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0073 Lucerne\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496052.8674188,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496056.7489269,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, SUM(amount - settled) as open_balance FROM erp_customertransactions WHERE account = 'SYNCUS-0073' AND dataareaid = 'USMF' AND closed = 0 GROUP BY account\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496059.3803499,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0073\", \"dataareaid\": \"USMF\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496069.94594,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"0741\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496069.946589,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit Lucerne\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496080.129833,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customer credit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496080.1301692,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"collections\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496082.716495,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496085.505588,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"SYNCUS-0073\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496089.290824,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 73}",
+   "ok": true
+  },
+  {
+   "ts": 1786496091.561428,
+   "server": "erp",
+   "tool": "form_open_or_close_tab",
+   "args": "{\"form_id\": \"fh-1\", \"tab\": \"Credit and collections\", \"open\": true}",
+   "ok": true
+  },
+  {
+   "ts": 1786496110.72319,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"OpenTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496123.289047,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496125.09306,
+   "server": "docs",
+   "tool": "list_document_types",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786496127.211473,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786496135.793361,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"control\": \"Collections\", \"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496159.392343,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496184.047414,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"SYNCUS-0741\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496201.308527,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0073' AND dataareaid = 'USMF' LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496203.4691179,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786496206.293076,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions WHERE account = 'SYNCUS-0073' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786496208.794128,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions WHERE account = 'SYNCUS-0073'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786496231.315437,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496236.29517,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 500000, \"open_balance\": 38231.19, \"credit_utilisation_pct\": 7.65}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496238.340277,
+   "server": "harness",
+   "tool": "list_submitted",
+   "args": "{}",
+   "ok": true
+  }
+ ]
+}

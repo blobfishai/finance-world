@@ -1,0 +1,46 @@
+{
+ "task": "erp_qa_gen/customer-setup-coho-vineyard-west",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 4,
+ "agent_error": false,
+ "duration_s": 18.9,
+ "cost_usd": null,
+ "final_text": "**Results:**\n\n- **Matching customer count:** 2\n- **Phone numbers:** 415-555-0160 (SYNCUS-0090, San Francisco, CA) and 617-555-0149 (SYNCUS-0762, Boston, MA)\n\nBoth records are active in USMF under the name \"Coho Vineyard West.\"",
+ "trace": [
+  {
+   "ts": 1786496544.5705018,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496547.3493419,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Coho Vineyard West\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496552.688103,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"matching_customer_count\": 2, \"phone_numbers\": \"415-555-0160, 617-555-0149\"}}",
+   "ok": true
+  }
+ ]
+}

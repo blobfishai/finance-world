@@ -1,0 +1,89 @@
+{
+ "task": "erp_qa_gen/aged-balance-wide-world-importers",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 9,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 6,
+ "agent_error": false,
+ "duration_s": 34.9,
+ "cost_usd": null,
+ "final_text": "All fields submitted. Here's the summary:\n\n| Bucket | Amount |\n|---|---|\n| **Current (not yet due)** | $11,638.82 |\n| 1\u201330 days past due | $0.00 |\n| 31\u201360 days past due | $0.00 |\n| 61\u201390 days past due | $0.00 |\n| **90+ days past due** | $0.00 |\n| **Total Past Due** | **$0.00** |\n\nThe only open item is invoice CIV-000091 ($11,638.82), which isn't due until March 16, 2026 \u2014 so Wide World Importers is fully current with nothing past due.",
+ "trace": [
+  {
+   "ts": 1786494786.227902,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer aging\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494786.2281878,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer account\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494790.878407,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Wide World Importers\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494790.879019,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494790.879458,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494795.500591,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0026\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494795.502531,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0026\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494805.3551612,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE 'Wide World Importers'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494812.932022,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_past_due\": 0.0, \"not_yet_due\": 11638.82, \"over_90_days\": 0.0}}",
+   "ok": true
+  }
+ ]
+}

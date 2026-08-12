@@ -1,0 +1,147 @@
+{
+ "task": "erp_qa_gen/credit-limit-alpine-ski-house-east",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:credit_limit:off(got=25000.0)",
+  "answer:open_balance:off(got=3306.23)",
+  "answer:credit_utilisation_pct:off(got=13.22)"
+ ],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 16,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 12,
+ "agent_error": false,
+ "duration_s": 60.2,
+ "cost_usd": null,
+ "final_text": "All three values have been submitted:\n\n| Field | Value |\n|---|---|\n| **credit_limit** | $25,000.00 |\n| **open_balance** | $3,306.23 |\n| **credit_utilisation_pct** | 13.22% |\n\nAlpine Ski House East (SYNCUS-0059) has only one open invoice (CIV-000198 for Training Services, dated Feb 2, 2026) utilising 13.22% of its $25,000 credit line.",
+ "trace": [
+  {
+   "ts": 1786495731.814191,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495731.815094,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit utilisation policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495734.512961,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495734.513494,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"customer_account\": \"SYNCUS-0741\"}}",
+   "ok": false,
+   "note": "unknown field customer_account"
+  },
+  {
+   "ts": 1786495736.632743,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495741.5490959,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"name\": \"Alpine Ski House East\"}, \"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495756.9392269,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495756.9399738,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495760.651665,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM CustomerTransactions WHERE account = 'SYNCUS-0059' AND dataareaid = 'USMF' ORDER BY trans_date DESC\"}",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786495760.656941,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0059\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495765.262941,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer_transactions WHERE account = 'SYNCUS-0059' AND dataareaid = 'USMF' ORDER BY trans_date DESC\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer_transactions')"
+  },
+  {
+   "ts": 1786495765.263823,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0059\", \"as_of\": \"2026-03-02\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495767.8033159,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%cust%'\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786495769.895309,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0059' AND dataareaid = 'USMF' ORDER BY trans_date DESC\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495772.487883,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0059\"}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495784.22625,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 25000, \"open_balance\": 3306.23, \"credit_utilisation_pct\": 13.22}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,569 @@
+{
+ "task": "erp_qa_gen/ap-invoices-school-of-fine-art",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": true,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:open_invoice_count:missing",
+  "answer:open_invoice_total:missing",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp"
+ ],
+ "n_tool_calls": 75,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 40,
+ "agent_error": false,
+ "duration_s": 171.2,
+ "cost_usd": null,
+ "final_text": "",
+ "trace": [
+  {
+   "ts": 1786494996.770627,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending vendor invoices approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494996.770903,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495000.059036,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice header lines pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495000.0603,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Vendors\", \"filters\": {\"name\": \"School of Fine Art\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495000.060948,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"ApprovalRequests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495003.914189,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {\"dataareaid\": \"USMF\", \"status\": \"pending\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495003.914591,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending vendor invoice header\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495008.639735,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495008.6408489,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approvalrequests WHERE dataareaid = 'USMF' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approvalrequests')"
+  },
+  {
+   "ts": 1786495011.690774,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice journal pending approval workflow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495011.691103,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%approval%' OR name LIKE '%vendor%' OR name LIKE '%invoice%' LIMIT 50\"}",
+   "ok": false,
+   "note": "ValueError('table sqlite_master is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786495016.1278038,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_approvalrequests LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_approvalrequests')"
+  },
+  {
+   "ts": 1786495016.1283252,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_vendortransactions WHERE dataareaid = 'USMF' LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_vendortransactions')"
+  },
+  {
+   "ts": 1786495020.776623,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_Vendors WHERE dataareaid = 'USMF' AND name = 'School of Fine Art' LIMIT 10\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495020.777306,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_ApprovalRequests LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_ApprovalRequests')"
+  },
+  {
+   "ts": 1786495024.1455739,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending vendor invoices\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495024.145764,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor invoice approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495026.248884,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"pending invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495026.249055,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495028.8015249,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"invoice journal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495028.801832,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"vendor invoice journal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495033.150896,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_VendorTransactions WHERE dataareaid = 'USMF' LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_VendorTransactions')"
+  },
+  {
+   "ts": 1786495033.1514628,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_LedgerJournals WHERE dataareaid = 'USMF' LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_LedgerJournals')"
+  },
+  {
+   "ts": 1786495037.455755,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"VendorTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495037.456453,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"PurchaseOrders\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495042.382008,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice pending draft workflow status\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495042.3844302,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"account\": \"SYNVEN-0021\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495048.555479,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"vendor invoice header workflow pending approval status\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495048.5564868,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_Vendors LIMIT 1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495051.4136178,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_ApprovalPolicies LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_ApprovalPolicies')"
+  },
+  {
+   "ts": 1786495051.414198,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_PurchaseOrders LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_PurchaseOrders')"
+  },
+  {
+   "ts": 1786495054.388275,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_Customers LIMIT 1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495054.3887901,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786495054.389172,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_FiscalPeriods LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_FiscalPeriods')"
+  },
+  {
+   "ts": 1786495058.073009,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"ApprovalPolicies\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495058.073685,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalPolicies\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495063.263736,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PurchaseOrders\", \"filters\": {\"vendor\": \"SYNVEN-0021\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495063.270302,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All vendors\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495066.909023,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 21}",
+   "ok": true
+  },
+  {
+   "ts": 1786495069.972949,
+   "server": "erp",
+   "tool": "form_open_or_close_tab",
+   "args": "{\"form_id\": \"fh-1\", \"tab\": \"General\", \"open\": true}",
+   "ok": true
+  },
+  {
+   "ts": 1786495069.982514,
+   "server": "erp",
+   "tool": "form_open_or_close_tab",
+   "args": "{\"form_id\": \"fh-1\", \"tab\": \"Payment\", \"open\": true}",
+   "ok": true
+  },
+  {
+   "ts": 1786495072.5991108,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"OpenTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495076.798432,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice approval workflow pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495076.798638,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"VendInvoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495080.200782,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"LedgerJournals\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495080.201349,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {\"dataareaid\": \"USMF\", \"state\": \"draft\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495083.983071,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"LedgerJournals\", \"filters\": {}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495083.9837818,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ApprovalRequests\", \"filters\": {\"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495089.95161,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PurchaseOrders\", \"filters\": {\"vendor\": \"SYNVEN-0021\", \"dataareaid\": \"USMF\", \"status\": \"Open order\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495089.9524128,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PurchaseOrders\", \"filters\": {\"vendor\": \"SYNVEN-0021\", \"dataareaid\": \"USMF\"}, \"page\": 1}",
+   "ok": true
+  },
+  {
+   "ts": 1786495093.3579679,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice WHERE DocNumber LIKE '%FINE%' OR DocNumber LIKE '%SYNVEN-0021%'\"}",
+   "ok": false,
+   "note": "QueryParserError: unsupported syntax. Use SELECT * FROM <Entity> [WHERE <Field> = '<value>'] with entities Customer, Invoice, CreditMemo, Payment"
+  },
+  {
+   "ts": 1786495093.35877,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%School of Fine Art%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495097.891867,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"PaymentRuns\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495097.892385,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"PaymentRunLines\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495100.911814,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentRuns\", \"filters\": {\"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495100.9123719,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentRunLines\", \"filters\": {\"vendor\": \"SYNVEN-0021\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495105.33527,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"invoice register pending\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495105.335687,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"AP invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495110.526617,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"invoice approval pending vendor\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495110.527105,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"School of Fine Art\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495113.172847,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"School of Fine Art pending invoice approval\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495113.173415,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"pending approval invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495122.513679,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"ProductReceipts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495122.514128,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ProductReceipts\", \"filters\": {\"dataareaid\": \"USMF\"}}",
+   "ok": false,
+   "note": "unknown field dataareaid"
+  },
+  {
+   "ts": 1786495124.6037278,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ProductReceipts\", \"filters\": {\"po_number\": \"PO-600001\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495129.3186922,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"workflow\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495129.318896,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"approval requests\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495136.535398,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495136.535873,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495142.730793,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_Vendors WHERE account = 'SYNVEN-0021'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495145.445554,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Vendor transactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495149.07906,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-2\", \"column\": \"account\", \"value\": \"SYNVEN-0021\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495156.6077619,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"approval invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495162.894621,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"pending document workflow item\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495162.89502,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"workflow work item approval\"}",
+   "ok": true
+  }
+ ]
+}

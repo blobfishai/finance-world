@@ -1,0 +1,216 @@
+{
+ "task": "erp_qa_gen/aged-balance-humongous-insurance-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "books",
+  "docs",
+  "email",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 26,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 18,
+ "agent_error": false,
+ "duration_s": 147.6,
+ "cost_usd": null,
+ "final_text": "Here's the aging breakdown for Humongous Insurance South in USMF as of March 2, 2026 (using the March 1 batch snapshot, the most recent available \u2014 the one-day difference doesn't change any bucket):\n\n| Bucket | Amount |\n|---|---|\n| **Current (not yet due)** | $64,025.58 |\n| 1\u201330 days | $42,082.58 |\n| 31\u201360 days | $0.00 |\n| 61\u201390 days | $0.00 |\n| **90+ days** | $13,702.26 |\n| **Total Past Due** | $55,784.84 |\n\n**Note:** There are actually two customer records named \"Humongous Insurance South\" in USMF \u2014 SYNCUS-0043 (Cleveland, Net45) with $64,025.58 all current, and SYNCUS-0715 (Chicago, Net30) with $42,082.58 at 1\u201330 days and $13,702.26 at 90+ days. The figures above combine both.",
+ "trace": [
+  {
+   "ts": 1786494653.1201248,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer WHERE name LIKE '%Humongous%Insurance%South%'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer')"
+  },
+  {
+   "ts": 1786494653.1209579,
+   "server": "books",
+   "tool": "query",
+   "args": "{\"q\": \"SELECT * FROM Customer WHERE DisplayName LIKE '%Humongous%Insurance%South%'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494655.433414,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494655.433602,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494658.465033,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Humongous Insurance South\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494658.465754,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"as_of\": \"2026-03-02\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494664.510038,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE as_of = '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786494664.510564,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"customer_account\": \"SYNCUS-0043\", \"dataareaid\": \"USMF\"}}",
+   "ok": false,
+   "note": "unknown field customer_account"
+  },
+  {
+   "ts": 1786494664.5109608,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"customer_account\": \"SYNCUS-0715\", \"dataareaid\": \"USMF\"}}",
+   "ok": false,
+   "note": "unknown field customer_account"
+  },
+  {
+   "ts": 1786494666.97799,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0043\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494666.979938,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0715\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494680.2173178,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"Customer aged balances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494683.035702,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"name\", \"value\": \"Humongous Insurance South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494711.286434,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"as_of\": \"2026-03-02\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494711.287356,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0043\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494711.28799,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0715\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494719.737107,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494722.870079,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-2\", \"column\": \"name\", \"value\": \"Humongous Insurance South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494737.3107169,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"Humongous Insurance South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494737.3115652,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Humongous Insurance South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494743.769453,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerPools\", \"filters\": {\"dataareaid\": \"USMF\"}}",
+   "ok": false,
+   "note": "unknown field dataareaid"
+  },
+  {
+   "ts": 1786494745.943795,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customerpools WHERE account IN ('SYNCUS-0043', 'SYNCUS-0715')\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customerpools')"
+  },
+  {
+   "ts": 1786494762.4551091,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 30}",
+   "ok": true
+  },
+  {
+   "ts": 1786494764.499284,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 498}",
+   "ok": true
+  },
+  {
+   "ts": 1786494783.64687,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494789.92095,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_past_due\": 55784.84, \"not_yet_due\": 64025.58, \"over_90_days\": 13702.26}}",
+   "ok": true
+  }
+ ]
+}

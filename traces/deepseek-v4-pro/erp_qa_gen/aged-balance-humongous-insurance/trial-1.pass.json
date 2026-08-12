@@ -1,0 +1,98 @@
+{
+ "task": "erp_qa_gen/aged-balance-humongous-insurance",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 10,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 7,
+ "agent_error": false,
+ "duration_s": 35.0,
+ "cost_usd": null,
+ "final_text": "Here's the aging breakdown for **Humongous Insurance** (USMF) as of **March 2, 2026**:\n\n| Bucket | Amount |\n|---|---|\n| **Not yet due (Current)** | $38,568.43 |\n| 1\u201330 days past due | $0.00 |\n| 31\u201360 days past due | $0.00 |\n| 61\u201390 days past due | $0.00 |\n| **90+ days past due** | $48,360.83 |\n| **Total Past Due** | **$48,360.83** |\n\nThe entire past-due balance comes from a single invoice \u2014 **CIV-000050** for Professional Services ($48,360.83), due July 24, 2025, now over 220 days overdue. The current invoice **CIV-000047** ($38,568.43) isn't due until March 7, 2026.",
+ "trace": [
+  {
+   "ts": 1786494646.861363,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494646.862452,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"aging breakdown policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494650.211178,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Humongous Insurance\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494650.2117429,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494653.709187,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account = 'SYNCUS-0015' AND dataareaid = 'USMF' ORDER BY as_of DESC LIMIT 5\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786494653.7097542,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494656.337491,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0015\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494656.337974,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0015' AND dataareaid = 'USMF' AND closed = 0 ORDER BY due_date ASC LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786494659.48795,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0015\", \"closed\": \"0\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494671.123991,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_past_due\": 48360.83, \"not_yet_due\": 38568.43, \"over_90_days\": 48360.83}}",
+   "ok": true
+  }
+ ]
+}

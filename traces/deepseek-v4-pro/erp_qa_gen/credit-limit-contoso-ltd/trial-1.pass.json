@@ -1,0 +1,84 @@
+{
+ "task": "erp_qa_gen/credit-limit-contoso-ltd",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 8,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 7,
+ "agent_error": false,
+ "duration_s": 35.3,
+ "cost_usd": null,
+ "final_text": "Here's the summary for **Contoso, Ltd. (SYNCUS-0009)** in USMF as of March 2, 2026:\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $50,000.00 |\n| **Open Balance** | $97,935.59 |\n| **Available Credit** | \u2212$47,935.59 |\n\nThe customer is significantly over their credit limit, which aligns with their **Poor** credit rating and **on-hold** status. The open balance comes from four outstanding invoices (CIV-000029, CIV-000031, CIV-000032, and CIV-000033), all with no settlements applied.",
+ "trace": [
+  {
+   "ts": 1786495858.1144772,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495858.1147368,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"customer\", \"filters\": {\"customer_account\": \"SYNCUS-0009\"}}",
+   "ok": false,
+   "note": "unknown entity type 'customer'"
+  },
+  {
+   "ts": 1786495862.36921,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"customer_account\": \"SYNCUS-0009\"}}",
+   "ok": false,
+   "note": "unknown field customer_account"
+  },
+  {
+   "ts": 1786495862.369766,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495864.2945228,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0009\"}, \"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495870.095144,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, SUM(amount - settled) as open_balance FROM erp_customertransactions WHERE account = 'SYNCUS-0009' AND dataareaid = 'USMF' AND closed = 0 GROUP BY account\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495872.8567412,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0009\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495881.7539032,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 50000.0, \"open_balance\": 97935.59, \"available_credit\": -47935.59}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,91 @@
+{
+ "task": "erp_qa_gen/aged-balance-margie-s-travel-east",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:open_balance:off(got=53809.55)"
+ ],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 9,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 8,
+ "agent_error": false,
+ "duration_s": 58.2,
+ "cost_usd": null,
+ "final_text": "Done. Here's the summary:\n\n**Margie's Travel East \u2014 USMF (as of March 2, 2026)**\n\n| Field | Value |\n|---|---|\n| **Open invoice count** | 4 |\n| **Open balance** | $53,809.55 |\n\nAll open activity is on the Fort Worth account (SYNCUS-0074); the Austin account (SYNCUS-0746) is fully settled. The four open invoices (CIV\u2011000250, CIV\u2011000252, CIV\u2011000253, CIV\u2011000254) total $57,447.06, partially offset by one open credit note ARCN\u2011000253 for \u2013$3,637.51, yielding a net open balance of $53,809.55.",
+ "trace": [
+  {
+   "ts": 1786494727.5716548,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494729.510981,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Margie's Travel East\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494733.568937,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494737.467903,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, invoice, txn_type, trans_date, due_date, currency, amount, settled, (amount - settled) AS open_remainder, closed FROM erp_customertransactions WHERE dataareaid = 'USMF' AND account IN ('SYNCUS-0074', 'SYNCUS-0746') AND closed = 0 AND trans_date <= '2026-03-02' ORDER BY accou",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786494740.4181519,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"dataareaid\": \"USMF\", \"account\": \"SYNCUS-0074\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494740.420933,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"dataareaid\": \"USMF\", \"account\": \"SYNCUS-0746\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494755.0816011,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"dataareaid\": \"USMF\", \"account\": \"SYNCUS-0074\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494755.082612,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"dataareaid\": \"USMF\", \"account\": \"SYNCUS-0746\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494776.215123,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"open_invoice_count\": 4, \"open_balance\": 53809.55}}",
+   "ok": true
+  }
+ ]
+}

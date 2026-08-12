@@ -1,0 +1,83 @@
+{
+ "task": "erp_qa_gen/collections-margie-s-travel-west",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 8,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 6,
+ "agent_error": false,
+ "duration_s": 26.5,
+ "cost_usd": null,
+ "final_text": "Done. Here's the summary:\n\n| Field | Value |\n|---|---|\n| **Customer** | Margie's Travel West (SYNCUS-0102) |\n| **Legal Entity** | USMF |\n| **Collection Letter Count** | **3** |\n| **Current Letter Level** | **3** |\n\nThe three letters were sent on:\n- Letter 1 \u2014 November 4, 2025\n- Letter 2 \u2014 November 25, 2025 (with $25 fee)\n- Letter 3 \u2014 December 16, 2025 (with $40 fee)\n\nAll were sent before March 2, 2026, so the customer is currently at **level 3**.",
+ "trace": [
+  {
+   "ts": 1786495615.4916632,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer collection letter\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495615.49293,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer WHERE account_num = 'SYNCUS-0102' OR name LIKE '%Margie%Travel%West%'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer')"
+  },
+  {
+   "ts": 1786495618.380188,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495618.3807712,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CollectionLetters\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495621.2900438,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0102\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495621.290634,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_collectionletters WHERE account = 'SYNCUS-0102' ORDER BY letter_date DESC\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_collectionletters')"
+  },
+  {
+   "ts": 1786495624.746946,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CollectionLetters\", \"filters\": {\"account\": \"SYNCUS-0102\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495631.924146,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"collection_letter_count\": 3, \"current_letter_level\": \"3\"}}",
+   "ok": true
+  }
+ ]
+}

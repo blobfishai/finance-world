@@ -1,0 +1,96 @@
+{
+ "task": "erp_qa_gen/cash-disocunts-graphic-design-institute-e",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 10,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 6,
+ "agent_error": false,
+ "duration_s": 37.2,
+ "cost_usd": null,
+ "final_text": "**Submitted:**\n\n- **`has_active_cash_discount`**: **Yes** \u2014 Invoice CIV-000240 (\"Training Services\") carries cash discount code `1%15N45` (1% discount if paid within 15 days, net 45), and the 15-day window is still open as of March 2, 2026.\n- **`discounted_open_invoice_count`**: **1** \u2014 Only one of the two open invoices (CIV-000240) has an active cash discount term; CIV-000241 has none.",
+ "trace": [
+  {
+   "ts": 1786495476.4835358,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495476.483795,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"cash discount\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495476.483922,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495479.798927,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Graphic Design Institute East\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495479.799572,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CashDiscounts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495479.800052,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495485.007421,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0070\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495485.0083368,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CashDiscounts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495496.4836018,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"cash discount terms invoice\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495504.272304,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"has_active_cash_discount\": \"Yes\", \"discounted_open_invoice_count\": 1}}",
+   "ok": true
+  }
+ ]
+}

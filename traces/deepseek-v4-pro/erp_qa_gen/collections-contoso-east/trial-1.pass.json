@@ -1,0 +1,84 @@
+{
+ "task": "erp_qa_gen/collections-contoso-east",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 8,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 6,
+ "agent_error": false,
+ "duration_s": 23.1,
+ "cost_usd": null,
+ "final_text": "**Summary:**\n\n| Field | Value |\n|---|---|\n| **Collection Letter Count** | 2 |\n| **Current Letter Level** | 2 |\n\nContoso East (SYNCUS-0065) has two collection letters on file in USMF:\n\n- **Letter 1** \u2014 issued 2026-01-09, status \"Sent,\" $0 fee (balance $26,160.69 at issue)\n- **Letter 2** \u2014 issued 2026-01-30, status \"Sent,\" $25 fee (same balance)\n\nAs of March 2, 2026, the highest letter level reached is **2**.",
+ "trace": [
+  {
+   "ts": 1786495563.218894,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer collection letter\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495563.219142,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customer\", \"filters\": {\"CustomerAccount\": \"SYNCUS-0065\"}}",
+   "ok": false,
+   "note": "unknown entity type 'Customer'"
+  },
+  {
+   "ts": 1786495565.751582,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"CustomerAccount\": \"SYNCUS-0065\"}}",
+   "ok": false,
+   "note": "unknown field CustomerAccount"
+  },
+  {
+   "ts": 1786495565.752099,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CollectionLetters\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495568.5688362,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0065\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495568.570168,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CollectionLetters\", \"filters\": {\"account\": \"SYNCUS-0065\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495574.0864341,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"collection letter level\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495577.795156,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"collection_letter_count\": 2, \"current_letter_level\": \"2\"}}",
+   "ok": true
+  }
+ ]
+}

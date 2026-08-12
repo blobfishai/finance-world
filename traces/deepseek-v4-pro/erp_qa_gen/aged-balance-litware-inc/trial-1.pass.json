@@ -1,0 +1,96 @@
+{
+ "task": "erp_qa_gen/aged-balance-litware-inc",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 10,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 6,
+ "agent_error": false,
+ "duration_s": 38.1,
+ "cost_usd": null,
+ "final_text": "Here's the aging breakdown for **Litware, Inc. (SYNCUS-0016)** as of March 2, 2026:\n\n| Bucket | Amount |\n|---|---|\n| Current (not yet due) | $0.00 |\n| 1\u201330 days | $0.00 |\n| 31\u201360 days | $0.00 |\n| 61\u201390 days | $0.00 |\n| **90+ days** | **$38,463.52** |\n\nThe entire outstanding balance is concentrated in the 90+ bucket, driven by two open invoices:\n\n- **CIV-000051** \u2013 License Fee, $21,475.65 open (due July 7, 2025)\n- **CIV-000054** \u2013 Cloud Services, $16,987.87 open (due June 11, 2025)",
+ "trace": [
+  {
+   "ts": 1786494703.3103092,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494703.3107378,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"aged receivables\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494706.717483,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494706.718017,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494706.718438,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494711.04673,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Litware\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494711.047761,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_aged_balances_snapshot WHERE name LIKE '%Litware%' AND dataareaid = 'USMF' ORDER BY as_of DESC LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_aged_balances_snapshot')"
+  },
+  {
+   "ts": 1786494716.5180109,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0016\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494716.51992,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0016\", \"dataareaid\": \"USMF\", \"closed\": \"0\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494733.244937,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_past_due\": 38463.52, \"not_yet_due\": 0.0, \"over_90_days\": 38463.52}}",
+   "ok": true
+  }
+ ]
+}

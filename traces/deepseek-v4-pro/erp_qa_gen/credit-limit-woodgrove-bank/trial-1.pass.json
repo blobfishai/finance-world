@@ -1,0 +1,120 @@
+{
+ "task": "erp_qa_gen/credit-limit-woodgrove-bank",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 13,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 11,
+ "agent_error": false,
+ "duration_s": 48.6,
+ "cost_usd": null,
+ "final_text": "Here's a summary of the findings for **Woodgrove Bank (SYNCUS-0028)** in USMF as of March 2, 2026:\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $10,000.00 |\n| **Open Balance** | $24,403.93 |\n| **Available Credit** | -$14,403.93 |\n\n**Details:**\n\n- **Credit Limit** comes from the customer master (`credit_max` = 10,000.00).\n- **Open Balance** is driven by a single open invoice: **CIV-000097** (Consulting Services, dated 2025-12-12, due 2025-12-27) \u2014 $45,403.54 original less $20,999.61 settled = $24,403.93 open. This was confirmed by the Aged Balances Snapshot from March 1, 2026 (all $24,403.93 in the 61\u201390 day bucket). No transactions occurred between March 1 and March 2, 2026.\n- **Available Credit** = Credit Limit \u2212 Open Balance = $10,000.00 \u2212 $24,403.93 = **\u2212$14,403.93**. The customer has significantly exceeded their credit limit.",
+ "trace": [
+  {
+   "ts": 1786496379.4475148,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496379.4483042,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit available credit customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496382.098686,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496382.099322,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"CustomerAccount\": \"SYNCUS-0028\"}}",
+   "ok": false,
+   "note": "unknown field CustomerAccount"
+  },
+  {
+   "ts": 1786496384.463458,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0028\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496388.4982982,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM CustomerTransactions WHERE account = 'SYNCUS-0028' AND dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786496390.805202,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions WHERE account = 'SYNCUS-0028' AND dataareaid = 'USMF' AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786496392.607156,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496395.061839,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0028\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496405.694904,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496405.696028,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496409.2869399,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0028\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496414.709137,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 10000.0, \"open_balance\": 24403.93, \"available_credit\": -14403.93}}",
+   "ok": true
+  }
+ ]
+}

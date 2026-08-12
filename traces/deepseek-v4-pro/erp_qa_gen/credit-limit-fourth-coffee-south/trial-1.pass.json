@@ -1,0 +1,105 @@
+{
+ "task": "erp_qa_gen/credit-limit-fourth-coffee-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 11,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 7,
+ "agent_error": false,
+ "duration_s": 41.5,
+ "cost_usd": null,
+ "final_text": "All three fields submitted:\n\n| Field | Value |\n|---|---|\n| `credit_limit` | $25,000.00 |\n| `open_balance` | $49,350.14 |\n| `available_credit` | \u2212$24,350.14 |\n\nFourth Coffee South (SYNCUS-0041) has a $25,000 credit limit but is carrying a single open invoice (CIV-000139, \"Monthly Subscription,\" dated Jan 12, 2026) for $49,350.14 \u2014 putting them $24,350.14 over their limit as of March 2, 2026.",
+ "trace": [
+  {
+   "ts": 1786495946.902484,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495946.903338,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit available credit customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495950.461973,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495950.4628701,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Fourth Coffee South\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495955.714419,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495955.7150972,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495960.389976,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0041' AND dataareaid = 'USMF' ORDER BY trans_date DESC LIMIT 200\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495960.3906481,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account = 'SYNCUS-0041' AND dataareaid = 'USMF' ORDER BY as_of DESC LIMIT 10\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786495963.963665,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0041\", \"dataareaid\": \"USMF\"}, \"page\": 1}",
+   "ok": true
+  },
+  {
+   "ts": 1786495963.97528,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0041\", \"dataareaid\": \"USMF\"}, \"page\": 1}",
+   "ok": true
+  },
+  {
+   "ts": 1786495977.860667,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 25000.0, \"open_balance\": 49350.14, \"available_credit\": -24350.14}}",
+   "ok": true
+  }
+ ]
+}

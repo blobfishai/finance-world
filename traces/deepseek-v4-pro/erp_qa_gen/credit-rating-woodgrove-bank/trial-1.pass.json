@@ -1,0 +1,46 @@
+{
+ "task": "erp_qa_gen/credit-rating-woodgrove-bank",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 4,
+ "agent_error": false,
+ "duration_s": 23.3,
+ "cost_usd": null,
+ "final_text": "The answer has been submitted:\n\n- **credit_rating**: Fair\n- **customer_account**: SYNCUS-0028\n\nWoodgrove Bank (account SYNCUS-0028) in the USMF legal entity has a credit rating of **Fair**, with a credit limit of $10,000.00 and Net15 payment terms.",
+ "trace": [
+  {
+   "ts": 1786496506.271706,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496509.295618,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Woodgrove Bank\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496516.243517,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_rating\": \"Fair\", \"customer_account\": \"SYNCUS-0028\"}}",
+   "ok": true
+  }
+ ]
+}

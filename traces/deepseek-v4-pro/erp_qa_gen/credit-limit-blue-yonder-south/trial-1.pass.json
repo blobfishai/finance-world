@@ -1,0 +1,105 @@
+{
+ "task": "erp_qa_gen/credit-limit-blue-yonder-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 11,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 10,
+ "agent_error": false,
+ "duration_s": 46.2,
+ "cost_usd": null,
+ "final_text": "All done. Here's the final summary for **Blue Yonder South (SYNCUS-0032)** in USMF as of March 2, 2026:\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $500,000.00 |\n| **Open Balance** | $1,159.43 |\n| **Available Credit** | $498,840.57 |\n\nThe open balance comes from a single partially-settled invoice (CIV-000112, an Annual Subscription from October 2025), now aged 90+ days. All other invoices have been fully paid.",
+ "trace": [
+  {
+   "ts": 1786495793.7676249,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495793.768805,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit available credit policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495796.001545,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"customerAccount\": \"SYNCUS-0032\"}}",
+   "ok": false,
+   "note": "unknown field customerAccount"
+  },
+  {
+   "ts": 1786495798.177527,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0032\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495802.507534,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495806.25826,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0032' AND dataareaid = 'USMF' AND trans_date <= '2026-03-02' ORDER BY trans_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495808.632064,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0032\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495818.779559,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0032\", \"dataareaid\": \"USMF\"}, \"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495818.780216,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"available credit limit customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495823.440758,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495829.799788,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 500000.0, \"open_balance\": 1159.43, \"available_credit\": 498840.57}}",
+   "ok": true
+  }
+ ]
+}

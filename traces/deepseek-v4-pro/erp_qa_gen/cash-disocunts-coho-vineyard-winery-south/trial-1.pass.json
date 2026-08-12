@@ -1,0 +1,168 @@
+{
+ "task": "erp_qa_gen/cash-disocunts-coho-vineyard-winery-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 20,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 13,
+ "agent_error": false,
+ "duration_s": 71.1,
+ "cost_usd": null,
+ "final_text": "**Answer: 1** \u2014 Coho Vineyard & Winery South (SYNCUS-0036) has paid within the 10-day discount window exactly once in the last 12 months (as of March 2, 2026): payment #3547 on February 3, 2026, settling invoice #125 with a cash discount of $678.96 taken.",
+ "trace": [
+  {
+   "ts": 1786495458.808226,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495458.808522,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"payment journal\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495462.433811,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Coho\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495462.4345222,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerSettlements\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495462.4349592,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495468.149346,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"2%10N30\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495468.15025,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customersettlements WHERE account = 'SYNCUS-0036' AND dataareaid = 'USMF' AND settle_date >= '2025-03-02' AND settle_date <= '2026-03-02' AND cash_disc_taken > 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customersettlements')"
+  },
+  {
+   "ts": 1786495471.997143,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerSettlements\", \"filters\": {\"account\": \"SYNCUS-0036\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495471.9979,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"2%10\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495476.993721,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerSettlements\", \"filters\": {\"account\": \"SYNCUS-0036\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495476.994514,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495484.862508,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0036\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495484.863293,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"discount window payment terms cash discount\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495494.910251,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"cash discount 2%10N30 discount window\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495494.910465,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"cash discount\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495496.784966,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CashDiscounts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495498.9183948,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CashDiscounts\", \"filters\": {\"code\": \"2%10N30\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495504.438151,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"payment discount window AR collections\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495513.57504,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customersettlements WHERE account = 'SYNCUS-0036'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customersettlements')"
+  },
+  {
+   "ts": 1786495521.336925,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"discount_payment_count\": 1}}",
+   "ok": true
+  }
+ ]
+}

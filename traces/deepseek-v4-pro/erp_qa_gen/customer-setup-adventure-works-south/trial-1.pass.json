@@ -1,0 +1,70 @@
+{
+ "task": "erp_qa_gen/customer-setup-adventure-works-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 6,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 7,
+ "agent_error": false,
+ "duration_s": 29.5,
+ "cost_usd": null,
+ "final_text": "The answer has been submitted:\n\n- **customer_account**: `SYNCUS-0030`\n- **payment_terms**: `Net45 (Net 45 days)`",
+ "trace": [
+  {
+   "ts": 1786496528.141839,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE account = 'SYNCUS-0030'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496532.92684,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_payment_terms WHERE term = 'Net45'\"}",
+   "ok": false,
+   "note": "OperationalError('no such column: term')"
+  },
+  {
+   "ts": 1786496535.6818728,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"erp_payment_terms\"}",
+   "ok": false,
+   "note": "unknown entity type 'erp_payment_terms'"
+  },
+  {
+   "ts": 1786496538.8778071,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"payment_term\": \"Net45\"}}",
+   "ok": false,
+   "note": "unknown field payment_term"
+  },
+  {
+   "ts": 1786496541.9806578,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"PaymentTerms\", \"filters\": {\"code\": \"Net45\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496545.7251992,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"payment_terms\": \"Net45 (Net 45 days)\", \"customer_account\": \"SYNCUS-0030\"}}",
+   "ok": true
+  }
+ ]
+}

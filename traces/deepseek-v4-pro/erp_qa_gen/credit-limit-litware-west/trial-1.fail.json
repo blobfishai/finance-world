@@ -1,0 +1,251 @@
+{
+ "task": "erp_qa_gen/credit-limit-litware-west",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:credit_limit:off(got=50000.0)",
+  "answer:open_balance:off(got=44491.95)",
+  "answer:credit_utilisation_pct:off(got=88.98)"
+ ],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 31,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 23,
+ "agent_error": false,
+ "duration_s": 316.7,
+ "cost_usd": null,
+ "final_text": "The submission is confirmed. Here's the summary:\n\n| Field | Value |\n|---|---|\n| **credit_limit** | $50,000.00 |\n| **open_balance** | $44,491.95 |\n| **credit_utilisation_pct** | 88.98% |\n\n**Details:**\n- **Customer**: Litware West, account SYNCUS-0100, USMF\n- **Credit limit** (credit_max): $50,000.00\n- **Open balance** as of March 2, 2026: two open invoices \u2014 CIV-000352 ($18,172.98) and CIV-000354 ($26,318.97) = $44,491.95, confirmed by the Aged Balances Snapshot (AGE-2026-03-01)\n- **Utilisation**: $44,491.95 \u00f7 $50,000.00 = **88.98%**",
+ "trace": [
+  {
+   "ts": 1786495995.9615848,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495995.9620962,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer account\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496000.7511349,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496003.21712,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496005.920326,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Litware West\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496034.6428318,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE account = 'SYNCUS-0100'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496034.643637,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE account = 'SYNCUS-0741'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496044.204753,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0741 credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496044.2054179,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0100 credit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496057.975094,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"credit limit customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496057.976873,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496089.386904,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT SUM(amount - settled) as open_balance FROM erp_customertransactions WHERE account = 'SYNCUS-0100' AND dataareaid = 'USMF' AND closed = 0 AND trans_date <= '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496089.38763,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT SUM(amount - settled) as open_balance FROM erp_customertransactions WHERE account = 'SYNCUS-0741' AND dataareaid = 'USMF' AND closed = 0 AND trans_date <= '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496093.4417899,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions WHERE account = 'SYNCUS-0100' AND dataareaid = 'USMF' AND closed = 0 AND trans_date <= '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786496093.442306,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions WHERE account = 'SYNCUS-0741' AND dataareaid = 'USMF' AND closed = 0 AND trans_date <= '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786496096.187725,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0100\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496096.189728,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496135.468677,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0100\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496135.469738,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496166.947464,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496169.067342,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496171.337795,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"name\", \"value\": \"Litware West\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496174.342161,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 100}",
+   "ok": true
+  },
+  {
+   "ts": 1786496176.8938181,
+   "server": "erp",
+   "tool": "form_open_or_close_tab",
+   "args": "{\"form_id\": \"fh-1\", \"tab\": \"Credit and collections\", \"open\": true}",
+   "ok": true
+  },
+  {
+   "ts": 1786496189.23571,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"account\", \"value\": \"SYNCUS-0741\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496229.238739,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT account, name, credit_max, credit_rating FROM erp_customers WHERE account IN ('SYNCUS-0100', 'SYNCUS-0741')\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496229.239606,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"Litware West credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496231.529703,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496233.519084,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1786496297.13704,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 50000, \"open_balance\": 44491.95, \"credit_utilisation_pct\": 88.98}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496299.8623931,
+   "server": "harness",
+   "tool": "list_submitted",
+   "args": "{}",
+   "ok": true
+  }
+ ]
+}

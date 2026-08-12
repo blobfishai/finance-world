@@ -1,0 +1,116 @@
+{
+ "task": "erp_qa_gen/credit-limit-woodgrove-east",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:credit_limit:off(got=500000.0)",
+  "answer:open_balance:off(got=59236.55)",
+  "answer:credit_utilisation_pct:off(got=11.85)"
+ ],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 12,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 10,
+ "agent_error": false,
+ "duration_s": 54.0,
+ "cost_usd": null,
+ "final_text": "The submission has been recorded. Here's the summary:\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $500,000.00 |\n| **Open Balance** | $59,236.55 |\n| **Credit Utilisation %** | 11.85% |\n\nWoodgrove East (SYNCUS-0084) has two open invoices \u2014 CIV-000290 ($29,502.97, due Feb 25, 2026) and CIV-000292 ($29,733.58, due June 5, 2025) \u2014 totaling $59,236.55 against a $500,000 credit line, putting them at 11.85% utilisation as of March 2, 2026.",
+ "trace": [
+  {
+   "ts": 1786496402.523343,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer account credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496402.5256,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customer WHERE accountnum = 'SYNCUS-0741'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customer')"
+  },
+  {
+   "ts": 1786496405.665705,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"accountnum\": \"SYNCUS-0741\"}}",
+   "ok": false,
+   "note": "unknown field accountnum"
+  },
+  {
+   "ts": 1786496409.297815,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496412.629529,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"name\": \"Woodgrove\"}, \"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496421.5212622,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496421.522152,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496425.8806138,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0084\", \"closed\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496425.882637,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0084\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496434.924533,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0084' AND trans_date = '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496438.3424609,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0084\", \"trans_date\": \"2026-03-02\"}, \"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496443.6140711,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 500000.0, \"open_balance\": 59236.55, \"credit_utilisation_pct\": 11.85}}",
+   "ok": true
+  }
+ ]
+}

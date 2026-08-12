@@ -1,0 +1,96 @@
+{
+ "task": "erp_qa_gen/aged-balance-litware-west",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 10,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 10,
+ "agent_error": false,
+ "duration_s": 47.8,
+ "cost_usd": null,
+ "final_text": "**Summary:**\n\n| Field | Value |\n|---|---|\n| **open_invoice_count** | 2 |\n| **open_balance** | $44,491.95 |\n\n**Details:**\n\n- Customer: **Litware West** (account `SYNCUS-0100`, USMF)\n  - Invoice `CIV-000352` \u2014 $18,172.98 (Cloud Services, dated 2025-11-26)\n  - Invoice `CIV-000354` \u2014 $26,318.97 (Cloud Services, dated 2025-07-22)\n\n- The second \"Litware West\" in USMF (`SYNCUS-0772`) has zero open transactions.\n\n- The Aged Balances Snapshot from March 1, 2026 also confirms a total due of $44,491.95 (all in the 90+ days bucket), consistent with these two invoices.",
+ "trace": [
+  {
+   "ts": 1786494707.91216,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494709.870539,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494711.6670332,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Litware West\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494716.1783721,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494718.815603,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE dataareaid = 'USMF' AND account IN ('SYNCUS-0100', 'SYNCUS-0772') AND closed = 0 ORDER BY account, trans_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786494722.7982872,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0100\", \"closed\": \"0\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494722.8001542,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0772\", \"closed\": \"0\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494730.339704,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494732.539094,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"name\": \"Litware West\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494745.904639,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"open_invoice_count\": 2, \"open_balance\": 44491.95}}",
+   "ok": true
+  }
+ ]
+}

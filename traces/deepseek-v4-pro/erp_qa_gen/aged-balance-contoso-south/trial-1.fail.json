@@ -1,0 +1,199 @@
+{
+ "task": "erp_qa_gen/aged-balance-contoso-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:not_yet_due:off(got=0.0)"
+ ],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 24,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 20,
+ "agent_error": false,
+ "duration_s": 98.5,
+ "cost_usd": null,
+ "final_text": "Here's the summary of what was submitted for **Contoso South (SYNCUS-0037, Miami, FL)** in USMF as of March 2, 2026:\n\n| Field | Value |\n|---|---|\n| **`not_yet_due`** | $0.00 |\n| **`total_past_due`** | $62,775.86 |\n| **`over_90_days`** | $0.00 |\n\nThe aging breaks down as:\n- **Current**: $0.00\n- **1\u201330 days**: $38,837.61 (Invoice CIV-000128, due 2/22/2026)\n- **31\u201360 days**: $0.00\n- **61\u201390 days**: $23,938.25 (Invoices CIV-000127 due 12/23/2025 and CIV-000129 due 12/28/2025)\n- **90+ days**: $0.00\n\n> \u26a0\ufe0f Note: There is a second Contoso South (SYNCUS-0709, Philadelphia) with $49,550.82 all current and $0 past due. If you meant that one, let me know and I'll resubmit.",
+ "trace": [
+  {
+   "ts": 1786494571.4988968,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494571.504555,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"aging\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494574.3931131,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Contoso South\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494574.393703,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494577.79329,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE dataareaid = 'USMF' AND (account = 'SYNCUS-0037' OR account = 'SYNCUS-0709') AND as_of = '2026-03-02'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786494579.639681,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"dataareaid\": \"USMF\", \"as_of\": \"2026-03-02\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494582.593777,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"dataareaid\": \"USMF\", \"account\": \"SYNCUS-0037\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494582.5960908,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"dataareaid\": \"USMF\", \"account\": \"SYNCUS-0709\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494589.627504,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"as_of\": \"2026-03-02\"}, \"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494589.628191,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494594.2270641,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE dataareaid = 'USMF' AND account IN ('SYNCUS-0037', 'SYNCUS-0709') AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786494596.1976142,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM customertransactions WHERE dataareaid = 'USMF' AND account IN ('SYNCUS-0037', 'SYNCUS-0709') AND closed = 0\"}",
+   "ok": false,
+   "note": "ValueError('table customertransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786494598.533556,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions WHERE dataareaid = 'USMF' AND account IN ('SYNCUS-0037', 'SYNCUS-0709') AND closed = 0\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786494601.9829602,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"dataareaid\": \"USMF\", \"account\": \"SYNCUS-0037\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494601.98618,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"dataareaid\": \"USMF\", \"account\": \"SYNCUS-0709\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494626.703129,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494629.432011,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494631.2444391,
+   "server": "erp",
+   "tool": "form_filter_form",
+   "args": "{\"form_id\": \"fh-1\", \"value\": \"Contoso South\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494633.9101949,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 37}",
+   "ok": true
+  },
+  {
+   "ts": 1786494636.688394,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"AgedBalances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494639.729623,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 709}",
+   "ok": true
+  },
+  {
+   "ts": 1786494642.0022569,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"control\": \"AgedBalances\", \"form_id\": \"fh-1\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494658.133845,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"total_past_due\": 62775.86, \"not_yet_due\": 0, \"over_90_days\": 0}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494660.0430112,
+   "server": "erp",
+   "tool": "form_close_form",
+   "args": "{\"form_id\": \"fh-1\"}",
+   "ok": true
+  }
+ ]
+}

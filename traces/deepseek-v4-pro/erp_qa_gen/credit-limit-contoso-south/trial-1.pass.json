@@ -1,0 +1,168 @@
+{
+ "task": "erp_qa_gen/credit-limit-contoso-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 20,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 17,
+ "agent_error": false,
+ "duration_s": 84.6,
+ "cost_usd": null,
+ "final_text": "Here's the summary for **Contoso South (SYNCUS-0037)** in USMF as of March 2, 2026:\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $25,000.00 |\n| **Open Balance** | $62,775.86 |\n| **Available Credit** | -$37,775.86 |\n\n**Details:**\n\n- **Credit limit** comes from the customer master (`credit_max`): $25,000.00.\n- **Open balance** is the sum of three unpaid invoices as of March 2, 2026:\n  - CIV-000127 (Support Services, 2025-11-23): $6,038.89\n  - CIV-000128 (Training Services, 2026-01-23): $38,837.61\n  - CIV-000129 (Cloud Services, 2025-11-28): $17,899.36\n- **Available credit** = $25,000.00 \u2212 $62,775.86 = \u2212$37,775.86, meaning the account is well over its credit limit.",
+ "trace": [
+  {
+   "ts": 1786495892.87124,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495892.872085,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit available credit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495896.6515388,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495896.652117,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"CustomerAccount\": \"SYNCUS-0037\"}}",
+   "ok": false,
+   "note": "unknown field CustomerAccount"
+  },
+  {
+   "ts": 1786495900.0360541,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0037\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495905.815527,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer transactions open\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495905.8161972,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"available credit calculation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495908.266007,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495911.905727,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM CustomerTransactions WHERE account = 'SYNCUS-0037' AND dataareaid = 'USMF' ORDER BY trans_date\"}",
+   "ok": false,
+   "note": "ValueError('table CustomerTransactions is outside the ERP (only erp_* tables exist here)')"
+  },
+  {
+   "ts": 1786495914.994338,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0037\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495931.5343292,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit available credit policy customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495931.535511,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0037\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495939.314537,
+   "server": "docs",
+   "tool": "list_documents",
+   "args": "{\"doc_type\": \"policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495942.981199,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495945.487818,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495949.5122209,
+   "server": "erp",
+   "tool": "form_filter_grid",
+   "args": "{\"form_id\": \"fh-1\", \"column\": \"account\", \"value\": \"SYNCUS-0037\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495952.2317388,
+   "server": "erp",
+   "tool": "form_select_grid_row",
+   "args": "{\"form_id\": \"fh-1\", \"row\": 37}",
+   "ok": true
+  },
+  {
+   "ts": 1786495954.580348,
+   "server": "erp",
+   "tool": "form_open_or_close_tab",
+   "args": "{\"form_id\": \"fh-1\", \"tab\": \"Credit and collections\", \"open\": true}",
+   "ok": true
+  },
+  {
+   "ts": 1786495959.795848,
+   "server": "erp",
+   "tool": "form_click_control",
+   "args": "{\"form_id\": \"fh-1\", \"control\": \"AgedBalances\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495963.455041,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 25000.0, \"open_balance\": 62775.86, \"available_credit\": -37775.86}}",
+   "ok": true
+  }
+ ]
+}

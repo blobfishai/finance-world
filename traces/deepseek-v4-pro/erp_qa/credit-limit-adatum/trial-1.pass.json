@@ -1,0 +1,76 @@
+{
+ "task": "erp_qa/credit-limit-adatum",
+ "family": "erp_qa",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 7,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 7,
+ "agent_error": false,
+ "duration_s": 20.3,
+ "cost_usd": null,
+ "final_text": "Here's what I found for **SYNCUS-0001**:\n\n| Field | Value |\n|---|---|\n| **Customer Name** | A. Datum Corporation |\n| **Credit Limit** | **$25,000.00 USD** |\n| **Payment Terms** | COD |\n| **Credit Rating** | Good |\n| **Hold Status** | Open |\n\nSYNCUS-0001 (A. Datum Corporation, Pittsburgh, PA) has a credit limit of **$25,000**. They're on COD terms with a 2%10N30 cash discount and currently have no hold \u2014 so as long as the order doesn't push them over that $25K limit, it should clear.",
+ "trace": [
+  {
+   "ts": 1786494066.719311,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE customer_code LIKE '%SYNCUS%' OR customer_name LIKE '%SYNCUS%'\"}",
+   "ok": false,
+   "note": "OperationalError('no such column: customer_code')"
+  },
+  {
+   "ts": 1786494068.258501,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494071.5941179,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494071.595223,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"SYNCUS\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786494073.649069,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0001\"}, \"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494077.279387,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786494079.8676522,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 25000, \"customer_name\": \"A. Datum Corporation\"}}",
+   "ok": true
+  }
+ ]
+}

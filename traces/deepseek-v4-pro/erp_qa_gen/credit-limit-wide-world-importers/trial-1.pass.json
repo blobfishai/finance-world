@@ -1,0 +1,97 @@
+{
+ "task": "erp_qa_gen/credit-limit-wide-world-importers",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 10,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 8,
+ "agent_error": false,
+ "duration_s": 38.1,
+ "cost_usd": null,
+ "final_text": "Here's the summary for **Wide World Importers (SYNCUS-0026)** in USMF as of March 2, 2026:\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $100,000.00 |\n| **Open Balance** | $11,638.82 |\n| **Available Credit** | $88,361.18 |\n\nThe open balance consists of a single unpaid invoice \u2014 CIV-000091 (Consulting Services, dated March 1, 2026). All four prior invoices have been fully settled by payments.",
+ "trace": [
+  {
+   "ts": 1786496362.478957,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496362.4798222,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit available credit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496365.6166499,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496365.618062,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Wide World Importers\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496369.708585,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496372.0379388,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0026' AND dataareaid = 'USMF' ORDER BY trans_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496374.640895,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0026\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496384.376565,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0026\"}, \"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496384.377377,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"available credit calculation credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496391.5848992,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 100000.0, \"open_balance\": 11638.82, \"available_credit\": 88361.18}}",
+   "ok": true
+  }
+ ]
+}

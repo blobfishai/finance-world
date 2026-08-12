@@ -1,0 +1,166 @@
+{
+ "task": "erp_qa_gen/credit-limit-a-datum-east",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:open_balance:off(got=18840.18)",
+  "answer:credit_utilisation_pct:off(got=188.4)"
+ ],
+ "servers_used": [
+  "docs",
+  "email",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 19,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 10,
+ "agent_error": false,
+ "duration_s": 86.3,
+ "cost_usd": null,
+ "final_text": "The answer has been recorded. Here's a summary:\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $10,000.00 |\n| **Open Balance** (as of Mar 2, 2026) | $18,840.18 |\n| **Credit Utilisation %** | **188.4%** |\n\n**How this was determined:**\n\n- **A. Datum East** is customer **SYNCUS-0057** in USMF with a `credit_max` of **$10,000.00**.\n- Two open (unsettled) invoices drive the balance:\n  - **CIV-000192** (Professional Services, Jan 13, 2026): **$18,339.65**\n  - **CIV-000195** (Cloud Services, Dec 8, 2025): **$500.53**\n- The Aged Balances Snapshot (`AGE-2026-03-01`) confirms `total_due = $18,840.18`. No transactions occur on March 1\u20132, so the balance holds as of March 2, 2026.\n- Utilisation = $18,840.18 \u00f7 $10,000.00 \u00d7 100 = **188.4%** \u2014 well over the credit limit.\n\n> **Note:** SYNCUS-0741 is actually \"Fourth Coffee East,\" a separate customer. It does not appear to relate to A. Datum East's credit utilisation in the system.",
+ "trace": [
+  {
+   "ts": 1786495715.747068,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495715.748058,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0741 SYNCUS-0057 credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495715.748245,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"credit limit\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495718.67837,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495718.679425,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"A. Datum\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495724.883908,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE account = 'SYNCUS-0741'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495724.885924,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0057\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495741.9195368,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0741'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495741.920181,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE invoice LIKE '%0741%' OR voucher LIKE '%0741%'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495741.921175,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0057\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495749.146635,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit utilisation A. Datum East\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495749.147152,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"SYNCUS-0741\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495749.1472619,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer group\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495758.470742,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE invoice = 'SYNCUS-0741' OR voucher = 'SYNCUS-0741'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786495758.471715,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customers WHERE account = 'SYNCUS-0741'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495772.650728,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"A. Datum East credit limit SYNCUS-0741\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495772.6510432,
+   "server": "erp",
+   "tool": "form_find_menu_item",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495778.494907,
+   "server": "erp",
+   "tool": "form_open_menu_item",
+   "args": "{\"menu_item\": \"All customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495787.153826,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 10000.0, \"open_balance\": 18840.18, \"credit_utilisation_pct\": 188.4}}",
+   "ok": true
+  }
+ ]
+}

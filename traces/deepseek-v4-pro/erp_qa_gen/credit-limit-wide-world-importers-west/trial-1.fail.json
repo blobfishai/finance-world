@@ -1,0 +1,114 @@
+{
+ "task": "erp_qa_gen/credit-limit-wide-world-importers-west",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:open_balance:off(got=81619.83)",
+  "answer:credit_utilisation_pct:off(got=816.2)"
+ ],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 12,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 13,
+ "agent_error": false,
+ "duration_s": 60.7,
+ "cost_usd": null,
+ "final_text": "Here's a summary of what I found for **Wide World Importers West (SYNCUS-0110)** in USMF:\n\n| Field | Value |\n|---|---|\n| **Credit limit** | $10,000.00 |\n| **Open balance** (as of Mar 2, 2026) | $81,619.83 |\n| **Credit utilisation** | **816.20%** |\n\n**Supporting data:**\n\n- **Customer master** shows `credit_max = 10,000.00` for SYNCUS-0110 (Wide World Importers West, Louisville KY, credit rating: Poor).\n- **Aged Balances Snapshot** (run `AGE-2026-03-01`, as_of 2026-03-01) reports `total_due = 81,619.83`, all in the 90+ bucket.\n- **Open transactions** confirm three unsettled invoices: CIV-000385 ($453.40), CIV-000387 ($31,670.76), and CIV-000388 ($49,495.67) \u2014 all dated well before March 2, 2026.\n\nThe customer is significantly over their credit limit at over 8\u00d7.",
+ "trace": [
+  {
+   "ts": 1786496370.8323,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496372.6574662,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496374.837219,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0741\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496377.247307,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Wide World Importers West\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496384.453409,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"filters\": {\"account\": \"SYNCUS-0741\"}, \"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496388.885002,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496391.718369,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0110' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496394.124659,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_CustomerTransactions WHERE account = 'SYNCUS-0110' AND dataareaid = 'USMF'\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_CustomerTransactions')"
+  },
+  {
+   "ts": 1786496396.496192,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0110\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496409.304118,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496412.090865,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0110\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496417.486123,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 10000.0, \"open_balance\": 81619.83, \"credit_utilisation_pct\": 816.2}}",
+   "ok": true
+  }
+ ]
+}

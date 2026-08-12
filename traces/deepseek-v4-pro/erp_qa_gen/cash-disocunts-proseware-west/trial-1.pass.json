@@ -1,0 +1,89 @@
+{
+ "task": "erp_qa_gen/cash-disocunts-proseware-west",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 9,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 6,
+ "agent_error": false,
+ "duration_s": 30.3,
+ "cost_usd": null,
+ "final_text": "**Submitted:**\n\n| Field | Value |\n|---|---|\n| `has_active_cash_discount` | Yes |\n| `discounted_open_invoice_count` | 1 |\n\nThe sole open invoice **CIV-000368** carries the **1%15N45** cash discount (1% off if paid within 15 days), and as of March 2, 2026 \u2014 only 3 days after issue \u2014 the discount window is still open.",
+ "trace": [
+  {
+   "ts": 1786495512.801816,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495512.8021739,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"cash discount\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495515.511581,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Proseware West\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495515.512171,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CashDiscounts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495515.51267,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495519.694748,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0104\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786495519.695515,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CashDiscounts\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495529.7668521,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"cash discount policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786495535.177944,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"has_active_cash_discount\": \"Yes\", \"discounted_open_invoice_count\": 1}}",
+   "ok": true
+  }
+ ]
+}

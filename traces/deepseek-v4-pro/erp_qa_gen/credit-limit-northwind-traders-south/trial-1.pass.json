@@ -1,0 +1,112 @@
+{
+ "task": "erp_qa_gen/credit-limit-northwind-traders-south",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 12,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": 9,
+ "agent_error": false,
+ "duration_s": 53.1,
+ "cost_usd": null,
+ "final_text": "Here's the summary for **Northwind Traders South (SYNCUS-0047)** in USMF as of March 2, 2026:\n\n| Field | Value |\n|---|---|\n| **Credit Limit** | $100,000.00 |\n| **Open Balance** | $52,178.35 |\n| **Available Credit** | $47,821.65 |\n\nThe breakdown came from:\n\n- **Credit limit** (`credit_max`): $100,000.00 from the customer master.\n- **Open balance**: Sum of four open (unsettled) invoices:\n  - CIV-000159 \u2014 Cloud Services, $2,330.66 (Apr 2025)\n  - CIV-000160 \u2014 Product Sale, $8,013.79 (Dec 2025)\n  - CIV-000158 \u2014 Professional Services, $24,258.41 (Jan 2026)\n  - CIV-000157 \u2014 Annual Subscription, $17,575.49 (Feb 2026)\n- **Available credit**: $100,000.00 \u2212 $52,178.35 = $47,821.65.",
+ "trace": [
+  {
+   "ts": 1786496082.388499,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496082.38967,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"credit limit policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496084.998244,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"Customers\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496087.622205,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"SYNCUS-0047\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496091.955783,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"CustomerTransactions\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496091.9564428,
+   "server": "erp",
+   "tool": "data_get_entity_metadata",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496097.265909,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_customertransactions WHERE account = 'SYNCUS-0047' AND dataareaid = 'USMF' AND closed = 0 ORDER BY trans_date\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_customertransactions')"
+  },
+  {
+   "ts": 1786496097.266358,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT * FROM erp_agedbalancessnapshot WHERE account = 'SYNCUS-0047' AND dataareaid = 'USMF' AND as_of <= '2026-03-02' ORDER BY as_of DESC LIMIT 1\"}",
+   "ok": false,
+   "note": "OperationalError('no such table: erp_agedbalancessnapshot')"
+  },
+  {
+   "ts": 1786496101.248766,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"CustomerTransactions\", \"filters\": {\"account\": \"SYNCUS-0047\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496101.250165,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"AgedBalancesSnapshot\", \"filters\": {\"account\": \"SYNCUS-0047\", \"dataareaid\": \"USMF\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496115.235904,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"available credit calculation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496119.6918468,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"credit_limit\": 100000.0, \"open_balance\": 52178.35, \"available_credit\": 47821.65}}",
+   "ok": true
+  }
+ ]
+}

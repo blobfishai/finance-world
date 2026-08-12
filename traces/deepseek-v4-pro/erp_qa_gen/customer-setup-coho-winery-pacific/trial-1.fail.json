@@ -1,0 +1,49 @@
+{
+ "task": "erp_qa_gen/customer-setup-coho-winery-pacific",
+ "family": "erp_qa_gen",
+ "agent": "openai",
+ "model": "deepseek-v4-pro",
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:matching_customer_count:off(got=1.0)",
+  "answer:contact_emails:missing_terms(['dennis@www.cohowinery.com'])"
+ ],
+ "servers_used": [
+  "erp",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 2,
+ "budget_turns": 40,
+ "num_turns": 4,
+ "agent_error": false,
+ "duration_s": 22.6,
+ "cost_usd": null,
+ "final_text": "The answer has been submitted:\n\n- **matching_customer_count**: `1` \u2014 there is exactly one \"Coho Winery Pacific\" in USMF (account SYNCUS-0147).\n- **contact_emails**: `carolyn@www.cohowinery.com` \u2014 the contact is **Carolyn**, phone `713-555-0158`, located in Houston, TX.",
+ "trace": [
+  {
+   "ts": 1786496564.418093,
+   "server": "erp",
+   "tool": "data_find_entity_type",
+   "args": "{\"query\": \"customer\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786496568.337399,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Coho\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786496576.183913,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"matching_customer_count\": 1, \"contact_emails\": \"carolyn@www.cohowinery.com\"}}",
+   "ok": true
+  }
+ ]
+}
