@@ -46,10 +46,18 @@ def main():
     ap.add_argument("--trials", type=int, default=2)
     ap.add_argument("--tasks", default="tasks/*/*")
     ap.add_argument("--workers", type=int, default=3)
+    ap.add_argument("--sample", type=int, default=0,
+                    help="scan a random but reproducible subset — at 1.2k tasks a full "
+                         "single-trial pass is ~1,200 model runs, and a sample measures the "
+                         "same distribution for a fraction of it")
     ap.add_argument("--fresh", action="store_true", help="rerun everything, ignore existing traces")
     a = ap.parse_args()
     models = a.models.split(",")
     tasks = sorted(p for p in ROOT.glob(a.tasks) if (p / "task.toml").exists())
+    if a.sample and a.sample < len(tasks):
+        import random as _r
+        _r.Random(0).shuffle(tasks); tasks = sorted(tasks[:a.sample])
+        print(f"sampling {len(tasks)} tasks (seed 0, reproducible)")
     jobs = [(t, m, n) for m in models for t in tasks for n in range(1, a.trials + 1)
             if a.fresh or not existing_real(m, t, n)]
     print(f"{len(tasks)} tasks x {len(models)} models x {a.trials} trials -> {len(jobs)} runs (resume skips real traces)")
