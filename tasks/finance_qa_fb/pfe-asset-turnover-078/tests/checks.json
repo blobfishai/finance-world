@@ -1,0 +1,41 @@
+{
+ "answer_checks": [
+  {
+   "field": "asset_turnover",
+   "type": "number",
+   "expect": 0.2893,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "revenue",
+   "type": "number",
+   "expect": 63627000000.0,
+   "tol_rel": 0.001
+  },
+  {
+   "field": "average_assets",
+   "type": "number",
+   "expect": 219948500000.0,
+   "tol_rel": 0.001
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "filings"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

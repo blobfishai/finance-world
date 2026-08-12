@@ -1,0 +1,28 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "AMAZON COM INC"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "AMZN",
+   "concept": "OperatingIncomeLoss"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "operating_income_usd": 17411000000.0,
+    "period_end": "2024-09-30",
+    "source_form": "10-Q"
+   }
+  }
+ }
+]

@@ -17,7 +17,7 @@ fetch date and the accession each value came from, so any figure can be traced b
 SEC's fair-access rules: a descriptive User-Agent is mandatory and the limit is 10 req/s.
 We stay well under it deliberately — this is someone else's public infrastructure.
 """
-import argparse, json, sys, time
+import argparse, datetime as dt, json, sys, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -48,8 +48,13 @@ CIK_OVERRIDES = {
 # So: fetch `companyfacts` ONCE per company and select locally, preferring the first tag the
 # company actually uses. One request instead of sixteen, and it adapts to the filer.
 LINE_ITEMS = {
+    # Banks do not report "revenue" as a product sale: Goldman and Wells Fargo tag
+    # RevenuesNetOfInterestExpense and nothing else, so before this line Goldman held NO annual
+    # revenue at all and Wells Fargo's most recent was FY2019. A financial-sector brief was
+    # therefore either impossible or six years stale.
     "Revenues": ["Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax",
                  "RevenueFromContractWithCustomerIncludingAssessedTax",
+                 "RevenuesNetOfInterestExpense",
                  "SalesRevenueNet", "SalesRevenueGoodsNet"],
     "CostOfRevenue": ["CostOfRevenue", "CostOfGoodsAndServicesSold", "CostOfGoodsSold"],
     "GrossProfit": ["GrossProfit"],
@@ -66,6 +71,15 @@ LINE_ITEMS = {
     "LongTermDebtNoncurrent": ["LongTermDebtNoncurrent", "LongTermDebt"],
     "ResearchAndDevelopmentExpense": ["ResearchAndDevelopmentExpense"],
     "EarningsPerShareDiluted": ["EarningsPerShareDiluted"],
+    # Added after the finance_qa bind probe: FB asks for operating cash flow and capex by name
+    # and neither was fetched, so four items rejected as `fact_absent` against a world that
+    # simply had not been asked to hold them.
+    "NetCashProvidedByUsedInOperatingActivities": [
+        "NetCashProvidedByUsedInOperatingActivities",
+        "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations"],
+    "PaymentsToAcquirePropertyPlantAndEquipment": [
+        "PaymentsToAcquirePropertyPlantAndEquipment",
+        "PaymentsToAcquireProductiveAssets"],
 }
 
 def _get(url):
@@ -88,30 +102,69 @@ def resolve(tickers):
 
 
 def snapshot(ticker, cik, name):
-    """Annual (FY, 10-K) facts only — the grain finance_qa questions ask at."""
+    """Annual (10-K/FY) and quarterly (10-Q/Q1-Q3) facts.
+
+    Two corrections found by the finance_qa bind probe:
+
+    1. Tag selection preferred PRESENCE over COVERAGE. `next(c for c in candidates if c in gaap)`
+       picked `Revenues` for Microsoft, who tag it for FY2010 only and report everything since
+       under the ASC-606 contract-with-customer tag — so Microsoft held 12 revenue facts, all
+       from 2010, and every modern revenue question rejected as `fact_absent`. Candidates are
+       now merged across the whole history and resolved PER PERIOD in priority order, which is
+       what the 2018 ASC-606 transition actually requires: legacy tag before, new tag after.
+
+    2. Quarterly facts were dropped entirely (`form != "10-K"` skipped every 10-Q), so a
+       question asking for Q3 silently matched the FULL-YEAR row. That is a wrong ground truth
+       that looks bound, the A10.3 failure mode. Quarterly rows are now stored with their real
+       `fp`, and duration-filtered so a Q3 row is one quarter, never a nine-month cumulative.
+    """
     cf = _get(f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik}.json") or {}
     gaap = (cf.get("facts") or {}).get("us-gaap") or {}
     facts, used = [], {}
+
+    def _duration_ok(r, fp):
+        """Income-statement rows carry start+end; keep annual ~365d and quarterly ~90d.
+        Without this, a 10-Q's year-to-date column is stored as if it were the quarter."""
+        s, e = r.get("start"), r.get("end")
+        if not s or not e: return True                     # balance-sheet instant
+        try:
+            d = (dt.date.fromisoformat(e) - dt.date.fromisoformat(s)).days
+        except Exception:
+            return True
+        return 300 <= d <= 400 if fp == "FY" else 60 <= d <= 115
+
     for item, candidates in LINE_ITEMS.items():
-        tag = next((c for c in candidates if c in gaap), None)
-        if not tag: continue
-        used[item] = tag
-        for unit, rows in (gaap[tag].get("units") or {}).items():
-            if unit not in ("USD", "USD/shares"): continue
-            for r in rows:
-                if r.get("form") != "10-K" or r.get("fp") != "FY": continue
-                facts.append({"concept": item, "xbrl_tag": tag, "unit": unit,
-                              "fy": str(r.get("fy")), "fp": r.get("fp"),
-                              "period_end": r.get("end"), "value": r.get("val"),
-                              "form": r.get("form"), "filed": r.get("filed"),
-                              "accession": r.get("accn")})
-    # one row per (concept, period_end): keep the most recently filed restatement
+        present = [c for c in candidates if c in gaap]
+        if not present: continue
+        used[item] = present[0] if len(present) == 1 else f"{present[0]} (+{len(present)-1} fallback)"
+        # priority order = candidate order; later candidates only fill periods earlier ones miss
+        for prio, tag in enumerate(present):
+            for unit, rows in (gaap[tag].get("units") or {}).items():
+                if unit not in ("USD", "USD/shares"): continue
+                for r in rows:
+                    form, fp = r.get("form"), r.get("fp")
+                    if form == "10-K" and fp == "FY": pass
+                    elif form == "10-Q" and fp in ("Q1", "Q2", "Q3"): pass
+                    else: continue
+                    if not _duration_ok(r, fp): continue
+                    facts.append({"concept": item, "xbrl_tag": tag, "unit": unit,
+                                  "fy": str(r.get("fy")), "fp": fp, "_prio": prio,
+                                  "period_end": r.get("end"), "value": r.get("val"),
+                                  "form": form, "filed": r.get("filed"),
+                                  "accession": r.get("accn")})
+    # one row per (concept, period_end, fp): prefer the higher-priority tag, then the most
+    # recently filed restatement. fp is part of the key because a period_end can carry both a
+    # quarterly and an annual figure.
     best = {}
     for f in facts:
-        k = (f["concept"], f["period_end"])
-        if k not in best or (f["filed"] or "") > (best[k]["filed"] or ""):
+        k = (f["concept"], f["period_end"], f["fp"])
+        cur = best.get(k)
+        # lower _prio wins outright; within the same tag, the latest filing (restatement) wins
+        if cur is None or f["_prio"] < cur["_prio"] or (
+                f["_prio"] == cur["_prio"] and (f["filed"] or "") > (cur["filed"] or "")):
             best[k] = f
-    facts = sorted(best.values(), key=lambda f: (f["concept"], f["period_end"]))
+    for f in best.values(): f.pop("_prio", None)
+    facts = sorted(best.values(), key=lambda f: (f["concept"], f["period_end"], f["fp"]))
     return {"ticker": ticker, "cik": cik, "name": name,
             "fetched_at": time.strftime("%Y-%m-%d"),
             "source": "https://data.sec.gov/api/xbrl/companyfacts",
@@ -125,6 +178,16 @@ def load_into_world(db=None):
     import sqlite3
     db = Path(db or ROOT / "world/build/core.sqlite")
     cx = sqlite3.connect(db)
+    # The snapshots ARE the source of truth for this surface, so seeding replaces rather than
+    # appends. filings_facts carries no unique constraint, so `INSERT OR REPLACE` does not
+    # replace anything — re-running this against a populated table silently doubled every fact,
+    # and a duplicated fact reads downstream as "two period_ends equidistant from the date you
+    # asked for", i.e. a legitimate question becomes unanswerable. Same shape as A6: an ETL step
+    # that is only correct on an empty database.
+    cx.execute("DELETE FROM filings_facts")
+    cx.execute("DELETE FROM filings_companies")
+    cx.execute("CREATE UNIQUE INDEX IF NOT EXISTS ux_filings_facts "
+               "ON filings_facts(cik, concept, period_end, fp)")
     n_c = n_f = 0
     for p in sorted(OUT.glob("*.json")):
         if p.name.startswith("_"): continue   # _company_tickers.json is the lexicon cache, not a snapshot

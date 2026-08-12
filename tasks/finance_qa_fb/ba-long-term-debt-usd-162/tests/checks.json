@@ -1,0 +1,43 @@
+{
+ "answer_checks": [
+  {
+   "field": "long_term_debt_usd",
+   "type": "number",
+   "expect": 52037000000.0,
+   "tol_rel": 0.001
+  },
+  {
+   "field": "period_end",
+   "type": "contains_all",
+   "expect": [
+    "2023-06-30"
+   ]
+  },
+  {
+   "field": "source_form",
+   "type": "contains_all",
+   "expect": [
+    "10-Q"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "filings"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

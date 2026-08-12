@@ -1,0 +1,75 @@
+{
+ "task": "business_brief_fb/brief-apple-inc",
+ "family": "business_brief_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 7,
+ "walk_len": 7,
+ "budget_turns": 68,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 7}\n",
+ "trace": [
+  {
+   "ts": 1786505279.754621,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"Apple Inc\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505279.7555358,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"AAPL\", \"concept\": \"Revenues\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505279.7563698,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"AAPL\", \"concept\": \"NetIncomeLoss\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505279.757178,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"AAPL\", \"concept\": \"LongTermDebtNoncurrent\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505279.758251,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"AAPL\", \"concept\": \"StockholdersEquity\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505279.759298,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Apple\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786505279.761326,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"revenue_fy2025\": 416161000000.0, \"net_income_fy2025\": 112010000000.0, \"lt_de_ratio_3yr_avg\": 1.3671, \"internal_ar_relationship\": \"BRF-00\", \"internal_open_ar_usd\": 41732}}",
+   "ok": true
+  }
+ ]
+}

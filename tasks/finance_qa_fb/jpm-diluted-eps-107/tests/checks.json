@@ -1,0 +1,43 @@
+{
+ "answer_checks": [
+  {
+   "field": "diluted_eps",
+   "type": "number",
+   "expect": 20.02,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "period_end",
+   "type": "contains_all",
+   "expect": [
+    "2025-12-31"
+   ]
+  },
+  {
+   "field": "source_form",
+   "type": "contains_all",
+   "expect": [
+    "10-K"
+   ]
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "filings"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

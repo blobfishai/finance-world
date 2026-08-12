@@ -1,0 +1,46 @@
+{
+ "task": "finance_qa_fb/amzn-figure-008",
+ "family": "finance_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 3,
+ "walk_len": 3,
+ "budget_turns": 40,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 3}\n",
+ "trace": [
+  {
+   "ts": 1786502714.475348,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"AMAZON COM INC\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786502714.476267,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"AMZN\", \"concept\": \"OperatingIncomeLoss\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786502714.477646,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"figure\": 17411000000.0, \"period_end\": \"2024-09-30\", \"source_form\": \"10-Q\"}}",
+   "ok": true
+  }
+ ]
+}

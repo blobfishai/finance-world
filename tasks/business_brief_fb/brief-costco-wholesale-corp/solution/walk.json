@@ -1,0 +1,64 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "Costco Wholesale Corp"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "COST",
+   "concept": "Revenues"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "COST",
+   "concept": "NetIncomeLoss"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "COST",
+   "concept": "LongTermDebtNoncurrent"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "COST",
+   "concept": "StockholdersEquity"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "name": "Costco"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "revenue_fy2025": 275235000000.0,
+    "net_income_fy2025": 8099000000.0,
+    "lt_de_ratio_3yr_avg": 0.2186,
+    "internal_ar_relationship": "none",
+    "internal_open_ar_usd": 0
+   }
+  }
+ }
+]

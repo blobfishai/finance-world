@@ -212,3 +212,70 @@ CREATE TABLE erp_withholding_tax(
 CREATE TABLE erp_vendor_tax_profile(
   account TEXT PRIMARY KEY, tax_category TEXT, certificate_type TEXT,
   certificate_on_file INTEGER DEFAULT 0, certificate_expiry TEXT, notes TEXT);
+
+-- ═══ Procure-to-pay / make-or-buy surface (agentic-labs/erp-bench, 300 tasks) ═══
+--
+-- ERP-Bench ships each task as a Harbor dir that boots a real Odoo 19 in Docker and grades it
+-- with odoolib queries against the live server. The plumbing does not port; the JUDGEMENT does,
+-- because `environment/scenario_data.json` is a fully DECLARATIVE world spec — partners with
+-- budgets, products with per-vendor min/max/price offers, BOMs, workcenters, stock and existing
+-- orders. So the scenario seeds our world and the grading becomes deterministic state diffs
+-- (docs/PARITY.md, docs/INGESTION.md `needs_surface` -> built).
+--
+-- These tables are EMPTY in core by design. Each ERP-Bench scenario is its own small world, so
+-- it arrives through the per-task seed layer rather than the shared ledger — the same mechanic
+-- that already carries every other task's chaos.
+
+CREATE TABLE erpb_partners(
+  ref TEXT PRIMARY KEY, name TEXT, kind TEXT,              -- kind: customer | vendor
+  supplier_rank INTEGER DEFAULT 0, budget_dollars REAL, credit_limit REAL,
+  payment_term TEXT, email TEXT,
+  comment TEXT);          -- Odoo "Internal Notes": several tasks hide the binding
+                          -- max-order-quantity rule here and nowhere else
+
+CREATE TABLE erpb_products(
+  code TEXT PRIMARY KEY, name TEXT, category TEXT, type TEXT,
+  list_price REAL, standard_price REAL,
+  routes TEXT,            -- csv of {buy, manufacture}: whether make-or-buy is even a choice
+  comment TEXT);
+
+CREATE TABLE erpb_vendor_offers(
+  id INTEGER PRIMARY KEY, product_code TEXT, partner_ref TEXT, name TEXT,
+  delay INTEGER,          -- lead time in days, against the order's due date
+  min_qty REAL, max_qty REAL,   -- horizon-wide totals, NOT per-line minimums
+  price REAL);
+
+CREATE TABLE erpb_boms(
+  id INTEGER PRIMARY KEY, product_code TEXT, type TEXT, quantity REAL, warehouse_code TEXT);
+CREATE TABLE erpb_bom_components(
+  bom_id INTEGER, component_code TEXT, quantity REAL);
+
+CREATE TABLE erpb_workcenters(
+  code TEXT PRIMARY KEY, name TEXT, capacity_per_day REAL, cost_per_hour REAL,
+  warehouse_code TEXT, comment TEXT);
+
+CREATE TABLE erpb_stock(
+  product_code TEXT, warehouse_code TEXT, quantity REAL, location_type TEXT);
+
+-- The demand named in the instruction: who wants how many, by when, under what budget cap.
+CREATE TABLE erpb_demand(
+  id INTEGER PRIMARY KEY, partner_ref TEXT, product_code TEXT, units REAL,
+  due_days INTEGER, budget_cap REAL, seeded_order_state TEXT);
+
+-- ── agent-written state: what the verifier grades ──
+CREATE TABLE erpb_sale_orders(
+  name TEXT PRIMARY KEY, partner_ref TEXT, state TEXT,
+  commitment_date TEXT, origin TEXT);
+CREATE TABLE erpb_sale_order_lines(
+  id INTEGER PRIMARY KEY, order_name TEXT, product_code TEXT, qty REAL, price_unit REAL);
+
+CREATE TABLE erpb_purchase_orders(
+  name TEXT PRIMARY KEY, partner_ref TEXT, state TEXT,
+  date_planned TEXT,
+  origin TEXT);           -- the SO reference(s): the SO->PO lineage the tasks require
+CREATE TABLE erpb_purchase_order_lines(
+  id INTEGER PRIMARY KEY, order_name TEXT, product_code TEXT, qty REAL, price_unit REAL);
+
+CREATE TABLE erpb_manufacturing_orders(
+  name TEXT PRIMARY KEY, product_code TEXT, qty REAL, state TEXT,
+  workcenter_code TEXT, date_planned TEXT, origin TEXT);

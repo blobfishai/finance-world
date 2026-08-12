@@ -1,0 +1,47 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "The Coca-Cola Company"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "KO",
+   "concept": "Revenues"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "KO",
+   "concept": "NetIncomeLoss"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "name": "The"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "revenue_fy2025": 47941000000.0,
+    "net_income_fy2025": 13107000000.0,
+    "internal_ar_relationship": "BRF-08",
+    "internal_open_ar_usd": 47002
+   }
+  }
+ }
+]

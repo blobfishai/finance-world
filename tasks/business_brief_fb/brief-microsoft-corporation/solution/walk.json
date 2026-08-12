@@ -1,0 +1,64 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "Microsoft Corporation"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "MSFT",
+   "concept": "Revenues"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "MSFT",
+   "concept": "NetIncomeLoss"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "MSFT",
+   "concept": "LongTermDebtNoncurrent"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "MSFT",
+   "concept": "StockholdersEquity"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "name": "Microsoft"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "revenue_fy2026": 331839000000.0,
+    "net_income_fy2026": 133749000000.0,
+    "lt_de_ratio_3yr_avg": 0.1154,
+    "internal_ar_relationship": "BRF-14",
+    "internal_open_ar_usd": 58150
+   }
+  }
+ }
+]

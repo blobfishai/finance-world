@@ -1,0 +1,28 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "JPMORGAN CHASE & CO"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "JPM",
+   "concept": "EarningsPerShareDiluted"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "diluted_eps": 20.02,
+    "period_end": "2025-12-31",
+    "source_form": "10-K"
+   }
+  }
+ }
+]

@@ -1,0 +1,64 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "Johnson & Johnson (J&J)"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "JNJ",
+   "concept": "Revenues"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "JNJ",
+   "concept": "NetIncomeLoss"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "JNJ",
+   "concept": "LongTermDebtNoncurrent"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "JNJ",
+   "concept": "StockholdersEquity"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "name": "Johnson"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "revenue_fy2025": 94193000000.0,
+    "net_income_fy2025": 26804000000.0,
+    "lt_de_ratio_3yr_avg": 0.4296,
+    "internal_ar_relationship": "BRF-18",
+    "internal_open_ar_usd": 45231
+   }
+  }
+ }
+]

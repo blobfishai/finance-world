@@ -1,0 +1,75 @@
+{
+ "task": "business_brief_fb/brief-advanced-micro-devices-inc",
+ "family": "business_brief_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 7,
+ "walk_len": 7,
+ "budget_turns": 68,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 7}\n",
+ "trace": [
+  {
+   "ts": 1786505280.2930539,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"Advanced Micro Devices Inc\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505280.29393,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"AMD\", \"concept\": \"Revenues\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505280.2948532,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"AMD\", \"concept\": \"NetIncomeLoss\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505280.2957592,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"AMD\", \"concept\": \"LongTermDebtNoncurrent\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505280.296824,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"AMD\", \"concept\": \"StockholdersEquity\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505280.2979672,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"Advanced\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786505280.299134,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"revenue_fy2025\": 34639000000.0, \"net_income_fy2025\": 4335000000.0, \"lt_de_ratio_3yr_avg\": 0.0326, \"internal_ar_relationship\": \"none\", \"internal_open_ar_usd\": 0}}",
+   "ok": true
+  }
+ ]
+}

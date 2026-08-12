@@ -1,0 +1,24 @@
+schema_version = "1.4"
+
+[task]
+name = "business_brief_fb/brief-the-goldman-sachs-group-inc"
+version = "0.1.0"
+description = "FinanceBenchmark business_brief clone — structured counterparty brief."
+authors = ["nario-ai"]
+keywords = ["finance", "business_brief", "financebenchmark-clone"]
+
+[metadata]
+family = "business_brief_fb"
+origin = "clone of microsoft/FinanceBenchmark business_brief item business_brief-025 (The Goldman Sachs Group Inc); the JUDGEMENT is ported and FB's DSPy LLM-judge prose scoring is dropped per docs/INGESTION.md judgement_port. Figures recomputed from the frozen SEC XBRL snapshot; the internal_ar_relationship field is this world's addition — it is answerable only from the ERP, not the filings (scale/profitability @ 2025-12-31 (10-K); no internal exposure (trap))"
+generated = false
+difficulty = "medium"
+acceptance_label = "pending_calibration"
+walk_len = 5
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 600
+[environment]
+cpus = 1
+memory_mb = 1024

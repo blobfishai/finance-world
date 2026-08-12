@@ -1,0 +1,36 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "JPMORGAN CHASE & CO"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "JPM",
+   "concept": "Liabilities"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "JPM",
+   "concept": "StockholdersEquity"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "debt_to_equity": 10.6105,
+    "total_liabilities": 3658056000000.0,
+    "stockholders_equity": 344758000000.0
+   }
+  }
+ }
+]

@@ -1,0 +1,64 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "Cencora Inc"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "COR",
+   "concept": "Revenues"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "COR",
+   "concept": "NetIncomeLoss"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "COR",
+   "concept": "LongTermDebtNoncurrent"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "COR",
+   "concept": "StockholdersEquity"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "name": "Cencora"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "revenue_fy2025": 321332819000.0,
+    "net_income_fy2025": 1554169000.0,
+    "lt_de_ratio_3yr_avg": 6.2819,
+    "internal_ar_relationship": "BRF-06",
+    "internal_open_ar_usd": 48093
+   }
+  }
+ }
+]

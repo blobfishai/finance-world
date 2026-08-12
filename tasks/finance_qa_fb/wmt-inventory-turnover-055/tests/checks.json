@@ -1,0 +1,41 @@
+{
+ "answer_checks": [
+  {
+   "field": "inventory_turnover",
+   "type": "number",
+   "expect": 9.1937,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "cost_of_revenue",
+   "type": "number",
+   "expect": 511753000000.0,
+   "tol_rel": 0.001
+  },
+  {
+   "field": "average_inventory",
+   "type": "number",
+   "expect": 55663500000.0,
+   "tol_rel": 0.001
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "filings"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

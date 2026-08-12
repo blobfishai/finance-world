@@ -1,0 +1,28 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "FORD MOTOR CO"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "F",
+   "concept": "PaymentsToAcquirePropertyPlantAndEquipment"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "capex_usd": 8684000000.0,
+    "period_end": "2024-12-31",
+    "source_form": "10-K"
+   }
+  }
+ }
+]

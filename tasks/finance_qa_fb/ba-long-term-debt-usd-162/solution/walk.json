@@ -1,0 +1,28 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "BOEING CO"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "BA",
+   "concept": "LongTermDebtNoncurrent"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "long_term_debt_usd": 52037000000.0,
+    "period_end": "2023-06-30",
+    "source_form": "10-Q"
+   }
+  }
+ }
+]

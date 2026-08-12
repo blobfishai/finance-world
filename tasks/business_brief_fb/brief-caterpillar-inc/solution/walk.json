@@ -1,0 +1,64 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "Caterpillar Inc"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "CAT",
+   "concept": "Revenues"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "CAT",
+   "concept": "NetIncomeLoss"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "CAT",
+   "concept": "LongTermDebtNoncurrent"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "CAT",
+   "concept": "StockholdersEquity"
+  }
+ },
+ {
+  "server": "erp",
+  "tool": "data_find_entities",
+  "args": {
+   "entity": "Customers",
+   "filters": {
+    "name": "Caterpillar"
+   }
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "revenue_fy2025": 67589000000.0,
+    "net_income_fy2025": 8882000000.0,
+    "lt_de_ratio_3yr_avg": 1.3659,
+    "internal_ar_relationship": "BRF-24",
+    "internal_open_ar_usd": 52933
+   }
+  }
+ }
+]

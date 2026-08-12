@@ -1,0 +1,41 @@
+{
+ "answer_checks": [
+  {
+   "field": "debt_to_equity",
+   "type": "number",
+   "expect": 10.6105,
+   "tol_abs": 0.02
+  },
+  {
+   "field": "total_liabilities",
+   "type": "number",
+   "expect": 3658056000000.0,
+   "tol_rel": 0.001
+  },
+  {
+   "field": "stockholders_equity",
+   "type": "number",
+   "expect": 344758000000.0,
+   "tol_rel": 0.001
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "filings"
+   ]
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

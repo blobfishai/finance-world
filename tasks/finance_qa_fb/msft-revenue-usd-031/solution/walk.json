@@ -1,0 +1,28 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "MICROSOFT CORP"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "MSFT",
+   "concept": "Revenues"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "revenue_usd": 65585000000.0,
+    "period_end": "2024-09-30",
+    "source_form": "10-Q"
+   }
+  }
+ }
+]

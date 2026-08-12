@@ -1,0 +1,53 @@
+{
+ "task": "finance_qa_fb/jpm-debt-to-equity-127",
+ "family": "finance_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 4,
+ "walk_len": 4,
+ "budget_turns": 44,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 4}\n",
+ "trace": [
+  {
+   "ts": 1786502713.987325,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"JPMORGAN CHASE & CO\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786502713.9881668,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"JPM\", \"concept\": \"Liabilities\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786502713.9889731,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"JPM\", \"concept\": \"StockholdersEquity\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786502713.990272,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"debt_to_equity\": 10.6105, \"total_liabilities\": 3658056000000.0, \"stockholders_equity\": 344758000000.0}}",
+   "ok": true
+  }
+ ]
+}

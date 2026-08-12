@@ -1,0 +1,54 @@
+{
+ "answer_checks": [
+  {
+   "field": "revenue_fy2025",
+   "type": "number",
+   "expect": 12039000000.0,
+   "tol_rel": 0.001
+  },
+  {
+   "field": "net_income_fy2025",
+   "type": "number",
+   "expect": 1457000000.0,
+   "tol_rel": 0.001
+  },
+  {
+   "field": "internal_ar_relationship",
+   "type": "contains_all",
+   "expect": [
+    "BRF-16"
+   ]
+  },
+  {
+   "field": "internal_open_ar_usd",
+   "type": "number",
+   "expect": 44439,
+   "tol_rel": 0.001
+  }
+ ],
+ "trace_checks": [
+  {
+   "type": "required_servers",
+   "servers": [
+    "filings",
+    "erp"
+   ]
+  },
+  {
+   "type": "min_calls",
+   "server": "filings",
+   "n": 2
+  },
+  {
+   "type": "reads_before_submit"
+  }
+ ],
+ "state_checks": [
+  {
+   "type": "writes_only",
+   "tables": [
+    "answers"
+   ]
+  }
+ ]
+}

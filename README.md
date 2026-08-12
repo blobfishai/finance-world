@@ -4,14 +4,19 @@ A simulated corporate-finance environment + benchmark ("world") for evaluating a
 AI agents, built for a frontier-lab finance team. Harbor-packaged, deterministic verifiers,
 no LLM judge in the reward path.
 
-Task families — **17**, in two layers:
+Task families — **19**, in two layers:
 
 *Read-and-reconcile* (ask the world a question it will not answer in one place):
 - **erp_qa** / **erp_qa_fb** — grounded AP/AR questions (balances, aged debt, open invoices,
   payment terms, cash discounts, collection letters) through MCP tools against a mocked ERP;
   `erp_qa_fb` replays microsoft/FinanceBenchmark questions verbatim with in-world ground truth.
-- **finance_qa** / **business_brief** — public-company figures, ratios, and structured
-  profiles synthesizing public filings with internal AR/AP.
+- **finance_qa** / **finance_qa_fb** / **business_brief** / **business_brief_fb** —
+  public-company figures, ratios, and structured counterparty profiles over a frozen SEC XBRL
+  snapshot (38 registrants, 46,686 facts, annual and quarterly, every value carrying its
+  accession). The `_fb` families replay FinanceBenchmark's own `finance_qa` and `business_brief`
+  items, converted from its LLM judge to pinned per-field checks. Every brief also asks whether
+  the subject is already a counterparty on our books — answerable only from the ERP, and for
+  half the subjects the truthful answer is "no relationship".
 - **cross_system** · **bank_rec** · **cash_app** · **cash_forecast** · **close_mgmt** ·
   **pbc** · **expense_audit** · **threeway_match** · **vendor_master** · **payment_proposal**
   — answers that require joining deliberately fragmented data (ERP + spreadsheets +
@@ -45,7 +50,11 @@ Everything is simulation: all companies, balances, and documents in the world ar
   `email` · `filings` (frozen real-EDGAR facts) · `docs` · `harness` (submit_answer only).
 - `tasks/<family>/<slug>/` — **Harbor task dirs** (`task.toml`, `instruction.md`,
   `environment/` incl. per-task `seed/` layers, `solution/` oracle walk, `tests/` verifier).
-  Families: erp_qa, cross_system, finance_qa, business_brief.
+  **1,250 tasks across 19 families.** Provenance is machine-readable and the three kinds are
+  never summed: a *ported* clone of a real source item, a *generated* instance of a ported
+  pattern over another entity (`generated = true` + `pattern`), and an *escalated variant* of a
+  ported task (`variant_of`). Conflating them is what let the parity ledger report 689%
+  coverage (`docs/AUDIT.md` A15).
 - `verifiers/` — deterministic VCode engine (`vcode.py`): answer checks with tolerances,
   trace checks, state-diff anti-hack vetoes. No LLM in the reward path.
 - `sim/` — `prepare.py` (core + task seed → run), `oracle.py` (admission gate),

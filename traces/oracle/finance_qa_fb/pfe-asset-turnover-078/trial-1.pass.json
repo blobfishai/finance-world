@@ -1,0 +1,53 @@
+{
+ "task": "finance_qa_fb/pfe-asset-turnover-078",
+ "family": "finance_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 4,
+ "walk_len": 4,
+ "budget_turns": 44,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 4}\n",
+ "trace": [
+  {
+   "ts": 1786502713.496709,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"PFIZER INC\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786502713.497695,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"PFE\", \"concept\": \"Revenues\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786502713.498927,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"PFE\", \"concept\": \"Assets\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786502713.500337,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"asset_turnover\": 0.2893, \"revenue\": 63627000000.0, \"average_assets\": 219948500000.0}}",
+   "ok": true
+  }
+ ]
+}

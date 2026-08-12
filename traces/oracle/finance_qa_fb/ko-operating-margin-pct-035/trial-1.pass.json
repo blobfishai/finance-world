@@ -1,0 +1,53 @@
+{
+ "task": "finance_qa_fb/ko-operating-margin-pct-035",
+ "family": "finance_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 4,
+ "walk_len": 4,
+ "budget_turns": 44,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 4}\n",
+ "trace": [
+  {
+   "ts": 1786502712.50443,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"COCA COLA CO\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786502712.505285,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"KO\", \"concept\": \"OperatingIncomeLoss\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786502712.5060182,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"KO\", \"concept\": \"Revenues\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786502712.5073762,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"operating_margin_pct\": 28.71, \"operating_income\": 13762000000.0, \"revenue\": 47941000000.0}}",
+   "ok": true
+  }
+ ]
+}

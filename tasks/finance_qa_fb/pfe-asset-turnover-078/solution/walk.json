@@ -1,0 +1,36 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "PFIZER INC"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "PFE",
+   "concept": "Revenues"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "PFE",
+   "concept": "Assets"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "asset_turnover": 0.2893,
+    "revenue": 63627000000.0,
+    "average_assets": 219948500000.0
+   }
+  }
+ }
+]

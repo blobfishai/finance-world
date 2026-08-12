@@ -1,0 +1,36 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "Walmart Inc."
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "WMT",
+   "concept": "CostOfRevenue"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "WMT",
+   "concept": "InventoryNet"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "inventory_turnover": 9.1937,
+    "cost_of_revenue": 511753000000.0,
+    "average_inventory": 55663500000.0
+   }
+  }
+ }
+]

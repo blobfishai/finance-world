@@ -1,0 +1,28 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "Apple Inc."
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "AAPL",
+   "concept": "CashAndCashEquivalents"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "cash_and_equivalents_usd": 29965000000.0,
+    "period_end": "2023-09-30",
+    "source_form": "10-K"
+   }
+  }
+ }
+]

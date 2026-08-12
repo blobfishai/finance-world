@@ -1,0 +1,28 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "FEDEX CORP"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "FDX",
+   "concept": "Revenues"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "revenue_usd": 87926000000.0,
+    "period_end": "2025-05-31",
+    "source_form": "10-K"
+   }
+  }
+ }
+]

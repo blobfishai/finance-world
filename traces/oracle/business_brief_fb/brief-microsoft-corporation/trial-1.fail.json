@@ -1,0 +1,76 @@
+{
+ "task": "business_brief_fb/brief-microsoft-corporation",
+ "family": "business_brief_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 0,
+ "failed": [
+  "answer:revenue_fy2026:missing",
+  "answer:net_income_fy2026:missing",
+  "answer:lt_de_ratio_3yr_avg:missing",
+  "answer:internal_ar_relationship:missing",
+  "answer:internal_open_ar_usd:missing",
+  "trace:required_servers_missing(['erp'])",
+  "trace:no_reads_before_submit"
+ ],
+ "servers_used": [
+  "erp",
+  "filings"
+ ],
+ "n_tool_calls": 6,
+ "walk_len": 7,
+ "budget_turns": 68,
+ "num_turns": null,
+ "agent_error": true,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "Traceback (most recent call last):\n  File \"/Users/samuelchien/dev/finance-world/sim/oracle.py\", line 33, in <module>\n    n = replay(sys.argv[1], sys.argv[2])\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/samuelchien/dev/finance-world/sim/oracle.py\", line 27, in replay\n    out = servers[s].call(step[\"tool\"], step.get(\"args\") or {})\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/samuelchien/dev/finance-world/mcp/lib/framework.py\", line 61, in call\n    out = fn(**(args or {}))\n          ^^^^^^^^^^^^^^^^^^\nTypeError: data_find_entities() got an unexpected keyword argument 'filter'\n",
+ "trace": [
+  {
+   "ts": 1786505244.333699,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"Microsoft Corporation\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505244.334613,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"MSFT\", \"concept\": \"Revenues\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505244.335392,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"MSFT\", \"concept\": \"NetIncomeLoss\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505244.336406,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"MSFT\", \"concept\": \"LongTermDebtNoncurrent\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505244.337305,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"MSFT\", \"concept\": \"StockholdersEquity\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505244.337861,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filter\": {\"name\": \"Microsoft\"}}",
+   "ok": false,
+   "note": "TypeError(\"data_find_entities() got an unexpected keyword argument 'filter'\")"
+  }
+ ]
+}

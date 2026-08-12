@@ -51,8 +51,11 @@ def shipped():
 def main(detail=False):
     world = World()
     ship, insts, patterns, varis = shipped()
+    # filings is indexed by BOTH name and ticker, so len() is 2x the companies - report the
+    # distinct tickers instead. A capability headline that double-counts is the same class of
+    # error as A15, just smaller.
     print(f"world capability: {len(world.tables)} tables · {len(world.parties)} named parties · "
-          f"{len(world.servers)} servers · {len(world.filings)} filing companies\n")
+          f"{len(world.servers)} servers · {len(set(world.filings.values()))} filing companies\n")
     grand = collections.Counter()
     for name in ADAPTERS:
         try:

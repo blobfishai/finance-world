@@ -1,0 +1,53 @@
+{
+ "task": "finance_qa_fb/wmt-inventory-turnover-055",
+ "family": "finance_qa_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 4,
+ "walk_len": 4,
+ "budget_turns": 44,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.2,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 4}\n",
+ "trace": [
+  {
+   "ts": 1786502713.000801,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"Walmart Inc.\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786502713.001631,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"WMT\", \"concept\": \"CostOfRevenue\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786502713.002569,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"WMT\", \"concept\": \"InventoryNet\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786502713.003763,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"inventory_turnover\": 9.1937, \"cost_of_revenue\": 511753000000.0, \"average_inventory\": 55663500000.0}}",
+   "ok": true
+  }
+ ]
+}

@@ -1,0 +1,75 @@
+{
+ "task": "business_brief_fb/brief-ibm",
+ "family": "business_brief_fb",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "erp",
+  "filings",
+  "harness"
+ ],
+ "n_tool_calls": 7,
+ "walk_len": 7,
+ "budget_turns": 68,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 7}\n",
+ "trace": [
+  {
+   "ts": 1786505280.828663,
+   "server": "filings",
+   "tool": "lookup_company",
+   "args": "{\"query\": \"IBM\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505280.829549,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"IBM\", \"concept\": \"Revenues\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505280.8303108,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"IBM\", \"concept\": \"NetIncomeLoss\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505280.831255,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"IBM\", \"concept\": \"LongTermDebtNoncurrent\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505280.832133,
+   "server": "filings",
+   "tool": "get_company_concept",
+   "args": "{\"ticker\": \"IBM\", \"concept\": \"StockholdersEquity\"}",
+   "ok": true
+  },
+  {
+   "ts": 1786505280.833267,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"name\": \"IBM\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1786505280.834848,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"revenue_fy2025\": 67535000000.0, \"net_income_fy2025\": 10593000000.0, \"lt_de_ratio_3yr_avg\": 1.9102, \"internal_ar_relationship\": \"none\", \"internal_open_ar_usd\": 0}}",
+   "ok": true
+  }
+ ]
+}

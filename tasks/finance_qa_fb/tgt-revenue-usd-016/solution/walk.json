@@ -1,0 +1,28 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "TARGET CORP"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "TGT",
+   "concept": "Revenues"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "revenue_usd": 106566000000.0,
+    "period_end": "2025-02-01",
+    "source_form": "10-K"
+   }
+  }
+ }
+]

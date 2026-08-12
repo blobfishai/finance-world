@@ -1,0 +1,28 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "CATERPILLAR INC"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "CAT",
+   "concept": "NetCashProvidedByUsedInOperatingActivities"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "operating_cash_flow_usd": 12035000000.0,
+    "period_end": "2024-12-31",
+    "source_form": "10-K"
+   }
+  }
+ }
+]

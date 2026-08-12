@@ -1,0 +1,28 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "Exxon Mobil Corporation"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "XOM",
+   "concept": "AssetsCurrent"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "current_assets_usd": 91990000000.0,
+    "period_end": "2024-12-31",
+    "source_form": "10-K"
+   }
+  }
+ }
+]

@@ -406,6 +406,49 @@ instances over 27 patterns and 4 variants. The honest number was *better* than t
 had been claiming from a stale hand-edit; the bug was hiding real progress as well as
 manufacturing fake progress.
 
+### A16. Three defects in the filings surface, found by asking it 28 real questions — FIXED
+Building the `finance_qa` cloner meant binding FinanceBenchmark's 28 single-figure questions
+against the frozen SEC snapshot. Only **9 bound**. The other 19 were not hard questions; they
+were three bugs wearing a trenchcoat.
+
+**1. Tag selection preferred presence over coverage.** `LINE_ITEMS` lists fallback XBRL tags per
+concept, and the fetcher took `next(c for c in candidates if c in gaap)` — the first tag the
+filer uses *at all*. Microsoft tags `Revenues` for FY2010 only and has reported everything since
+under the ASC-606 contract-with-customer tag, so Microsoft held 12 revenue facts, all from 2010,
+and every modern revenue question rejected as `fact_absent` against a world that had the data
+under another name. Candidates are now merged across the whole history and resolved **per
+period** in priority order, which is what the 2018 ASC-606 transition actually requires.
+
+**2. Quarterly facts did not exist, and questions about quarters matched annual rows anyway.**
+`if r.get("form") != "10-K": continue` dropped every 10-Q, so all 10,005 rows were `fp='FY'`.
+The probe then "successfully" bound *"Apple's Q4 FY2024 diluted EPS"* to the **full-year** EPS —
+a wrong ground truth that looks perfectly bound, which is the A10.3 failure mode exactly. 10-Q
+rows are now stored with their real `fp` and duration-filtered, so a Q3 row is one quarter and
+never a nine-month cumulative. The snapshot went from 10,005 annual facts to **42,737** across
+FY/Q1/Q2/Q3.
+
+**3. Re-seeding silently doubled every fact.** `load_into_world` uses `INSERT OR REPLACE`, but
+`filings_facts` carries no unique constraint, so there is nothing to replace — running it twice
+appends. A duplicated fact does not read downstream as "duplicate"; it reads as **"two
+period_ends equidistant from the date you asked for"**, so nine legitimate questions became
+unanswerable through ambiguity. Same shape as A6: an ETL step that is only correct against an
+empty database. The loader now clears both tables first and creates
+`UNIQUE(cik, concept, period_end, fp)` so it cannot recur.
+
+A fourth was in the cloner, not the world: company matching used `\bexxon\b`, which cannot match
+"ExxonMobil" — there is no word boundary before the M — so two items rejected as `absent_entity`
+against a world that holds the company. Matching is now prefix-anchored.
+
+Result: **9 → 21 of 28 bound**, and the 7 that remain are named individually in `docs/PARITY.md`
+with 4 of them structurally unanswerable from us-gaap XBRL (GHG emissions, analyst consensus, a
+non-SEC registrant, a footnote line item). Existing ground truths were re-checked against the
+rebuilt snapshot and are unchanged — XOM current assets still 91,990,000,000, Walmart's average
+inventory still 55,663,500,000.
+
+The lesson is the one this repo keeps relearning: **a capability is only real once something
+asks it a question.** The filings surface had passed every gate it had, because no gate had
+ever asked it for a quarter.
+
 ### A12b. Validator cleanup is best-effort, not guaranteed — OPEN, known cost
 The A12 fix added `shutil.rmtree(...)` at the end of `sim/validate.py`'s per-task loop. It
 runs only when the task reaches the end of the body, and several paths `continue` before it,

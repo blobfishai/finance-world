@@ -16,11 +16,11 @@
 the live world, and prints this. Re-run it; do not edit it.
 
 ```
-world capability: 47 tables · 708 named parties · 7 servers · 68 filing companies
+world capability: 47 tables · 708 named parties · 7 servers · 38 filing companies
 
 microsoft/FinanceBenchmark — 251 items
    class      : verbatim_gt 100 · not_agentic 98 · recomputable 28 · judgement_port 25
-   addressable: 153      binding: bound 152 · absent_entity 1       ported: 97  (63%)
+   addressable: 153      binding: bound 152 · absent_entity 1       ported: 142 (93%)
    instances  : 1026 generated over 27 patterns (breadth; excluded from the rate)
 TheAgentCompany — 12 items
    class      : judgement_port 12
@@ -30,7 +30,7 @@ agentic-labs/erp-bench — 300 items
    class      : needs_surface 300
    addressable: 0                                                   ported: 0
 ──────────────────────────────────────────────────────────────────────────
-TOTAL  items 563 · addressable 165 · ported 107  (65% of addressable)
+TOTAL  items 563 · addressable 165 · ported 152  (92% of addressable)
        + 1026 generated instances (breadth) · 4 escalated variants (depth)
 ```
 
@@ -49,15 +49,38 @@ intend to close them, and we do not; counting them as "done" would be a lie. The
 **class**, with a reason.
 
 Addressable = `verbatim_gt` + `recomputable` + `judgement_port`. Against that, coverage is
-**107 of 165 (65%)**, and every one of the remaining 58 has a named blocker:
+**152 of 165 (92%)**, and every one of the remaining 13 has a named blocker:
 
 | blocker | items | what unblocks it |
 |---|---|---|
 | ~~FB `erp_qa` questions not yet emitted by the cloner~~ | ~~65~~ **3** | **NEARLY CLOSED** — the ten rejected intent classes got handlers; 97 of 100 now emit. The last 3 are the genuinely degenerate ones (a year before the ledger begins; a typo'd question FB itself ships) and should ship as documented exclusions, not silent zeros |
 | ~~FB items naming companies absent from the shared world~~ | ~~31~~ **0** | **CLOSED** — `world/etl/fetch_filings.py` freezes real SEC XBRL facts; 68 filing companies in-world |
-| FB `finance_qa` single-figure (`recomputable`) | 28 | a filings-snapshot cloner; the frozen `filings` surface already serves this shape |
-| FB `business_brief` | 25 | a brief emitter grading required fields per-section |
+| ~~FB `finance_qa` single-figure (`recomputable`)~~ | ~~28~~ **7** | **MOSTLY CLOSED** — `world/etl/clone_fb_finance.py` emits 21, each pinning value + period + source form as separate checks against the frozen SEC snapshot. The 7 left are named below and 4 of them are structurally unanswerable from XBRL |
+| ~~FB `business_brief`~~ | ~~25~~ **1** | **CLOSED but one** — `world/etl/clone_fb_brief.py` emits 24. FB grades brief *prose* with an LLM judge; the port keeps the judgement (scale, profitability, leverage, and whether we already carry exposure) and grades each field deterministically. The last one names **Discover Financial Services, which no longer files** — acquired by Capital One, so no XBRL exists to pin |
 | ~~TAC finance remaining~~ | ~~4~~ **3** | 9 of 12 done; the porting pattern is proven |
+
+**The brief port adds a mechanic FB does not have.** Every brief asks whether the subject is
+already a counterparty on our own books — answerable only from the ERP, never from the filings.
+The first cut of the emitter had all 19 briefs answering "no relationship", which is free to a
+model that never opens the ERP (the A11 defect). Half the subjects are now seeded as real USMF
+customers with open invoices, split deterministically, and **both variants declare identical
+fields** — an earlier shape gave the seeded briefs an extra `internal_open_ar_usd` field, which
+leaks the answer in the instruction before the model queries anything.
+
+The 7 `finance_qa` items still out are worth naming individually, because 4 are not gaps in
+this world so much as questions no filing can answer — the honest home for them is a
+**grounded-refusal trap** (the `ext.financebench.refusal` scenario this world already runs),
+not a figure task:
+
+| item | asks for | status |
+|---|---|---|
+| `finance_qa-049` | Scope 1+2 GHG emissions | sustainability disclosure — not in us-gaap XBRL |
+| `finance_qa-236` | revenue *surprise* vs consensus | needs analyst estimates; no filing carries the expectation |
+| `finance_qa-248` | Nike vs **Adidas** Greater China segment | Adidas files no XBRL with the Commission |
+| `finance_qa-212` | Goldman net litigation provisions | footnote line item, not a standard concept |
+| `finance_qa-094` | Apple **Q4** diluted EPS | Q4 is not filed as a 10-Q; deriving it from FY−Q1−Q3 is not exact for EPS |
+| `finance_qa-105` | Caterpillar D/E, **3-year average** | multi-period average; the cloner emits single-period figures |
+| `finance_qa-186` | Amazon Q3 **YoY growth rate** | two-period derivation; same |
 
 The 31 unbindable items were a *useful* failure: filings had been seeded per task, so the
 binder correctly reported those companies absent from the shared world and named exactly
@@ -118,14 +141,30 @@ capability.** That is the next push.
 
 ## Order of work
 
-1. **FB `erp_qa` to ceiling** — handlers for the ten rejected classes above. Highest yield per
-   unit of effort: +~50 tasks against existing world data.
-2. **TAC finance, remaining 8** — the porting pattern is proven; four are done.
-3. **FB `finance_qa` (126)** — needs a filings-snapshot cloner; each item is a public-company
-   figure or ratio, and the frozen `filings` surface already serves that shape.
-4. **FB `business_brief` (25)** — the section schema is known; graded per-field.
-5. **ERP-Bench (300)** — decide explicitly: build an Odoo-shaped surface, or record it as
-   deliberately out of scope with the reason. Do not leave it silently at zero.
+1. ~~**FB `erp_qa` to ceiling**~~ — **DONE.** 97 of 100 emit; the 3 left are degenerate by FB's
+   own data (a year before this ledger begins, and a question carrying a typo FB documents).
+2. ~~**FB `finance_qa`**~~ — **DONE.** `clone_fb_finance.py` emits 21 of 28; 4 of the 7 left are
+   structurally unanswerable from us-gaap XBRL and belong as grounded-refusal traps.
+3. ~~**FB `business_brief` (25)**~~ — **DONE.** `clone_fb_brief.py` emits 24; the last names a
+   registrant that no longer files.
+4. **TAC finance, remaining 3** — the porting pattern is proven; 9 of 12 done.
+5. **ERP-Bench (300)** — **DECIDED: build the surface.** These are already true Harbor
+   directories; the blocker is that each ships a full Odoo in Docker and drives it over
+   JSON-2. What ports cleanly is that `environment/scenario_data.json` is a **declarative world
+   spec** — vendors, products with min/max/price offers, BOMs, workcenters, stock, budgets,
+   invoicing policy — so the scenario seeds our world directly and the judgement (budget caps,
+   margin floors, vendor min/max, SO→PO lineage) becomes deterministic state-diff checks
+   instead of `odoolib` queries against a live server.
+
+   Scope, measured rather than assumed — the 300 are not homogeneous:
+
+   | | tasks | needs |
+   |---|---|---|
+   | finished good is **bought** | 82 | procure-to-pay only: `sale.order`, `purchase.order`, vendor offers, budgets, downpayment/invoicing policy — a natural extension of the existing AP/vendor surface |
+   | finished good can be **manufactured** | 218 | + BOMs, workcenters, capacity scheduling, subassembly routing (all 218 carry workcenters) |
+
+   By objective: `min_new_spend` 183 · `vendor_consolidation` 34 · `capacity_preservation` 31 ·
+   `repair_plan` 28 · `constraint_only` 24. Closing this takes addressable from 165 to 465.
 
 Parity is not the ceiling of this world — the hard layer is what makes it worth running. But
 parity is the claim a buyer can check, and it should have come first.

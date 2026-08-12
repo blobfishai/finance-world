@@ -1,0 +1,28 @@
+[
+ {
+  "server": "filings",
+  "tool": "lookup_company",
+  "args": {
+   "query": "NVIDIA CORP"
+  }
+ },
+ {
+  "server": "filings",
+  "tool": "get_company_concept",
+  "args": {
+   "ticker": "NVDA",
+   "concept": "Revenues"
+  }
+ },
+ {
+  "server": "harness",
+  "tool": "submit_answer",
+  "args": {
+   "answers": {
+    "revenue_usd": 57006000000.0,
+    "period_end": "2025-10-26",
+    "source_form": "10-Q"
+   }
+  }
+ }
+]
