@@ -369,6 +369,21 @@ question may not be rebound to a near neighbour), now from the other direction: 
 generator may not squat on identifiers a task already owns.** Three variants of one rule, all
 found the hard way, all cheap to prevent once stated.
 
+### A12b. Validator cleanup is best-effort, not guaranteed — OPEN, known cost
+The A12 fix added `shutil.rmtree(...)` at the end of `sim/validate.py`'s per-task loop. It
+runs only when the task reaches the end of the body, and several paths `continue` before it,
+so a full run over 1,205 tasks still left ~300 directories behind and consumed ~12 GB of
+transient disk (it had to be reclaimed mid-run to let the gate finish).
+
+The correct shape is a `try/finally` around the per-task body, which needs the loop body
+re-indented — deliberately **not** attempted while the tree was green and unvalidated changes
+were the larger risk. Until it lands:
+
+    python3 sim/validate.py    # needs ~12 GB free at 1.2k tasks; clean .runs afterwards
+
+Worth stating because it is the shape of the whole day: the fix that is 90% right is the one
+that bites next, and "it worked when I ran it" is not the same as "it cannot leak".
+
 ### A4. `--max-turns` not strictly enforced by observed runs — WATCH
 haiku's ap-overdue run recorded `num_turns=36` against `--max-turns 24`. Budget overruns
 currently can't masquerade as passes (verification is answer-based), but turn accounting
