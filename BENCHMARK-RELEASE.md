@@ -159,6 +159,9 @@ scan is only needed to re-derive the selection.
 - `submit_answer` stamps a wall-clock `submitted_at` into the answers table; it is never
   read by the verifier (reports are byte-identical across replays), but the post-run DB
   is not bit-identical between runs.
-- The full `sim/validate.py` world gate at HEAD was re-run in this session; see the
-  session summary for its outcome (the first attempt died of a disk-full condition caused
-  by a scratch-dir leak in validate.py itself, fixed on this branch).
+- The full `sim/validate.py` world gate at HEAD was re-run in this session and PASSED:
+  **1,534 tasks, 10/10 checks each** (structure, metadata, tool existence, contract
+  drift, seeds, prepare determinism, oracle green, idle-run negative, no-submit
+  negative, ground-truth freshness). Two earlier attempts died of disk-full conditions:
+  the first from a scratch-dir leak in validate.py itself (fixed on this branch), the
+  second from transient disk pressure caused by concurrent sessions on this machine.
