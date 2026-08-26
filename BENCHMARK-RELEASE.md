@@ -85,6 +85,10 @@ results committed under `benchmark/ledgerbench100/reports/harbor-probes/`):
   99-step walk, augmented veto): 1 trial, 0 exceptions, **reward 1.0**.
 - `lgr100-034-cash-disc-fourthcoffee-east` (inputs bind-mount compose variant): 1 trial,
   0 exceptions, **reward 1.0**.
+- Five more stratified probes — `lgr100-003` (buried-decoy variant), `lgr100-008`
+  (business brief), `lgr100-021` (cross-system tieout), `lgr100-063` (SEC filings
+  surface), `lgr100-080` (payment-run commit) — each 1 trial, 0 exceptions,
+  **reward 1.0**. Total: **8/8 Dockerized oracle trials passed**.
 
 **Reproducibility**: re-exporting a pack produces a byte-identical content digest
 (verified on `lgr100-001`: `f2e5df84…` before and after). World build is fully offline
@@ -122,8 +126,10 @@ scan is only needed to re-derive the selection.
   What IS committed: the full generator, `catalog.json`, and the evidence set
   (`dataset.toml` with all 100 digests, `qualification.json`, `build.json`,
   `release-manifest.json`, harbor probe results) under `benchmark/ledgerbench100/`.
-- **Docker was probed on 3 of 100 packs, 3/3 reward 1.0** (one per container-topology
-  variant: plain, erpbench/augmented-veto, inputs bind-mount). The other 97 were verified in-process
+- **Docker was probed on 8 of 100 packs, 8/8 reward 1.0** (covering every
+  container-topology variant — plain, erpbench/augmented-veto, inputs bind-mount — and
+  every surface family style: QA, buried-decoy variant, cross-system, filings, brief,
+  ERP write, Odoo write). The other 92 were verified in-process
   from pack contents (6 executions each), not inside containers. A 100/100 Dockerized
   sweep (CounselBench's bar) was not run — ~100 × 1 min of docker builds on a
   disk-constrained machine.
