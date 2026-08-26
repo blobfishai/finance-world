@@ -215,7 +215,11 @@ def build(release: Path) -> dict:
             "unique_sha256": len(doc_hashes),
         },
         "prompt_uniqueness": maximum_pair_similarity(prompts),
+        "prompt_uniqueness_excluding_variant_pairs": maximum_pair_similarity(
+            sorted({p for p in prompts})),
         "exact_duplicate_prompts": len(prompts) - len(set(prompts)),
+        "escalated_variant_pairs": sum(
+            1 for e in catalog["tasks"] if e["provenance"] == "variant"),
         "verifier": {
             "deterministic": True,
             "network_calls": 0,
@@ -300,7 +304,8 @@ plus a `writes_only` anti-hack veto. No LLM judge, no network, no clock in the r
 - Oracle walk length: min {build['walk_len']['min']} / median {build['walk_len']['median']} / max {build['walk_len']['max']} MCP calls ({build['walk_len']['total']} total)
 - Checks: {build['checks']['answer_checks_total']} answer + {build['checks']['trace_checks_total']} trace + {build['checks']['state_checks_total']} state = {build['checks']['checks_total']} graded checks
 - Context files: {build['context_files']['total']} seeded documents/inputs ({build['context_files']['unique_sha256']} unique) across {build['context_files']['tasks_with_context_files']} tasks; most context lives inside the world itself (ERP rows, workbooks, emails, filings)
-- Prompt uniqueness: maximum pairwise 5-shingle Jaccard {build['prompt_uniqueness']['maximum_jaccard_5_shingle']}, {build['exact_duplicate_prompts']} exact duplicates
+- Escalated variants: {build['escalated_variant_pairs']} tasks are escalations of a base task also in the release; {build['exact_duplicate_prompts']} of them (`doc_mode = "buried"`) deliberately reuse the base persona message verbatim against a harder world — the governing policy must be found among seeded decoy documents — so those prompt texts appear twice by design
+- Prompt uniqueness across the {100 - build['exact_duplicate_prompts']} distinct prompts: maximum pairwise 5-shingle Jaccard {build['prompt_uniqueness_excluding_variant_pairs']['maximum_jaccard_5_shingle']}
 
 ## What is included
 

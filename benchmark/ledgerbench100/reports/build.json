@@ -1,0 +1,73 @@
+{
+  "benchmark": "LedgerBench-100",
+  "checks": {
+    "answer_checks_total": 434,
+    "checks_total": 955,
+    "state_checks_total": 264,
+    "trace_checks_total": 257
+  },
+  "context_files": {
+    "tasks_with_context_files": 47,
+    "total": 59,
+    "unique_sha256": 36
+  },
+  "escalated_variant_pairs": 30,
+  "exact_duplicate_prompts": 25,
+  "family_count": 22,
+  "mcp_servers": 8,
+  "mcp_tools": 66,
+  "prompt_uniqueness": {
+    "maximum_jaccard_5_shingle": 1.0,
+    "pair_indices": [
+      1,
+      2
+    ]
+  },
+  "prompt_uniqueness_excluding_variant_pairs": {
+    "maximum_jaccard_5_shingle": 0.91411,
+    "pair_indices": [
+      23,
+      24
+    ]
+  },
+  "schema_version": "1.0",
+  "task_count": 100,
+  "tasks_per_family": {
+    "anomaly_triage": 1,
+    "bank_rec": 4,
+    "business_brief": 3,
+    "business_brief_fb": 3,
+    "cash_app": 3,
+    "cash_forecast": 2,
+    "close_mgmt": 6,
+    "collections_ops": 1,
+    "cross_system": 7,
+    "erp_qa": 11,
+    "erp_qa_fb": 5,
+    "erpbench": 10,
+    "expense_audit": 4,
+    "finance_qa": 10,
+    "finance_qa_fb": 2,
+    "fpna": 5,
+    "journal_entry": 2,
+    "payment_proposal": 2,
+    "payment_run": 3,
+    "pbc": 4,
+    "threeway_match": 5,
+    "vendor_master": 7
+  },
+  "verifier": {
+    "deterministic": true,
+    "model_calls": 0,
+    "network_calls": 0,
+    "random_calls": 0,
+    "wall_clock_reads_in_reward_path": 0
+  },
+  "version": "1.0.0",
+  "walk_len": {
+    "max": 104,
+    "median": 6,
+    "min": 3,
+    "total": 1515
+  }
+}
