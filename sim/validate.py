@@ -204,6 +204,10 @@ def main():
         else:
             check(False, name, "S10", "walk has no harness.submit_answer step")
 
+        # the S9/S10 worlds are created AFTER the mid-loop cleanup above; without this
+        # second sweep a full run leaks ~21MB per task (~32GB across the task tree)
+        shutil.rmtree(ROOT / ".runs/validate" / t.name, ignore_errors=True)
+
         print(f"  {'ok ' if not any(f.startswith(name + ':') for f in FAIL) else 'FAIL'} {name}")
 
     print()
