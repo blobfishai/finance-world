@@ -1,0 +1,2367 @@
+{
+ "benchmark": "LedgerBench-100",
+ "version": "1.0.0",
+ "task_count": 100,
+ "selection_pool": {
+  "candidates_scanned": 508,
+  "oracle_green": 508,
+  "eligible": 506
+ },
+ "families": {
+  "anomaly_triage": 1,
+  "bank_rec": 4,
+  "business_brief": 3,
+  "business_brief_fb": 3,
+  "cash_app": 3,
+  "cash_forecast": 2,
+  "close_mgmt": 6,
+  "collections_ops": 1,
+  "cross_system": 7,
+  "erp_qa": 11,
+  "erp_qa_fb": 5,
+  "erpbench": 10,
+  "expense_audit": 4,
+  "finance_qa": 10,
+  "finance_qa_fb": 2,
+  "fpna": 5,
+  "journal_entry": 2,
+  "payment_proposal": 2,
+  "payment_run": 3,
+  "pbc": 4,
+  "threeway_match": 5,
+  "vendor_master": 7
+ },
+ "excluded": [
+  {
+   "task": "close_mgmt/two-period-close-cesq",
+   "family": "close_mgmt",
+   "reason": "multi-step task; release packages a uniform single-step contract"
+  },
+  {
+   "task": "finance_qa/xom-current-assets-followup",
+   "family": "finance_qa",
+   "reason": "multi-step task; release packages a uniform single-step contract"
+  }
+ ],
+ "tasks": [
+  {
+   "task_id": "lgr100-001-duplicate-payment-mar",
+   "source_task": "anomaly_triage/duplicate-payment-mar",
+   "family": "anomaly_triage",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 11,
+   "walk_servers": [
+    "docs",
+    "email",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 6,
+   "n_state_checks": 8,
+   "n_trace_checks": 3,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "write-layer:state_checks.sql grades the world left behind",
+    "difficulty:hard",
+    "long-walk:11-step oracle",
+    "cross-server:docs+email+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-002-ach-return-mar",
+   "source_task": "bank_rec/ach-return-mar",
+   "family": "bank_rec",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 5,
+   "walk_servers": [
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-003-ach-return-mar-esc-burie-quiet",
+   "source_task": "bank_rec/ach-return-mar-esc-burie-quiet",
+   "family": "bank_rec",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 5,
+   "walk_servers": [
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:bank_rec/ach-return-mar",
+    "cross-server:erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-004-statement-divergence-feb",
+   "source_task": "bank_rec/statement-divergence-feb",
+   "family": "bank_rec",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 4,
+   "walk_servers": [
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "cross-server:erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-005-statement-divergence-feb-esc-burie-quiet",
+   "source_task": "bank_rec/statement-divergence-feb-esc-burie-quiet",
+   "family": "bank_rec",
+   "provenance": "variant",
+   "difficulty": "medium",
+   "walk_len": 4,
+   "walk_servers": [
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:bank_rec/statement-divergence-feb",
+    "cross-server:erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-006-brief-caterpillar",
+   "source_task": "business_brief/brief-caterpillar",
+   "family": "business_brief",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 9,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:docs+erp+filings+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-007-brief-caterpillar-esc-burie-quiet",
+   "source_task": "business_brief/brief-caterpillar-esc-burie-quiet",
+   "family": "business_brief",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 9,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:business_brief/brief-caterpillar",
+    "cross-server:docs+erp+filings+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-008-brief-caterpillar-v2",
+   "source_task": "business_brief/brief-caterpillar-v2",
+   "family": "business_brief",
+   "provenance": "ported",
+   "difficulty": "harder",
+   "walk_len": 10,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 6,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "long-walk:10-step oracle",
+    "cross-server:docs+erp+filings+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-009-brief-advanced-micro-devices-inc",
+   "source_task": "business_brief_fb/brief-advanced-micro-devices-inc",
+   "family": "business_brief_fb",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 7,
+   "walk_servers": [
+    "erp",
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(business_brief_fb:3/24)",
+    "cross-server:erp+filings+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-010-brief-american-airlines-group",
+   "source_task": "business_brief_fb/brief-american-airlines-group",
+   "family": "business_brief_fb",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 7,
+   "walk_servers": [
+    "erp",
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(business_brief_fb:3/24)",
+    "cross-server:erp+filings+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-011-brief-apple-inc",
+   "source_task": "business_brief_fb/brief-apple-inc",
+   "family": "business_brief_fb",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 7,
+   "walk_servers": [
+    "erp",
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(business_brief_fb:3/24)",
+    "cross-server:erp+filings+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-012-deduction-coding-mar",
+   "source_task": "cash_app/deduction-coding-mar",
+   "family": "cash_app",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 10,
+   "walk_servers": [
+    "docs",
+    "email",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 7,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "long-walk:10-step oracle",
+    "cross-server:docs+email+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-013-remittance-batch-mar02",
+   "source_task": "cash_app/remittance-batch-mar02",
+   "family": "cash_app",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 7,
+   "walk_servers": [
+    "email",
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "cross-server:email+erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-014-remittance-batch-mar02-esc-burie-quiet",
+   "source_task": "cash_app/remittance-batch-mar02-esc-burie-quiet",
+   "family": "cash_app",
+   "provenance": "variant",
+   "difficulty": "medium",
+   "walk_len": 7,
+   "walk_servers": [
+    "email",
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:cash_app/remittance-batch-mar02",
+    "cross-server:email+erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-015-cesp-four-week",
+   "source_task": "cash_forecast/cesp-four-week",
+   "family": "cash_forecast",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 6,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:docs+erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-016-cesp-four-week-esc-burie-quiet",
+   "source_task": "cash_forecast/cesp-four-week-esc-burie-quiet",
+   "family": "cash_forecast",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 6,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:cash_forecast/cesp-four-week",
+    "cross-server:docs+erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-017-period-lock-correction",
+   "source_task": "close_mgmt/period-lock-correction",
+   "family": "close_mgmt",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 9,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 8,
+   "n_trace_checks": 3,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "write-layer:state_checks.sql grades the world left behind",
+    "cross-server:docs+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-018-period-lock-correction-esc-burie-quiet",
+   "source_task": "close_mgmt/period-lock-correction-esc-burie-quiet",
+   "family": "close_mgmt",
+   "provenance": "variant",
+   "difficulty": "medium",
+   "walk_len": 9,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 8,
+   "n_trace_checks": 3,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "write-layer:state_checks.sql grades the world left behind",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:close_mgmt/period-lock-correction",
+    "cross-server:docs+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-019-revenue-recognition-tieout",
+   "source_task": "close_mgmt/revenue-recognition-tieout",
+   "family": "close_mgmt",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 9,
+   "walk_servers": [
+    "docs",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:docs+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-020-revenue-recognition-tieout-esc-burie-quiet",
+   "source_task": "close_mgmt/revenue-recognition-tieout-esc-burie-quiet",
+   "family": "close_mgmt",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 9,
+   "walk_servers": [
+    "docs",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:close_mgmt/revenue-recognition-tieout",
+    "cross-server:docs+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-021-subledger-tieout-feb",
+   "source_task": "close_mgmt/subledger-tieout-feb",
+   "family": "close_mgmt",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 6,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "cross-server:docs+erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-022-subledger-tieout-feb-esc-burie-quiet",
+   "source_task": "close_mgmt/subledger-tieout-feb-esc-burie-quiet",
+   "family": "close_mgmt",
+   "provenance": "variant",
+   "difficulty": "medium",
+   "walk_len": 6,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:close_mgmt/subledger-tieout-feb",
+    "cross-server:docs+erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-023-escalate-sparrow-letter3",
+   "source_task": "collections_ops/escalate-sparrow-letter3",
+   "family": "collections_ops",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 6,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 5,
+   "n_trace_checks": 2,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "write-layer:state_checks.sql grades the world left behind",
+    "difficulty:hard",
+    "cross-server:docs+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-024-email-invoice-meadow",
+   "source_task": "cross_system/email-invoice-meadow",
+   "family": "cross_system",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 6,
+   "walk_servers": [
+    "email",
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:email+erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-025-email-invoice-meadow-esc-burie-quiet",
+   "source_task": "cross_system/email-invoice-meadow-esc-burie-quiet",
+   "family": "cross_system",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 6,
+   "walk_servers": [
+    "email",
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:cross_system/email-invoice-meadow",
+    "cross-server:email+erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-026-intercompany-tieout-feb",
+   "source_task": "cross_system/intercompany-tieout-feb",
+   "family": "cross_system",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 5,
+   "walk_servers": [
+    "email",
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "cross-server:email+erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-027-intercompany-tieout-feb-esc-burie-quiet",
+   "source_task": "cross_system/intercompany-tieout-feb-esc-burie-quiet",
+   "family": "cross_system",
+   "provenance": "variant",
+   "difficulty": "medium",
+   "walk_len": 5,
+   "walk_servers": [
+    "email",
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:cross_system/intercompany-tieout-feb",
+    "cross-server:email+erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-028-total-ar-adventure-group",
+   "source_task": "cross_system/total-ar-adventure-group",
+   "family": "cross_system",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 6,
+   "walk_servers": [
+    "books",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:books+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-029-total-ar-adventure-group-v2",
+   "source_task": "cross_system/total-ar-adventure-group-v2",
+   "family": "cross_system",
+   "provenance": "ported",
+   "difficulty": "harder",
+   "walk_len": 10,
+   "walk_servers": [
+    "books",
+    "email",
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "long-walk:10-step oracle",
+    "cross-server:books+email+erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-030-tracker-formula-drift",
+   "source_task": "cross_system/tracker-formula-drift",
+   "family": "cross_system",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 5,
+   "walk_servers": [
+    "erp",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:erp+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-031-ap-overdue-usmf",
+   "source_task": "erp_qa/ap-overdue-usmf",
+   "family": "erp_qa",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 3,
+   "walk_servers": [
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 2,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage"
+   ]
+  },
+  {
+   "task_id": "lgr100-032-ar-balance-fourthcoffee-east",
+   "source_task": "erp_qa/ar-balance-fourthcoffee-east",
+   "family": "erp_qa",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 4,
+   "walk_servers": [
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage"
+   ]
+  },
+  {
+   "task_id": "lgr100-033-ar-balance-fourthcoffee-east-esc-burie-quiet",
+   "source_task": "erp_qa/ar-balance-fourthcoffee-east-esc-burie-quiet",
+   "family": "erp_qa",
+   "provenance": "variant",
+   "difficulty": "medium",
+   "walk_len": 4,
+   "walk_servers": [
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:erp_qa/ar-balance-fourthcoffee-east"
+   ]
+  },
+  {
+   "task_id": "lgr100-034-cash-disc-fourthcoffee-east",
+   "source_task": "erp_qa/cash-disc-fourthcoffee-east",
+   "family": "erp_qa",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 6,
+   "walk_servers": [
+    "docs",
+    "email",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:docs+email+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-035-cash-disc-fourthcoffee-east-esc-burie-quiet",
+   "source_task": "erp_qa/cash-disc-fourthcoffee-east-esc-burie-quiet",
+   "family": "erp_qa",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 6,
+   "walk_servers": [
+    "docs",
+    "email",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:erp_qa/cash-disc-fourthcoffee-east",
+    "cross-server:docs+email+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-036-collections-sparrow",
+   "source_task": "erp_qa/collections-sparrow",
+   "family": "erp_qa",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 5,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:docs+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-037-collections-sparrow-esc-burie-quiet",
+   "source_task": "erp_qa/collections-sparrow-esc-burie-quiet",
+   "family": "erp_qa",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 5,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:erp_qa/collections-sparrow",
+    "cross-server:docs+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-038-credit-limit-adatum",
+   "source_task": "erp_qa/credit-limit-adatum",
+   "family": "erp_qa",
+   "provenance": "ported",
+   "difficulty": "easy",
+   "walk_len": 3,
+   "walk_servers": [
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 2,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage"
+   ]
+  },
+  {
+   "task_id": "lgr100-039-credit-limit-adatum-esc-burie-quiet",
+   "source_task": "erp_qa/credit-limit-adatum-esc-burie-quiet",
+   "family": "erp_qa",
+   "provenance": "variant",
+   "difficulty": "easy",
+   "walk_len": 3,
+   "walk_servers": [
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 2,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:erp_qa/credit-limit-adatum"
+   ]
+  },
+  {
+   "task_id": "lgr100-040-due-next-week-adventure",
+   "source_task": "erp_qa/due-next-week-adventure",
+   "family": "erp_qa",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 3,
+   "walk_servers": [
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 2,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage"
+   ]
+  },
+  {
+   "task_id": "lgr100-041-due-next-week-adventure-esc-burie-quiet",
+   "source_task": "erp_qa/due-next-week-adventure-esc-burie-quiet",
+   "family": "erp_qa",
+   "provenance": "variant",
+   "difficulty": "medium",
+   "walk_len": 3,
+   "walk_servers": [
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 2,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:erp_qa/due-next-week-adventure"
+   ]
+  },
+  {
+   "task_id": "lgr100-042-aged-balance-12",
+   "source_task": "erp_qa_fb/aged-balance-12",
+   "family": "erp_qa_fb",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 3,
+   "walk_servers": [
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erp_qa_fb:5/97)"
+   ]
+  },
+  {
+   "task_id": "lgr100-043-aged-balance-6",
+   "source_task": "erp_qa_fb/aged-balance-6",
+   "family": "erp_qa_fb",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 3,
+   "walk_servers": [
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erp_qa_fb:5/97)"
+   ]
+  },
+  {
+   "task_id": "lgr100-044-aged-balance-7",
+   "source_task": "erp_qa_fb/aged-balance-7",
+   "family": "erp_qa_fb",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 3,
+   "walk_servers": [
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 2,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erp_qa_fb:5/97)"
+   ]
+  },
+  {
+   "task_id": "lgr100-045-aged-balance-8",
+   "source_task": "erp_qa_fb/aged-balance-8",
+   "family": "erp_qa_fb",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 3,
+   "walk_servers": [
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erp_qa_fb:5/97)"
+   ]
+  },
+  {
+   "task_id": "lgr100-046-ap-invoices-3",
+   "source_task": "erp_qa_fb/ap-invoices-3",
+   "family": "erp_qa_fb",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 3,
+   "walk_servers": [
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 2,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erp_qa_fb:5/97)"
+   ]
+  },
+  {
+   "task_id": "lgr100-047-2141-hard-15-parallel-subassemblies-branch-assigned",
+   "source_task": "erpbench/2141-hard-15-parallel-subassemblies-branch-assigned",
+   "family": "erpbench",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 94,
+   "walk_servers": [
+    "harness",
+    "odoo"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 10,
+   "n_trace_checks": 2,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erpbench:10/284)",
+    "export-adds-writes_only-veto(answers+erpb_*)",
+    "write-layer:state_checks.sql grades the world left behind",
+    "long-walk:94-step oracle"
+   ]
+  },
+  {
+   "task_id": "lgr100-048-2143-hard-15-parallel-subassemblies-branch-assigned",
+   "source_task": "erpbench/2143-hard-15-parallel-subassemblies-branch-assigned",
+   "family": "erpbench",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 98,
+   "walk_servers": [
+    "harness",
+    "odoo"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 10,
+   "n_trace_checks": 2,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erpbench:10/284)",
+    "export-adds-writes_only-veto(answers+erpb_*)",
+    "write-layer:state_checks.sql grades the world left behind",
+    "long-walk:98-step oracle"
+   ]
+  },
+  {
+   "task_id": "lgr100-049-2144-hard-15-parallel-subassemblies-branch-assigned",
+   "source_task": "erpbench/2144-hard-15-parallel-subassemblies-branch-assigned",
+   "family": "erpbench",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 92,
+   "walk_servers": [
+    "harness",
+    "odoo"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 10,
+   "n_trace_checks": 2,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erpbench:10/284)",
+    "export-adds-writes_only-veto(answers+erpb_*)",
+    "write-layer:state_checks.sql grades the world left behind",
+    "long-walk:92-step oracle"
+   ]
+  },
+  {
+   "task_id": "lgr100-050-2146-hard-15-parallel-subassemblies-branch-assigned",
+   "source_task": "erpbench/2146-hard-15-parallel-subassemblies-branch-assigned",
+   "family": "erpbench",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 104,
+   "walk_servers": [
+    "harness",
+    "odoo"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 10,
+   "n_trace_checks": 2,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erpbench:10/284)",
+    "export-adds-writes_only-veto(answers+erpb_*)",
+    "write-layer:state_checks.sql grades the world left behind",
+    "long-walk:104-step oracle"
+   ]
+  },
+  {
+   "task_id": "lgr100-051-2147-hard-15-parallel-subassemblies-branch-assigned",
+   "source_task": "erpbench/2147-hard-15-parallel-subassemblies-branch-assigned",
+   "family": "erpbench",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 99,
+   "walk_servers": [
+    "harness",
+    "odoo"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 10,
+   "n_trace_checks": 2,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erpbench:10/284)",
+    "export-adds-writes_only-veto(answers+erpb_*)",
+    "write-layer:state_checks.sql grades the world left behind",
+    "long-walk:99-step oracle"
+   ]
+  },
+  {
+   "task_id": "lgr100-052-2149-hard-15-parallel-subassemblies-branch-assigned",
+   "source_task": "erpbench/2149-hard-15-parallel-subassemblies-branch-assigned",
+   "family": "erpbench",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 98,
+   "walk_servers": [
+    "harness",
+    "odoo"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 10,
+   "n_trace_checks": 2,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erpbench:10/284)",
+    "export-adds-writes_only-veto(answers+erpb_*)",
+    "write-layer:state_checks.sql grades the world left behind",
+    "long-walk:98-step oracle"
+   ]
+  },
+  {
+   "task_id": "lgr100-053-2160-hard-17-shared-component-subassemblies-branch-assigned",
+   "source_task": "erpbench/2160-hard-17-shared-component-subassemblies-branch-assigned",
+   "family": "erpbench",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 91,
+   "walk_servers": [
+    "harness",
+    "odoo"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 10,
+   "n_trace_checks": 2,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erpbench:10/284)",
+    "export-adds-writes_only-veto(answers+erpb_*)",
+    "write-layer:state_checks.sql grades the world left behind",
+    "long-walk:91-step oracle"
+   ]
+  },
+  {
+   "task_id": "lgr100-054-2161-hard-17-shared-component-subassemblies-branch-assigned",
+   "source_task": "erpbench/2161-hard-17-shared-component-subassemblies-branch-assigned",
+   "family": "erpbench",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 91,
+   "walk_servers": [
+    "harness",
+    "odoo"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 10,
+   "n_trace_checks": 2,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erpbench:10/284)",
+    "export-adds-writes_only-veto(answers+erpb_*)",
+    "write-layer:state_checks.sql grades the world left behind",
+    "long-walk:91-step oracle"
+   ]
+  },
+  {
+   "task_id": "lgr100-055-2168-hard-17-shared-component-subassemblies-branch-assigned",
+   "source_task": "erpbench/2168-hard-17-shared-component-subassemblies-branch-assigned",
+   "family": "erpbench",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 92,
+   "walk_servers": [
+    "harness",
+    "odoo"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 10,
+   "n_trace_checks": 2,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erpbench:10/284)",
+    "export-adds-writes_only-veto(answers+erpb_*)",
+    "write-layer:state_checks.sql grades the world left behind",
+    "long-walk:92-step oracle"
+   ]
+  },
+  {
+   "task_id": "lgr100-056-2170-hard-17-shared-component-subassemblies-branch-assigned",
+   "source_task": "erpbench/2170-hard-17-shared-component-subassemblies-branch-assigned",
+   "family": "erpbench",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 98,
+   "walk_servers": [
+    "harness",
+    "odoo"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 10,
+   "n_trace_checks": 2,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(erpbench:10/284)",
+    "export-adds-writes_only-veto(answers+erpb_*)",
+    "write-layer:state_checks.sql grades the world left behind",
+    "long-walk:98-step oracle"
+   ]
+  },
+  {
+   "task_id": "lgr100-057-policy-validation-feb",
+   "source_task": "expense_audit/policy-validation-feb",
+   "family": "expense_audit",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 9,
+   "walk_servers": [
+    "docs",
+    "email",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 6,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:docs+email+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-058-te-sample-feb",
+   "source_task": "expense_audit/te-sample-feb",
+   "family": "expense_audit",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 4,
+   "walk_servers": [
+    "docs",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "cross-server:docs+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-059-te-sample-feb-esc-burie-quiet",
+   "source_task": "expense_audit/te-sample-feb-esc-burie-quiet",
+   "family": "expense_audit",
+   "provenance": "variant",
+   "difficulty": "medium",
+   "walk_len": 4,
+   "walk_servers": [
+    "docs",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:expense_audit/te-sample-feb",
+    "cross-server:docs+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-060-threshold-shaving-h1",
+   "source_task": "expense_audit/threshold-shaving-h1",
+   "family": "expense_audit",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 4,
+   "walk_servers": [
+    "docs",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:docs+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-061-scale-trap-lmt",
+   "source_task": "finance_qa/scale-trap-lmt",
+   "family": "finance_qa",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 6,
+   "walk_servers": [
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage"
+   ]
+  },
+  {
+   "task_id": "lgr100-062-tac-10k-income-report",
+   "source_task": "finance_qa/tac-10k-income-report",
+   "family": "finance_qa",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 13,
+   "walk_servers": [
+    "docs",
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 8,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "long-walk:13-step oracle",
+    "cross-server:docs+filings+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-063-tsla-operating-margin-q3",
+   "source_task": "finance_qa/tsla-operating-margin-q3",
+   "family": "finance_qa",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 4,
+   "walk_servers": [
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage"
+   ]
+  },
+  {
+   "task_id": "lgr100-064-tsla-operating-margin-q3-esc-burie-quiet",
+   "source_task": "finance_qa/tsla-operating-margin-q3-esc-burie-quiet",
+   "family": "finance_qa",
+   "provenance": "variant",
+   "difficulty": "medium",
+   "walk_len": 4,
+   "walk_servers": [
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:finance_qa/tsla-operating-margin-q3"
+   ]
+  },
+  {
+   "task_id": "lgr100-065-unavailable-concept",
+   "source_task": "finance_qa/unavailable-concept",
+   "family": "finance_qa",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 4,
+   "walk_servers": [
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage"
+   ]
+  },
+  {
+   "task_id": "lgr100-066-wmt-inventory-turnover",
+   "source_task": "finance_qa/wmt-inventory-turnover",
+   "family": "finance_qa",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 5,
+   "walk_servers": [
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage"
+   ]
+  },
+  {
+   "task_id": "lgr100-067-wmt-inventory-turnover-esc-burie-quiet",
+   "source_task": "finance_qa/wmt-inventory-turnover-esc-burie-quiet",
+   "family": "finance_qa",
+   "provenance": "variant",
+   "difficulty": "medium",
+   "walk_len": 5,
+   "walk_servers": [
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:finance_qa/wmt-inventory-turnover"
+   ]
+  },
+  {
+   "task_id": "lgr100-068-xom-cat-liquidity-compare",
+   "source_task": "finance_qa/xom-cat-liquidity-compare",
+   "family": "finance_qa",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 4,
+   "walk_servers": [
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard"
+   ]
+  },
+  {
+   "task_id": "lgr100-069-xom-current-assets",
+   "source_task": "finance_qa/xom-current-assets",
+   "family": "finance_qa",
+   "provenance": "ported",
+   "difficulty": "easy",
+   "walk_len": 3,
+   "walk_servers": [
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage"
+   ]
+  },
+  {
+   "task_id": "lgr100-070-xom-current-assets-esc-burie-quiet",
+   "source_task": "finance_qa/xom-current-assets-esc-burie-quiet",
+   "family": "finance_qa",
+   "provenance": "variant",
+   "difficulty": "easy",
+   "walk_len": 3,
+   "walk_servers": [
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:finance_qa/xom-current-assets"
+   ]
+  },
+  {
+   "task_id": "lgr100-071-jpm-debt-to-equity-127",
+   "source_task": "finance_qa_fb/jpm-debt-to-equity-127",
+   "family": "finance_qa_fb",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 4,
+   "walk_servers": [
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(finance_qa_fb:2/21)"
+   ]
+  },
+  {
+   "task_id": "lgr100-072-ko-operating-margin-pct-035",
+   "source_task": "finance_qa_fb/ko-operating-margin-pct-035",
+   "family": "finance_qa_fb",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 4,
+   "walk_servers": [
+    "filings",
+    "harness"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "hand-picked-slice(finance_qa_fb:2/21)"
+   ]
+  },
+  {
+   "task_id": "lgr100-073-budget-variance-feb",
+   "source_task": "fpna/budget-variance-feb",
+   "family": "fpna",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 10,
+   "walk_servers": [
+    "docs",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "long-walk:10-step oracle",
+    "cross-server:docs+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-074-budget-variance-feb-esc-burie-quiet",
+   "source_task": "fpna/budget-variance-feb-esc-burie-quiet",
+   "family": "fpna",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 10,
+   "walk_servers": [
+    "docs",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 3,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "long-walk:10-step oracle",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:fpna/budget-variance-feb",
+    "cross-server:docs+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-075-payroll-attendance-tieout",
+   "source_task": "fpna/payroll-attendance-tieout",
+   "family": "fpna",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 9,
+   "walk_servers": [
+    "docs",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 4,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:docs+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-076-payroll-attendance-tieout-esc-burie-quiet",
+   "source_task": "fpna/payroll-attendance-tieout-esc-burie-quiet",
+   "family": "fpna",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 9,
+   "walk_servers": [
+    "docs",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 4,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:fpna/payroll-attendance-tieout",
+    "cross-server:docs+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-077-rd-tax-credit-asc",
+   "source_task": "fpna/rd-tax-credit-asc",
+   "family": "fpna",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 8,
+   "walk_servers": [
+    "docs",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 7,
+   "n_state_checks": 1,
+   "n_trace_checks": 4,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:docs+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-078-feb-saas-accrual",
+   "source_task": "journal_entry/feb-saas-accrual",
+   "family": "journal_entry",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 10,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 9,
+   "n_trace_checks": 3,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "write-layer:state_checks.sql grades the world left behind",
+    "difficulty:hard",
+    "long-walk:10-step oracle",
+    "cross-server:docs+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-079-feb-saas-accrual-esc-burie-quiet",
+   "source_task": "journal_entry/feb-saas-accrual-esc-burie-quiet",
+   "family": "journal_entry",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 10,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 9,
+   "n_trace_checks": 3,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "write-layer:state_checks.sql grades the world left behind",
+    "difficulty:hard",
+    "long-walk:10-step oracle",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:journal_entry/feb-saas-accrual",
+    "cross-server:docs+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-080-friday-run-mar06",
+   "source_task": "payment_proposal/friday-run-mar06",
+   "family": "payment_proposal",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 7,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:docs+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-081-friday-run-mar06-esc-burie-quiet",
+   "source_task": "payment_proposal/friday-run-mar06-esc-burie-quiet",
+   "family": "payment_proposal",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 7,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:payment_proposal/friday-run-mar06",
+    "cross-server:docs+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-082-shortfall-mar06",
+   "source_task": "payment_run/shortfall-mar06",
+   "family": "payment_run",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 11,
+   "walk_servers": [
+    "docs",
+    "email",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 8,
+   "n_trace_checks": 3,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "write-layer:state_checks.sql grades the world left behind",
+    "difficulty:hard",
+    "long-walk:11-step oracle",
+    "cross-server:docs+email+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-083-withholding-mar13",
+   "source_task": "payment_run/withholding-mar13",
+   "family": "payment_run",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 10,
+   "walk_servers": [
+    "docs",
+    "email",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 6,
+   "n_state_checks": 6,
+   "n_trace_checks": 3,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "write-layer:state_checks.sql grades the world left behind",
+    "difficulty:hard",
+    "long-walk:10-step oracle",
+    "cross-server:docs+email+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-084-withholding-mar13-esc-burie-quiet",
+   "source_task": "payment_run/withholding-mar13-esc-burie-quiet",
+   "family": "payment_run",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 10,
+   "walk_servers": [
+    "docs",
+    "email",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 6,
+   "n_state_checks": 6,
+   "n_trace_checks": 3,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "write-layer:state_checks.sql grades the world left behind",
+    "difficulty:hard",
+    "long-walk:10-step oracle",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:payment_run/withholding-mar13",
+    "cross-server:docs+email+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-085-approval-evidence-q1",
+   "source_task": "pbc/approval-evidence-q1",
+   "family": "pbc",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 6,
+   "walk_servers": [
+    "docs",
+    "email",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "cross-server:docs+email+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-086-approval-evidence-q1-esc-burie-quiet",
+   "source_task": "pbc/approval-evidence-q1-esc-burie-quiet",
+   "family": "pbc",
+   "provenance": "variant",
+   "difficulty": "medium",
+   "walk_len": 6,
+   "walk_servers": [
+    "docs",
+    "email",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:pbc/approval-evidence-q1",
+    "cross-server:docs+email+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-087-sampling-projection-q1",
+   "source_task": "pbc/sampling-projection-q1",
+   "family": "pbc",
+   "provenance": "ported",
+   "difficulty": "medium",
+   "walk_len": 4,
+   "walk_servers": [
+    "docs",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "cross-server:docs+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-088-sampling-projection-q1-esc-burie-quiet",
+   "source_task": "pbc/sampling-projection-q1-esc-burie-quiet",
+   "family": "pbc",
+   "provenance": "variant",
+   "difficulty": "medium",
+   "walk_len": 4,
+   "walk_servers": [
+    "docs",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:pbc/sampling-projection-q1",
+    "cross-server:docs+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-089-ppinv-exceptions-mar",
+   "source_task": "threeway_match/ppinv-exceptions-mar",
+   "family": "threeway_match",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 5,
+   "walk_servers": [
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard"
+   ]
+  },
+  {
+   "task_id": "lgr100-090-ppinv-exceptions-mar-esc-burie-quiet",
+   "source_task": "threeway_match/ppinv-exceptions-mar-esc-burie-quiet",
+   "family": "threeway_match",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 5,
+   "walk_servers": [
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:threeway_match/ppinv-exceptions-mar"
+   ]
+  },
+  {
+   "task_id": "lgr100-091-tac-invoice-matching",
+   "source_task": "threeway_match/tac-invoice-matching",
+   "family": "threeway_match",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 8,
+   "walk_servers": [
+    "docs",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 7,
+   "n_state_checks": 1,
+   "n_trace_checks": 4,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "cross-server:docs+harness+sheets"
+   ]
+  },
+  {
+   "task_id": "lgr100-092-tolerance-dialect-mar",
+   "source_task": "threeway_match/tolerance-dialect-mar",
+   "family": "threeway_match",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 5,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:docs+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-093-tolerance-dialect-mar-esc-burie-quiet",
+   "source_task": "threeway_match/tolerance-dialect-mar-esc-burie-quiet",
+   "family": "threeway_match",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 5,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:threeway_match/tolerance-dialect-mar",
+    "cross-server:docs+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-094-bank-change-verify",
+   "source_task": "vendor_master/bank-change-verify",
+   "family": "vendor_master",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 6,
+   "walk_servers": [
+    "docs",
+    "email",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 1,
+   "n_trace_checks": 2,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:docs+email+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-095-dormant-vendor-review",
+   "source_task": "vendor_master/dormant-vendor-review",
+   "family": "vendor_master",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 6,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:docs+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-096-dormant-vendor-review-esc-burie-quiet",
+   "source_task": "vendor_master/dormant-vendor-review-esc-burie-quiet",
+   "family": "vendor_master",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 6,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 3,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:vendor_master/dormant-vendor-review",
+    "cross-server:docs+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-097-dormant-vendor-review-v2",
+   "source_task": "vendor_master/dormant-vendor-review-v2",
+   "family": "vendor_master",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 9,
+   "walk_servers": [
+    "docs",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 5,
+   "n_state_checks": 1,
+   "n_trace_checks": 4,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "cross-server:docs+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-098-missing-po-inquiry",
+   "source_task": "vendor_master/missing-po-inquiry",
+   "family": "vendor_master",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 6,
+   "walk_servers": [
+    "email",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 4,
+   "n_trace_checks": 3,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "write-layer:state_checks.sql grades the world left behind",
+    "difficulty:hard",
+    "cross-server:email+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-099-missing-po-inquiry-esc-burie-quiet",
+   "source_task": "vendor_master/missing-po-inquiry-esc-burie-quiet",
+   "family": "vendor_master",
+   "provenance": "variant",
+   "difficulty": "hard",
+   "walk_len": 6,
+   "walk_servers": [
+    "email",
+    "erp",
+    "harness"
+   ],
+   "n_answer_checks": 4,
+   "n_state_checks": 4,
+   "n_trace_checks": 3,
+   "has_state_sql": true,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "write-layer:state_checks.sql grades the world left behind",
+    "difficulty:hard",
+    "doc_mode:buried (governing policy must be found among decoys)",
+    "escalated-variant-of:vendor_master/missing-po-inquiry",
+    "cross-server:email+erp+harness"
+   ]
+  },
+  {
+   "task_id": "lgr100-100-tac-find-signatories",
+   "source_task": "vendor_master/tac-find-signatories",
+   "family": "vendor_master",
+   "provenance": "ported",
+   "difficulty": "hard",
+   "walk_len": 9,
+   "walk_servers": [
+    "docs",
+    "email",
+    "harness",
+    "sheets"
+   ],
+   "n_answer_checks": 6,
+   "n_state_checks": 1,
+   "n_trace_checks": 4,
+   "has_state_sql": false,
+   "oracle_reward_at_head": 1,
+   "rationale": [
+    "full-family-coverage",
+    "difficulty:hard",
+    "cross-server:docs+email+harness+sheets"
+   ]
+  }
+ ]
+}
