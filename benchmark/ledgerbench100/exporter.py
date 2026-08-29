@@ -44,6 +44,7 @@ import tomllib
 from pathlib import Path
 
 from realism import (
+    atomic_check_specs,
     augment_checks,
     decision_options,
     reference_walk,
@@ -59,7 +60,7 @@ from prepare import prepare  # noqa: E402
 
 RELEASE_NAME = "LedgerBench-100"
 RELEASE_SLUG = "ledgerbench-100"
-RELEASE_VERSION = "3.1.0"
+RELEASE_VERSION = "3.2.0"
 HARBOR_ORG = "blobfishai"
 DATA_LICENSE = "CC-BY-4.0"
 CODE_LICENSE = "Apache-2.0"
@@ -133,6 +134,9 @@ provenance = "{entry['provenance']}"
 difficulty = "{entry['difficulty']}"
 origin = "{origin}"
 walk_len = {entry['walk_len']}
+metric = "LedgerScore"
+public_milestones = {entry.get('criteria_count', 0)}
+public_points = {entry.get('criteria_points', 0)}
 public_criteria = {entry.get('criteria_count', 0)}
 n_answer_checks = {entry['n_answer_checks']}
 n_state_checks = {entry['n_state_checks']}
@@ -347,7 +351,7 @@ with open(os.path.join(root, "report.json"), "w", encoding="utf-8") as stream:
 with open(os.path.join(root, "reward.json"), "w", encoding="utf-8") as stream:
     json.dump(output, stream, sort_keys=True)
 with open(os.path.join(root, "reward.txt"), "w", encoding="utf-8") as stream:
-    stream.write(str(int(output["reward"])))
+    stream.write(str(output["reward"]))
 print(json.dumps({{"passed": bool(output["passed"]), "reward": output["reward"]}}))
 PYEOF
 '''
@@ -515,7 +519,7 @@ def build_pack(
 
     # 2. world service: bridge, spec, verifier taskspec, runtime
     spec = {
-        "schema_version": "1.0",
+        "schema_version": "2.0",
         "benchmark": RELEASE_NAME,
         "version": RELEASE_VERSION,
         "task_id": task_id,
@@ -544,6 +548,7 @@ def build_pack(
     )
     checks = augment_checks(entry, checks, contract, trace_contract)
     criteria = rubric_criteria(entry, checks, trace_contract, contract)
+    atomic_contract = atomic_check_specs(checks)
     options = decision_options(entry)
     (world_dir / "taskspec" / "tests" / "checks.json").write_text(
         json.dumps(checks, indent=1) + "\n")
@@ -561,6 +566,7 @@ def build_pack(
         **entry,
         "walk_len": len(walk),
         "criteria_count": len(criteria),
+        "criteria_points": sum(criterion["weight"] for criterion in criteria),
     }
     write_text(pack / "task.toml", task_toml(release_entry, source_cfg.get("metadata", {}), description))
     write_text(pack / "instruction.md", prompt + "\n")
@@ -572,13 +578,18 @@ def build_pack(
     write_json(
         world_dir / "taskspec" / "realism.json",
         {
+            "schema_version": "2.0",
+            "metric": "LedgerScore",
+            "points_possible": 100,
             "criteria": criteria,
+            "atomic_check_contract": atomic_contract,
             "decision_options": options,
             "case_contract": contract,
             "trace_contract": trace_contract,
             "semantic_action_graph": trace_contract["semantic_action_graph"],
             "asset_contract": {
                 "minimum_assets": 28,
+                "material_assets": 12,
                 "systems": SERVERS,
                 "note": "Hugging Face exports agent-visible, native-format views of this exact initial SQLite state; gold and the oracle walk are excluded from the asset tree.",
             },

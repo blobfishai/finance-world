@@ -1,406 +1,406 @@
 [dataset]
 name = "blobfishai/ledgerbench-100"
-version = "3.1.0"
+version = "3.2.0"
 description = "100 causal corporate-finance workflows over a closed ERP sandbox: provider-shaped MCP tools, distributed evidence, exact state transitions, and no LLM judge."
 authors = []
 keywords = ["finance", "erp", "mcp", "deterministic", "long-horizon"]
 
 [[tasks]]
 name = "blobfishai/lgr100-001-duplicate-payment-mar"
-digest = "sha256:2fd3c29b461417da5c1a034f0b5187c08d8c2564a3d6d6d35e5f1264f422a8f1"
+digest = "sha256:3082c74db82d9485e184de522a01e4a4b3a431cecd5157dad8e1bf3ad2bc1625"
 
 [[tasks]]
 name = "blobfishai/lgr100-002-ach-return-mar"
-digest = "sha256:f3194b569fd127392bfc36fdad0502dea8c6e23c0fa57ec28d4eae161b558b1c"
+digest = "sha256:afee1c841a108e855629838af4ebaed6fc8fba4a29f7ebe834a9ec04df1b4847"
 
 [[tasks]]
 name = "blobfishai/lgr100-003-ach-return-mar-esc-burie-quiet"
-digest = "sha256:cd076a41569ac68eb0013f7b61dfa1c9b62ca17392b094d1d1486f2ece277c86"
+digest = "sha256:17b817fb4144efaaed75e92d8067869f07c2c7b38fb937573f5eca8c0841b757"
 
 [[tasks]]
 name = "blobfishai/lgr100-004-statement-divergence-feb"
-digest = "sha256:2ed0f67ecda0c8bc3653a09148b9a15fec5b3e19593989ad83d84ac89ebd9488"
+digest = "sha256:d7134b0d33eb72c9856ae62c9c436d86ebaa4858e389340dba730efa1c3e6ce2"
 
 [[tasks]]
 name = "blobfishai/lgr100-005-statement-divergence-feb-esc-burie-quiet"
-digest = "sha256:dd7f1d976a44314df4bfdcfea2dfc30a6083f4fa13246e7db04a61e321c39f10"
+digest = "sha256:e5d7891bc1e12e2b86e9a83b3f695c4a05cb8638973dff8a842a3dcc2b86b7dd"
 
 [[tasks]]
 name = "blobfishai/lgr100-006-brief-caterpillar"
-digest = "sha256:d0449587de766c4d2d2015b718c479b7ff27968b4e84772a9024a5abc2eb4c95"
+digest = "sha256:92206764a413e3ebc170d47cd44aa12effcf0f1888bacf24fa717c913e683816"
 
 [[tasks]]
 name = "blobfishai/lgr100-007-brief-caterpillar-esc-burie-quiet"
-digest = "sha256:7c14ae57b6327d38b66d07c3f8d6e9817cb641590ce7f91c0361488a66e315d1"
+digest = "sha256:32b4942b039177ca14c34affedd41ea9712890cd23325d30ec7d14852ac511dc"
 
 [[tasks]]
 name = "blobfishai/lgr100-008-brief-caterpillar-v2"
-digest = "sha256:65f06c16a4efe991163ccfc5c3f009b1c07e4b54e68228ad2adcf4d3d0299d37"
+digest = "sha256:dd50f7718232c135da79da383482d0c67ec2b75cfea9d3187a6474c754eecc75"
 
 [[tasks]]
 name = "blobfishai/lgr100-009-brief-advanced-micro-devices-inc"
-digest = "sha256:dbdc3d26cb953ea6cf974de74b9ebbab3e175aa8de7bf6754d16b4eded9b6924"
+digest = "sha256:4ed8937008783b396c12d910af31f3c7756fbdda1af010acd9ca82ca7769e5d7"
 
 [[tasks]]
 name = "blobfishai/lgr100-010-brief-american-airlines-group"
-digest = "sha256:d882926f0768741bade2edd51b15cd579eabecc11a490879f1cc2547e8bb5ce0"
+digest = "sha256:4e460f71190b79ddaeb58708e2db9458d787c4e0f74a3fa1dc7f2feb80b3f0a5"
 
 [[tasks]]
 name = "blobfishai/lgr100-011-brief-apple-inc"
-digest = "sha256:d4a8a1e8d3d5696584b32ab625fcb7e142d3a97ea47d6ce8d5c405cceba9c8b3"
+digest = "sha256:c3aaa447469c6f132af199ca7857c197d286855a38a63de4d3a88a67b44526ed"
 
 [[tasks]]
 name = "blobfishai/lgr100-012-deduction-coding-mar"
-digest = "sha256:425b6d0852b131d01272a2cf5c8e4a4893c020febb1f538ea680e9a1976abcbf"
+digest = "sha256:52b8c368f9066f38ae0740c0eee69748b97de6af5960d91f726eee811056dc7a"
 
 [[tasks]]
 name = "blobfishai/lgr100-013-remittance-batch-mar02"
-digest = "sha256:8ea5037afb60a681f110b8c268788c8fa46e48470c54e3b165bd29fa717b03a9"
+digest = "sha256:b167f9aa391335f794c40a930bd5d296c7da4e12088069e841ba70ec6ad425b9"
 
 [[tasks]]
 name = "blobfishai/lgr100-014-remittance-batch-mar02-esc-burie-quiet"
-digest = "sha256:5b534aa535e9bfe325d1558562e756258c53b61be9c6ac4fb800ff70f8fcbd9c"
+digest = "sha256:c099a8f07b94556167710254d1e8aa855868abc44f239538ddac64d17a1d26d4"
 
 [[tasks]]
 name = "blobfishai/lgr100-015-cesp-four-week"
-digest = "sha256:3ee7b30313a90a70ce5d51ce6ce99c0ff88e443e9b842ecbaa1f446add7d6917"
+digest = "sha256:1d35979f4fc2b67991edce6b4c12881407c8940272d24f793cf0ea140067e343"
 
 [[tasks]]
 name = "blobfishai/lgr100-016-cesp-four-week-esc-burie-quiet"
-digest = "sha256:99cf13ce668a107c8ec5f6276913aa54f05b3c73a01b651d4f75f9c5b6e31ac8"
+digest = "sha256:9c8723cedf8c896dac43ce47f5529a3c6ee63464fcf210a33a470c0a1e9fadfb"
 
 [[tasks]]
 name = "blobfishai/lgr100-017-period-lock-correction"
-digest = "sha256:11cf4310c58c5d36b416cdefd33ea0d3138ec8a0efe286bb48ea76a544377c29"
+digest = "sha256:33a623a75c184f49f398bf240b1f19e9599f96231478aac034605af784df3474"
 
 [[tasks]]
 name = "blobfishai/lgr100-018-period-lock-correction-esc-burie-quiet"
-digest = "sha256:fd7dd56a574b38623864f17a030cd475b964655aff1df2e45f0fca83fd2e037a"
+digest = "sha256:4a9764376aa6973cf7c029fbdbf2275b08eb52fa4a2828a9f1358ba51f9c0dfe"
 
 [[tasks]]
 name = "blobfishai/lgr100-019-revenue-recognition-tieout"
-digest = "sha256:d8033f847e45f2f2252ab0d3651c43ddc76ce6d8f7e91bab64296b1efe4b998e"
+digest = "sha256:1a32c07c3fd7ade6a6635d04c1a9b89b75cebf37922edaca49b172f03adb149c"
 
 [[tasks]]
 name = "blobfishai/lgr100-020-revenue-recognition-tieout-esc-burie-quiet"
-digest = "sha256:99d2f804a137829f8b0e5bc0ffe9583df950192ef80cc1f74ddb2e6de392e517"
+digest = "sha256:f96b8c956a3aeedf586df65d09445c4160fb024ae74eef6fa4e58a1d6c9cb221"
 
 [[tasks]]
 name = "blobfishai/lgr100-021-subledger-tieout-feb"
-digest = "sha256:b1a9fb2847efe1ec94abe91179d0eca11060d91188a561f1c285d0e293058836"
+digest = "sha256:7b655eb6eef32a92822318fe65a5ebf4eeef6b4ef3bbe25b245c4cb6552f47f4"
 
 [[tasks]]
 name = "blobfishai/lgr100-022-subledger-tieout-feb-esc-burie-quiet"
-digest = "sha256:ea743848cd1b55b1259b34138fd436a618697157b0ce32220a25d986e443a545"
+digest = "sha256:4a196b5963cb316ee4a3bdbc3680852aa870cc8db59f680ff3fd9b35f58cdf4d"
 
 [[tasks]]
 name = "blobfishai/lgr100-023-escalate-sparrow-letter3"
-digest = "sha256:6833c55ed395e0e16de6119cf5f1dfa628627b53d712372de00a58d5625e8d91"
+digest = "sha256:d6ace47fdc8a55c602add680d664173d869c38a55325394826680925681da11e"
 
 [[tasks]]
 name = "blobfishai/lgr100-024-email-invoice-meadow"
-digest = "sha256:863571eea78ef53eb3ff02afe14ee0863856e7ba8e971ea1762b1639daf5199e"
+digest = "sha256:c582ffb283f37261c85c60d8b64709e60c00aa48ff6377232393ab9dfd631b0e"
 
 [[tasks]]
 name = "blobfishai/lgr100-025-email-invoice-meadow-esc-burie-quiet"
-digest = "sha256:44b92c27932aec2bb8ac5fd8c5afc70498521ed3615528b44e0eda3b4b9eca23"
+digest = "sha256:6328ed9389b1454a205342f4549d778722b613e5c12c8d50f7585c8de6a42630"
 
 [[tasks]]
 name = "blobfishai/lgr100-026-intercompany-tieout-feb"
-digest = "sha256:8952c51f30dcbf4b58c8695ee8676a51a8304eac6a56296a3e7b9fa1d948ff6d"
+digest = "sha256:0b9bb45218bd2893ab1e9b790dd473936246905b624d5aa7caac8942be85c4c5"
 
 [[tasks]]
 name = "blobfishai/lgr100-027-intercompany-tieout-feb-esc-burie-quiet"
-digest = "sha256:0a8dd7ae8db9e49be0ac2c2067fd667e87dbcad0a875a97018e6c1720d597208"
+digest = "sha256:33c466453accc40a34b079e6bee99e49f80d821af608fa71bec218418b9e7b5a"
 
 [[tasks]]
 name = "blobfishai/lgr100-028-total-ar-adventure-group"
-digest = "sha256:242832997443bdc1adbfa6afd51947f589ee6d9ddb0f567e3ed9077adb11f952"
+digest = "sha256:6eb7820dccc4a00258ea96f6c676aff842df4e5773b95c3ea619361bc21c23a0"
 
 [[tasks]]
 name = "blobfishai/lgr100-029-total-ar-adventure-group-v2"
-digest = "sha256:271b6d48614b0b12edc2ed7e557a590c2c5ae9f6d0f6007a3f7632712ce848c1"
+digest = "sha256:a54764042d72c23dd678fa513839ec66d8fca7d42d2fc61c71a37d398a1914ba"
 
 [[tasks]]
 name = "blobfishai/lgr100-030-tracker-formula-drift"
-digest = "sha256:df60687edc1dbe857ae2f458c381b50263dd640478c09f07012527b48470c80a"
+digest = "sha256:1139f9dcf92fc04c7d4bb6cfb3ac70778e7be1b7c496ab81e65eb270ef10a98f"
 
 [[tasks]]
 name = "blobfishai/lgr100-031-ap-overdue-usmf"
-digest = "sha256:e01d3a76e908256e149d9699e0c34f2dd6d4110f3de292493112f52e47888f9e"
+digest = "sha256:bf5d09ff12feea06c2772c8bd1e550b459a2c1eabb706b639f6cebcea7c3599c"
 
 [[tasks]]
 name = "blobfishai/lgr100-032-ar-balance-fourthcoffee-east"
-digest = "sha256:4cc4b5091b77f995e9c9599f2bdfdc6688bbc26ee56948970db3066f244e12ca"
+digest = "sha256:d51493bbaa2e02ad733dd80469a4cf07be328974c8f6e0bdeaa1d652679ddd23"
 
 [[tasks]]
 name = "blobfishai/lgr100-033-ar-balance-fourthcoffee-east-esc-burie-quiet"
-digest = "sha256:db88f531199c143c8166ae0730eb29342ad86138663702f8570a4af412fbc02d"
+digest = "sha256:b85f49650c51f3ed1a00357f7642583ae71a7f9752adc0636716ba050b438536"
 
 [[tasks]]
 name = "blobfishai/lgr100-034-cash-disc-fourthcoffee-east"
-digest = "sha256:0bad84dbf4bd7809986193f3949e3db018b06c666f054ad1bdfbfde9cad91289"
+digest = "sha256:c6a2eb323b4278866cddd036ff082c2c22756cad8c0e2873af3ffa56ac8e6b86"
 
 [[tasks]]
 name = "blobfishai/lgr100-035-cash-disc-fourthcoffee-east-esc-burie-quiet"
-digest = "sha256:d132b3120f9b483756ac8bbb9e5fbb383bbc1d8ab4fe8e185d11f6c82736820e"
+digest = "sha256:5977ed2d09638e735b4dbb0c66b9ee549e5ed2e3ce9727287967ec5c5d4c64d7"
 
 [[tasks]]
 name = "blobfishai/lgr100-036-collections-sparrow"
-digest = "sha256:7ff8b296de5ecf7d155c178d3130d03b20ff927a2cd65f540b3471b3a7dd2fd8"
+digest = "sha256:7d22171fc81869bb35fd9a83e457cba9fb2f023d5e3aaf0345d1708f1a7157c7"
 
 [[tasks]]
 name = "blobfishai/lgr100-037-collections-sparrow-esc-burie-quiet"
-digest = "sha256:2064946f2dc385cf9ff8d93ebe2465ac338d366e63a4f82becccd54181e239f2"
+digest = "sha256:b973daeb3cb93f47126abe58e06ea0f4cbc9f580e08da2570739ac81a72519b7"
 
 [[tasks]]
 name = "blobfishai/lgr100-038-credit-limit-adatum"
-digest = "sha256:91303ff245c0296e12aeb07fb3474441b1bac47d8a5ade5a87ec0e0c52aa155a"
+digest = "sha256:ad3835c6506beb671ca56cb66b8d7e1bdda043f2cfedf2008a0cfb3df310c2c3"
 
 [[tasks]]
 name = "blobfishai/lgr100-039-credit-limit-adatum-esc-burie-quiet"
-digest = "sha256:a27451ae73b7552617b2b0b8b16b662bdc4ff8a645ec273427b94411b8555e00"
+digest = "sha256:e86bfc699763a1994b8cddff364002d0d9e32b11550e9af32cc246fe6e46b7fe"
 
 [[tasks]]
 name = "blobfishai/lgr100-040-due-next-week-adventure"
-digest = "sha256:40f6fbd337f441188735a7b7f833242eb850d9b2cb5f9966397e441161e1b337"
+digest = "sha256:5f33bf9631e19508e86d4d872d9d8ea43c5ca8281621e3b087be9e4cb34d5f89"
 
 [[tasks]]
 name = "blobfishai/lgr100-041-due-next-week-adventure-esc-burie-quiet"
-digest = "sha256:302e2f207b2fb1740e80407d26aba4e0ca2f0d06dc1040f7b7b268def1d05fa5"
+digest = "sha256:4dc1795ad023ec9e823973247ca27479e67da3072765b10b8410ab6d4e707f58"
 
 [[tasks]]
 name = "blobfishai/lgr100-042-aged-balance-12"
-digest = "sha256:3b3f841ac5932081c157767f70710ea255c520c70f88550dc50815b234428ac2"
+digest = "sha256:1214fbe5e31cbf56ebcd953805a376061cb49f2fe151ae4077d5654bc653b7b1"
 
 [[tasks]]
 name = "blobfishai/lgr100-043-aged-balance-6"
-digest = "sha256:2a403e2785771b9c45c930c6788e2077dc4accaf9f8bd9d02690ac2b01e147b0"
+digest = "sha256:bacecabd721605ca0a972282786c0e19b143e3569e3e06f224a398420e801409"
 
 [[tasks]]
 name = "blobfishai/lgr100-044-aged-balance-7"
-digest = "sha256:5a99c9fff96f7f39f5658eda91830b5c38f15ccf85478c5e1218ea048a41f33c"
+digest = "sha256:139acec9ca1a35ccd7c75021b951c2e89b8a3e6ffe21b15752ee0c466b7b8fd2"
 
 [[tasks]]
 name = "blobfishai/lgr100-045-aged-balance-8"
-digest = "sha256:3216f1704ffbd089ff4bc9de164b9e1b123f4b74ad05617fa6fcc2e3d1827112"
+digest = "sha256:51a6fd80b40542ca58cfa9e4c0f20dee1a2115e085f196d56df1f2545a465581"
 
 [[tasks]]
 name = "blobfishai/lgr100-046-ap-invoices-3"
-digest = "sha256:6f652d23cbea9415bf85f84060d3f73ca13e8543e446393cb1cea40a7503354c"
+digest = "sha256:ced626537ecf3c066bee7da5d27a2433bd0c1a8d6ce124688b90c81773631c9c"
 
 [[tasks]]
 name = "blobfishai/lgr100-047-2141-hard-15-parallel-subassemblies-branch-assigned"
-digest = "sha256:633532ca2d36e5c6a37cb60fa8ade259cef0349018129f2a8dcf240771e63b75"
+digest = "sha256:5f68d7ecadbd06223a66ace4b7309d1cd52da85abd43cf6daf3c2cc5e0e06544"
 
 [[tasks]]
 name = "blobfishai/lgr100-048-2143-hard-15-parallel-subassemblies-branch-assigned"
-digest = "sha256:e430276530b07b6e62b3a4df609147dd49b82de468d161f0e755fac673f88be6"
+digest = "sha256:05f26c47f096c7aa303babe91f39dc501308adc4eac730ac713e288a760a369b"
 
 [[tasks]]
 name = "blobfishai/lgr100-049-2144-hard-15-parallel-subassemblies-branch-assigned"
-digest = "sha256:de48d5efd6e6bb5fed9e27142ac1e650d5cc8f31999b7a2ba648c8088ff3cf6c"
+digest = "sha256:9f5cc6a91560119b8818198e923035018d6982366af702c45d7fce7b2931e788"
 
 [[tasks]]
 name = "blobfishai/lgr100-050-2146-hard-15-parallel-subassemblies-branch-assigned"
-digest = "sha256:0c1572828635ebaa455a7360acea29bcb1c7bd7c356c956daed8806f70743e14"
+digest = "sha256:af8ae4a51edd0b45808dcd7d9b06abcb07572c2b87cbfdb184fc936bda9a21c6"
 
 [[tasks]]
 name = "blobfishai/lgr100-051-2147-hard-15-parallel-subassemblies-branch-assigned"
-digest = "sha256:503f28c53d0d4bb08e89258e7d0bf5655f8c91aff2ca815084118291a858f1f0"
+digest = "sha256:92bdbbc5a8a4be9397a9a258648915cf97894185b90e9f45bf91ab8c93875e40"
 
 [[tasks]]
 name = "blobfishai/lgr100-052-2149-hard-15-parallel-subassemblies-branch-assigned"
-digest = "sha256:4531424777aad9eea328f2c61c6fb67a7ca9e67e48d3cc59a2b0b5ba814df5df"
+digest = "sha256:6eb7833c7ee67102df905bae2b2b4ef60386fb1f07c3821f7740a0f9b5610160"
 
 [[tasks]]
 name = "blobfishai/lgr100-053-2160-hard-17-shared-component-subassemblies-branch-assigned"
-digest = "sha256:51289e3d0c91aaface11f95202070a7b7754514dd0eb321f4f414e2477e62fea"
+digest = "sha256:92ccffa73555f390b4524354550004d2bc516aae505798b546af7523ec5ffc96"
 
 [[tasks]]
 name = "blobfishai/lgr100-054-2161-hard-17-shared-component-subassemblies-branch-assigned"
-digest = "sha256:df20e30fd52543c58de929e0bf00a57665359aa0d3a8e1892d451750cb836383"
+digest = "sha256:06e1ae3f00d059e199df47d605e6464485fb71f1bd9d38ac16b5d334c284aa18"
 
 [[tasks]]
 name = "blobfishai/lgr100-055-2168-hard-17-shared-component-subassemblies-branch-assigned"
-digest = "sha256:f1e21b42f9a34fe3aaff62396c68d608fef0394c0bc1d0d23c7b4ce99616362a"
+digest = "sha256:4d9a3480ca65f394763d70a10e6aa27921b1478426e221a0c304d75196df1ab4"
 
 [[tasks]]
 name = "blobfishai/lgr100-056-2170-hard-17-shared-component-subassemblies-branch-assigned"
-digest = "sha256:3e07f641110733ff3705fa663c9411fc97b37dd4917aa6b61d55dee8c2d2d31a"
+digest = "sha256:b9989a3eafa30db88da53e44dd2173d003254da908fdc319ab6215825db3ee2a"
 
 [[tasks]]
 name = "blobfishai/lgr100-057-policy-validation-feb"
-digest = "sha256:d7c61809e7ea31e2158ce6f0812aa3130408b59995e8bb4c3f4fcd73deda1158"
+digest = "sha256:45399fd35e589c411589ef6678c3ede92e0202560186d6c371d88ffd182c3782"
 
 [[tasks]]
 name = "blobfishai/lgr100-058-te-sample-feb"
-digest = "sha256:a6d924158823bc172342dd731de97bbb67840c65a4325e66ddc60794cc1f99b2"
+digest = "sha256:c2ace94d28cc5561649ceeb00ea766cc85c8c418a5b9d1df70296de1c536b72f"
 
 [[tasks]]
 name = "blobfishai/lgr100-059-te-sample-feb-esc-burie-quiet"
-digest = "sha256:587e4087738fc395d0cff994e7874ae01e6038a56cbe34f613cfe2213b619401"
+digest = "sha256:74c442114afea98e3315da23715d10c549d7a4b97cd150238d154cff85306467"
 
 [[tasks]]
 name = "blobfishai/lgr100-060-threshold-shaving-h1"
-digest = "sha256:222fd6bd922d56f0829fb7386ef07a90069ab99008a16910688c2d80c7e9b843"
+digest = "sha256:e0c6289ade6c5b00a6aaaaf44dc703c0c601e22e8c2125a9ea23946ca5eb067c"
 
 [[tasks]]
 name = "blobfishai/lgr100-061-scale-trap-lmt"
-digest = "sha256:17536287d82cf60db58db77884439b2fcb517105339605e36afc1a3b7048d3ce"
+digest = "sha256:b2a8846a05f53d86699995eb0349adf3770409ee3bb3fc1060c49c642ba460ba"
 
 [[tasks]]
 name = "blobfishai/lgr100-062-tac-10k-income-report"
-digest = "sha256:984ed08f736932c771a99dce5bce7826d7d22143e995d4c1ab8f862862a1f31d"
+digest = "sha256:1d93612973ae3558f42f13f2ad31d5e16e025d7f03364ebc1840e0626caa80ce"
 
 [[tasks]]
 name = "blobfishai/lgr100-063-tsla-operating-margin-q3"
-digest = "sha256:c0c8979418dde0f9ce8753244302118c88843535ab00e51b1fbc0fce8e7a2c8d"
+digest = "sha256:3745c9b9a5ad0fa973167bf8d2160664b2d62b975fd6791ad78e17dde50e8c72"
 
 [[tasks]]
 name = "blobfishai/lgr100-064-tsla-operating-margin-q3-esc-burie-quiet"
-digest = "sha256:e02b7378daad6b03936bc500bf79c5a3d2c1f479aced8c0b9e10e9365069b732"
+digest = "sha256:cdd3e082e108de6c1a9ea875c08a9ba937e630dc7dfb9173a36ed758a1d4539a"
 
 [[tasks]]
 name = "blobfishai/lgr100-065-unavailable-concept"
-digest = "sha256:c58845dbb4c13b13adaf1b34d196d0bd88145b1330b0d8a5bc28cf0349bd45e0"
+digest = "sha256:a35204a59d82cc091b57509ea99c5d9ffdb5ac099240650f7ba918d1dd6a4e6c"
 
 [[tasks]]
 name = "blobfishai/lgr100-066-wmt-inventory-turnover"
-digest = "sha256:767022375b12425fc3c9621dc708c58607a2676bb5203046a8f89acf71e57a84"
+digest = "sha256:025192fbd1449e297caa5185646607dafe6540c69096bacca69cea84bab46cb2"
 
 [[tasks]]
 name = "blobfishai/lgr100-067-wmt-inventory-turnover-esc-burie-quiet"
-digest = "sha256:e6122c9ee237cdeafe08e985805c61954c355fb1ab5edfcb0abe9b47fe37a1b2"
+digest = "sha256:a8ec3e433bc272a11e8500167e9361364258cb1fedecbe55f64db7b695251771"
 
 [[tasks]]
 name = "blobfishai/lgr100-068-xom-cat-liquidity-compare"
-digest = "sha256:01fdfb976df09f32157eab0b53919f3d2e28b4790bf7b1b0d4d17af73088cea3"
+digest = "sha256:112f162709ee0d5e3a01acff42017f1b65c9c251da67724d7063467aa7bda5cc"
 
 [[tasks]]
 name = "blobfishai/lgr100-069-xom-current-assets"
-digest = "sha256:66d59b7fa0cca761cd5a2516ee803ee7453cb83152b0778e15950e510eb8d177"
+digest = "sha256:a835c5b16efc5b63db35c0e333675549b61820778ee5627bec3f65e887bd02ee"
 
 [[tasks]]
 name = "blobfishai/lgr100-070-xom-current-assets-esc-burie-quiet"
-digest = "sha256:905da5d459b3b5c079c30b0d7edd47ee6bb9b4c35a5aa90eeefa4d446a431434"
+digest = "sha256:7c0bd33ad3c8ffafc9be7a2ac7135386eec655372859d813aff2abb62d2d5238"
 
 [[tasks]]
 name = "blobfishai/lgr100-071-jpm-debt-to-equity-127"
-digest = "sha256:3fe7cad2de372a68d9329148a8da89e193f78f39e0a940d5f2091d571ef3f516"
+digest = "sha256:c94959ee00efad2824ba953248455718124babcbe991ccc7a10041da0c2edc74"
 
 [[tasks]]
 name = "blobfishai/lgr100-072-ko-operating-margin-pct-035"
-digest = "sha256:beb997cedfffde6ca3da2e7cd275a39f26ea6d8e50ed11625fd31329ff76376a"
+digest = "sha256:4f9a53456db4fc431fddb4739558b98c57c757efbe04f8270a97676c98b9e058"
 
 [[tasks]]
 name = "blobfishai/lgr100-073-budget-variance-feb"
-digest = "sha256:4707ff2a262eb60156d1674db320c2f268c320e015f8b9baec8fcb0409054de5"
+digest = "sha256:9cfeb2e04e33258735ef892d6623c2d56c2244a3d93a9b6f3d933fc5e0cd6fa4"
 
 [[tasks]]
 name = "blobfishai/lgr100-074-budget-variance-feb-esc-burie-quiet"
-digest = "sha256:d62a5bf500e5bc28c67b2de7cde202af406649bd872569c466c31f7281fe2ac8"
+digest = "sha256:76f09569003d7b177de562b4d26fb8a61fba6eeedb9e13afe45493c053264b4f"
 
 [[tasks]]
 name = "blobfishai/lgr100-075-payroll-attendance-tieout"
-digest = "sha256:94e95b105f3ceacd735241eca2139eafd2e6b0c621fd9fd98da4e707d15c2217"
+digest = "sha256:07925dabc8f6fc7d6384db30bf36f0ff4c8a2f22f1d342a75286c8e4390dcb22"
 
 [[tasks]]
 name = "blobfishai/lgr100-076-payroll-attendance-tieout-esc-burie-quiet"
-digest = "sha256:9fd86fced3269eba9c900fe70800ba7aaa3727993dc91b63b7131991348343b5"
+digest = "sha256:dd35e2f70271e59ff90b89e794265d4c0ab8d5b04e37d95ee01a7f6c40106e59"
 
 [[tasks]]
 name = "blobfishai/lgr100-077-rd-tax-credit-asc"
-digest = "sha256:57b1417df2e7f3e1339e779791fb4d3ce437c0257defe4d92bce788c4396b8ef"
+digest = "sha256:bd372cbad543db3b071a8fdc117a56b7b91121ccfa443413ea6b0ba3468f6c31"
 
 [[tasks]]
 name = "blobfishai/lgr100-078-feb-saas-accrual"
-digest = "sha256:03caa01604a46510d5884300b281e800fcb50a5c45fc5c8566ec528625b0cc55"
+digest = "sha256:7866f8f4024c861585d5990a3f028985fe08416990e18ad38c8ac9066442ece2"
 
 [[tasks]]
 name = "blobfishai/lgr100-079-feb-saas-accrual-esc-burie-quiet"
-digest = "sha256:4c996669f0c6623ac691633d1f2bf1aa99c7fd16a8b0a7c46e64bc77fdef4919"
+digest = "sha256:c4bb0ab787b8ef8f27c1747d8ece4e48307dfaa74a0fa322e14b183b34fc3825"
 
 [[tasks]]
 name = "blobfishai/lgr100-080-friday-run-mar06"
-digest = "sha256:e4ede7fdc635a7c40ad9f9b86e4d14075ea786bdd9961485314807910ed6892e"
+digest = "sha256:413c5e2670c267a45011897e1712ab3f422f614a4aa1d0ec7428dfb412fac0bf"
 
 [[tasks]]
 name = "blobfishai/lgr100-081-friday-run-mar06-esc-burie-quiet"
-digest = "sha256:0081f5b4ad784883864423697755e1fce95cea925f0d9927f5e72ff6a8945b8b"
+digest = "sha256:7eabca4e9ead750360de10dbd9bd7b15c72977efd9bd2a211cd098c560c78eda"
 
 [[tasks]]
 name = "blobfishai/lgr100-082-shortfall-mar06"
-digest = "sha256:d591c234f15990e73c60d9a3ec452b567f0ac1a6408f8a44566bfc922f8eaeaa"
+digest = "sha256:65fc9b96e9826626e8238c051ed6b14ead63c7ca6a3056f7f5508f0a4b6dc1ce"
 
 [[tasks]]
 name = "blobfishai/lgr100-083-withholding-mar13"
-digest = "sha256:82dd41b3c2b0dfc76f1ed6830431f1fd0a5a80a7f295eed9e25c19783e006cab"
+digest = "sha256:dc00e7189f82a9fc83005546e4124ae675d2d649173769ba3b20f8a4c2b7485a"
 
 [[tasks]]
 name = "blobfishai/lgr100-084-withholding-mar13-esc-burie-quiet"
-digest = "sha256:1bec634f7d72674a406b9b7057721e12307d1f2e2e9dff169e6e44d644482d6f"
+digest = "sha256:cb178a49fca2873171d0e398790aa9b48991156b181db8300e02527e91b992b5"
 
 [[tasks]]
 name = "blobfishai/lgr100-085-approval-evidence-q1"
-digest = "sha256:cd98b2d5f3ddf1bfaa4c6687b19b1bd3cbb7bc2e3252535c845cfe3c19fc3f7e"
+digest = "sha256:5e161db7483e0821fb482e181812be28386f045edf022f34cf13c72de553bd22"
 
 [[tasks]]
 name = "blobfishai/lgr100-086-approval-evidence-q1-esc-burie-quiet"
-digest = "sha256:77b6458d7bc53a55d925d44e5768512191f3829d176fa5914b518cdb88de0870"
+digest = "sha256:efb8462f039e17f654946c1bd31ac87ed8709d7591a02b4ff4647ce66f3099be"
 
 [[tasks]]
 name = "blobfishai/lgr100-087-sampling-projection-q1"
-digest = "sha256:656a8a60ccbaf5d74695f4ee958a1c6f6445282ea5ef7840bcbac65a8ea4bfc4"
+digest = "sha256:3a6381e857d41a9a4b59c459c68b7fc0ddf0b9d31376bdf6b39b3f3c1960ab60"
 
 [[tasks]]
 name = "blobfishai/lgr100-088-sampling-projection-q1-esc-burie-quiet"
-digest = "sha256:ed6bf23b7ac5447fa1c704416a49992c4ff224f8c9ae22f82eced461e3b34bd5"
+digest = "sha256:b7dac858d126acea62bc0f1f57bcbbf1b53f9440ebce2b5feb18daf4a5af5458"
 
 [[tasks]]
 name = "blobfishai/lgr100-089-ppinv-exceptions-mar"
-digest = "sha256:d2c8d21104b1c4357e6230e495f8279cff21ab78b47c2d1d3672ce28538cb225"
+digest = "sha256:3c0adc665579a4063257e56c5f1cabc3d19105bbd9d13485e638e3ac1d50bfda"
 
 [[tasks]]
 name = "blobfishai/lgr100-090-ppinv-exceptions-mar-esc-burie-quiet"
-digest = "sha256:e24a443866dc8facff4bef0b968ca58e8f6a8f2051be3c8f207dc39b8322deaa"
+digest = "sha256:050a58d68893280f11236bee9eb239e181ddac72faa99419f14d45d0c6d42308"
 
 [[tasks]]
 name = "blobfishai/lgr100-091-tac-invoice-matching"
-digest = "sha256:269c21e6450354ea3a94546704c14b09f0214a343ccd75941350b579fc9c87db"
+digest = "sha256:33c370ef12b294f8ed3099832623f8438759785cdcf0ff25901caa905e071fd7"
 
 [[tasks]]
 name = "blobfishai/lgr100-092-tolerance-dialect-mar"
-digest = "sha256:5cb08971176a244670d8499f18faed2daaf13fb305255e030e30dc87e3254cdf"
+digest = "sha256:745801a06bf680719af94038b991b83b30e5aeb5c0bcb6cb38afcfd8212cdcec"
 
 [[tasks]]
 name = "blobfishai/lgr100-093-tolerance-dialect-mar-esc-burie-quiet"
-digest = "sha256:fe6eff70e1986d1378b91d5a5744f01f9fccdd870475379d04f1f16483032869"
+digest = "sha256:7995e498fc7fc5a61bdfff14cb4e38ab5ea0daac548dc79dbcf96aed76a612f0"
 
 [[tasks]]
 name = "blobfishai/lgr100-094-bank-change-verify"
-digest = "sha256:eefeb64a5b7d12a339e5e2147aab0cf8818ce8f4adb887b60042f5be20baaf9c"
+digest = "sha256:4c7d4da698194bbf199efdef15b05ab1ce0dc56b7375be5b4f0b3ec2bdf34ea9"
 
 [[tasks]]
 name = "blobfishai/lgr100-095-dormant-vendor-review"
-digest = "sha256:a1574d21558054df45cb7493f08ae1e8de0db768c34ec53222ee32c4610cf156"
+digest = "sha256:dca6464a3f76bffc966353a85cf339021002702714674251a4a7b945f9e1015a"
 
 [[tasks]]
 name = "blobfishai/lgr100-096-dormant-vendor-review-esc-burie-quiet"
-digest = "sha256:289be6c2361acc9548122dd137fa644e2776101a136983646639eb9593525bae"
+digest = "sha256:77c0ecc1802d21c240c5fc669ddbe81f2da2c68a8a00aeffd46e80310c23f14e"
 
 [[tasks]]
 name = "blobfishai/lgr100-097-dormant-vendor-review-v2"
-digest = "sha256:ee09063b5689c6c427b7413fb799293dd4d4bfe25893ca1ea7170e429bc2c062"
+digest = "sha256:f6f6ba9e1c1aa64aa3a351dc72bea609f8139fb86fa8079acf12884652594f09"
 
 [[tasks]]
 name = "blobfishai/lgr100-098-missing-po-inquiry"
-digest = "sha256:2781c2256639628c9244b12f728b41cc612329fce5adab85a7243ff551fbd83c"
+digest = "sha256:bcfa3821e7a05b22b5fe81b000c3d4ed57f0c3d688b0a4e433feacef3bc8b483"
 
 [[tasks]]
 name = "blobfishai/lgr100-099-missing-po-inquiry-esc-burie-quiet"
-digest = "sha256:8b9931a42fb48cd9681485a2fa7c60abf8fb66b3d85a8ce1c1ce248941d69d04"
+digest = "sha256:58fc02a3b58af3c92f65845379fb3c72419d024e0ddf267aef9b673705cde928"
 
 [[tasks]]
 name = "blobfishai/lgr100-100-tac-find-signatories"
-digest = "sha256:f5f7744aa1a1eea03f51cd70c3cb157e70a1ab48c8ef2b038732fac9c88a2ee7"
+digest = "sha256:8ddb13996aa1a9bbd3de3b772f96c8e71f9fbb77494134c16f37c96a1c0758f2"

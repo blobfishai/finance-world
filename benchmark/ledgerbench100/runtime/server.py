@@ -79,12 +79,55 @@ def build_report(task_dir: Path, run_dir: Path, task_id: str) -> dict[str, Any]:
     from vcode import verify_all  # the pack's own deterministic verifier engine
 
     verdict = verify_all(str(task_dir), str(run_dir))
+    realism = json.loads((task_dir / "realism.json").read_text(encoding="utf-8"))
+    atomic_by_id = {check["id"]: check for check in verdict.get("checks", [])}
+    milestones: list[dict[str, Any]] = []
+    for criterion in realism["criteria"]:
+        evidence = [
+            atomic_by_id.get(
+                check_id,
+                {
+                    "id": check_id,
+                    "passed": False,
+                    "failures": ["verifier did not emit contracted atomic check"],
+                },
+            )
+            for check_id in criterion["atomic_check_ids"]
+        ]
+        passed = bool(evidence) and all(check.get("passed") for check in evidence)
+        milestones.append(
+            {
+                "id": criterion["id"],
+                "category": criterion["category"],
+                "description": criterion["description"],
+                "weight": criterion["weight"],
+                "earned_points": criterion["weight"] if passed else 0,
+                "passed": passed,
+                "atomic_check_ids": criterion["atomic_check_ids"],
+                "failures": sorted(
+                    failure
+                    for check in evidence
+                    for failure in check.get("failures", [])
+                ),
+            }
+        )
+    points_possible = sum(item["weight"] for item in milestones)
+    points_earned = sum(item["earned_points"] for item in milestones)
+    if points_possible != 100:
+        raise ValueError(f"LedgerScore contract must total 100, got {points_possible}")
+    strict_pass = verdict["reward"] == 1 and all(item["passed"] for item in milestones)
     report = {
         "benchmark": SPEC["benchmark"],
         "version": SPEC["version"],
         "task_id": task_id,
-        "passed": verdict["reward"] == 1,
-        "reward": float(verdict["reward"]),
+        "metric": "LedgerScore",
+        "ledger_score": points_earned,
+        "points_earned": points_earned,
+        "points_possible": points_possible,
+        "passed": strict_pass,
+        "reward": points_earned / points_possible,
+        "milestones": milestones,
+        "atomic_checks": verdict.get("checks", []),
         "failed_checks": sorted(verdict["failed"]),
         "n_tool_calls": verdict["n_tool_calls"],
         "servers_used": verdict["servers_used"],
@@ -144,7 +187,7 @@ def rpc_response(server_name: str, request: dict[str, Any]) -> dict[str, Any] | 
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "LedgerBenchWorld/3.1"
+    server_version = "LedgerBenchWorld/3.2"
 
     def log_message(self, fmt: str, *args: Any) -> None:  # noqa: A003
         return
