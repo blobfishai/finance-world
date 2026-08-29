@@ -36,13 +36,21 @@ import hashlib
 import importlib.util
 import json
 import shutil
+import sqlite3
 import stat
 import sys
 import tempfile
 import tomllib
 from pathlib import Path
 
-from realism import decision_options, distinct_walk, release_prompt, rubric_criteria
+from realism import (
+    augment_checks,
+    decision_options,
+    reference_walk,
+    release_prompt,
+    rubric_criteria,
+    seed_case_context,
+)
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
@@ -51,7 +59,7 @@ from prepare import prepare  # noqa: E402
 
 RELEASE_NAME = "LedgerBench-100"
 RELEASE_SLUG = "ledgerbench-100"
-RELEASE_VERSION = "2.0.0"
+RELEASE_VERSION = "3.0.0"
 HARBOR_ORG = "blobfishai"
 DATA_LICENSE = "CC-BY-4.0"
 CODE_LICENSE = "Apache-2.0"
@@ -68,6 +76,19 @@ def verification_token(task_id: str) -> str:
     return hashlib.sha256(
         f"LedgerBench-100 verifier capability::{task_id}".encode()
     ).hexdigest()
+
+
+def state_hashes(database: Path) -> dict[str, list[Any]]:
+    """Use the verifier's exact initial-state digest algorithm after deep seeding."""
+
+    cx = sqlite3.connect(database)
+    result: dict[str, list[Any]] = {}
+    for (table,) in cx.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"):
+        rows = cx.execute(f'SELECT * FROM "{table}"').fetchall()
+        digest = hashlib.sha256(repr(sorted(map(repr, rows))).encode()).hexdigest()[:16]
+        result[table] = [len(rows), digest]
+    cx.close()
+    return result
 
 
 def write_text(path: Path, value: str, executable: bool = False) -> None:
@@ -386,6 +407,16 @@ def compute_content_hash(task_dir: Path) -> str:
     return outer.hexdigest()
 
 
+def remove_generated_bytecode(root: Path) -> None:
+    """Keep self-replay caches out of the immutable release tree."""
+
+    for file_path in root.rglob("*.pyc"):
+        file_path.unlink()
+    for directory in sorted(root.rglob("__pycache__"), reverse=True):
+        if directory.exists():
+            directory.rmdir()
+
+
 # --- self-replay gate (pack contents only) ------------------------------------
 
 def replay_pack_oracle(pack: Path) -> dict:
@@ -442,7 +473,6 @@ def build_pack(
     entry: dict,
     tasks_root: Path,
     gate: bool,
-    seen_sequences: set[tuple[tuple[str, str], ...]],
 ) -> tuple[bool, str]:
     source = ROOT / "tasks" / entry["source_task"]
     task_id = entry["task_id"]
@@ -452,17 +482,26 @@ def build_pack(
     source_cfg = tomllib.loads((source / "task.toml").read_text())
     description = source_cfg["task"].get("description", "")[:240].replace('"', "'")
     prompt = release_prompt(entry, (source / "instruction.md").read_text(), source_cfg)
-    walk = distinct_walk(
-        entry,
-        json.loads((source / "solution" / "walk.json").read_text()),
-        seen_sequences,
-    )
+    source_walk = json.loads((source / "solution" / "walk.json").read_text())
     token = verification_token(task_id)
 
     # 1. prepared world for THIS task (core + its seed layers)
     with tempfile.TemporaryDirectory(prefix="lgr-prep-") as temporary:
         staged = Path(temporary) / "run"
         prepare(source, staged)
+        roster = json.loads((staged / ".mcp.json").read_text())["mcpServers"]
+        env = next(iter(roster.values()))["env"]
+        contract = seed_case_context(
+            staged / "world.sqlite",
+            entry,
+            source_walk,
+            env["WORLD_NOW"],
+        )
+        (staged / "initial_state.json").write_text(
+            json.dumps(state_hashes(staged / "world.sqlite"), sort_keys=True),
+            encoding="utf-8",
+        )
+        walk, trace_contract = reference_walk(entry, source_walk, contract)
         world_dir = pack / "environment" / "world"
         (world_dir / "state").mkdir(parents=True)
         raw = (staged / "world.sqlite").read_bytes()
@@ -470,8 +509,6 @@ def build_pack(
             gzip_bytes_deterministic(raw))
         shutil.copyfile(staged / "initial_state.json",
                         world_dir / "state" / "initial_state.json")
-        roster = json.loads((staged / ".mcp.json").read_text())["mcpServers"]
-        env = next(iter(roster.values()))["env"]
         has_inputs = (staged / "workdir").is_dir() and any((staged / "workdir").iterdir())
         if has_inputs:
             shutil.copytree(staged / "workdir", pack / "environment" / "inputs")
@@ -505,8 +542,9 @@ def build_pack(
     initial_hashes = json.loads(
         (world_dir / "state" / "initial_state.json").read_text()
     )
-    criteria = rubric_criteria(entry, checks, walk, initial_hashes)
-    options = decision_options(entry, walk)
+    checks = augment_checks(entry, checks, contract, trace_contract)
+    criteria = rubric_criteria(entry, checks, trace_contract, contract)
+    options = decision_options(entry)
     (world_dir / "taskspec" / "tests" / "checks.json").write_text(
         json.dumps(checks, indent=1) + "\n")
     runtime = world_dir / "runtime"
@@ -536,10 +574,13 @@ def build_pack(
         {
             "criteria": criteria,
             "decision_options": options,
+            "case_contract": contract,
+            "trace_contract": trace_contract,
+            "semantic_action_graph": trace_contract["semantic_action_graph"],
             "asset_contract": {
-                "minimum_assets": 14,
+                "minimum_assets": 28,
                 "systems": SERVERS,
-                "note": "Hugging Face exports task-scoped views of this exact initial SQLite state.",
+                "note": "Hugging Face exports agent-visible, native-format views of this exact initial SQLite state; gold and the oracle walk are excluded from the asset tree.",
             },
         },
     )
@@ -554,6 +595,7 @@ def build_pack(
 
     # 4. self-replay gate: the pack must solve and verify itself
     verdict = replay_pack_oracle(pack)
+    remove_generated_bytecode(pack)
     if verdict["reward"] != 1:
         shutil.rmtree(pack)
         return False, f"self-replay scored {verdict['reward']}: {verdict['failed'][:3]}"
@@ -565,8 +607,8 @@ def emit_dataset_toml(release: Path, entries: list[dict]) -> None:
         "[dataset]",
         f'name = "{HARBOR_ORG}/{RELEASE_SLUG}"',
         f'version = "{RELEASE_VERSION}"',
-        'description = "100 deterministic corporate-finance agent tasks over a shared '
-        'ERP world: 8 MCP servers, 66 tools, SQL-graded write layer, no LLM judge."',
+        'description = "100 causal corporate-finance workflows over a closed ERP sandbox: '
+        'provider-shaped MCP tools, distributed evidence, exact state transitions, and no LLM judge."',
         "authors = []",
         'keywords = ["finance", "erp", "mcp", "deterministic", "long-horizon"]',
         "",
@@ -593,13 +635,11 @@ def main() -> int:
     tasks_root = arguments.release / "harbor" / "tasks"
     tasks_root.mkdir(parents=True, exist_ok=True)
     ok, bad = [], []
-    seen_sequences: set[tuple[tuple[str, str], ...]] = set()
     for entry in entries:
         good, note = build_pack(
             entry,
             tasks_root,
             gate=not arguments.no_gate,
-            seen_sequences=seen_sequences,
         )
         (ok if good else bad).append((entry["task_id"], note))
         print(f"  {'OK  ' if good else 'FAIL'} {entry['task_id']:64} {note}", flush=True)

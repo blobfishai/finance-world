@@ -1,36 +1,106 @@
 {
+  "agent_visible_assets": {
+    "exact_duplicates": 0,
+    "format_counts": {
+      "csv": 400,
+      "eml": 500,
+      "json": 600,
+      "md": 800,
+      "pdf": 200,
+      "txt": 100,
+      "xlsx": 200
+    },
+    "gold_or_recipe_leakage_hits": [],
+    "native_assets_parsed": 2800,
+    "total": 2800,
+    "unique_sha256": 2800
+  },
+  "authored_decision_specs": 100,
   "benchmark": "LedgerBench-100",
   "checks": {
     "answer_checks_total": 434,
-    "checks_total": 955,
-    "state_checks_total": 264,
-    "trace_checks_total": 257
+    "checks_total": 2055,
+    "state_checks_total": 764,
+    "trace_checks_total": 857
   },
   "context_files": {
-    "tasks_with_context_files": 47,
-    "total": 59,
-    "unique_sha256": 36
+    "tasks_with_context_files": 100,
+    "total": 2859,
+    "unique_sha256": 2836
   },
+  "criteria_per_task": {
+    "max": 30,
+    "median": 27,
+    "min": 24
+  },
+  "decision_options_per_task": 3,
   "escalated_variant_pairs": 30,
-  "exact_duplicate_prompts": 25,
+  "exact_duplicate_prompts": 0,
+  "exact_finance_case_transitions": 100,
   "family_count": 22,
+  "generated_assets_per_task": {
+    "max": 28,
+    "median": 28,
+    "min": 28
+  },
   "mcp_servers": 8,
   "mcp_tools": 66,
   "prompt_uniqueness": {
-    "maximum_jaccard_5_shingle": 1.0,
+    "maximum_jaccard_5_shingle": 0.635135,
+    "pair_indices": [
+      38,
+      58
+    ]
+  },
+  "quality_gates": {
+    "all_assets_content_unique": true,
+    "all_native_assets_parse": true,
+    "deep_evidence_intersection": true,
+    "deterministic_verifier": true,
+    "evidence_depth_varies": true,
+    "exact_state_transition_every_task": true,
+    "high_level_prompt_bounds": true,
+    "high_level_prompts_unique": true,
+    "minimum_twenty_four_tool_calls": true,
+    "no_gold_or_recipe_in_asset_room": true,
+    "one_hundred_authored_decisions": true,
+    "one_hundred_tasks": true,
+    "prompt_similarity_below_limit": true,
+    "real_native_formats_present": true,
+    "reference_sequence_similarity_below_limit": true,
+    "semantic_action_graph_similarity_below_limit": true,
+    "specific_public_causal_criteria": true,
+    "ten_negative_controls": true,
+    "three_options_one_selected": true,
+    "twenty_eight_generated_assets_per_task": true,
+    "two_post_write_readbacks_every_task": true,
+    "unique_authored_decision_codes": true,
+    "unique_reference_tool_sequences": true,
+    "unique_semantic_action_graphs": true,
+    "zero_negative_false_accepts": true
+  },
+  "reference_sequence_similarity": {
+    "maximum_sequence_match": 0.956522,
+    "pair_indices": [
+      14,
+      20
+    ]
+  },
+  "release_passed": true,
+  "required_evidence_reads_per_task": {
+    "distinct_counts": 6,
+    "max": 24,
+    "median": 21,
+    "min": 19
+  },
+  "schema_version": "ledgerbench.build.v3",
+  "semantic_action_graph_similarity": {
+    "maximum_sequence_match": 0.727273,
     "pair_indices": [
       1,
       2
     ]
   },
-  "prompt_uniqueness_excluding_variant_pairs": {
-    "maximum_jaccard_5_shingle": 0.91411,
-    "pair_indices": [
-      23,
-      24
-    ]
-  },
-  "schema_version": "1.0",
   "task_count": 100,
   "tasks_per_family": {
     "anomaly_triage": 1,
@@ -56,6 +126,10 @@
     "threeway_match": 5,
     "vendor_master": 7
   },
+  "two_post_write_readbacks": 100,
+  "unique_authored_decision_codes": 100,
+  "unique_reference_tool_name_sequences": 100,
+  "unique_semantic_action_graphs": 100,
   "verifier": {
     "deterministic": true,
     "model_calls": 0,
@@ -63,11 +137,11 @@
     "random_calls": 0,
     "wall_clock_reads_in_reward_path": 0
   },
-  "version": "1.0.0",
+  "version": "3.0.0",
   "walk_len": {
-    "max": 104,
-    "median": 6,
-    "min": 3,
-    "total": 1515
+    "max": 132,
+    "median": 34,
+    "min": 30,
+    "total": 4334
   }
 }

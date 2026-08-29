@@ -144,7 +144,7 @@ def rpc_response(server_name: str, request: dict[str, Any]) -> dict[str, Any] | 
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "LedgerBenchWorld/1.0"
+    server_version = "LedgerBenchWorld/3.0"
 
     def log_message(self, fmt: str, *args: Any) -> None:  # noqa: A003
         return

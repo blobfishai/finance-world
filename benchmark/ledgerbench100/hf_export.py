@@ -7,7 +7,7 @@ qualification.json), because the dataset card quotes only measured numbers.
   dist/ledgerbench-100/huggingface/
     data/tasks.jsonl        apex-accounting-compatible task records
     tasks/<task_id>.json    one readable record per task
-    task_files/<task_id>/   the task's seeded context documents and input files
+    task_files/<task_id>/   28 agent-visible native evidence files plus seeded inputs
     world/                  the world source: MCP servers, framework, verifier,
                             HTTP bridge, and the full SQL schema
     trajectories/           one normalized oracle-trajectory JSONL per task
@@ -27,17 +27,19 @@ import shutil
 import statistics
 import tempfile
 import tomllib
+from difflib import SequenceMatcher
 from pathlib import Path
 
-from realism import write_asset_views
+from decision_specs import DECISION_SPECS
+from realism import validate_native_asset, write_asset_views
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 RELEASE_NAME = "LedgerBench-100"
 RELEASE_SLUG = "ledgerbench-100"
-RELEASE_VERSION = "2.0.0"
+RELEASE_VERSION = "3.0.0"
 HARBOR_ORG = "blobfishai"
-WORLD_ID = "ledgerbench-erp-world-v2"
+WORLD_ID = "ledgerbench-erp-world-v3"
 DATA_LICENSE = "CC-BY-4.0"
 CODE_LICENSE = "Apache-2.0"
 
@@ -68,6 +70,16 @@ def maximum_pair_similarity(values: list[str]) -> dict:
     return {"maximum_jaccard_5_shingle": round(maximum, 6), "pair_indices": pair}
 
 
+def maximum_sequence_similarity(values: list[tuple[str, ...]]) -> dict:
+    maximum, pair = 0.0, [None, None]
+    for left in range(len(values)):
+        for right in range(left + 1, len(values)):
+            score = SequenceMatcher(None, values[left], values[right], autojunk=False).ratio()
+            if score > maximum:
+                maximum, pair = score, [left, right]
+    return {"maximum_sequence_match": round(maximum, 6), "pair_indices": pair}
+
+
 def gold_output(walk: list[dict], checks: dict) -> dict:
     submitted: dict = {}
     for step in walk:
@@ -94,10 +106,18 @@ def build(release: Path) -> dict:
     prompts: list[str] = []
     walk_lens: list[int] = []
     walk_sequences: list[tuple[tuple[str, str], ...]] = []
+    semantic_sequences: list[tuple[str, ...]] = []
+    evidence_read_counts: list[int] = []
     context_counts: list[int] = []
     generated_asset_counts: list[int] = []
     criteria_counts: list[int] = []
     doc_hashes: set[str] = set()
+    asset_hashes: list[str] = []
+    asset_format_counts: dict[str, int] = {}
+    native_assets_parsed = 0
+    asset_leakage_hits: list[str] = []
+    exact_state_transitions = 0
+    post_write_readbacks = 0
     n_answer = n_trace = n_state = 0
 
     for task_dir in sorted(p for p in tasks_root.iterdir() if p.is_dir()):
@@ -114,11 +134,6 @@ def build(release: Path) -> dict:
             (task_dir / "environment" / "world" / "taskspec" / "realism.json")
             .read_text()
         )
-        initial_hashes = json.loads(
-            (task_dir / "environment" / "world" / "state" / "initial_state.json")
-            .read_text()
-        )
-
         context_files: list[str] = []
         asset_root = hf / "task_files" / task_id / "assets"
         with tempfile.TemporaryDirectory(prefix=f"{task_id}-assets-") as temporary:
@@ -132,16 +147,35 @@ def build(release: Path) -> dict:
                 asset_root,
                 database,
                 prompt,
-                walk,
-                checks,
-                initial_hashes,
+                entry,
+                realism["case_contract"],
             )
         assets: list[dict[str, str]] = []
         for asset in asset_records:
             relative = f"task_files/{task_id}/assets/{asset['filename']}"
             context_files.append(relative)
             assets.append({**asset, "path": relative})
-            doc_hashes.add(hashlib.sha256((asset_root / asset["filename"]).read_bytes()).hexdigest())
+            asset_path = asset_root / asset["filename"]
+            digest = hashlib.sha256(asset_path.read_bytes()).hexdigest()
+            doc_hashes.add(digest)
+            asset_hashes.append(digest)
+            suffix = asset_path.suffix.casefold().lstrip(".")
+            asset_format_counts[suffix] = asset_format_counts.get(suffix, 0) + 1
+            if not validate_native_asset(asset_path):
+                raise AssertionError(f"native asset failed to parse: {asset_path}")
+            native_assets_parsed += 1
+            lowered = asset_path.read_bytes().lower()
+            if any(
+                token in lowered
+                for token in (
+                    b"answer_checks",
+                    b"state_checks",
+                    b"solution/walk",
+                    b"submit_answer",
+                    b"gold_output",
+                )
+            ):
+                asset_leakage_hits.append(relative)
         for sub in ("documents", "inputs"):
             seed_dir = source / "environment" / "seed" / sub
             if seed_dir.is_dir():
@@ -159,10 +193,24 @@ def build(release: Path) -> dict:
         n_state += len(checks.get("state_checks", []))
         walk_lens.append(len(walk))
         walk_sequences.append(tuple((step["server"], step["tool"]) for step in walk))
+        semantic_sequences.append(tuple(realism["semantic_action_graph"]))
+        evidence_read_counts.append(len(realism["trace_contract"]["required_context_calls"]))
         context_counts.append(len(context_files))
         generated_asset_counts.append(len(asset_records))
         criteria_counts.append(len(realism["criteria"]))
         prompts.append(prompt)
+        exact_state_transitions += int(
+            any(
+                check.get("name") == "finance_case_exact_decision"
+                for check in checks.get("state_checks", [])
+            )
+        )
+        post_write_readbacks += int(
+            sum(
+                check.get("type") == "post_write_readback"
+                for check in checks.get("trace_checks", [])
+            ) >= 2
+        )
 
         record = {
             "task_id": task_id,
@@ -194,7 +242,7 @@ def build(release: Path) -> dict:
                 "grading": "deterministic",
                 "llm_judge": False,
                 "walk_len": len(walk),
-                "walk_servers": entry["walk_servers"],
+                "walk_servers": sorted({step["server"] for step in walk}),
                 "mcp_servers": 8,
                 "mcp_tools": 66,
                 "world_epoch": "2026-03-02T12:00:00Z",
@@ -231,8 +279,13 @@ def build(release: Path) -> dict:
                "Apache License 2.0\nhttps://www.apache.org/licenses/LICENSE-2.0\n")
 
     families = catalog["families"]
+    prompt_similarity = maximum_pair_similarity(prompts)
+    reference_similarity = maximum_sequence_similarity(
+        [tuple(f"{server}.{tool}" for server, tool in sequence) for sequence in walk_sequences]
+    )
+    semantic_similarity = maximum_sequence_similarity(semantic_sequences)
     build_report = {
-        "schema_version": "1.0",
+        "schema_version": "ledgerbench.build.v3",
         "benchmark": RELEASE_NAME,
         "version": RELEASE_VERSION,
         "task_count": len(records),
@@ -246,6 +299,12 @@ def build(release: Path) -> dict:
             "max": max(walk_lens),
             "total": sum(walk_lens),
         },
+        "required_evidence_reads_per_task": {
+            "min": min(evidence_read_counts),
+            "median": int(statistics.median(evidence_read_counts)),
+            "max": max(evidence_read_counts),
+            "distinct_counts": len(set(evidence_read_counts)),
+        },
         "checks": {
             "answer_checks_total": n_answer,
             "trace_checks_total": n_trace,
@@ -256,6 +315,14 @@ def build(release: Path) -> dict:
             "tasks_with_context_files": sum(1 for c in context_counts if c),
             "total": sum(context_counts),
             "unique_sha256": len(doc_hashes),
+        },
+        "agent_visible_assets": {
+            "total": len(asset_hashes),
+            "unique_sha256": len(set(asset_hashes)),
+            "exact_duplicates": len(asset_hashes) - len(set(asset_hashes)),
+            "format_counts": dict(sorted(asset_format_counts.items())),
+            "native_assets_parsed": native_assets_parsed,
+            "gold_or_recipe_leakage_hits": asset_leakage_hits,
         },
         "generated_assets_per_task": {
             "min": min(generated_asset_counts),
@@ -268,10 +335,15 @@ def build(release: Path) -> dict:
             "max": max(criteria_counts),
         },
         "unique_reference_tool_name_sequences": len(set(walk_sequences)),
+        "reference_sequence_similarity": reference_similarity,
+        "unique_semantic_action_graphs": len(set(semantic_sequences)),
+        "semantic_action_graph_similarity": semantic_similarity,
+        "exact_finance_case_transitions": exact_state_transitions,
+        "two_post_write_readbacks": post_write_readbacks,
+        "authored_decision_specs": len(DECISION_SPECS),
+        "unique_authored_decision_codes": len({spec.decision_code for spec in DECISION_SPECS.values()}),
         "decision_options_per_task": 3,
-        "prompt_uniqueness": maximum_pair_similarity(prompts),
-        "prompt_uniqueness_excluding_variant_pairs": maximum_pair_similarity(
-            sorted({p for p in prompts})),
+        "prompt_uniqueness": prompt_similarity,
         "exact_duplicate_prompts": len(prompts) - len(set(prompts)),
         "escalated_variant_pairs": sum(
             1 for e in catalog["tasks"] if e["provenance"] == "variant"),
@@ -286,15 +358,35 @@ def build(release: Path) -> dict:
     quality_gates = {
         "one_hundred_tasks": len(records) == 100,
         "high_level_prompts_unique": len(set(prompts)) == 100,
-        "high_level_prompt_bounds": all(45 <= len(prompt.split()) <= 200 for prompt in prompts),
+        "high_level_prompt_bounds": all(55 <= len(prompt.split()) <= 125 for prompt in prompts),
+        "prompt_similarity_below_limit": prompt_similarity["maximum_jaccard_5_shingle"] < 0.72,
         "unique_reference_tool_sequences": len(set(walk_sequences)) == 100,
-        "fourteen_generated_assets_per_task": min(generated_asset_counts) == 14,
-        "specific_public_criteria": min(criteria_counts) >= 40,
+        "reference_sequence_similarity_below_limit": reference_similarity["maximum_sequence_match"] < 0.985,
+        "unique_semantic_action_graphs": len(set(semantic_sequences)) == 100,
+        "semantic_action_graph_similarity_below_limit": semantic_similarity["maximum_sequence_match"] < 0.85,
+        "minimum_twenty_four_tool_calls": min(walk_lens) >= 24,
+        "deep_evidence_intersection": min(evidence_read_counts) >= 19,
+        "evidence_depth_varies": len(set(evidence_read_counts)) >= 6,
+        "twenty_eight_generated_assets_per_task": min(generated_asset_counts) == 28 == max(generated_asset_counts),
+        "all_native_assets_parse": native_assets_parsed == len(asset_hashes),
+        "real_native_formats_present": {"xlsx", "pdf", "eml", "csv", "json", "md", "txt"} <= set(asset_format_counts),
+        "no_gold_or_recipe_in_asset_room": not asset_leakage_hits,
+        "all_assets_content_unique": len(set(asset_hashes)) == len(asset_hashes),
+        "specific_public_causal_criteria": min(criteria_counts) >= 20,
+        "one_hundred_authored_decisions": len(DECISION_SPECS) == 100,
+        "unique_authored_decision_codes": len({spec.decision_code for spec in DECISION_SPECS.values()}) == 100,
+        "exact_state_transition_every_task": exact_state_transitions == 100,
+        "two_post_write_readbacks_every_task": post_write_readbacks == 100,
+        "ten_negative_controls": len(qualification["negative_controls"]) == 10,
+        "zero_negative_false_accepts": not any(
+            row["false_accepts"] for row in qualification["negative_controls"].values()
+        ),
         "three_options_one_selected": all(
             len(record["rubric"]["decision_options"]) == 3
             and sum(option["selected"] for option in record["rubric"]["decision_options"]) == 1
             for record in records
         ),
+        "deterministic_verifier": qualification["release_passed"],
     }
     build_report["quality_gates"] = quality_gates
     build_report["release_passed"] = all(quality_gates.values())
@@ -311,7 +403,10 @@ def build(release: Path) -> dict:
 def seal_manifest(release: Path) -> None:
     manifest_path = release / "release-manifest.json"
     files = sorted(p for p in release.rglob("*")
-                   if p.is_file() and p != manifest_path)
+                   if p.is_file()
+                   and p != manifest_path
+                   and p.suffix != ".pyc"
+                   and "__pycache__" not in p.parts)
     manifest = {
         "schema_version": "1.0",
         "benchmark": RELEASE_NAME,
@@ -358,26 +453,27 @@ size_categories:
 
 # {RELEASE_NAME}
 
-{RELEASE_NAME} is a deterministic corporate-finance agent benchmark: 100 tasks over a
-shared simulated finance world (a D365-shaped ERP, an Odoo-shaped procure-to-pay and
-manufacturing surface, a QBO-style subsidiary ledger, a shared drive, email, document
-management, and frozen real SEC XBRL filings) served through {build['mcp_servers']} MCP
-servers exposing {build['mcp_tools']} tools. Tasks are in-fiction persona chat messages;
-the graded answer contract is discovered through the harness server's `reporting_fields`
-tool, the way a real reporting system's schema is read before filing into it.
+{RELEASE_NAME} is a deterministic corporate-finance agent benchmark: 100 distinct
+employee decisions over isolated simulated finance worlds. Each world combines a
+Dynamics 365-shaped ERP, an Odoo procure-to-pay and manufacturing surface, a QBO-style
+subsidiary ledger, Microsoft Graph workbooks, Gmail, governed documents, and frozen SEC
+XBRL filings through {build['mcp_servers']} MCP servers exposing {build['mcp_tools']}
+provider-shaped tools. The employee asks for an outcome in ordinary language; the agent
+must discover the reporting schema and the task-specific investigation.
 
-Grading is fully deterministic and binary — answer checks with typed tolerances, trace
-checks (required servers, reads before submission), and state checks that grade the world
-the agent leaves behind (committed payment runs, paid/rejected partitions, reason codes)
-plus a `writes_only` anti-hack veto. No LLM judge, no network, no clock in the reward path.
+Grading is fully deterministic and binary. It checks the exact answer, every required
+independent evidence read, read-before-write causality, the exact Dynamics finance-case
+decision, the scoped completion email, two post-write readbacks, task-native operational
+state, and a `writes_only` containment veto. No LLM judge, network, clock, or randomness
+appears in the reward path.
 
 ## Measured contents
 
 - Tasks: {build['task_count']} across {build['family_count']} families: {families}
-- Oracle walk length: min {build['walk_len']['min']} / median {build['walk_len']['median']} / max {build['walk_len']['max']} MCP calls ({build['walk_len']['total']} total)
+- Oracle walk length: min {build['walk_len']['min']} / median {build['walk_len']['median']} / max {build['walk_len']['max']} MCP calls ({build['walk_len']['total']} total); required distributed evidence reads are {build['required_evidence_reads_per_task']['min']}-{build['required_evidence_reads_per_task']['max']} per task
 - Executable checks: {build['checks']['answer_checks_total']} answer + {build['checks']['trace_checks_total']} trace + {build['checks']['state_checks_total']} state, expanded into {build['criteria_per_task']['min']}-{build['criteria_per_task']['max']} exact public criteria per task
-- Inspectable assets: {build['generated_assets_per_task']['min']} generated initial-state views per task, including valid XLSX workbooks, EML threads, policies, ERP tables, books, filings, Odoo, control records, and tool mappings
-- Reference diversity: {build['unique_reference_tool_name_sequences']}/100 distinct server/tool sequences
+- Inspectable assets: {build['generated_assets_per_task']['min']} agent-visible native files per task, including valid XLSX, PDF, EML, CSV, JSON, Markdown, and text records; gold and oracle recipes are excluded from this tree
+- Reference diversity: {build['unique_reference_tool_name_sequences']}/100 distinct raw server/tool sequences and {build['unique_semantic_action_graphs']}/100 distinct semantic action graphs
 - Escalated variants: {build['escalated_variant_pairs']} tasks are controls-review follow-ups whose governing policy must be found among seeded adjacent documents; every follow-up now has its own human request and policy-discovery trajectory
 - Prompt uniqueness: {100 - build['exact_duplicate_prompts']} distinct employee requests; maximum pairwise 5-shingle Jaccard {build['prompt_uniqueness']['maximum_jaccard_5_shingle']}
 
@@ -385,7 +481,7 @@ plus a `writes_only` anti-hack veto. No LLM judge, no network, no clock in the r
 
 - `data/tasks.jsonl`: apex-accounting-compatible records (`task_id`, `task_name`, `world_id`, `prompt`, `context_files`, `rubric`, `gold_output`, `metadata`).
 - `tasks/`: one readable JSON record per task.
-- `task_files/`: 14 task-scoped initial-state views plus any native seeded documents and inputs.
+- `task_files/`: 28 task-scoped agent-visible evidence files plus any native seeded documents and inputs.
 - `world/`: the world source — MCP framework, the eight servers, the deterministic verifier engine, the Streamable HTTP bridge, and the full SQL schema.
 - `trajectories/`: one normalized oracle MCP trajectory per task.
 - `reports/`: measured build and qualification evidence.
