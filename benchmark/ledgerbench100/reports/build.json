@@ -29,9 +29,9 @@
     "unique_sha256": 2836
   },
   "criteria_per_task": {
-    "max": 30,
-    "median": 27,
-    "min": 24
+    "max": 48,
+    "median": 45,
+    "min": 42
   },
   "decision_options_per_task": 3,
   "escalated_variant_pairs": 30,
@@ -55,6 +55,7 @@
   "quality_gates": {
     "all_assets_content_unique": true,
     "all_native_assets_parse": true,
+    "at_least_forty_specific_public_causal_criteria": true,
     "deep_evidence_intersection": true,
     "deterministic_verifier": true,
     "evidence_depth_varies": true,
@@ -69,7 +70,6 @@
     "real_native_formats_present": true,
     "reference_sequence_similarity_below_limit": true,
     "semantic_action_graph_similarity_below_limit": true,
-    "specific_public_causal_criteria": true,
     "ten_negative_controls": true,
     "three_options_one_selected": true,
     "twenty_eight_generated_assets_per_task": true,
@@ -137,7 +137,7 @@
     "random_calls": 0,
     "wall_clock_reads_in_reward_path": 0
   },
-  "version": "3.0.0",
+  "version": "3.1.0",
   "walk_len": {
     "max": 132,
     "median": 34,
