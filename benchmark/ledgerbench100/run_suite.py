@@ -31,7 +31,7 @@ from typing import Any, Callable
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 RELEASE_NAME = "LedgerBench-100"
-RELEASE_VERSION = "1.0.0"
+RELEASE_VERSION = "2.0.0"
 CORRUPT_VALUE = "totally-wrong-answer-xyzzy"
 
 

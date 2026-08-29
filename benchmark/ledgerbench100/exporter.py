@@ -42,6 +42,8 @@ import tempfile
 import tomllib
 from pathlib import Path
 
+from realism import decision_options, distinct_walk, release_prompt, rubric_criteria
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT / "sim"))
@@ -49,7 +51,7 @@ from prepare import prepare  # noqa: E402
 
 RELEASE_NAME = "LedgerBench-100"
 RELEASE_SLUG = "ledgerbench-100"
-RELEASE_VERSION = "1.0.0"
+RELEASE_VERSION = "2.0.0"
 HARBOR_ORG = "blobfishai"
 DATA_LICENSE = "CC-BY-4.0"
 CODE_LICENSE = "Apache-2.0"
@@ -110,12 +112,14 @@ provenance = "{entry['provenance']}"
 difficulty = "{entry['difficulty']}"
 origin = "{origin}"
 walk_len = {entry['walk_len']}
+public_criteria = {entry.get('criteria_count', 0)}
 n_answer_checks = {entry['n_answer_checks']}
 n_state_checks = {entry['n_state_checks']}
 n_trace_checks = {entry['n_trace_checks']}
 mcp_servers = {len(SERVERS)}
 mcp_tools = 66
 deterministic_verifier = true
+high_level_employee_request = true
 llm_judge = false
 data_license = "{DATA_LICENSE}"
 code_license = "{CODE_LICENSE}"
@@ -434,7 +438,12 @@ def replay_pack_oracle(pack: Path) -> dict:
 
 # --- pack builder --------------------------------------------------------------
 
-def build_pack(entry: dict, tasks_root: Path, gate: bool) -> tuple[bool, str]:
+def build_pack(
+    entry: dict,
+    tasks_root: Path,
+    gate: bool,
+    seen_sequences: set[tuple[tuple[str, str], ...]],
+) -> tuple[bool, str]:
     source = ROOT / "tasks" / entry["source_task"]
     task_id = entry["task_id"]
     pack = tasks_root / task_id
@@ -442,6 +451,12 @@ def build_pack(entry: dict, tasks_root: Path, gate: bool) -> tuple[bool, str]:
         shutil.rmtree(pack)
     source_cfg = tomllib.loads((source / "task.toml").read_text())
     description = source_cfg["task"].get("description", "")[:240].replace('"', "'")
+    prompt = release_prompt(entry, (source / "instruction.md").read_text(), source_cfg)
+    walk = distinct_walk(
+        entry,
+        json.loads((source / "solution" / "walk.json").read_text()),
+        seen_sequences,
+    )
     token = verification_token(task_id)
 
     # 1. prepared world for THIS task (core + its seed layers)
@@ -487,6 +502,11 @@ def build_pack(entry: dict, tasks_root: Path, gate: bool) -> tuple[bool, str]:
         # correct solution is constrained.
         state_checks.append({"type": "writes_only",
                              "tables": ["answers"] + sorted(erpb_tables())})
+    initial_hashes = json.loads(
+        (world_dir / "state" / "initial_state.json").read_text()
+    )
+    criteria = rubric_criteria(entry, checks, walk, initial_hashes)
+    options = decision_options(entry, walk)
     (world_dir / "taskspec" / "tests" / "checks.json").write_text(
         json.dumps(checks, indent=1) + "\n")
     runtime = world_dir / "runtime"
@@ -499,13 +519,30 @@ def build_pack(entry: dict, tasks_root: Path, gate: bool) -> tuple[bool, str]:
     shutil.copyfile(ROOT / "verifiers" / "vcode.py", runtime / "vcode.py")
 
     # 3. Harbor contract files
-    write_text(pack / "task.toml", task_toml(entry, source_cfg.get("metadata", {}), description))
-    shutil.copyfile(source / "instruction.md", pack / "instruction.md")
+    release_entry = {
+        **entry,
+        "walk_len": len(walk),
+        "criteria_count": len(criteria),
+    }
+    write_text(pack / "task.toml", task_toml(release_entry, source_cfg.get("metadata", {}), description))
+    write_text(pack / "instruction.md", prompt + "\n")
     write_text(pack / "environment" / "Dockerfile", main_dockerfile(has_inputs))
     write_text(pack / "environment" / "docker-compose.yaml", compose_yaml(has_inputs))
     write_text(pack / "environment" / "tool", tool_cli(), executable=True)
     (pack / "solution").mkdir()
-    shutil.copyfile(source / "solution" / "walk.json", pack / "solution" / "walk.json")
+    write_json(pack / "solution" / "walk.json", walk)
+    write_json(
+        world_dir / "taskspec" / "realism.json",
+        {
+            "criteria": criteria,
+            "decision_options": options,
+            "asset_contract": {
+                "minimum_assets": 14,
+                "systems": SERVERS,
+                "note": "Hugging Face exports task-scoped views of this exact initial SQLite state.",
+            },
+        },
+    )
     write_text(pack / "solution" / "solve.py", solution_script(), executable=True)
     write_text(pack / "solution" / "solve.sh",
                '#!/bin/bash\nset -eu\npython3 "$(dirname "$0")/solve.py"\n',
@@ -556,8 +593,14 @@ def main() -> int:
     tasks_root = arguments.release / "harbor" / "tasks"
     tasks_root.mkdir(parents=True, exist_ok=True)
     ok, bad = [], []
+    seen_sequences: set[tuple[tuple[str, str], ...]] = set()
     for entry in entries:
-        good, note = build_pack(entry, tasks_root, gate=not arguments.no_gate)
+        good, note = build_pack(
+            entry,
+            tasks_root,
+            gate=not arguments.no_gate,
+            seen_sequences=seen_sequences,
+        )
         (ok if good else bad).append((entry["task_id"], note))
         print(f"  {'OK  ' if good else 'FAIL'} {entry['task_id']:64} {note}", flush=True)
     if not arguments.only and not bad:

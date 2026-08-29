@@ -19,21 +19,25 @@ qualification.json), because the dataset card quotes only measured numbers.
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import re
 import shutil
 import statistics
+import tempfile
 import tomllib
 from pathlib import Path
+
+from realism import write_asset_views
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 RELEASE_NAME = "LedgerBench-100"
 RELEASE_SLUG = "ledgerbench-100"
-RELEASE_VERSION = "1.0.0"
+RELEASE_VERSION = "2.0.0"
 HARBOR_ORG = "blobfishai"
-WORLD_ID = "ledgerbench-erp-world-v1"
+WORLD_ID = "ledgerbench-erp-world-v2"
 DATA_LICENSE = "CC-BY-4.0"
 CODE_LICENSE = "Apache-2.0"
 
@@ -89,7 +93,10 @@ def build(release: Path) -> dict:
     records: list[dict] = []
     prompts: list[str] = []
     walk_lens: list[int] = []
+    walk_sequences: list[tuple[tuple[str, str], ...]] = []
     context_counts: list[int] = []
+    generated_asset_counts: list[int] = []
+    criteria_counts: list[int] = []
     doc_hashes: set[str] = set()
     n_answer = n_trace = n_state = 0
 
@@ -103,8 +110,38 @@ def build(release: Path) -> dict:
             (task_dir / "environment" / "world" / "taskspec" / "tests" / "checks.json")
             .read_text())
         config = tomllib.loads((task_dir / "task.toml").read_text())
+        realism = json.loads(
+            (task_dir / "environment" / "world" / "taskspec" / "realism.json")
+            .read_text()
+        )
+        initial_hashes = json.loads(
+            (task_dir / "environment" / "world" / "state" / "initial_state.json")
+            .read_text()
+        )
 
         context_files: list[str] = []
+        asset_root = hf / "task_files" / task_id / "assets"
+        with tempfile.TemporaryDirectory(prefix=f"{task_id}-assets-") as temporary:
+            database = Path(temporary) / "world.sqlite"
+            with gzip.open(
+                task_dir / "environment" / "world" / "state" / "world.sqlite.gz",
+                "rb",
+            ) as source_database, database.open("wb") as destination_database:
+                shutil.copyfileobj(source_database, destination_database)
+            asset_records = write_asset_views(
+                asset_root,
+                database,
+                prompt,
+                walk,
+                checks,
+                initial_hashes,
+            )
+        assets: list[dict[str, str]] = []
+        for asset in asset_records:
+            relative = f"task_files/{task_id}/assets/{asset['filename']}"
+            context_files.append(relative)
+            assets.append({**asset, "path": relative})
+            doc_hashes.add(hashlib.sha256((asset_root / asset["filename"]).read_bytes()).hexdigest())
         for sub in ("documents", "inputs"):
             seed_dir = source / "environment" / "seed" / sub
             if seed_dir.is_dir():
@@ -121,7 +158,10 @@ def build(release: Path) -> dict:
         n_trace += len(checks.get("trace_checks", []))
         n_state += len(checks.get("state_checks", []))
         walk_lens.append(len(walk))
+        walk_sequences.append(tuple((step["server"], step["tool"]) for step in walk))
         context_counts.append(len(context_files))
+        generated_asset_counts.append(len(asset_records))
+        criteria_counts.append(len(realism["criteria"]))
         prompts.append(prompt)
 
         record = {
@@ -130,10 +170,13 @@ def build(release: Path) -> dict:
             "world_id": WORLD_ID,
             "prompt": prompt,
             "context_files": context_files,
+            "assets": assets,
             "rubric": {
                 "type": "deterministic",
                 "engine": "verifiers/vcode.py (binary reward; all checks must pass)",
                 "checks": checks,
+                "criteria": realism["criteria"],
+                "decision_options": realism["decision_options"],
                 "gates": [
                     "answer_checks: submitted fields graded by type with tolerances",
                     "trace_checks: required servers visited, reads precede submission",
@@ -214,6 +257,18 @@ def build(release: Path) -> dict:
             "total": sum(context_counts),
             "unique_sha256": len(doc_hashes),
         },
+        "generated_assets_per_task": {
+            "min": min(generated_asset_counts),
+            "median": int(statistics.median(generated_asset_counts)),
+            "max": max(generated_asset_counts),
+        },
+        "criteria_per_task": {
+            "min": min(criteria_counts),
+            "median": int(statistics.median(criteria_counts)),
+            "max": max(criteria_counts),
+        },
+        "unique_reference_tool_name_sequences": len(set(walk_sequences)),
+        "decision_options_per_task": 3,
         "prompt_uniqueness": maximum_pair_similarity(prompts),
         "prompt_uniqueness_excluding_variant_pairs": maximum_pair_similarity(
             sorted({p for p in prompts})),
@@ -228,6 +283,24 @@ def build(release: Path) -> dict:
             "random_calls": 0,
         },
     }
+    quality_gates = {
+        "one_hundred_tasks": len(records) == 100,
+        "high_level_prompts_unique": len(set(prompts)) == 100,
+        "high_level_prompt_bounds": all(45 <= len(prompt.split()) <= 200 for prompt in prompts),
+        "unique_reference_tool_sequences": len(set(walk_sequences)) == 100,
+        "fourteen_generated_assets_per_task": min(generated_asset_counts) == 14,
+        "specific_public_criteria": min(criteria_counts) >= 40,
+        "three_options_one_selected": all(
+            len(record["rubric"]["decision_options"]) == 3
+            and sum(option["selected"] for option in record["rubric"]["decision_options"]) == 1
+            for record in records
+        ),
+    }
+    build_report["quality_gates"] = quality_gates
+    build_report["release_passed"] = all(quality_gates.values())
+    if not build_report["release_passed"]:
+        failed = sorted(name for name, passed in quality_gates.items() if not passed)
+        raise AssertionError(f"LedgerBench realism gates failed: {failed}")
     write_json(hf / "reports" / "build.json", build_report)
     write_json(release / "reports" / "build.json", build_report)
     write_text(hf / "README.md", dataset_card(build_report, qualification))
@@ -302,16 +375,17 @@ plus a `writes_only` anti-hack veto. No LLM judge, no network, no clock in the r
 
 - Tasks: {build['task_count']} across {build['family_count']} families: {families}
 - Oracle walk length: min {build['walk_len']['min']} / median {build['walk_len']['median']} / max {build['walk_len']['max']} MCP calls ({build['walk_len']['total']} total)
-- Checks: {build['checks']['answer_checks_total']} answer + {build['checks']['trace_checks_total']} trace + {build['checks']['state_checks_total']} state = {build['checks']['checks_total']} graded checks
-- Context files: {build['context_files']['total']} seeded documents/inputs ({build['context_files']['unique_sha256']} unique) across {build['context_files']['tasks_with_context_files']} tasks; most context lives inside the world itself (ERP rows, workbooks, emails, filings)
-- Escalated variants: {build['escalated_variant_pairs']} tasks are escalations of a base task also in the release; {build['exact_duplicate_prompts']} of them (`doc_mode = "buried"`) deliberately reuse the base persona message verbatim against a harder world — the governing policy must be found among seeded decoy documents — so those prompt texts appear twice by design
-- Prompt uniqueness across the {100 - build['exact_duplicate_prompts']} distinct prompts: maximum pairwise 5-shingle Jaccard {build['prompt_uniqueness_excluding_variant_pairs']['maximum_jaccard_5_shingle']}
+- Executable checks: {build['checks']['answer_checks_total']} answer + {build['checks']['trace_checks_total']} trace + {build['checks']['state_checks_total']} state, expanded into {build['criteria_per_task']['min']}-{build['criteria_per_task']['max']} exact public criteria per task
+- Inspectable assets: {build['generated_assets_per_task']['min']} generated initial-state views per task, including valid XLSX workbooks, EML threads, policies, ERP tables, books, filings, Odoo, control records, and tool mappings
+- Reference diversity: {build['unique_reference_tool_name_sequences']}/100 distinct server/tool sequences
+- Escalated variants: {build['escalated_variant_pairs']} tasks are controls-review follow-ups whose governing policy must be found among seeded adjacent documents; every follow-up now has its own human request and policy-discovery trajectory
+- Prompt uniqueness: {100 - build['exact_duplicate_prompts']} distinct employee requests; maximum pairwise 5-shingle Jaccard {build['prompt_uniqueness']['maximum_jaccard_5_shingle']}
 
 ## What is included
 
 - `data/tasks.jsonl`: apex-accounting-compatible records (`task_id`, `task_name`, `world_id`, `prompt`, `context_files`, `rubric`, `gold_output`, `metadata`).
 - `tasks/`: one readable JSON record per task.
-- `task_files/`: seeded per-task context documents and input files.
+- `task_files/`: 14 task-scoped initial-state views plus any native seeded documents and inputs.
 - `world/`: the world source — MCP framework, the eight servers, the deterministic verifier engine, the Streamable HTTP bridge, and the full SQL schema.
 - `trajectories/`: one normalized oracle MCP trajectory per task.
 - `reports/`: measured build and qualification evidence.
