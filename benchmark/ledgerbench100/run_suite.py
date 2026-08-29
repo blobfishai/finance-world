@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 """Execute every LedgerBench-100 pack against positive and adversarial trajectories.
 
-Per pack (6 executions, all against the pack's OWN contents — its gzipped world,
+Per pack (12 executions, all against the pack's OWN contents — its gzipped world,
 its runtime modules, its walk.json, its baked taskspec checks):
 
   oracle x2        replay solution/walk.json; reward must be 1; the two verifier
                    reports must be byte-identical (determinism)
   noop             pristine world, zero tool calls; must score 0
-  no_submit        the walk minus every harness.submit_answer step; must score 0
-  wrong_submit     the walk with every submitted value corrupted; must score 0
-  off_task_write   the full walk plus one write to an off-task table (meta);
-                   must score 0 via the writes_only veto
+  shortcut         copied final answer without investigation or state; must score 0
+  state_only       copied writes and answer without investigation; must score 0
+  incomplete_read  one exact evidence read removed; must score 0
+  write_before_read governed state transition moved before evidence; must score 0
+  missing_readback exact post-write reads removed; must score 0
+  unauthorized_write full walk plus an off-scope table mutation; must score 0
+  wrong_value      every reported answer value corrupted; must score 0
+  wrong_decision   case decision changed to an unsupported code; must score 0
+  wrong_evidence   one persisted evidence reference changed; must score 0
 
 Zero false accepts across all negative controls is a release gate. Writes
 reports/qualification.json (release + huggingface copies) and one normalized
@@ -31,7 +36,7 @@ from typing import Any, Callable
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 RELEASE_NAME = "LedgerBench-100"
-RELEASE_VERSION = "2.0.0"
+RELEASE_VERSION = "3.0.0"
 CORRUPT_VALUE = "totally-wrong-answer-xyzzy"
 
 
@@ -50,6 +55,9 @@ class PackWorld:
         self.world_dir = pack / "environment" / "world"
         self.spec = json.loads((self.world_dir / "spec.json").read_text())
         self.walk = json.loads((pack / "solution" / "walk.json").read_text())
+        self.realism = json.loads(
+            (self.world_dir / "taskspec" / "realism.json").read_text()
+        )
         self.lib_path = str(self.world_dir / "runtime" / "lib")
         sys.path.insert(0, self.lib_path)
         self.server_module = load_module(
@@ -109,12 +117,87 @@ def noop_steps(world: PackWorld) -> list[dict]:
     return []
 
 
-def no_submit_steps(world: PackWorld) -> list[dict]:
-    return [s for s in world.walk
-            if not (s["server"] == "harness" and s["tool"] == "submit_answer")]
+def shortcut_steps(world: PackWorld) -> list[dict]:
+    return [
+        step for step in world.walk
+        if step["server"] == "harness"
+        and step["tool"] in {"reporting_fields", "submit_answer"}
+    ]
 
 
-def wrong_submit_steps(world: PackWorld) -> list[dict]:
+def _is_finance_decision(step: dict) -> bool:
+    return (
+        step["server"] == "erp"
+        and step["tool"] == "api_invoke_action"
+        and (step.get("args") or {}).get("action") == "ContosoFinanceCaseDecide"
+    )
+
+
+def state_only_steps(world: PackWorld) -> list[dict]:
+    decision_index = next(index for index, step in enumerate(world.walk) if _is_finance_decision(step))
+    return [world.walk[0], *world.walk[max(1, decision_index - 1):]]
+
+
+def _contains_subset(actual: Any, expected: Any) -> bool:
+    if isinstance(expected, dict):
+        return isinstance(actual, dict) and all(
+            key in actual and _contains_subset(actual[key], value)
+            for key, value in expected.items()
+        )
+    if isinstance(expected, list):
+        return isinstance(actual, list) and len(actual) == len(expected) and all(
+            _contains_subset(got, wanted) for got, wanted in zip(actual, expected)
+        )
+    return actual == expected
+
+
+def _matches(step: dict, selector: dict) -> bool:
+    return (
+        step.get("server") == selector.get("server")
+        and step.get("tool") == selector.get("tool")
+        and _contains_subset(step.get("args") or {}, selector.get("args") or {})
+    )
+
+
+def incomplete_read_steps(world: PackWorld) -> list[dict]:
+    required = world.realism["trace_contract"]["required_context_calls"]
+    # Remove an evidence request that has exactly one satisfying occurrence in
+    # the oracle.  A discovery call can legitimately recur in the source
+    # workflow (for example ``list_drive_items``); deleting only its first
+    # occurrence would still leave a complete investigation and therefore is
+    # not a valid incomplete-read adversary.
+    unique = [
+        selector
+        for selector in required
+        if sum(_matches(step, selector) for step in world.walk) == 1
+    ]
+    if not unique:
+        raise ValueError(f"{world.spec['task_id']} has no uniquely required evidence read")
+    target = unique[len(unique) // 2]
+    removed = False
+    steps = []
+    for step in world.walk:
+        if not removed and _matches(step, target):
+            removed = True
+            continue
+        steps.append(step)
+    if not removed:
+        raise ValueError(f"{world.spec['task_id']} incomplete-read target was not present")
+    return steps
+
+
+def write_before_read_steps(world: PackWorld) -> list[dict]:
+    decision = next(step for step in world.walk if _is_finance_decision(step))
+    return [world.walk[0], decision, *[step for step in world.walk[1:] if step is not decision]]
+
+
+def missing_readback_steps(world: PackWorld) -> list[dict]:
+    contract = world.realism["trace_contract"]
+    targets = [contract["state_readback_call"], contract["message_readback_call"]]
+    return [step for step in world.walk if not any(_matches(step, target) for target in targets)]
+
+
+def wrong_value_steps(world: PackWorld) -> list[dict]:
     steps = []
     for step in world.walk:
         if step["server"] == "harness" and step["tool"] == "submit_answer":
@@ -126,10 +209,38 @@ def wrong_submit_steps(world: PackWorld) -> list[dict]:
     return steps
 
 
+def wrong_decision_steps(world: PackWorld) -> list[dict]:
+    steps = json.loads(json.dumps(world.walk))
+    for step in steps:
+        if _is_finance_decision(step):
+            current = step["args"]["parameters"]["decision_code"]
+            step["args"]["parameters"]["decision_code"] = (
+                "NO_ACTION" if current.startswith("HOLD_") else "HOLD_FOR_EVIDENCE"
+            )
+            break
+    return steps
+
+
+def wrong_evidence_steps(world: PackWorld) -> list[dict]:
+    steps = json.loads(json.dumps(world.walk))
+    for step in steps:
+        if _is_finance_decision(step):
+            refs = step["args"]["parameters"]["evidence_refs"]
+            step["args"]["parameters"]["evidence_refs"] = [*refs[:-1], "UNRELATED-EVIDENCE-REF"]
+            break
+    return steps
+
+
 NEGATIVES: list[tuple[str, Callable[[PackWorld], list[dict]]]] = [
     ("noop", noop_steps),
-    ("no_submit", no_submit_steps),
-    ("wrong_submit", wrong_submit_steps),
+    ("shortcut", shortcut_steps),
+    ("state_only", state_only_steps),
+    ("incomplete_read", incomplete_read_steps),
+    ("write_before_read", write_before_read_steps),
+    ("missing_readback", missing_readback_steps),
+    ("wrong_value", wrong_value_steps),
+    ("wrong_decision", wrong_decision_steps),
+    ("wrong_evidence", wrong_evidence_steps),
 ]
 
 
@@ -171,7 +282,7 @@ def run(release: Path) -> dict[str, Any]:
     task_results: list[dict[str, Any]] = []
     oracle_passes = 0
     determinism_matches = 0
-    control_names = [name for name, _ in NEGATIVES] + ["off_task_write"]
+    control_names = [name for name, _ in NEGATIVES] + ["unauthorized_write"]
     false_accepts = {name: 0 for name in control_names}
     failure_samples: dict[str, list[dict[str, Any]]] = {name: [] for name in control_names}
 
@@ -188,7 +299,7 @@ def run(release: Path) -> dict[str, Any]:
             determinism_matches += int(deterministic)
             negatives: dict[str, Any] = {}
             for name in control_names:
-                if name == "off_task_write":
+                if name == "unauthorized_write":
                     report = execute(world, oracle_steps(world), off_task_write=True)
                 else:
                     shape = dict(NEGATIVES)[name]

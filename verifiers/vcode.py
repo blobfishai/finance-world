@@ -54,6 +54,38 @@ def parse_number(v):
 
 def norm(v): return re.sub(r"\s+", " ", str(v)).strip().lower()
 
+
+def contains_subset(actual, expected):
+    """Recursive exact-subset match for trace argument selectors."""
+    if isinstance(expected, dict):
+        return isinstance(actual, dict) and all(
+            key in actual and contains_subset(actual[key], value)
+            for key, value in expected.items()
+        )
+    if isinstance(expected, list):
+        return isinstance(actual, list) and len(actual) == len(expected) and all(
+            contains_subset(got, wanted) for got, wanted in zip(actual, expected)
+        )
+    return actual == expected
+
+
+def trace_match(record, selector, *, successful=True):
+    if record.get("server") != selector.get("server"):
+        return False
+    if record.get("tool") != selector.get("tool"):
+        return False
+    if successful and not record.get("ok"):
+        return False
+    return contains_subset(record.get("args") or {}, selector.get("args") or {})
+
+
+def first_trace_index(trace, selector, *, start=0, successful=True):
+    return next(
+        (index for index in range(start, len(trace))
+         if trace_match(trace[index], selector, successful=successful)),
+        None,
+    )
+
 # An empty-answer trap is satisfied by a value that OPENS with a negative. Trailing
 # justification is allowed and expected — a model that explains "none, because no remittance
 # advice was on file" is more useful than one that emits the bare token, and grading them
@@ -193,6 +225,64 @@ def verify(task_dir, run_dir):
             reads_before = any(r["server"] != "harness" and r.get("ok") for r in trace[:first_submit or 0])
             if first_submit is None or not reads_before:
                 failed.append("trace:no_reads_before_submit")
+        elif t == "required_calls":
+            missing = [
+                f"{selector.get('server')}.{selector.get('tool')}:{selector.get('args', {})}"
+                for selector in c.get("calls", [])
+                if first_trace_index(trace, selector) is None
+            ]
+            if missing:
+                failed.append(f"trace:required_calls_missing({missing})")
+        elif t == "reads_before_write":
+            write_at = first_trace_index(trace, c["write"])
+            if write_at is None:
+                failed.append("trace:required_write_missing")
+            else:
+                late = [
+                    f"{selector.get('server')}.{selector.get('tool')}:{selector.get('args', {})}"
+                    for selector in c.get("reads", [])
+                    if first_trace_index(trace[:write_at], selector) is None
+                ]
+                if late:
+                    failed.append(f"trace:reads_not_before_write({late})")
+        elif t == "post_write_readback":
+            write_at = first_trace_index(trace, c["write"])
+            readback_at = (
+                first_trace_index(trace, c["readback"], start=write_at + 1)
+                if write_at is not None else None
+            )
+            if write_at is None or readback_at is None:
+                failed.append(
+                    f"trace:missing_post_write_readback({c['write'].get('server')}."
+                    f"{c['write'].get('tool')}->{c['readback'].get('server')}."
+                    f"{c['readback'].get('tool')})"
+                )
+        elif t == "ordered_calls":
+            cursor = 0
+            missing = None
+            for selector in c.get("calls", []):
+                position = first_trace_index(trace, selector, start=cursor)
+                if position is None:
+                    missing = selector
+                    break
+                cursor = position + 1
+            if missing is not None:
+                failed.append(
+                    f"trace:ordered_calls_failed({missing.get('server')}."
+                    f"{missing.get('tool')}:{missing.get('args', {})})"
+                )
+        elif t == "successful_required_calls":
+            unsuccessful = []
+            for selector in c.get("calls", []):
+                any_call = first_trace_index(trace, selector, successful=False)
+                successful_call = first_trace_index(trace, selector, successful=True)
+                if any_call is None or successful_call is None:
+                    unsuccessful.append(
+                        f"{selector.get('server')}.{selector.get('tool')}:"
+                        f"{selector.get('args', {})}"
+                    )
+            if unsuccessful:
+                failed.append(f"trace:required_calls_unsuccessful({unsuccessful})")
 
     init = json.loads((Path(run_dir) / "initial_state.json").read_text())
     final = table_hashes(db)

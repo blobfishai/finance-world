@@ -208,6 +208,16 @@ CREATE TABLE erp_audit_trail(
   audit_id INTEGER PRIMARY KEY, entity_type TEXT, entity_id TEXT, action TEXT,
   actor TEXT, role TEXT, at TEXT, before_json TEXT, after_json TEXT);
 
+-- Task-scoped finance work items.  This is exposed through the ordinary D365
+-- FinanceCases data entity for reads and a governed ICustomAPI action for the
+-- decision transition.  It is deliberately not a benchmark-only convenience
+-- tool: agents discover and call it through the same generic Dynamics MCP
+-- surfaces as any other customer extension.
+CREATE TABLE erp_finance_cases(
+  case_id TEXT PRIMARY KEY, task_id TEXT UNIQUE, workflow TEXT, subject TEXT,
+  status TEXT, decision_code TEXT, evidence_refs TEXT, rationale TEXT,
+  owner TEXT, opened_at TEXT, decided_at TEXT);
+
 -- Deduction / short-pay reason codes (art.deduction_coding). Vocabulary follows AR
 -- cash-application practice: research/external/articles/cash-application--{highradius,stuut,
 -- zamp}.md — a deduction is coded, routed to an owner, and either conceded or charged back.
