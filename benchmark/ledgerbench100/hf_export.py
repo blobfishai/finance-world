@@ -37,9 +37,9 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 RELEASE_NAME = "LedgerBench-100"
 RELEASE_SLUG = "ledgerbench-100"
-RELEASE_VERSION = "3.0.0"
+RELEASE_VERSION = "3.1.0"
 HARBOR_ORG = "blobfishai"
-WORLD_ID = "ledgerbench-erp-world-v3"
+WORLD_ID = "ledgerbench-erp-world-v3-1"
 DATA_LICENSE = "CC-BY-4.0"
 CODE_LICENSE = "Apache-2.0"
 
@@ -372,7 +372,7 @@ def build(release: Path) -> dict:
         "real_native_formats_present": {"xlsx", "pdf", "eml", "csv", "json", "md", "txt"} <= set(asset_format_counts),
         "no_gold_or_recipe_in_asset_room": not asset_leakage_hits,
         "all_assets_content_unique": len(set(asset_hashes)) == len(asset_hashes),
-        "specific_public_causal_criteria": min(criteria_counts) >= 20,
+        "at_least_forty_specific_public_causal_criteria": min(criteria_counts) >= 40,
         "one_hundred_authored_decisions": len(DECISION_SPECS) == 100,
         "unique_authored_decision_codes": len({spec.decision_code for spec in DECISION_SPECS.values()}) == 100,
         "exact_state_transition_every_task": exact_state_transitions == 100,

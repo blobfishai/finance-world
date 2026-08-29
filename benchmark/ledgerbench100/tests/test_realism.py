@@ -19,10 +19,12 @@ from run_suite import incomplete_read_steps  # noqa: E402
 from realism import (  # noqa: E402
     _pdf,
     _xlsx,
+    augment_checks,
     case_contract,
     decision_options,
     reference_walk,
     release_prompt,
+    rubric_criteria,
     validate_native_asset,
 )
 
@@ -72,6 +74,34 @@ class LedgerBenchRealismTests(unittest.TestCase):
             options = decision_options(entry)
             self.assertEqual(3, len(options))
             self.assertEqual(1, sum(bool(option["selected"]) for option in options))
+
+    def test_public_rubric_exposes_each_causal_evidence_gate(self) -> None:
+        required_categories = {
+            "evidence",
+            "authority",
+            "correlation",
+            "communications",
+            "approval",
+            "operations",
+            "reconciliation",
+        }
+        for entry in self.catalog["tasks"]:
+            source = ROOT / "tasks" / entry["source_task"]
+            source_walk = json.loads((source / "solution" / "walk.json").read_text())
+            contract = case_contract(entry)
+            _, trace_contract = reference_walk(entry, source_walk, contract)
+            checks = json.loads((source / "tests" / "checks.json").read_text())
+            checks = augment_checks(entry, checks, contract, trace_contract)
+            criteria = rubric_criteria(entry, checks, trace_contract, contract)
+
+            self.assertGreaterEqual(len(criteria), 40)
+            self.assertTrue(required_categories <= {row["category"] for row in criteria})
+            exact_call_criteria = [
+                row for row in criteria
+                if row["enforced_by"].startswith("required_calls exact ")
+            ]
+            self.assertEqual(18, len(exact_call_criteria))
+            self.assertEqual(18, len({row["id"] for row in exact_call_criteria}))
 
     def test_native_pdf_and_workbook_are_parseable(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

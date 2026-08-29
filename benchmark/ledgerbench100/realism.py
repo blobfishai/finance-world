@@ -577,11 +577,191 @@ def rubric_criteria(
     def add(category: str, key: str, description: str, enforced_by: str) -> None:
         criteria.append({"id": f"{category}.{key}", "category": category, "description": description, "enforced_by": enforced_by})
 
+    required_context = trace_contract["required_context_calls"]
+
+    def require_call(
+        category: str,
+        key: str,
+        description: str,
+        server: str,
+        tool: str,
+        args: dict[str, Any],
+    ) -> None:
+        """Publish one causal criterion backed by an exact required-call gate.
+
+        The public rubric is generated from the same call contract consumed by
+        ``required_calls``, ``reads_before_write``, and
+        ``successful_required_calls``.  Failing the build when a described call
+        is absent prevents the rubric from drifting into narrative-only claims.
+        """
+
+        expected = {"server": server, "tool": tool, "args": args}
+        if expected not in required_context:
+            raise ValueError(
+                f"{entry['task_id']} rubric criterion {key} has no exact "
+                f"required-call gate: {expected}"
+            )
+        add(
+            category,
+            key,
+            description,
+            f"required_calls exact {server}.{tool}({json.dumps(args, sort_keys=True)}) "
+            "+ successful_required_calls + reads_before_write",
+        )
+
     add("investigation", "case-identity", f"Resolve immutable work item {contract['case_id']} and its scoped subject before combining records.", "required_calls + FinanceCases filter")
     add("investigation", "operative-authority", f"Identify {CONTEXT_REVISION} as operative and treat {SUPERSEDED_REVISION} as historical evidence only.", "exact policy metadata and full-document reads")
     add("investigation", "causal-route", spec.analysis_route, "source-system reads before the governed write")
     add("investigation", "approval-independent", "Open the independent scope approval; it authorizes the work but does not supply the outcome.", "exact Gmail message and attachment reads")
     add("investigation", "current-versus-stale", "Compare the current evidence register with the retained prior tracker instead of trusting either display in isolation.", "exact Graph workbook reads")
+
+    # Spell out the causal investigation an experienced finance operator must
+    # perform.  These are not checklist prose: every line is tied to one exact,
+    # successful, pre-write MCP request in the executable verifier contract.
+    require_call(
+        "evidence",
+        "discover-finance-case-surface",
+        "Discover the ERP entity that owns finance work items before assuming which table or record shape contains the case.",
+        "erp",
+        "data_find_entity_type",
+        {"query": "finance case work item"},
+    )
+    require_call(
+        "evidence",
+        "interpret-finance-case-schema",
+        "Inspect the FinanceCases metadata so status, decision, evidence-reference, and ownership fields are interpreted from the live schema.",
+        "erp",
+        "data_get_entity_metadata",
+        {"entity": "FinanceCases"},
+    )
+    require_call(
+        "evidence",
+        "resolve-exact-open-case",
+        f"Read the exact immutable case row for {contract['case_id']} and use its current subject and status as the scope anchor.",
+        "erp",
+        "data_find_entities",
+        {"entity": "FinanceCases", "filters": {"case_id": contract["case_id"]}},
+    )
+    require_call(
+        "authority",
+        "locate-case-controls",
+        f"Search governed documents by {contract['case_id']} so the decision begins from task-linked controls rather than a familiar policy title.",
+        "docs",
+        "search_documents",
+        {"query": contract["case_id"]},
+    )
+    require_call(
+        "authority",
+        "validate-effective-policy-metadata",
+        f"Check metadata for {contract['current_policy_id']} to establish its effective date and {CONTEXT_REVISION} revision before applying it.",
+        "docs",
+        "get_document_metadata",
+        {"doc_id": contract["current_policy_id"]},
+    )
+    require_call(
+        "authority",
+        "apply-effective-policy-body",
+        f"Read the full body of {contract['current_policy_id']} and apply its decision rule to this case, not merely its search snippet or title.",
+        "docs",
+        "get_document",
+        {"doc_id": contract["current_policy_id"]},
+    )
+    require_call(
+        "authority",
+        "disqualify-superseded-policy",
+        f"Inspect metadata for {contract['prior_policy_id']} and disqualify {SUPERSEDED_REVISION} before comparing operational facts.",
+        "docs",
+        "get_document_metadata",
+        {"doc_id": contract["prior_policy_id"]},
+    )
+    require_call(
+        "correlation",
+        "resolve-immutable-evidence-map",
+        f"Use {contract['evidence_map_id']} to correlate authority, approval, operations, and case identity by immutable reference rather than display name.",
+        "docs",
+        "get_document",
+        {"doc_id": contract["evidence_map_id"]},
+    )
+    require_call(
+        "communications",
+        "scope-case-mailbox",
+        f"Search the inbox for {contract['case_id']} to identify the contemporaneous approval, operations, challenge, and stale threads.",
+        "email",
+        "messages_list",
+        {"q": contract["case_id"], "label": "INBOX"},
+    )
+    require_call(
+        "approval",
+        "verify-approval-message",
+        f"Open approval message {contract['approval_email_id']} and confirm the reviewer, timestamp, and approved scope.",
+        "email",
+        "messages_get",
+        {"id": contract["approval_email_id"]},
+    )
+    require_call(
+        "approval",
+        "verify-approval-attachment",
+        f"Read the attachment on {contract['approval_email_id']} to distinguish authorization to investigate from authorization of a predetermined outcome.",
+        "email",
+        "attachments_get",
+        {"message_id": contract["approval_email_id"]},
+    )
+    require_call(
+        "operations",
+        "establish-current-operations",
+        f"Open current operations message {contract['operations_email_id']} and use it to locate the task-native system records needed by the finance analysis.",
+        "email",
+        "messages_get",
+        {"id": contract["operations_email_id"]},
+    )
+    require_call(
+        "operations",
+        "reject-stale-operations",
+        f"Open retained draft {contract['stale_email_id']} and reject its shortcut because its date and governing revision are stale.",
+        "email",
+        "messages_get",
+        {"id": contract["stale_email_id"]},
+    )
+    require_call(
+        "reconciliation",
+        "locate-case-workbooks",
+        f"Search Drive for {contract['case_id']} to find both the current evidence register and the retained prior tracker.",
+        "sheets",
+        "drive_search",
+        {"q": contract["case_id"]},
+    )
+    require_call(
+        "reconciliation",
+        "validate-current-workbook",
+        f"Inspect Drive metadata for {contract['current_workbook']} and establish its owner and modification time before trusting its rows.",
+        "sheets",
+        "get_drive_item",
+        {"item": contract["current_workbook"]},
+    )
+    require_call(
+        "reconciliation",
+        "read-current-register",
+        f"Read A1:F5 from {contract['current_workbook']} and reconcile the current identity, authority, operations, and approval references.",
+        "sheets",
+        "workbook_range",
+        {"item": contract["current_workbook"], "address": "A1:F5"},
+    )
+    require_call(
+        "reconciliation",
+        "validate-prior-workbook",
+        f"Inspect Drive metadata for {contract['stale_workbook']} so its former owner and older modification time remain visible in the comparison.",
+        "sheets",
+        "get_drive_item",
+        {"item": contract["stale_workbook"]},
+    )
+    require_call(
+        "reconciliation",
+        "reject-prior-register",
+        f"Read A1:F3 from {contract['stale_workbook']} and reject rows tied to {SUPERSEDED_REVISION} instead of silently merging them into the current register.",
+        "sheets",
+        "workbook_range",
+        {"item": contract["stale_workbook"], "address": "A1:F3"},
+    )
     for server in sorted({call["server"] for call in trace_contract["required_context_calls"]}):
         add("investigation", f"provider-{server}", f"Use the task-scoped {PROVIDER_MAPPINGS[server]} evidence needed for this case.", "successful required provider calls")
     add("decision", "supported-condition", spec.supported_condition, "exact authored decision and final state")
@@ -599,7 +779,7 @@ def rubric_criteria(
     add("procedure", "message-readback", "Reopen the exact completion thread after sending it.", "post_write_readback")
     add("procedure", "successful-calls", "Required evidence calls must succeed; failed lookups do not count as investigation.", "successful_required_calls")
     add("containment", "write-scope", "Preserve every table outside the source task's authorized mutations, the finance case, its audit row, the completion email, and the reporting row.", "writes_only initial-state diff")
-    if len(criteria) < 20:
+    if len(criteria) < 40:
         raise ValueError(f"{entry['task_id']} has only {len(criteria)} public criteria")
     return criteria
 
