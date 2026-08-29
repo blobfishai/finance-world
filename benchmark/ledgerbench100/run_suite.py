@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Execute every LedgerBench-100 pack against positive and adversarial trajectories.
 
-Per pack (12 executions, all against the pack's OWN contents — its gzipped world,
+Per pack (13 executions, all against the pack's OWN contents — its gzipped world,
 its runtime modules, its walk.json, its baked taskspec checks):
 
   oracle x2        replay solution/walk.json; reward must be 1; the two verifier
@@ -16,6 +16,8 @@ its runtime modules, its walk.json, its baked taskspec checks):
   wrong_value      every reported answer value corrupted; must score 0
   wrong_decision   case decision changed to an unsupported code; must score 0
   wrong_evidence   one persisted evidence reference changed; must score 0
+  rejected_mutation an otherwise-correct run contains a rejected state-changing
+                    Dynamics request; strict pass must remain false
 
 Zero false accepts across all negative controls is a release gate. Writes
 reports/qualification.json (release + huggingface copies) and one normalized
@@ -33,10 +35,12 @@ import tempfile
 from pathlib import Path
 from typing import Any, Callable
 
+from exporter import remove_generated_bytecode
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 RELEASE_NAME = "LedgerBench-100"
-RELEASE_VERSION = "3.1.0"
+RELEASE_VERSION = "3.2.0"
 CORRUPT_VALUE = "totally-wrong-answer-xyzzy"
 
 
@@ -77,6 +81,7 @@ class PackWorld:
             sys.path.remove(runtime_path)
         sys.modules.pop("framework", None)
         sys.modules.pop("vcode", None)
+        remove_generated_bytecode(self.pack)
 
     def fresh_run(self, run: Path) -> None:
         import os
@@ -193,8 +198,37 @@ def write_before_read_steps(world: PackWorld) -> list[dict]:
 
 def missing_readback_steps(world: PackWorld) -> list[dict]:
     contract = world.realism["trace_contract"]
-    targets = [contract["state_readback_call"], contract["message_readback_call"]]
-    return [step for step in world.walk if not any(_matches(step, target) for target in targets)]
+    targets = [
+        *contract["source_postwrite_readback_calls"],
+        contract["state_readback_call"],
+        contract["message_readback_call"],
+    ]
+    # Remove the last matching occurrence for each provider readback. Earlier
+    # investigative reads remain intact, isolating the verification failure.
+    remove_indexes: set[int] = set()
+    for target in targets:
+        matches = [
+            index for index, step in enumerate(world.walk) if _matches(step, target)
+        ]
+        if not matches:
+            raise ValueError(
+                f"{world.spec['task_id']} readback target was not present: {target}"
+            )
+        remove_indexes.add(matches[-1])
+    return [
+        step for index, step in enumerate(world.walk) if index not in remove_indexes
+    ]
+
+
+def rejected_mutation_steps(world: PackWorld) -> list[dict]:
+    """Probe the real Dynamics action with an invalid payload, then solve normally."""
+
+    rejected = {
+        "server": "erp",
+        "tool": "api_invoke_action",
+        "args": {"action": "ContosoFinanceCaseDecide", "parameters": {}},
+    }
+    return [rejected, *world.walk]
 
 
 def wrong_value_steps(world: PackWorld) -> list[dict]:
@@ -241,6 +275,7 @@ NEGATIVES: list[tuple[str, Callable[[PackWorld], list[dict]]]] = [
     ("wrong_value", wrong_value_steps),
     ("wrong_decision", wrong_decision_steps),
     ("wrong_evidence", wrong_evidence_steps),
+    ("rejected_mutation", rejected_mutation_steps),
 ]
 
 
@@ -308,6 +343,7 @@ def run(release: Path) -> dict[str, Any]:
                 negatives[name] = {
                     "passed": report["passed"],
                     "reward": report["reward"],
+                    "ledger_score": report["ledger_score"],
                     "failed_checks": report["failed_checks"],
                     "report_sha256": report["report_sha256"],
                 }
@@ -321,6 +357,7 @@ def run(release: Path) -> dict[str, Any]:
                 "oracle_tool_calls": first["n_tool_calls"],
                 "oracle_servers_used": first["servers_used"],
                 "oracle_report_sha256": first["report_sha256"],
+                "oracle_ledger_score": first["ledger_score"],
                 "second_oracle_report_sha256": second["report_sha256"],
                 "deterministic_replay_match": deterministic,
                 "negative_executions": negatives,
@@ -334,9 +371,11 @@ def run(release: Path) -> dict[str, Any]:
 
     executions = len(task_dirs) * (2 + len(control_names))
     report = {
-        "schema_version": "1.0",
+        "schema_version": "ledgerbench.qualification.v2",
         "benchmark": RELEASE_NAME,
         "version": RELEASE_VERSION,
+        "metric": "LedgerScore",
+        "points_possible": 100,
         "task_count": len(task_dirs),
         "executions": executions,
         "oracle": {

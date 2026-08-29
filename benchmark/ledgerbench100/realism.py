@@ -1,8 +1,9 @@
-"""Causal-realism contract for the LedgerBench-100 v3 release."""
+"""Causal-realism contract for the LedgerBench-100 v3.2 release."""
 
 from __future__ import annotations
 
 import csv
+import datetime as dt
 import hashlib
 import io
 import json
@@ -30,6 +31,40 @@ PROVIDER_MAPPINGS = {
 
 CONTEXT_REVISION = "FIN-CONTROL-2026.03"
 SUPERSEDED_REVISION = "FIN-CONTROL-2025.11"
+FIXED_XLSX_ZIP_TIMESTAMP = (2026, 3, 2, 12, 0, 0)
+
+SEMANTIC_MILESTONE_WEIGHTS = {
+    "investigation.scope": 4,
+    "investigation.authority": 6,
+    "investigation.current_state": 8,
+    "investigation.source_systems": 10,
+    "analysis.causal_reasoning": 10,
+    "decision.supported_path": 8,
+    "state.operational": 12,
+    "state.case": 10,
+    "state.collaboration": 6,
+    "verification.outcome": 6,
+    "verification.readback": 6,
+    "containment.scope": 5,
+    "answer.insights": 7,
+    "execution.sequence": 2,
+}
+
+SOURCE_MUTATION_TOOLS = {
+    ("email", "send_message"),
+    ("odoo", "create"),
+    ("odoo", "write"),
+    ("odoo", "action_confirm"),
+}
+STATE_CHANGING_ERP_ACTIONS = {
+    "ContosoIssueCollectionLetter",
+    "ContosoSetCreditHold",
+    "ContosoJournalPropose",
+    "ContosoJournalPost",
+    "ContosoApprovalDecide",
+    "ContosoPaymentRunPropose",
+    "ContosoPaymentRunCommit",
+}
 
 
 def task_number(entry: dict[str, Any]) -> int:
@@ -131,6 +166,191 @@ def _argument_tokens(value: Any) -> list[str]:
 
 def _wrong_decision_code(spec: DecisionSpec) -> str:
     return "NO_ACTION" if spec.decision_code.startswith("HOLD_") else "HOLD_FOR_EVIDENCE"
+
+
+def _call_selector(step: dict[str, Any]) -> dict[str, Any]:
+    selector = {
+        "server": step["server"],
+        "tool": step["tool"],
+        "args": deepcopy(step.get("args") or {}),
+    }
+    if step.get("expected_error_contains"):
+        selector["expected_error_contains"] = str(step["expected_error_contains"])
+    return selector
+
+
+def _unique_calls(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    output: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for step in steps:
+        selector = _call_selector(step)
+        key = json.dumps(selector, separators=(",", ":"), sort_keys=True)
+        if key not in seen:
+            seen.add(key)
+            output.append(selector)
+    return output
+
+
+def _is_source_mutation(step: dict[str, Any]) -> bool:
+    if (step.get("server"), step.get("tool")) in SOURCE_MUTATION_TOOLS:
+        return True
+    return (
+        step.get("server") == "erp"
+        and step.get("tool") == "api_invoke_action"
+        and (step.get("args") or {}).get("action") in STATE_CHANGING_ERP_ACTIONS
+    )
+
+
+def _mutation_scope_selector(step: dict[str, Any]) -> dict[str, Any]:
+    """Match a state-changing operation even when its payload was rejected."""
+
+    arguments = step.get("args") or {}
+    scoped: dict[str, Any] = {}
+    if step.get("server") == "erp" and step.get("tool") == "api_invoke_action":
+        scoped = {"action": arguments.get("action")}
+    elif step.get("server") == "odoo":
+        scoped = {"model": arguments.get("model")}
+    elif step.get("server") == "email" and step.get("tool") == "send_message":
+        # A rejected provider send may fail before the subject is accepted.
+        scoped = {}
+    return {
+        "server": step["server"],
+        "tool": step["tool"],
+        "args": scoped,
+    }
+
+
+def _annotate_expected_negative_evidence(
+    entry: dict[str, Any],
+    selectors: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Identify exact provider negatives that prove absence rather than failure."""
+
+    output = deepcopy(selectors)
+    if entry["source_task"] != "finance_qa/unavailable-concept":
+        return output
+    target = {
+        "server": "filings",
+        "tool": "get_company_concept",
+        "args": {
+            "ticker": "WMT",
+            "concept": "ResearchAndDevelopmentExpense",
+        },
+    }
+    matched = 0
+    for selector in output:
+        if selector == target:
+            selector["expected_error_contains"] = "concept not in snapshot"
+            matched += 1
+    if matched != 1:
+        raise ValueError(
+            f"{entry['task_id']} expected one unavailable-concept evidence call, got {matched}"
+        )
+    return output
+
+
+def _erpbench_product_code(source_walk: list[dict[str, Any]]) -> str:
+    for step in source_walk:
+        arguments = step.get("args") or {}
+        for leaf in arguments.get("domain") or []:
+            if (
+                isinstance(leaf, list)
+                and len(leaf) == 3
+                and leaf[0] == "product_code"
+                and leaf[1] == "="
+            ):
+                return str(leaf[2])
+    raise ValueError("ERPBench source walk has no product_code domain")
+
+
+def _erpbench_material_reads(
+    source_walk: list[dict[str, Any]],
+    contract: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Expose the real Odoo records needed to derive a make/buy promise."""
+
+    product_code = _erpbench_product_code(source_walk)
+    return [
+        {"server": "odoo", "tool": "fields_get", "args": {"model": "sale.order"}},
+        {
+            "server": "odoo",
+            "tool": "search_read",
+            "args": {
+                "model": "sale.order",
+                "domain": [
+                    ["state", "=", "draft"],
+                    ["origin", "=", f"{contract['case_id']} demand intake"],
+                ],
+            },
+        },
+        {
+            "server": "odoo",
+            "tool": "search_read",
+            "args": {"model": "sale.order.line", "domain": [["order_name", "like", "Q"]]},
+        },
+        {
+            "server": "odoo",
+            "tool": "search_read",
+            "args": {"model": "product.product", "domain": [["code", "=", product_code]]},
+        },
+        {
+            "server": "odoo",
+            "tool": "search_read",
+            "args": {"model": "res.partner", "domain": [["kind", "=", "vendor"]]},
+        },
+        {
+            "server": "odoo",
+            "tool": "search_read",
+            "args": {"model": "product.supplierinfo", "domain": [["product_code", "=", product_code]]},
+        },
+        {
+            "server": "odoo",
+            "tool": "search_read",
+            "args": {"model": "stock.quant", "domain": [["product_code", "=", product_code]]},
+        },
+        {
+            "server": "odoo",
+            "tool": "search_read",
+            "args": {"model": "mrp.bom", "domain": [["product_code", "=", product_code]]},
+        },
+        {"server": "odoo", "tool": "search_read", "args": {"model": "mrp.bom.line", "domain": []}},
+        {"server": "odoo", "tool": "search_read", "args": {"model": "mrp.workcenter", "domain": []}},
+    ]
+
+
+def _seed_erpbench_demand_quotes(
+    cx: sqlite3.Connection,
+    entry: dict[str, Any],
+    contract: dict[str, Any],
+    world_now: str,
+) -> None:
+    """Make high-level manufacturing demand inspectable through real Odoo models."""
+
+    if entry["family"] != "erpbench":
+        return
+    as_of = dt.date.fromisoformat(world_now[:10])
+    demand = cx.execute(
+        "SELECT partner_ref, product_code, units, due_days FROM erpb_demand ORDER BY id"
+    ).fetchall()
+    if not demand:
+        raise ValueError(f"{entry['task_id']} has no seeded ERP demand")
+    price_by_product = {
+        row[0]: row[1]
+        for row in cx.execute("SELECT code, list_price FROM erpb_products")
+    }
+    for index, row in enumerate(demand, 1):
+        quote = f"Q{index:05d}"
+        commitment = (as_of + dt.timedelta(days=int(row[3]))).isoformat()
+        cx.execute(
+            "INSERT INTO erpb_sale_orders(name,partner_ref,state,commitment_date,origin) "
+            "VALUES(?,?, 'draft', ?, ?)",
+            (quote, row[0], commitment, f"{contract['case_id']} demand intake"),
+        )
+        cx.execute(
+            "INSERT INTO erpb_sale_order_lines(order_name,product_code,qty,price_unit) "
+            "VALUES(?,?,?,?)",
+            (quote, row[1], row[2], price_by_product[row[1]]),
+        )
 
 
 def seed_case_context(
@@ -305,6 +525,7 @@ records. A supported no-action or unavailable finding is a valid outcome.
             "2026-03-02T08:05:00Z",
         ),
     )
+    _seed_erpbench_demand_quotes(cx, entry, contract, world_now)
     cx.commit()
     cx.close()
     return contract
@@ -347,6 +568,39 @@ def _context_groups(entry: dict[str, Any], contract: dict[str, Any]) -> list[lis
     return [groups[index] for index in orders[(number - 1) % len(orders)]]
 
 
+def _material_context_groups(contract: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
+    """The 18 decision-controlling cross-system reads; reference extras are optional."""
+
+    return {
+        "scope": [
+            {"server": "erp", "tool": "data_find_entity_type", "args": {"query": "finance case work item"}},
+            {"server": "erp", "tool": "data_get_entity_metadata", "args": {"entity": "FinanceCases"}},
+            {"server": "erp", "tool": "data_find_entities", "args": {"entity": "FinanceCases", "filters": {"case_id": contract["case_id"]}}},
+        ],
+        "authority": [
+            {"server": "docs", "tool": "search_documents", "args": {"query": contract["case_id"]}},
+            {"server": "docs", "tool": "get_document_metadata", "args": {"doc_id": contract["current_policy_id"]}},
+            {"server": "docs", "tool": "get_document", "args": {"doc_id": contract["current_policy_id"]}},
+            {"server": "docs", "tool": "get_document_metadata", "args": {"doc_id": contract["prior_policy_id"]}},
+            {"server": "docs", "tool": "get_document", "args": {"doc_id": contract["evidence_map_id"]}},
+        ],
+        "approval": [
+            {"server": "email", "tool": "messages_list", "args": {"q": contract["case_id"], "label": "INBOX"}},
+            {"server": "email", "tool": "messages_get", "args": {"id": contract["approval_email_id"]}},
+            {"server": "email", "tool": "attachments_get", "args": {"message_id": contract["approval_email_id"]}},
+        ],
+        "current_state": [
+            {"server": "email", "tool": "messages_get", "args": {"id": contract["operations_email_id"]}},
+            {"server": "email", "tool": "messages_get", "args": {"id": contract["stale_email_id"]}},
+            {"server": "sheets", "tool": "drive_search", "args": {"q": contract["case_id"]}},
+            {"server": "sheets", "tool": "get_drive_item", "args": {"item": contract["current_workbook"]}},
+            {"server": "sheets", "tool": "workbook_range", "args": {"item": contract["current_workbook"], "address": "A1:F5"}},
+            {"server": "sheets", "tool": "get_drive_item", "args": {"item": contract["stale_workbook"]}},
+            {"server": "sheets", "tool": "workbook_range", "args": {"item": contract["stale_workbook"], "address": "A1:F3"}},
+        ],
+    }
+
+
 def _optional_context(entry: dict[str, Any], contract: dict[str, Any]) -> list[dict[str, Any]]:
     number = task_number(entry)
     options = [
@@ -361,12 +615,141 @@ def _optional_context(entry: dict[str, Any], contract: dict[str, Any]) -> list[d
     return [deepcopy(step) for bit, step in enumerate(options) if number & (1 << bit)]
 
 
+def _source_postwrite_contracts(
+    source_mutations: list[dict[str, Any]],
+) -> list[dict[str, dict[str, Any]]]:
+    """Derive provider-native reads that prove task-world writes persisted."""
+
+    contracts: list[dict[str, dict[str, Any]]] = []
+    odoo_models: list[str] = []
+    for step in source_mutations:
+        arguments = step.get("args") or {}
+        if step["server"] == "odoo":
+            model = arguments.get("model")
+            if isinstance(model, str) and model not in odoo_models:
+                odoo_models.append(model)
+        elif step["server"] == "email" and step["tool"] == "send_message":
+            subject = str(arguments.get("subject") or "")
+            contracts.append(
+                {
+                    "write": {"server": "email", "tool": "send_message", "args": {"subject": subject}},
+                    "readback": {
+                        "server": "email",
+                        "tool": "messages_list",
+                        "args": {"q": subject, "label": "SENT"},
+                    },
+                }
+            )
+
+    state_by_model = {
+        "sale.order": "sale",
+        "purchase.order": "purchase",
+        "mrp.production": "confirmed",
+    }
+    for model in odoo_models:
+        matching = [
+            step
+            for step in source_mutations
+            if step["server"] == "odoo"
+            and (step.get("args") or {}).get("model") == model
+        ]
+        write = _call_selector(matching[-1])
+        # Only identity-bearing arguments define the mutation boundary; values
+        # and generated names remain free to use an equivalent provider call.
+        write["args"] = {"model": model}
+        domain = [["state", "=", state_by_model[model]]] if model in state_by_model else []
+        contracts.append(
+            {
+                "write": write,
+                "readback": {
+                    "server": "odoo",
+                    "tool": "search_read",
+                    "args": {"model": model, "domain": domain},
+                },
+            }
+        )
+
+    erp_actions = [
+        step
+        for step in source_mutations
+        if step["server"] == "erp" and step["tool"] == "api_invoke_action"
+    ]
+    action_names = [(step.get("args") or {}).get("action") for step in erp_actions]
+    if any(str(action).startswith("ContosoPaymentRun") for action in action_names):
+        write_step = next(
+            (
+                step
+                for step in reversed(erp_actions)
+                if (step.get("args") or {}).get("action") == "ContosoPaymentRunCommit"
+            ),
+            erp_actions[-1],
+        )
+        run_id = (write_step.get("args") or {}).get("parameters", {}).get("run_id", "PR-00001")
+        for entity in ("PaymentRuns", "PaymentRunLines"):
+            contracts.append(
+                {
+                    "write": {
+                        "server": "erp",
+                        "tool": "api_invoke_action",
+                        "args": {"action": (write_step.get("args") or {})["action"]},
+                    },
+                    "readback": {
+                        "server": "erp",
+                        "tool": "data_find_entities",
+                        "args": {"entity": entity, "filters": {"run_id": run_id}},
+                    },
+                }
+            )
+    if any(str(action).startswith("ContosoJournal") for action in action_names):
+        write_step = next(
+            (
+                step
+                for step in reversed(erp_actions)
+                if (step.get("args") or {}).get("action") == "ContosoJournalPost"
+            ),
+            erp_actions[-1],
+        )
+        journal_id = (write_step.get("args") or {}).get("parameters", {}).get("journal_id", "GJ-00002")
+        contracts.append(
+            {
+                "write": {
+                    "server": "erp",
+                    "tool": "api_invoke_action",
+                    "args": {"action": (write_step.get("args") or {})["action"]},
+                },
+                "readback": {
+                    "server": "erp",
+                    "tool": "data_find_entities",
+                    "args": {"entity": "LedgerJournals", "filters": {"journal_id": journal_id}},
+                },
+            }
+        )
+    for write_step in erp_actions:
+        action = (write_step.get("args") or {}).get("action")
+        parameters = (write_step.get("args") or {}).get("parameters", {})
+        if action == "ContosoIssueCollectionLetter":
+            contracts.append(
+                {
+                    "write": {"server": "erp", "tool": "api_invoke_action", "args": {"action": action}},
+                    "readback": {
+                        "server": "erp",
+                        "tool": "data_find_entities",
+                        "args": {
+                            "entity": "CollectionLetters",
+                            "filters": {"account": parameters["customer_account"]},
+                        },
+                    },
+                }
+            )
+    return contracts
+
+
 def reference_walk(
     entry: dict[str, Any],
     source_walk: list[dict[str, Any]],
     contract: dict[str, Any],
 ) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    """Compose discovery, source investigation, governed write, and readback."""
+    """Compose material investigation, task-world work, readback, and handoff."""
 
     spec = decision_spec(entry["source_task"])
     reporting = {"server": "harness", "tool": "reporting_fields", "args": {}}
@@ -385,6 +768,29 @@ def reference_walk(
     for offset, step in enumerate(optional_reads):
         position = min(len(context_reads), 2 + offset * 3)
         context_reads.insert(position, step)
+
+    deep_source_reads = (
+        _erpbench_material_reads(source_walk, contract)
+        if entry["family"] == "erpbench"
+        else []
+    )
+    base_call_keys = {
+        json.dumps(_call_selector(step), separators=(",", ":"), sort_keys=True)
+        for step in base
+    }
+    extra_source_reads = [
+        step
+        for step in deep_source_reads
+        if json.dumps(_call_selector(step), separators=(",", ":"), sort_keys=True)
+        not in base_call_keys
+    ]
+    source_mutations = [step for step in base if _is_source_mutation(step)]
+    source_reads = [step for step in base if not _is_source_mutation(step)]
+    source_postwrite_contracts = _source_postwrite_contracts(source_mutations)
+    source_postwrite_reads = _unique_calls(
+        [contract_row["readback"] for contract_row in source_postwrite_contracts]
+    )
+
     rationale = f"{spec.supported_condition} {spec.analysis_route}"
     decide = {
         "server": "erp",
@@ -427,7 +833,14 @@ def reference_walk(
         {"server": "email", "tool": "threads_get", "args": {"id": contract["completion_thread_id"]}},
         submit,
     ]
-    walk = [reporting, *context_reads, *base, *tail]
+    walk = [
+        reporting,
+        *context_reads,
+        *extra_source_reads,
+        *base,
+        *source_postwrite_reads,
+        *tail,
+    ]
     workflow_slug = entry["source_task"].split("/", 1)[1].replace("-", "_")
     semantic_graph = [
         "discover_reporting_contract",
@@ -437,24 +850,79 @@ def reference_walk(
         "verify_independent_scope_approval",
         f"reject_{workflow_slug}_stale_or_single_system_shortcut",
         f"derive_{spec.decision_code.casefold()}",
+        f"persist_{workflow_slug}_task_native_outcome",
+        "read_back_task_native_provider_state",
         "record_governed_dynamics_transition",
         "read_back_exact_case_state",
         "send_and_reopen_completion_thread",
         "file_supported_finance_result",
     ]
-    required_context = [
-        {"server": step["server"], "tool": step["tool"], "args": step.get("args") or {}}
-        for step in context_reads
-    ]
+    fixed_groups = {
+        name: _unique_calls(steps)
+        for name, steps in _material_context_groups(contract).items()
+    }
+    material_source = _annotate_expected_negative_evidence(
+        entry,
+        _unique_calls([*extra_source_reads, *source_reads]),
+    )
+    material_groups = {**fixed_groups, "source_systems": material_source}
+    required_context = _unique_calls(
+        [step for steps in material_groups.values() for step in steps]
+    )
+    reference_context = _unique_calls([*context_reads, *extra_source_reads, *source_reads])
+    first_source_mutation = (
+        _call_selector(source_mutations[0]) if source_mutations else None
+    )
+    source_prewrite = (
+        _unique_calls(
+            [
+                *[
+                    step
+                    for steps in fixed_groups.values()
+                    for step in steps
+                ],
+                *extra_source_reads,
+                *base[: base.index(source_mutations[0])],
+            ]
+        )
+        if source_mutations
+        else required_context
+    )
+    wrapper_write = {
+        "server": "erp",
+        "tool": "api_invoke_action",
+        "args": {"action": "ContosoFinanceCaseDecide"},
+    }
+    wrapper_message = {
+        "server": "email",
+        "tool": "send_message",
+        "args": {"subject": contract["completion_subject"]},
+    }
     return walk, {
         "required_context_calls": required_context,
-        "write_call": {"server": "erp", "tool": "api_invoke_action", "args": {"action": "ContosoFinanceCaseDecide"}},
+        "material_context_groups": material_groups,
+        "material_context_call_count": len(required_context),
+        "reference_context_calls": reference_context,
+        "reference_context_call_count": len(reference_context),
+        "optional_context_calls": _unique_calls(optional_reads),
+        "source_prewrite_calls": source_prewrite,
+        "source_mutation_calls": _unique_calls(source_mutations),
+        "source_first_write_call": first_source_mutation,
+        "source_postwrite_contracts": source_postwrite_contracts,
+        "source_postwrite_readback_calls": source_postwrite_reads,
+        "write_call": wrapper_write,
         "state_readback_call": {"server": "erp", "tool": "data_find_entities", "args": {"entity": "FinanceCases", "filters": {"case_id": contract["case_id"]}}},
-        "message_write_call": {"server": "email", "tool": "send_message", "args": {"subject": contract["completion_subject"]}},
+        "message_write_call": wrapper_message,
         "message_readback_call": {"server": "email", "tool": "threads_get", "args": {"id": contract["completion_thread_id"]}},
+        "all_mutation_calls": _unique_calls(
+            [
+                _mutation_scope_selector(step)
+                for step in [*source_mutations, wrapper_write, wrapper_message]
+            ]
+        ),
         "semantic_action_graph": semantic_graph,
         "base_call_count": len(base),
-        "context_call_count": len(context_reads),
+        "context_call_count": len(reference_context),
     }
 
 
@@ -490,27 +958,67 @@ def augment_checks(
         ):
             state_check["expect"] += 1
     trace_checks = checks.setdefault("trace_checks", [])
-    trace_checks.extend(
-        [
-            {"type": "required_calls", "calls": trace_contract["required_context_calls"]},
+    for group_name, calls in trace_contract["material_context_groups"].items():
+        trace_checks.extend(
+            [
+                {
+                    "type": "required_calls",
+                    "name": f"material_{group_name}",
+                    "calls": calls,
+                },
+                {
+                    "type": "successful_required_calls",
+                    "name": f"material_{group_name}_successful",
+                    "calls": calls,
+                },
+            ]
+        )
+    trace_checks.append(
+        {
+            "type": "reads_before_write",
+            "name": "material_before_finance_case",
+            "reads": trace_contract["required_context_calls"],
+            "write": trace_contract["write_call"],
+        }
+    )
+    if trace_contract["source_first_write_call"] is not None:
+        trace_checks.append(
             {
                 "type": "reads_before_write",
-                "reads": trace_contract["required_context_calls"],
-                "write": trace_contract["write_call"],
-            },
+                "name": "source_evidence_before_source_write",
+                "reads": trace_contract["source_prewrite_calls"],
+                "write": trace_contract["source_first_write_call"],
+            }
+        )
+    for index, source_contract in enumerate(
+        trace_contract["source_postwrite_contracts"], 1
+    ):
+        trace_checks.append(
             {
                 "type": "post_write_readback",
+                "name": f"source_provider_readback_{index:02d}",
+                **source_contract,
+            }
+        )
+    trace_checks.extend(
+        [
+            {
+                "type": "post_write_readback",
+                "name": "finance_case_readback",
                 "write": trace_contract["write_call"],
                 "readback": trace_contract["state_readback_call"],
             },
             {
                 "type": "post_write_readback",
+                "name": "completion_message_readback",
                 "write": trace_contract["message_write_call"],
                 "readback": trace_contract["message_readback_call"],
             },
             {
                 "type": "ordered_calls",
+                "name": "case_readback_handoff_submit_order",
                 "calls": [
+                    *trace_contract["source_postwrite_readback_calls"],
                     trace_contract["write_call"],
                     trace_contract["state_readback_call"],
                     trace_contract["message_write_call"],
@@ -518,7 +1026,11 @@ def augment_checks(
                     {"server": "harness", "tool": "submit_answer", "args": {}},
                 ],
             },
-            {"type": "successful_required_calls", "calls": trace_contract["required_context_calls"]},
+            {
+                "type": "no_rejected_mutations",
+                "name": "no_rejected_mutations",
+                "calls": trace_contract["all_mutation_calls"],
+            },
         ]
     )
     escaped_case = contract["case_id"].replace("'", "''")
@@ -563,13 +1075,13 @@ def decision_options(entry: dict[str, Any]) -> list[dict[str, Any]]:
     ]
 
 
-def rubric_criteria(
+def _atomic_rubric_evidence(
     entry: dict[str, Any],
     checks: dict[str, Any],
     trace_contract: dict[str, Any],
     contract: dict[str, Any],
 ) -> list[dict[str, str]]:
-    """Explain the actual causal test in task-specific workplace language."""
+    """Validate detailed task-specific evidence behind the public milestones."""
 
     spec = decision_spec(entry["source_task"])
     criteria: list[dict[str, str]] = []
@@ -784,6 +1296,203 @@ def rubric_criteria(
     return criteria
 
 
+def _check_slug(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", value.casefold()).strip("-") or "check"
+
+
+def atomic_check_specs(checks: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return the stable IDs emitted by the packaged deterministic verifier."""
+
+    output: list[dict[str, Any]] = []
+    for source, key in (
+        ("answer", "answer_checks"),
+        ("trace", "trace_checks"),
+        ("state", "state_checks"),
+    ):
+        for index, check in enumerate(checks.get(key, []), 1):
+            label = str(
+                check.get("name")
+                or check.get("field")
+                or check.get("type")
+                or "check"
+            )
+            output.append(
+                {
+                    "id": f"{source}.{index:03d}.{_check_slug(label)}",
+                    "source": source,
+                    "type": str(check.get("type") or "string"),
+                    "name": label,
+                }
+            )
+    return output
+
+
+def rubric_criteria(
+    entry: dict[str, Any],
+    checks: dict[str, Any],
+    trace_contract: dict[str, Any],
+    contract: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Group every deterministic check into 14 task-specific employee outcomes."""
+
+    # Retain the exact-call validation from v3.1 without publishing a 40-line
+    # procedure as the employee-facing rubric.
+    _atomic_rubric_evidence(entry, checks, trace_contract, contract)
+    spec = decision_spec(entry["source_task"])
+    atomic = atomic_check_specs(checks)
+    check_by_id = {row["id"]: row for row in atomic}
+    grouped: dict[str, list[str]] = {
+        milestone_id: [] for milestone_id in SEMANTIC_MILESTONE_WEIGHTS
+    }
+
+    original_state: list[str] = []
+    case_evidence_id: str | None = None
+    for row in atomic:
+        source = row["source"]
+        name = row["name"]
+        check_type = row["type"]
+        target: str | None = None
+        if source == "answer":
+            target = "answer.insights"
+        elif source == "trace":
+            if name == "material_scope":
+                target = "investigation.scope"
+            elif name in {"material_authority", "material_approval"}:
+                target = "investigation.authority"
+            elif name == "material_current_state":
+                target = "investigation.current_state"
+            elif name == "material_source_systems":
+                target = "investigation.source_systems"
+            elif name.endswith("_successful"):
+                target = "analysis.causal_reasoning"
+            elif check_type in {"required_servers", "min_calls"}:
+                target = "investigation.source_systems"
+            elif check_type == "post_write_readback":
+                target = "verification.readback"
+            elif check_type in {
+                "reads_before_submit",
+                "reads_before_write",
+                "ordered_calls",
+                "no_rejected_mutations",
+            }:
+                target = "execution.sequence"
+            else:
+                target = "analysis.causal_reasoning"
+        elif source == "state":
+            if check_type == "writes_only":
+                target = "containment.scope"
+            elif name == "finance_case_exact_decision":
+                target = "decision.supported_path"
+            elif name == "finance_case_decided":
+                target = "state.case"
+            elif name == "finance_case_evidence_refs":
+                case_evidence_id = row["id"]
+            elif name == "one_finance_case_audit":
+                target = "verification.outcome"
+            elif name == "one_completion_email" or any(
+                token in name.casefold()
+                for token in ("sent_mail", "completion_message", "handoff")
+            ):
+                target = "state.collaboration"
+            else:
+                original_state.append(row["id"])
+        if target is not None:
+            grouped[target].append(row["id"])
+
+    if original_state:
+        grouped["state.operational"].extend(original_state)
+        if case_evidence_id is not None:
+            grouped["state.case"].append(case_evidence_id)
+    elif case_evidence_id is not None:
+        # Read-only analyses still materialize a task-native decision through
+        # the exact evidence references persisted on the finance case.
+        grouped["state.operational"].append(case_evidence_id)
+
+    source_mutations = trace_contract["source_mutation_calls"]
+    mutation_surfaces = sorted(
+        {f"{step['server']}.{step['tool']}" for step in source_mutations}
+    )
+    answer_fields = [
+        row["name"] for row in atomic if row["source"] == "answer"
+    ]
+    source_read_count = len(
+        trace_contract["material_context_groups"]["source_systems"]
+    )
+    readback_count = len(trace_contract["source_postwrite_contracts"]) + 2
+    descriptions = {
+        "investigation.scope": (
+            f"Resolve {contract['case_id']} through the live FinanceCases entity and keep similarly named records outside the task boundary."
+        ),
+        "investigation.authority": (
+            f"Establish {CONTEXT_REVISION} and the independent approval as operative for {contract['case_id']}; reject {SUPERSEDED_REVISION} as historical rather than silently merging it."
+        ),
+        "investigation.current_state": (
+            f"Reconcile the current operations message and {contract['current_workbook']} against the stale message and {contract['stale_workbook']} using immutable IDs and effective timestamps."
+        ),
+        "investigation.source_systems": (
+            f"Complete the {source_read_count} task-native provider reads needed to {spec.analysis_route[0].lower() + spec.analysis_route[1:]}"
+        ),
+        "analysis.causal_reasoning": (
+            f"Join identity, authority, approval, and live {entry['family']} records to establish whether {spec.supported_condition[0].lower() + spec.supported_condition[1:]}"
+        ),
+        "decision.supported_path": (
+            f"Compare the supported path, the evidence-insufficient hold, and the rejected shortcut; select `{spec.decision_code}` only because the joined evidence supports it."
+        ),
+        "state.operational": (
+            f"Leave the task-native {entry['family']} outcome in its exact supported state"
+            + (
+                f" through {', '.join(mutation_surfaces)}."
+                if mutation_surfaces
+                else " without fabricating an operational mutation for a read-only analysis."
+            )
+        ),
+        "state.case": (
+            f"Persist one source-audited transition of {contract['case_id']} from open to decided with the exact decision rationale and immutable evidence references."
+        ),
+        "state.collaboration": (
+            f"Send exactly the supported task-native communication, when required, and one scoped Controls completion message for {contract['case_id']}."
+        ),
+        "verification.outcome": (
+            f"Verify the task-native final state and produce exactly one governed Dynamics audit event for {contract['case_id']}."
+        ),
+        "verification.readback": (
+            f"Perform all {readback_count} provider-native readbacks after their writes, including the exact FinanceCases row and reopened Controls thread."
+        ),
+        "containment.scope": (
+            f"Keep every successful change inside the source task, {contract['case_id']}, its audit row, the completion message, and the answer record."
+        ),
+        "answer.insights": (
+            f"File the exact task-supported {', '.join(answer_fields)} conclusions in the discovered reporting schema with the correct units, identifiers, and scope."
+        ),
+        "execution.sequence": (
+            "Investigate before dependent writes, verify persisted state before handoff, submit last, and complete without a rejected state-changing call."
+        ),
+    }
+
+    missing = [milestone for milestone, ids in grouped.items() if not ids]
+    if missing:
+        raise ValueError(f"{entry['task_id']} has empty semantic milestones: {missing}")
+    assigned = [check_id for ids in grouped.values() for check_id in ids]
+    if len(assigned) != len(set(assigned)):
+        raise ValueError(f"{entry['task_id']} reuses an atomic check across milestones")
+    if set(assigned) != set(check_by_id):
+        omitted = sorted(set(check_by_id) - set(assigned))
+        raise ValueError(f"{entry['task_id']} omits atomic checks: {omitted}")
+    if sum(SEMANTIC_MILESTONE_WEIGHTS.values()) != 100:
+        raise AssertionError("semantic milestone weights must total 100")
+    return [
+        {
+            "id": milestone_id,
+            "category": milestone_id.split(".", 1)[0],
+            "description": descriptions[milestone_id],
+            "weight": weight,
+            "atomic_check_ids": grouped[milestone_id],
+            "atomic_checks": [check_by_id[check_id] for check_id in grouped[milestone_id]],
+        }
+        for milestone_id, weight in SEMANTIC_MILESTONE_WEIGHTS.items()
+    ]
+
+
 def _snapshot(
     connection: sqlite3.Connection,
     table: str,
@@ -834,12 +1543,20 @@ def _xlsx(rows: list[list[Any]]) -> bytes:
         + "</sheetData></worksheet>"
     )
     stream = io.BytesIO()
+
+    def member(name: str) -> zipfile.ZipInfo:
+        info = zipfile.ZipInfo(name, FIXED_XLSX_ZIP_TIMESTAMP)
+        info.compress_type = zipfile.ZIP_DEFLATED
+        info.create_system = 3
+        info.external_attr = 0o644 << 16
+        return info
+
     with zipfile.ZipFile(stream, "w", zipfile.ZIP_DEFLATED) as archive:
-        archive.writestr("[Content_Types].xml", '<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>')
-        archive.writestr("_rels/.rels", '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>')
-        archive.writestr("xl/workbook.xml", '<?xml version="1.0" encoding="UTF-8"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Evidence" sheetId="1" r:id="rId1"/></sheets></workbook>')
-        archive.writestr("xl/_rels/workbook.xml.rels", '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>')
-        archive.writestr("xl/worksheets/sheet1.xml", worksheet)
+        archive.writestr(member("[Content_Types].xml"), '<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>')
+        archive.writestr(member("_rels/.rels"), '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>')
+        archive.writestr(member("xl/workbook.xml"), '<?xml version="1.0" encoding="UTF-8"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Evidence" sheetId="1" r:id="rId1"/></sheets></workbook>')
+        archive.writestr(member("xl/_rels/workbook.xml.rels"), '<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>')
+        archive.writestr(member("xl/worksheets/sheet1.xml"), worksheet)
     return stream.getvalue()
 
 
@@ -898,7 +1615,7 @@ def write_asset_views(
     prompt: str,
     entry: dict[str, Any],
     contract: dict[str, Any],
-) -> list[dict[str, str]]:
+) -> list[dict[str, Any]]:
     """Write 28 agent-visible assets; never copy gold, checks, or the oracle walk."""
 
     if root.exists():
@@ -912,7 +1629,38 @@ def write_asset_views(
     cx.row_factory = sqlite3.Row
     spec = decision_spec(entry["source_task"])
     tokens = {token.casefold() for token in _argument_tokens([prompt, contract["case_id"], entry["source_task"]])}
-    assets: list[dict[str, str]] = []
+    assets: list[dict[str, Any]] = []
+
+    common_material = {
+        "02-open-finance-case.json",
+        f"03-{contract['current_policy_id']}.md",
+        f"04-{contract['prior_policy_id']}.md",
+        f"05-{contract['evidence_map_id']}.md",
+        f"10-{contract['approval_email_id']}.eml",
+        f"11-{contract['operations_email_id']}.eml",
+        f"12-{contract['stale_email_id']}.eml",
+        f"14-{contract['current_workbook']}",
+        f"15-{contract['stale_workbook']}",
+        "24-approvals-and-controls.json",
+        "25-lineage-and-currency.md",
+    }
+    if entry["family"] == "erpbench":
+        provider_material = "23-odoo-procurement.json"
+    elif entry["family"] in {"business_brief", "business_brief_fb"}:
+        provider_material = "22-filings-evidence.json"
+    elif entry["family"] in {
+        "anomaly_triage",
+        "bank_rec",
+        "cash_app",
+        "cash_forecast",
+        "payment_ops",
+    }:
+        provider_material = "20-bank-and-payment-state.csv"
+    elif entry["family"] == "cross_system":
+        provider_material = "21-books-ledger.json"
+    else:
+        provider_material = "19-erp-transactions.csv"
+    material_assets = common_material | {provider_material}
 
     def add(name: str, source: str, content: str | bytes, *, role: str) -> None:
         target = root / name
@@ -920,7 +1668,15 @@ def write_asset_views(
             target.write_bytes(content)
         else:
             target.write_text(content, encoding="utf-8", newline="\n")
-        assets.append({"filename": name, "source": source, "kind": target.suffix.lstrip("."), "evidence_role": role})
+        assets.append(
+            {
+                "filename": name,
+                "source": source,
+                "kind": target.suffix.lstrip("."),
+                "evidence_role": role,
+                "material": name in material_assets,
+            }
+        )
 
     add("01-employee-request.md", "Teams", prompt + "\n", role="request")
     case = dict(cx.execute("SELECT * FROM erp_finance_cases WHERE case_id=?", (contract["case_id"],)).fetchone())
@@ -965,7 +1721,25 @@ def write_asset_views(
     json_groups = [
         ("21-books-ledger.json", ("books_customers", "books_invoices", "books_payments", "books_credit_memos"), "QuickBooks subsidiary ledger"),
         ("22-filings-evidence.json", ("filings_companies", "filings_facts", "filings_documents"), "SEC filing snapshot"),
-        ("23-odoo-procurement.json", ("erpb_partners", "erpb_products", "erpb_sale_orders", "erpb_purchase_orders", "erpb_manufacturing_orders"), "Odoo ERP"),
+        (
+            "23-odoo-procurement.json",
+            (
+                "erpb_partners",
+                "erpb_products",
+                "erpb_sale_orders",
+                "erpb_sale_order_lines",
+                "erpb_purchase_orders",
+                "erpb_purchase_order_lines",
+                "erpb_manufacturing_orders",
+                "erpb_vendor_offers",
+                "erpb_stock",
+                "erpb_demand",
+                "erpb_boms",
+                "erpb_bom_components",
+                "erpb_workcenters",
+            ),
+            "Odoo ERP",
+        ),
         ("24-approvals-and-controls.json", ("erp_approval_requests", "erp_approval_policies", "approval_matrix", "close_tasks"), "Control records"),
     ]
     for filename, tables, source in json_groups:
@@ -979,11 +1753,22 @@ def write_asset_views(
     add("26-source-inventory.csv", "Case intake", inventory_csv.getvalue(), role="inventory")
     add("27-current-versus-stale-notes.txt", "Controls", f"Case {contract['case_id']} has both {CONTEXT_REVISION} and {SUPERSEDED_REVISION} evidence. Current records must be established by effective dates and modified timestamps. The prior draft is retained to test, not to follow.\n", role="conflict")
 
-    manifest_rows = [{"filename": asset["filename"], "source": asset["source"], "evidence_role": asset["evidence_role"]} for asset in assets]
+    manifest_rows = [
+        {
+            "filename": asset["filename"],
+            "source": asset["source"],
+            "evidence_role": asset["evidence_role"],
+            "material": asset["material"],
+        }
+        for asset in assets
+    ]
     add("28-agent-visible-asset-manifest.json", "Release builder", json.dumps({"case_id": contract["case_id"], "gold_included": False, "oracle_walk_included": False, "assets": manifest_rows}, indent=2, sort_keys=True) + "\n", role="manifest")
     cx.close()
     if len(assets) != 28:
         raise ValueError(f"expected 28 assets, wrote {len(assets)}")
+    material_count = sum(bool(asset["material"]) for asset in assets)
+    if material_count != 12:
+        raise ValueError(f"expected 12 material assets, wrote {material_count}")
     return assets
 
 

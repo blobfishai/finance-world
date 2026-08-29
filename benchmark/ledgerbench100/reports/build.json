@@ -11,17 +11,23 @@
       "xlsx": 200
     },
     "gold_or_recipe_leakage_hits": [],
+    "material_per_task": {
+      "max": 12,
+      "median": 12,
+      "min": 12
+    },
     "native_assets_parsed": 2800,
     "total": 2800,
     "unique_sha256": 2800
   },
+  "all_contracted_post_write_readbacks": 100,
   "authored_decision_specs": 100,
   "benchmark": "LedgerBench-100",
   "checks": {
     "answer_checks_total": 434,
-    "checks_total": 2055,
+    "checks_total": 3041,
     "state_checks_total": 764,
-    "trace_checks_total": 857
+    "trace_checks_total": 1843
   },
   "context_files": {
     "tasks_with_context_files": 100,
@@ -29,12 +35,19 @@
     "unique_sha256": 2836
   },
   "criteria_per_task": {
-    "max": 48,
-    "median": 45,
-    "min": 42
+    "max": 14,
+    "median": 14,
+    "min": 14
+  },
+  "criteria_points_per_task": {
+    "max": 100,
+    "median": 100,
+    "min": 100
   },
   "decision_options_per_task": 3,
+  "deep_erp_evidence_tasks": 10,
   "escalated_variant_pairs": 30,
+  "exact_atomic_check_assignments": 100,
   "exact_duplicate_prompts": 0,
   "exact_finance_case_transitions": 100,
   "family_count": 22,
@@ -45,6 +58,8 @@
   },
   "mcp_servers": 8,
   "mcp_tools": 66,
+  "metric": "LedgerScore",
+  "points_possible": 100,
   "prompt_uniqueness": {
     "maximum_jaccard_5_shingle": 0.635135,
     "pair_indices": [
@@ -54,53 +69,64 @@
   },
   "quality_gates": {
     "all_assets_content_unique": true,
+    "all_contracted_post_write_readbacks_every_task": true,
     "all_native_assets_parse": true,
-    "at_least_forty_specific_public_causal_criteria": true,
     "deep_evidence_intersection": true,
+    "deep_real_shaped_erp_evidence": true,
     "deterministic_verifier": true,
+    "eleven_negative_controls": true,
+    "every_atomic_check_assigned_exactly_once": true,
     "evidence_depth_varies": true,
     "exact_state_transition_every_task": true,
+    "fourteen_semantic_milestones_per_task": true,
     "high_level_prompt_bounds": true,
     "high_level_prompts_unique": true,
     "minimum_twenty_four_tool_calls": true,
     "no_gold_or_recipe_in_asset_room": true,
     "one_hundred_authored_decisions": true,
+    "one_hundred_ledger_points_per_task": true,
     "one_hundred_tasks": true,
     "prompt_similarity_below_limit": true,
     "real_native_formats_present": true,
     "reference_sequence_similarity_below_limit": true,
     "semantic_action_graph_similarity_below_limit": true,
-    "ten_negative_controls": true,
     "three_options_one_selected": true,
+    "twelve_material_assets_per_task": true,
     "twenty_eight_generated_assets_per_task": true,
-    "two_post_write_readbacks_every_task": true,
     "unique_authored_decision_codes": true,
     "unique_reference_tool_sequences": true,
     "unique_semantic_action_graphs": true,
     "zero_negative_false_accepts": true
   },
+  "reference_context_reads_per_task": {
+    "distinct_counts": 14,
+    "max": 35,
+    "median": 26,
+    "min": 22
+  },
   "reference_sequence_similarity": {
-    "maximum_sequence_match": 0.956522,
+    "maximum_sequence_match": 0.964789,
     "pair_indices": [
-      14,
-      20
+      49,
+      55
     ]
   },
   "release_passed": true,
   "required_evidence_reads_per_task": {
-    "distinct_counts": 6,
-    "max": 24,
-    "median": 21,
-    "min": 19
+    "distinct_counts": 10,
+    "max": 30,
+    "median": 23,
+    "min": 20
   },
-  "schema_version": "ledgerbench.build.v3",
+  "schema_version": "ledgerbench.build.v4",
   "semantic_action_graph_similarity": {
-    "maximum_sequence_match": 0.727273,
+    "maximum_sequence_match": 0.692308,
     "pair_indices": [
       1,
       2
     ]
   },
+  "source_provider_post_write_readbacks": 65,
   "task_count": 100,
   "tasks_per_family": {
     "anomaly_triage": 1,
@@ -126,7 +152,6 @@
     "threeway_match": 5,
     "vendor_master": 7
   },
-  "two_post_write_readbacks": 100,
   "unique_authored_decision_codes": 100,
   "unique_reference_tool_name_sequences": 100,
   "unique_semantic_action_graphs": 100,
@@ -137,11 +162,11 @@
     "random_calls": 0,
     "wall_clock_reads_in_reward_path": 0
   },
-  "version": "3.1.0",
+  "version": "3.2.0",
   "walk_len": {
-    "max": 132,
+    "max": 145,
     "median": 34,
     "min": 30,
-    "total": 4334
+    "total": 4479
   }
 }
