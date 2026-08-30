@@ -1,0 +1,133 @@
+{
+ "task": "treasury_fx/euro-payable-remeasurement",
+ "family": "treasury_fx",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 15,
+ "walk_len": 15,
+ "budget_turns": 132,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 15}\n",
+ "trace": [
+  {
+   "ts": 1788122982.231688,
+   "server": "harness",
+   "tool": "reporting_fields",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.233471,
+   "server": "sheets",
+   "tool": "drive_search",
+   "args": "{\"q\": \"EUR rates close\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.233967,
+   "server": "sheets",
+   "tool": "get_drive_item",
+   "args": "{\"item\": \"EUR-RATES-CLOSE.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.234429,
+   "server": "sheets",
+   "tool": "workbook_used_range",
+   "args": "{\"item\": \"EUR-RATES-CLOSE.xlsx\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.238809,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"PINV-EUR-250\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.239412,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"EM-FX-250\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.240065,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"foreign currency closing spot\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.240442,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"fx-remeasurement-policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.240803,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"lumina-purchase-agreement\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.243056,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"VendorTransactions\", \"filters\": {\"invoice\": \"PINV-EUR-250\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.243519,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"ExchangeRates\", \"filters\": {\"from_ccy\": \"EUR\", \"to_ccy\": \"USD\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.2435808,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"decision work item\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.244715,
+   "server": "erp",
+   "tool": "api_invoke_action",
+   "args": "{\"action\": \"ContosoDecisionWorkItemDecide\", \"parameters\": {\"case_id\": \"FX-EUR-2026\", \"decision_code\": \"REMEASURE_EUR_PAYABLE_AT_CLOSE\", \"evidence_refs\": [\"FX-POL-04\", \"LUMINA-EUR-250\", \"EUR-RATES-CLOSE.xlsx\", \"EM-FX-250\", \"PINV-EUR-250\", \"RATE-2026-02-28\"], \"rationale\": \"Remeasure the open EUR 25000",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.246154,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"DecisionWorkItems\", \"filters\": {\"case_id\": \"FX-EUR-2026\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.250426,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"fx_review\": \"FX-EUR-2026\", \"closing_carrying_amount_usd\": 280000.0, \"remeasurement_loss_usd\": 10000.0, \"closing_rate\": 1.12, \"rate_date\": \"2026-02-28\", \"payment_date\": \"2026-03-10\"}}",
+   "ok": true
+  }
+ ]
+}

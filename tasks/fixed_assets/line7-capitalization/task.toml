@@ -1,0 +1,24 @@
+schema_version = "1.4"
+
+[task]
+name = "fixed_assets/line7-capitalization"
+version = "0.1.0"
+description = "Classify a production-line retrofit between capitalizable cost and period expense using the operative fixed-asset policy and ready-for-use evidence."
+authors = ["blobfish-ai"]
+keywords = ["finance", "fixed-assets", "capitalization", "close", "controls"]
+
+[metadata]
+family = "fixed_assets"
+origin = "authored from fixed-asset close practice: IAS 16/ASC 360 directly attributable cost, ready-for-use cut-off, training exclusion, and abnormal rework exclusion; all records are synthetic"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+agent_role = "analyst"
+walk_len = 14
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

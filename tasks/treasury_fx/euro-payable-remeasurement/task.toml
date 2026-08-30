@@ -1,0 +1,24 @@
+schema_version = "1.4"
+
+[task]
+name = "treasury_fx/euro-payable-remeasurement"
+version = "0.1.0"
+description = "Remeasure an unsettled EUR payable at the governed month-end spot rate and distinguish the accounting loss from the later cash requirement."
+authors = ["blobfish-ai"]
+keywords = ["finance", "treasury", "fx", "remeasurement", "payables"]
+
+[metadata]
+family = "treasury_fx"
+origin = "authored from foreign-currency monetary-item remeasurement and treasury settlement practice under ASC 830/IAS 21; all records are synthetic"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+agent_role = "analyst"
+walk_len = 15
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

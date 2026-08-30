@@ -1,0 +1,47 @@
+{
+  "email_messages": [
+    {
+      "id": "EM-REV-480",
+      "folder": "inbox",
+      "from_addr": "acceptance@northwind-health-sim.example",
+      "to_addr": "revenue@contoso-sim.example",
+      "subject": "Contract NW-BUNDLE-2026 appliance acceptance",
+      "sent_at": "2026-02-27T21:18:00Z",
+      "body": "Northwind Health Systems accepts the production edge appliance under NW-BUNDLE-2026 effective 2026-02-27. Production validation is complete. Managed support begins separately on 2026-03-01 as stated in the order. SIMULATION ONLY.",
+      "attachment_name": "NW-ACCEPT-2026-02-27.txt",
+      "attachment_text": "Acceptance ID NW-ACCEPT-2026-02-27; contract NW-BUNDLE-2026; appliance accepted 2026-02-27; support start 2026-03-01. SIMULATION ONLY."
+    },
+    {
+      "id": "EM-REV-FORECAST",
+      "folder": "inbox",
+      "from_addr": "sales.ops@contoso-sim.example",
+      "to_addr": "revenue@contoso-sim.example",
+      "subject": "Forecast assumption - Northwind all in February",
+      "sent_at": "2026-02-10T14:00:00Z",
+      "body": "Forecast draft treated the full 480,000 as February revenue. This was a pipeline assumption before acceptance and is not accounting support. SIMULATION ONLY.",
+      "attachment_name": null,
+      "attachment_text": null
+    }
+  ],
+  "sheet_files": [
+    {
+      "name": "NW-SSP-ANALYSIS.xlsx",
+      "owner": "revenue.accounting",
+      "modified_at": "2026-02-28T16:22:00Z",
+      "description": "Approved contract-inception standalone selling price analysis for NW-BUNDLE-2026"
+    }
+  ],
+  "sheet_rows": [
+    {"file": "NW-SSP-ANALYSIS.xlsx", "row_no": 1, "cells": ["Obligation", "Standalone selling price USD", "Relative percentage", "Allocated transaction price USD"]},
+    {"file": "NW-SSP-ANALYSIS.xlsx", "row_no": 2, "cells": ["Edge appliance", 300000.00, 60.0, 288000.00]},
+    {"file": "NW-SSP-ANALYSIS.xlsx", "row_no": 3, "cells": ["Twelve-month managed support", 200000.00, 40.0, 192000.00]},
+    {"file": "NW-SSP-ANALYSIS.xlsx", "row_no": 4, "cells": ["TOTAL", 500000.00, 100.0, 480000.00]}
+  ],
+  "answer_schema": [
+    {"ordinal": 1, "field": "revenue_review", "type": "text", "description": "the revenue review record"},
+    {"ordinal": 2, "field": "february_revenue", "type": "number", "description": "USD recognized for February"},
+    {"ordinal": 3, "field": "deferred_revenue", "type": "number", "description": "USD deferred for managed support at February close"},
+    {"ordinal": 4, "field": "acceptance_date", "type": "text", "description": "the appliance transfer-of-control date"},
+    {"ordinal": 5, "field": "basis", "type": "text", "description": "the allocation and cut-off basis"}
+  ]
+}

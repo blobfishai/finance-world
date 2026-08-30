@@ -1,0 +1,24 @@
+schema_version = "1.4"
+
+[task]
+name = "revenue_accounting/northwind-contract-allocation"
+version = "0.1.0"
+description = "Allocate a bundled hardware-and-support contract using relative standalone selling prices and the actual acceptance cut-off."
+authors = ["blobfish-ai"]
+keywords = ["finance", "revenue", "contract", "allocation", "close"]
+
+[metadata]
+family = "revenue_accounting"
+origin = "authored from ASC 606/IFRS 15 contract-allocation and acceptance-cutoff practice; all counterparties, contracts, and amounts are synthetic"
+difficulty = "hard"
+acceptance_label = "pending_calibration"
+agent_role = "analyst"
+walk_len = 13
+
+[verifier]
+timeout_sec = 120
+[agent]
+timeout_sec = 900
+[environment]
+cpus = 1
+memory_mb = 1024

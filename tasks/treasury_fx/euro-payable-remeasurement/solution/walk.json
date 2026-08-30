@@ -1,0 +1,17 @@
+[
+  {"server": "harness", "tool": "reporting_fields", "args": {}},
+  {"server": "sheets", "tool": "drive_search", "args": {"q": "EUR rates close"}},
+  {"server": "sheets", "tool": "get_drive_item", "args": {"item": "EUR-RATES-CLOSE.xlsx"}},
+  {"server": "sheets", "tool": "workbook_used_range", "args": {"item": "EUR-RATES-CLOSE.xlsx"}},
+  {"server": "email", "tool": "messages_list", "args": {"q": "PINV-EUR-250"}},
+  {"server": "email", "tool": "messages_get", "args": {"id": "EM-FX-250"}},
+  {"server": "docs", "tool": "search_documents", "args": {"query": "foreign currency closing spot"}},
+  {"server": "docs", "tool": "get_document", "args": {"doc_id": "fx-remeasurement-policy"}},
+  {"server": "docs", "tool": "get_document", "args": {"doc_id": "lumina-purchase-agreement"}},
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "VendorTransactions", "filters": {"invoice": "PINV-EUR-250"}}},
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "ExchangeRates", "filters": {"from_ccy": "EUR", "to_ccy": "USD"}}},
+  {"server": "erp", "tool": "api_find_actions", "args": {"query": "decision work item"}},
+  {"server": "erp", "tool": "api_invoke_action", "args": {"action": "ContosoDecisionWorkItemDecide", "parameters": {"case_id": "FX-EUR-2026", "decision_code": "REMEASURE_EUR_PAYABLE_AT_CLOSE", "evidence_refs": ["FX-POL-04", "LUMINA-EUR-250", "EUR-RATES-CLOSE.xlsx", "EM-FX-250", "PINV-EUR-250", "RATE-2026-02-28"], "rationale": "Remeasure the open EUR 250000 payable from its USD 270000 invoice-date carrying amount at the 2026-02-28 closing spot of 1.12. Record USD 280000 carrying value and a USD 10000 February exchange loss; cash remains due 2026-03-10."}}},
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "DecisionWorkItems", "filters": {"case_id": "FX-EUR-2026"}}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"fx_review": "FX-EUR-2026", "closing_carrying_amount_usd": 280000.00, "remeasurement_loss_usd": 10000.00, "closing_rate": 1.12, "rate_date": "2026-02-28", "payment_date": "2026-03-10"}}}
+]

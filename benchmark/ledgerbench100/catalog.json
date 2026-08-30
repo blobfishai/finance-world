@@ -1,6 +1,6 @@
 {
  "benchmark": "LedgerBench-100",
- "version": "3.4.1",
+ "version": "3.4.2",
  "task_count": 100,
  "curation_standard": "one inspectably different employee job per task",
  "selection_pool": {
@@ -10,6 +10,7 @@
  },
  "integrity": {
   "prompt_variants": 0,
+  "derived_source_tasks": 0,
   "ticker_or_company_swaps_used_as_jobs": 0,
   "erpbench_scenario_archetypes": 27,
   "erp_qa_employee_question_archetypes": 23
@@ -17,24 +18,27 @@
  "families": {
   "anomaly_triage": 1,
   "bank_rec": 2,
-  "business_brief": 2,
+  "business_brief": 1,
   "cash_app": 2,
   "cash_forecast": 1,
   "close_mgmt": 3,
   "collections_ops": 1,
-  "cross_system": 5,
+  "cross_system": 4,
   "erp_qa": 6,
   "erp_qa_fb": 23,
   "erpbench": 27,
   "expense_audit": 3,
   "finance_qa": 7,
+  "fixed_assets": 1,
   "fpna": 3,
   "journal_entry": 1,
   "payment_proposal": 1,
   "payment_run": 2,
   "pbc": 2,
+  "revenue_accounting": 1,
   "threeway_match": 3,
-  "vendor_master": 5
+  "treasury_fx": 1,
+  "vendor_master": 4
  },
  "tasks": [
   {
@@ -136,29 +140,31 @@
    ]
   },
   {
-   "task_id": "lgr100-005-brief-caterpillar-v2",
-   "source_task": "business_brief/brief-caterpillar-v2",
-   "family": "business_brief",
+   "task_id": "lgr100-005-line7-capitalization",
+   "source_task": "fixed_assets/line7-capitalization",
+   "family": "fixed_assets",
    "provenance": "ported",
-   "workflow_archetype": "business_brief/brief-caterpillar-v2",
-   "difficulty": "harder",
-   "walk_len": 10,
+   "workflow_archetype": "fixed_assets/line7-capitalization",
+   "difficulty": "hard",
+   "walk_len": 14,
    "walk_servers": [
     "docs",
+    "email",
     "erp",
-    "filings"
+    "sheets"
    ],
-   "n_answer_checks": 6,
-   "n_state_checks": 1,
+   "n_answer_checks": 5,
+   "n_state_checks": 4,
    "n_trace_checks": 3,
-   "has_state_sql": false,
+   "has_state_sql": true,
    "qualification_binding": "reports/qualification.json",
    "rationale": [
     "human-job-curation",
     "source-authored-no-prompt-variant",
-    "workflow-archetype:business_brief/brief-caterpillar-v2",
-    "long-source-walk:10",
-    "cross-provider-source:docs+erp+filings"
+    "workflow-archetype:fixed_assets/line7-capitalization",
+    "write-layer:deterministic-sql-state",
+    "long-source-walk:14",
+    "cross-provider-source:docs+email+erp+sheets"
    ]
   },
   {
@@ -406,30 +412,31 @@
    ]
   },
   {
-   "task_id": "lgr100-016-total-ar-adventure-group-v2",
-   "source_task": "cross_system/total-ar-adventure-group-v2",
-   "family": "cross_system",
+   "task_id": "lgr100-016-northwind-contract-allocation",
+   "source_task": "revenue_accounting/northwind-contract-allocation",
+   "family": "revenue_accounting",
    "provenance": "ported",
-   "workflow_archetype": "cross_system/total-ar-adventure-group-v2",
-   "difficulty": "harder",
-   "walk_len": 10,
+   "workflow_archetype": "revenue_accounting/northwind-contract-allocation",
+   "difficulty": "hard",
+   "walk_len": 13,
    "walk_servers": [
-    "books",
+    "docs",
     "email",
     "erp",
     "sheets"
    ],
-   "n_answer_checks": 4,
-   "n_state_checks": 1,
+   "n_answer_checks": 5,
+   "n_state_checks": 4,
    "n_trace_checks": 3,
-   "has_state_sql": false,
+   "has_state_sql": true,
    "qualification_binding": "reports/qualification.json",
    "rationale": [
     "human-job-curation",
     "source-authored-no-prompt-variant",
-    "workflow-archetype:cross_system/total-ar-adventure-group-v2",
-    "long-source-walk:10",
-    "cross-provider-source:books+email+erp+sheets"
+    "workflow-archetype:revenue_accounting/northwind-contract-allocation",
+    "write-layer:deterministic-sql-state",
+    "long-source-walk:13",
+    "cross-provider-source:docs+email+erp+sheets"
    ]
   },
   {
@@ -2308,26 +2315,31 @@
    ]
   },
   {
-   "task_id": "lgr100-098-dormant-vendor-review-v2",
-   "source_task": "vendor_master/dormant-vendor-review-v2",
-   "family": "vendor_master",
+   "task_id": "lgr100-098-euro-payable-remeasurement",
+   "source_task": "treasury_fx/euro-payable-remeasurement",
+   "family": "treasury_fx",
    "provenance": "ported",
-   "workflow_archetype": "vendor_master/dormant-vendor-review-v2",
+   "workflow_archetype": "treasury_fx/euro-payable-remeasurement",
    "difficulty": "hard",
-   "walk_len": 9,
+   "walk_len": 15,
    "walk_servers": [
     "docs",
-    "erp"
+    "email",
+    "erp",
+    "sheets"
    ],
-   "n_answer_checks": 5,
-   "n_state_checks": 1,
-   "n_trace_checks": 4,
-   "has_state_sql": false,
+   "n_answer_checks": 6,
+   "n_state_checks": 4,
+   "n_trace_checks": 3,
+   "has_state_sql": true,
    "qualification_binding": "reports/qualification.json",
    "rationale": [
     "human-job-curation",
     "source-authored-no-prompt-variant",
-    "workflow-archetype:vendor_master/dormant-vendor-review-v2"
+    "workflow-archetype:treasury_fx/euro-payable-remeasurement",
+    "write-layer:deterministic-sql-state",
+    "long-source-walk:15",
+    "cross-provider-source:docs+email+erp+sheets"
    ]
   },
   {
