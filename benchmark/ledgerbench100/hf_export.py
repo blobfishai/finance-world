@@ -7,7 +7,7 @@ qualification.json), because the dataset card quotes only measured numbers.
   dist/ledgerbench-100/huggingface/
     data/tasks.jsonl        apex-accounting-compatible task records
     tasks/<task_id>.json    one readable record per task
-    task_files/<task_id>/   28 agent-visible native evidence files plus seeded inputs
+    task_files/<task_id>/   native context plus one exact export per material MCP read
     world/                  the world source: MCP servers, framework, verifier,
                             HTTP bridge, and the full SQL schema
     trajectories/           one normalized oracle-trajectory JSONL per task
@@ -38,9 +38,11 @@ from decision_model import (
 )
 from decision_specs import DECISION_SPECS
 from realism import (
-    ASSETS_PER_TASK,
-    MATERIAL_ASSETS_PER_TASK,
+    CONTEXTUAL_ASSETS_PER_TASK,
+    MIN_TASK_NATIVE_POINTS,
+    MIN_MATERIAL_ASSETS_PER_TASK,
     SEMANTIC_MILESTONE_WEIGHTS,
+    TASK_NATIVE_MILESTONES,
     validate_native_asset,
     write_asset_views,
 )
@@ -49,9 +51,9 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 RELEASE_NAME = "LedgerBench-100"
 RELEASE_SLUG = "ledgerbench-100"
-RELEASE_VERSION = "3.3.0"
+RELEASE_VERSION = "3.4.0"
 HARBOR_ORG = "blobfishai"
-WORLD_ID = "ledgerbench-erp-world-v3-3"
+WORLD_ID = "ledgerbench-erp-world-v3-4"
 NEGATIVE_CONTROLS = 12
 
 
@@ -138,14 +140,45 @@ def gold_output(walk: list[dict], checks: dict, realism: dict) -> dict:
     }
 
 
+PUBLIC_MILESTONE_FIELDS = (
+    "id",
+    "category",
+    "weight",
+    "description",
+    "expected_investigation",
+    "reasoning_path",
+    "success_condition",
+    "rejected_shortcut",
+    "checked_outcomes",
+    "expected_answer_fields",
+    "task_native_core",
+    "task_native_write_count",
+    "task_native_mutation_surfaces",
+)
+
+
+def public_semantic_milestones(realism: dict) -> list[dict]:
+    """Expose employee outcomes without turning the rubric into an oracle recipe."""
+
+    return [
+        {
+            field: criterion[field]
+            for field in PUBLIC_MILESTONE_FIELDS
+            if field in criterion
+        }
+        for criterion in realism["criteria"]
+    ]
+
+
 def build(release: Path) -> dict:
     tasks_root = release / "harbor" / "tasks"
     hf = release / "huggingface"
     catalog = json.loads((HERE / "catalog.json").read_text())
     entries = {e["task_id"]: e for e in catalog["tasks"]}
-    qualification = json.loads((hf / "reports" / "qualification.json").read_text())
+    qualification = json.loads((release / "reports" / "qualification.json").read_text())
     if not qualification["release_passed"]:
         raise SystemExit("refusing to build the HF tree from a failed qualification")
+    write_json(hf / "reports" / "qualification.json", qualification)
 
     records: list[dict] = []
     prompts: list[str] = []
@@ -157,9 +190,11 @@ def build(release: Path) -> dict:
     context_counts: list[int] = []
     generated_asset_counts: list[int] = []
     material_asset_counts: list[int] = []
+    material_assets_with_exact_provenance = 0
     criteria_counts: list[int] = []
     criteria_point_totals: list[int] = []
-    public_criteria_counts: list[int] = []
+    task_native_point_totals: list[int] = []
+    atomic_assertion_counts: list[int] = []
     graded_answer_counts: list[int] = []
     graded_numeric_counts: list[int] = []
     graded_decision_models = 0
@@ -174,6 +209,7 @@ def build(release: Path) -> dict:
     source_post_write_readbacks = 0
     exact_atomic_assignments = 0
     deep_erp_evidence_tasks = 0
+    erp_tasks_with_native_state = 0
     n_answer = n_trace = n_state = 0
 
     for task_dir in sorted(p for p in tasks_root.iterdir() if p.is_dir()):
@@ -190,6 +226,9 @@ def build(release: Path) -> dict:
             (task_dir / "environment" / "world" / "taskspec" / "realism.json")
             .read_text()
         )
+        world_spec = json.loads(
+            (task_dir / "environment" / "world" / "spec.json").read_text()
+        )
         context_files: list[str] = []
         asset_root = hf / "task_files" / task_id / "assets"
         with tempfile.TemporaryDirectory(prefix=f"{task_id}-assets-") as temporary:
@@ -205,6 +244,10 @@ def build(release: Path) -> dict:
                 prompt,
                 entry,
                 realism["case_contract"],
+                realism["trace_contract"],
+                server_root=task_dir / "environment" / "world" / "runtime",
+                world_now=world_spec["world_now"],
+                world_role=world_spec["world_role"],
             )
         assets: list[dict[str, object]] = []
         for asset in asset_records:
@@ -213,6 +256,13 @@ def build(release: Path) -> dict:
             assets.append({**asset, "path": relative})
             asset_path = asset_root / asset["filename"]
             digest = hashlib.sha256(asset_path.read_bytes()).hexdigest()
+            if asset.get("material"):
+                material_assets_with_exact_provenance += int(
+                    asset.get("bytes") == asset_path.stat().st_size
+                    and asset.get("sha256") == digest
+                    and isinstance(asset.get("query_scope"), dict)
+                    and bool(asset.get("material_reason"))
+                )
             doc_hashes.add(digest)
             asset_hashes.append(digest)
             suffix = asset_path.suffix.casefold().lstrip(".")
@@ -260,7 +310,14 @@ def build(release: Path) -> dict:
         criteria_point_totals.append(
             sum(int(criterion["weight"]) for criterion in realism["criteria"])
         )
-        public_criteria_counts.append(len(realism["public_criteria"]))
+        task_native_point_totals.append(
+            sum(
+                int(criterion["weight"])
+                for criterion in realism["criteria"]
+                if criterion.get("task_native_core")
+            )
+        )
+        atomic_assertion_counts.append(len(realism["public_criteria"]))
         graded_fields = {check["field"] for check in checks.get("answer_checks", [])}
         graded_answer_counts.append(len(graded_fields))
         graded_numeric_counts.append(
@@ -273,7 +330,7 @@ def build(release: Path) -> dict:
         prompts.append(prompt)
         exact_state_transitions += int(
             any(
-                check.get("name") == "finance_case_exact_decision"
+                check.get("name") == "decision_work_item_exact_decision"
                 for check in checks.get("state_checks", [])
             )
         )
@@ -319,7 +376,24 @@ def build(release: Path) -> dict:
                 "mrp.workcenter",
             }
             deep_erp_evidence_tasks += int(required_models <= models)
+            wrapper_state_names = {
+                "decision_work_item_decided",
+                "decision_work_item_exact_decision",
+                "decision_work_item_evidence_refs",
+                "decision_work_item_selected_option",
+                "one_decision_work_item_audit",
+                "exception_request_untouched",
+                "one_completion_email",
+            }
+            erp_tasks_with_native_state += int(
+                any(
+                    check.get("type") != "writes_only"
+                    and check.get("name") not in wrapper_state_names
+                    for check in checks.get("state_checks", [])
+                )
+            )
 
+        semantic_milestones = public_semantic_milestones(realism)
         record = {
             "task_id": task_id,
             "task_name": entry["source_task"],
@@ -332,11 +406,8 @@ def build(release: Path) -> dict:
                 "engine": "verifiers/vcode.py atomic checks aggregated by the world runtime",
                 "metric": "LedgerScore",
                 "points_possible": 100,
-                "milestones": realism["criteria"],
-                "criteria": realism["public_criteria"],
-                "atomic_check_contract": realism["atomic_check_contract"],
-                "internal_verifier_checks": checks,
-                "checks": checks,
+                "milestones": semantic_milestones,
+                "criteria": semantic_milestones,
                 "decision_options": realism["decision_options"],
                 "reasoning_chain_fields": realism["reasoning_chain_fields"],
                 "gates": [
@@ -344,6 +415,11 @@ def build(release: Path) -> dict:
                     "supported decisions and provider-native state transitions are graded from persisted state",
                     "every write is read back, mutation rejections fail strict pass, and off-scope writes are vetoed",
                 ],
+            },
+            "verifier_contract": {
+                "visibility": "transparent evaluation contract; not agent instructions",
+                "atomic_check_contract": realism["atomic_check_contract"],
+                "checks": checks,
             },
             "gold_output": gold_output(walk, checks, realism),
             "metadata": {
@@ -401,7 +477,7 @@ def build(release: Path) -> dict:
     )
     semantic_similarity = maximum_sequence_similarity(semantic_sequences)
     build_report = {
-        "schema_version": "ledgerbench.build.v4",
+        "schema_version": "ledgerbench.build.v6",
         "benchmark": RELEASE_NAME,
         "version": RELEASE_VERSION,
         "metric": "LedgerScore",
@@ -447,6 +523,7 @@ def build(release: Path) -> dict:
             "format_counts": dict(sorted(asset_format_counts.items())),
             "native_assets_parsed": native_assets_parsed,
             "gold_or_recipe_leakage_hits": asset_leakage_hits,
+            "material_assets_with_exact_provenance": material_assets_with_exact_provenance,
             "material_per_task": {
                 "min": min(material_asset_counts),
                 "median": int(statistics.median(material_asset_counts)),
@@ -458,7 +535,7 @@ def build(release: Path) -> dict:
             "median": int(statistics.median(generated_asset_counts)),
             "max": max(generated_asset_counts),
         },
-        "criteria_per_task": {
+        "public_semantic_milestones_per_task": {
             "min": min(criteria_counts),
             "median": int(statistics.median(criteria_counts)),
             "max": max(criteria_counts),
@@ -468,10 +545,16 @@ def build(release: Path) -> dict:
             "median": int(statistics.median(criteria_point_totals)),
             "max": max(criteria_point_totals),
         },
-        "public_criteria_per_task": {
-            "min": min(public_criteria_counts),
-            "median": int(statistics.median(public_criteria_counts)),
-            "max": max(public_criteria_counts),
+        "task_native_points_per_task": {
+            "min": min(task_native_point_totals),
+            "median": int(statistics.median(task_native_point_totals)),
+            "max": max(task_native_point_totals),
+            "milestones": sorted(TASK_NATIVE_MILESTONES),
+        },
+        "atomic_verifier_assertions_per_task": {
+            "min": min(atomic_assertion_counts),
+            "median": int(statistics.median(atomic_assertion_counts)),
+            "max": max(atomic_assertion_counts),
         },
         "graded_answer_fields_per_task": {
             "min": min(graded_answer_counts),
@@ -490,11 +573,12 @@ def build(release: Path) -> dict:
         "reference_sequence_similarity": reference_similarity,
         "unique_semantic_action_graphs": len(set(semantic_sequences)),
         "semantic_action_graph_similarity": semantic_similarity,
-        "exact_finance_case_transitions": exact_state_transitions,
+        "exact_decision_work_item_transitions": exact_state_transitions,
         "all_contracted_post_write_readbacks": post_write_readbacks,
         "source_provider_post_write_readbacks": source_post_write_readbacks,
         "exact_atomic_check_assignments": exact_atomic_assignments,
         "deep_erp_evidence_tasks": deep_erp_evidence_tasks,
+        "erp_tasks_with_task_native_state": erp_tasks_with_native_state,
         "authored_decision_specs": len(DECISION_SPECS),
         "unique_authored_decision_codes": len({spec.decision_code for spec in DECISION_SPECS.values()}),
         "decision_options_per_task": 3,
@@ -502,6 +586,7 @@ def build(release: Path) -> dict:
         "exact_duplicate_prompts": len(prompts) - len(set(prompts)),
         "escalated_variant_pairs": sum(
             1 for e in catalog["tasks"] if e["provenance"] == "variant"),
+        "curation_integrity": catalog.get("integrity", {}),
         "verifier": {
             "deterministic": True,
             "network_calls": 0,
@@ -516,29 +601,42 @@ def build(release: Path) -> dict:
         "high_level_prompt_bounds": all(55 <= len(prompt.split()) <= 125 for prompt in prompts),
         "prompt_similarity_below_limit": prompt_similarity["maximum_jaccard_5_shingle"] < 0.72,
         "unique_reference_tool_sequences": len(set(walk_sequences)) == 100,
-        "reference_sequence_similarity_below_limit": reference_similarity["maximum_sequence_match"] < 0.985,
+        "reference_sequence_similarity_below_limit": reference_similarity["maximum_sequence_match"] < 0.95,
         "unique_semantic_action_graphs": len(set(semantic_sequences)) == 100,
         "semantic_action_graph_similarity_below_limit": semantic_similarity["maximum_sequence_match"] < 0.85,
         "minimum_twenty_four_tool_calls": min(walk_lens) >= 24,
         "deep_evidence_intersection": min(evidence_read_counts) >= 19,
         "evidence_depth_varies": len(set(evidence_read_counts)) >= 6,
-        "thirty_generated_assets_per_task": min(generated_asset_counts) == ASSETS_PER_TASK == max(generated_asset_counts),
+        "thirty_contextual_assets_per_task": all(
+            total - material == CONTEXTUAL_ASSETS_PER_TASK
+            for total, material in zip(generated_asset_counts, material_asset_counts)
+        ),
         "all_native_assets_parse": native_assets_parsed == len(asset_hashes),
         "real_native_formats_present": {"xlsx", "pdf", "eml", "csv", "json", "md", "txt"} <= set(asset_format_counts),
         "no_gold_or_recipe_in_asset_room": not asset_leakage_hits,
         "all_assets_content_unique": len(set(asset_hashes)) == len(asset_hashes),
-        "fourteen_semantic_milestones_per_task": (
+        "sixteen_semantic_milestones_per_task": (
             min(criteria_counts) == len(SEMANTIC_MILESTONE_WEIGHTS)
             == max(criteria_counts)
         ),
         "one_hundred_ledger_points_per_task": (
             min(criteria_point_totals) == 100 == max(criteria_point_totals)
         ),
-        "every_atomic_check_assigned_exactly_once": exact_atomic_assignments == 100,
-        "fourteen_material_assets_per_task": (
-            min(material_asset_counts) == MATERIAL_ASSETS_PER_TASK == max(material_asset_counts)
+        "task_native_work_is_majority_of_score": (
+            min(task_native_point_totals) >= MIN_TASK_NATIVE_POINTS
+            and min(task_native_point_totals) > 50
         ),
-        "forty_public_criteria_per_task": min(public_criteria_counts) >= 40,
+        "every_atomic_check_assigned_exactly_once": exact_atomic_assignments == 100,
+        "material_assets_match_required_reads": material_asset_counts == evidence_read_counts,
+        "minimum_nineteen_material_assets_per_task": min(material_asset_counts) >= MIN_MATERIAL_ASSETS_PER_TASK,
+        "every_material_asset_has_exact_provenance": (
+            material_assets_with_exact_provenance == sum(material_asset_counts)
+        ),
+        "sixteen_public_semantic_milestones_per_task": (
+            min(criteria_counts) == len(SEMANTIC_MILESTONE_WEIGHTS)
+            == max(criteria_counts)
+        ),
+        "forty_atomic_verifier_assertions_per_task": min(atomic_assertion_counts) >= 40,
         "graded_decision_model_every_task": graded_decision_models == 100,
         "three_costed_alternatives_every_task": fully_qualified_alternatives == 100,
         "twelve_graded_answer_fields_per_task": min(graded_answer_counts) >= 12,
@@ -547,7 +645,20 @@ def build(release: Path) -> dict:
         "unique_authored_decision_codes": len({spec.decision_code for spec in DECISION_SPECS.values()}) == 100,
         "exact_state_transition_every_task": exact_state_transitions == 100,
         "all_contracted_post_write_readbacks_every_task": post_write_readbacks == 100,
-        "deep_real_shaped_erp_evidence": deep_erp_evidence_tasks == 10,
+        "deep_real_shaped_erp_evidence": deep_erp_evidence_tasks == families.get("erpbench", 0),
+        "task_native_state_every_erp_planning_job": (
+            erp_tasks_with_native_state == families.get("erpbench", 0)
+        ),
+        "zero_prompt_variants": build_report["escalated_variant_pairs"] == 0,
+        "all_jobs_are_source_ported": all(
+            entry.get("provenance") == "ported" for entry in catalog["tasks"]
+        ),
+        "one_job_per_curated_archetype": (
+            catalog.get("integrity", {}).get("prompt_variants") == 0
+            and catalog.get("integrity", {}).get("ticker_or_company_swaps_used_as_jobs") == 0
+            and catalog.get("integrity", {}).get("erpbench_scenario_archetypes") == 27
+            and catalog.get("integrity", {}).get("erp_qa_employee_question_archetypes") == 23
+        ),
         "twelve_negative_controls": len(qualification["negative_controls"]) == NEGATIVE_CONTROLS,
         "zero_negative_false_accepts": not any(
             row["false_accepts"] for row in qualification["negative_controls"].values()
@@ -633,40 +744,47 @@ provider-shaped tools. The employee asks for an outcome in ordinary language; th
 must discover the reporting schema and the task-specific investigation.
 
 Grading is fully deterministic. `LedgerScore` groups the executable verifier contract into
-14 task-specific employee outcomes worth 100 points: scope, authority, current state,
-task-native investigation, causal reasoning, supported decision, operational and case
-state, collaboration, outcome verification, provider-native readback, containment, exact
-insights, and execution sequence. Strict pass still requires all 100 points. No LLM judge,
+16 task-specific employee outcomes worth 100 points: scope, authority, current state,
+task-native investigation, task-native causal reasoning, operating-plan controls, supported decision,
+costed options, operational and case state, collaboration, outcome verification,
+provider-native readback, containment, exact insights, and execution sequence. Strict pass
+still requires all 100 points. No LLM judge,
 network, clock, or randomness appears in the reward path.
 
-Every case also carries a graded control-date decision model: the control requirement is
-derived from the ERP's in-scope FinanceCaseLines, usable support is reconciled from the
+The source job is the scoring core, not a decorative wrapper: at least
+{build['task_native_points_per_task']['min']} of 100 points in every task are assigned to
+task-native source investigation, reasoning, decision, persisted operational state, and
+employee-facing insights. Every ERP planning task independently grades its Odoo state
+transition in addition to the cross-system decision record.
+
+Every case also carries a graded operating-control model: the control requirement is
+derived from the ERP's in-scope DecisionScopeLines, usable support is reconciled from the
 current evidence register net of counterparty-corroborated exclusions, the exception is
 tested against the policy tolerance, the counterparty's committed date and the close
-calendar's posting window bound three costed timing alternatives (one within authority,
-one held for the counterparty, one requiring a CFO exception), and the selected outcome is
+or production-planning window bounds three costed timing alternatives (one within authority,
+one held for the counterparty, one requiring a higher-authority exception), and the selected outcome is
 compared with the requester's documented need-by date into a signed variance and an honest
 timing status. All {len(build['reasoning_chain_fields'])} intermediate and final values are
 graded as their own answer fields, the selected option is persisted on the case, and the
-Controls note is graded on its content.
+completion handoff is graded on its content.
 
 ## Measured contents
 
 - Tasks: {build['task_count']} across {build['family_count']} families: {families}
 - Oracle walk length: min {build['walk_len']['min']} / median {build['walk_len']['median']} / max {build['walk_len']['max']} MCP calls ({build['walk_len']['total']} total); required distributed evidence reads are {build['required_evidence_reads_per_task']['min']}-{build['required_evidence_reads_per_task']['max']} per task
-- Executable checks: {build['checks']['answer_checks_total']} answer + {build['checks']['trace_checks_total']} trace + {build['checks']['state_checks_total']} state, each assigned exactly once beneath 14 semantic milestones / 100 LedgerScore points per task; {build['public_criteria_per_task']['min']}-{build['public_criteria_per_task']['max']} public criteria per task each name the exact check enforcing them
-- Graded reasoning chain: {build['graded_answer_fields_per_task']['min']}-{build['graded_answer_fields_per_task']['max']} graded answer fields per task ({build['graded_numeric_derivations_per_task']['min']}-{build['graded_numeric_derivations_per_task']['max']} numeric derivations), a graded decision model in {build['graded_decision_models']}/100 tasks and three costed alternatives with authority status in {build['fully_qualified_alternatives']}/100
-- Inspectable assets: {build['generated_assets_per_task']['min']} agent-visible native files per task, exactly {build['agent_visible_assets']['material_per_task']['min']} marked decision-material, including valid XLSX, PDF, EML, CSV, JSON, Markdown, and text records; gold and oracle recipes are excluded from this tree
+- Public rubric: exactly {build['public_semantic_milestones_per_task']['min']} causal employee-outcome milestones / 100 LedgerScore points per task. The execution layer separately contains {build['checks']['answer_checks_total']} answer + {build['checks']['trace_checks_total']} trace + {build['checks']['state_checks_total']} state checks, with {build['atomic_verifier_assertions_per_task']['min']}-{build['atomic_verifier_assertions_per_task']['max']} atomic verifier assertions per task assigned exactly once beneath those milestones
+- Graded reasoning chain: {build['graded_answer_fields_per_task']['min']}-{build['graded_answer_fields_per_task']['max']} graded answer fields per task ({build['graded_numeric_derivations_per_task']['min']}-{build['graded_numeric_derivations_per_task']['max']} numeric derivations), a graded decision model in {build['graded_decision_models']}/100 tasks and three costed alternatives with authority status in {build['fully_qualified_alternatives']}/100; task-native work carries {build['task_native_points_per_task']['min']}-{build['task_native_points_per_task']['max']} points per task
+- Inspectable assets: {build['generated_assets_per_task']['min']}-{build['generated_assets_per_task']['max']} agent-visible native files per task, including {build['agent_visible_assets']['material_per_task']['min']}-{build['agent_visible_assets']['material_per_task']['max']} exact executed MCP responses bound one-for-one to the verifier's material reads; every material export carries request scope, bytes, and SHA-256, while gold and oracle recipes are excluded
 - Readback depth: {build['source_provider_post_write_readbacks']} task-native provider readbacks across the release, plus the governed case and completion-thread readbacks in every task
-- Reference diversity: {build['unique_reference_tool_name_sequences']}/100 distinct raw server/tool sequences and {build['unique_semantic_action_graphs']}/100 distinct semantic action graphs
-- Escalated variants: {build['escalated_variant_pairs']} tasks are controls-review follow-ups whose governing policy must be found among seeded adjacent documents; every follow-up now has its own human request and policy-discovery trajectory
+- Reference diversity: {build['unique_reference_tool_name_sequences']}/100 distinct raw server/tool sequences (maximum sequence match {build['reference_sequence_similarity']['maximum_sequence_match']}) and {build['unique_semantic_action_graphs']}/100 distinct semantic action graphs
+- Human-job curation: {build['escalated_variant_pairs']} prompt variants; the release uses one instance of each of 27 ERP planning archetypes and 23 distinct ERP control questions, and does not count ticker or company-name swaps as new jobs
 - Prompt uniqueness: {100 - build['exact_duplicate_prompts']} distinct employee requests; maximum pairwise 5-shingle Jaccard {build['prompt_uniqueness']['maximum_jaccard_5_shingle']}
 
 ## What is included
 
 - `data/tasks.jsonl`: apex-accounting-compatible records (`task_id`, `task_name`, `world_id`, `prompt`, `context_files`, `rubric`, `gold_output`, `metadata`).
 - `tasks/`: one readable JSON record per task.
-- `task_files/`: {build['generated_assets_per_task']['min']} task-scoped agent-visible evidence files plus any native seeded documents and inputs.
+- `task_files/`: {build['generated_assets_per_task']['min']}-{build['generated_assets_per_task']['max']} task-scoped agent-visible evidence files plus any native seeded documents and inputs.
 - `world/`: the world source — MCP framework, the eight servers, the deterministic verifier engine, the Streamable HTTP bridge, and the full SQL schema.
 - `trajectories/`: one normalized oracle MCP trajectory per task.
 - `reports/`: measured build and qualification evidence.
