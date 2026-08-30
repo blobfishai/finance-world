@@ -17,6 +17,7 @@ class Server:
             self.tools[name] = (fn, {
                 "name": name, "description": description,
                 "inputSchema": {"type": "object",
+                                "additionalProperties": False,
                                 "properties": properties or {},
                                 "required": required or []}})
             return fn

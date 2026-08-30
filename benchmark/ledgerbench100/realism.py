@@ -435,7 +435,8 @@ def case_contract(entry: dict[str, Any], world_now: str = WORLD_EPOCH) -> dict[s
     prefix = f"lgr-{number:03d}"
     current_book = f"{case_id.lower()}-control-pack.xlsx"
     stale_book = f"{case_id.lower()}-prior-tracker.xlsx"
-    subject = f"{case_id} completed — {decision_spec(entry['source_task']).decision_code}"
+    spec = decision_spec(entry["source_task"])
+    subject = f"{case_id} completed — {spec.decision_code}"
     thread_id = "t_" + hashlib.sha1(subject.casefold().encode()).hexdigest()[:10]
     model = control_model_for(entry, {"world_now": world_now})
     approval_document_type = (
@@ -480,6 +481,13 @@ def case_contract(entry: dict[str, Any], world_now: str = WORLD_EPOCH) -> dict[s
         ),
         "completion_subject": subject,
         "completion_thread_id": thread_id,
+        "completion_required_tokens": [
+            case_id,
+            spec.decision_code,
+            model.recommended_option,
+            model.recommended_outcome,
+            model.binding_constraint_date,
+        ],
         "evidence_refs": [
             f"{prefix}-control-current",
             f"em-{prefix}-approval",
@@ -1969,6 +1977,7 @@ def augment_checks(
     escaped_case = contract["case_id"].replace("'", "''")
     escaped_code = spec.decision_code.replace("'", "''")
     escaped_subject = contract["completion_subject"].replace("'", "''")
+    escaped_to = contract["completion_to"].replace("'", "''")
     escaped_option = model.recommended_option.replace("'", "''")
     escaped_outcome = model.recommended_outcome.replace("'", "''")
     escaped_binding = model.binding_constraint_date.replace("'", "''")
@@ -1987,7 +1996,23 @@ def augment_checks(
             {"type": "sql", "name": "decision_work_item_selected_option", "expect": 1, "sql": f"SELECT CASE WHEN {decision_predicate} THEN 1 ELSE 0 END FROM erp_finance_cases WHERE case_id='{escaped_case}'"},
             {"type": "row_count", "name": "one_decision_work_item_audit", "expect": 1, "sql": f"SELECT COUNT(*) FROM erp_audit_trail WHERE entity_type='DecisionWorkItem' AND entity_id='{escaped_case}' AND action='decide'"},
             {"type": "sql", "name": "exception_request_untouched", "expect": "pending", "sql": f"SELECT status FROM erp_approval_requests WHERE request_id='{escaped_exception_request}'"},
-            {"type": "row_count", "name": "one_completion_email", "expect": 1, "sql": f"SELECT COUNT(*) FROM email_messages WHERE folder='sent' AND subject='{escaped_subject}' AND body LIKE '%{escaped_code}%' AND body LIKE '%{escaped_option}%' AND body LIKE '%{escaped_outcome}%' AND body LIKE '%{escaped_binding}%'"},
+            {
+                "type": "row_count",
+                "name": "one_completion_email",
+                "expect": 1,
+                "sql": (
+                    "SELECT COUNT(*) FROM email_messages "
+                    f"WHERE folder='sent' AND to_addr='{escaped_to}' AND subject='{escaped_subject}' "
+                    f"AND body LIKE '%{escaped_case}%' AND body LIKE '%{escaped_code}%' "
+                    f"AND body LIKE '%{escaped_option}%' AND body LIKE '%{escaped_outcome}%' "
+                    f"AND body LIKE '%{escaped_binding}%' "
+                    "AND (length(trim(body)) - length(replace(trim(body), ' ', ''))) >= 29 "
+                    "AND ((length(body) - length(replace(body, '.', ''))) "
+                    "+ (length(body) - length(replace(body, ';', ''))) "
+                    "+ (length(body) - length(replace(body, ':', '')))) >= 2 "
+                    "AND ltrim(body) NOT LIKE '{%' AND ltrim(body) NOT LIKE '[%'"
+                ),
+            },
         ]
     )
     _merge_writes_only(checks, {"answers", "erp_finance_cases", "erp_audit_trail", "email_messages"})

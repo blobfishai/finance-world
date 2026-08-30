@@ -21,10 +21,12 @@ from __future__ import annotations
 import argparse
 import gzip
 import hashlib
+import importlib.util
 import json
 import re
 import shutil
 import statistics
+import sys
 import tempfile
 import tomllib
 from difflib import SequenceMatcher
@@ -51,10 +53,10 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 RELEASE_NAME = "LedgerBench-100"
 RELEASE_SLUG = "ledgerbench-100"
-RELEASE_VERSION = "3.4.0"
+RELEASE_VERSION = "3.4.1"
 HARBOR_ORG = "blobfishai"
 WORLD_ID = "ledgerbench-erp-world-v3-4"
-NEGATIVE_CONTROLS = 12
+NEGATIVE_CONTROLS = 14
 
 
 def alternatives_fully_qualified(options: list[dict], checks: dict) -> bool:
@@ -87,6 +89,53 @@ def write_text(path: Path, value: str) -> None:
 
 def write_json(path: Path, value) -> None:
     write_text(path, json.dumps(value, indent=2, ensure_ascii=False, sort_keys=True) + "\n")
+
+
+def provider_tool_contracts() -> dict:
+    """Load the exact shipped MCP schemas into one inspectable release artifact."""
+
+    lib = str(ROOT / "mcp" / "lib")
+    sys.path.insert(0, lib)
+    servers = []
+    try:
+        for path in sorted((ROOT / "mcp" / "servers").glob("*_server.py")):
+            spec = importlib.util.spec_from_file_location(
+                f"ledgerbench_contract_{path.stem}", path
+            )
+            if spec is None or spec.loader is None:
+                raise RuntimeError(f"cannot load provider contracts from {path}")
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            server = module.S
+            tools = [schema for _, schema in server.tools.values()]
+            for tool in tools:
+                schema = tool["inputSchema"]
+                if (
+                    schema.get("type") != "object"
+                    or schema.get("additionalProperties") is not False
+                    or not set(schema.get("required") or ())
+                    <= set((schema.get("properties") or {}).keys())
+                ):
+                    raise ValueError(
+                        f"{server.name}.{tool['name']}: open or invalid input schema"
+                    )
+            servers.append(
+                {
+                    "server": server.name,
+                    "description": server.description,
+                    "tools": tools,
+                }
+            )
+    finally:
+        if lib in sys.path:
+            sys.path.remove(lib)
+        sys.modules.pop("framework", None)
+    return {
+        "schemaVersion": "ledgerbench.provider-tool-contracts.v1",
+        "servers": servers,
+        "toolCount": sum(len(server["tools"]) for server in servers),
+        "allInputSchemasClosed": True,
+    }
 
 
 def shingles(value: str, size: int = 5) -> set[tuple[str, ...]]:
@@ -463,6 +512,8 @@ def build(release: Path) -> dict:
     shutil.copyfile(ROOT / "verifiers" / "vcode.py", world_out / "vcode.py")
     shutil.copyfile(HERE / "runtime" / "server.py", world_out / "server.py")
     shutil.copyfile(ROOT / "world" / "schema.sql", world_out / "schema.sql")
+    tool_contracts = provider_tool_contracts()
+    write_json(hf / "contracts" / "tool-contracts.json", tool_contracts)
 
     write_text(hf / "LICENSE-DATA",
                "Creative Commons Attribution 4.0 International\n"
@@ -576,6 +627,13 @@ def build(release: Path) -> dict:
         "exact_decision_work_item_transitions": exact_state_transitions,
         "all_contracted_post_write_readbacks": post_write_readbacks,
         "source_provider_post_write_readbacks": source_post_write_readbacks,
+        "provider_tool_contracts": {
+            "servers": len(tool_contracts["servers"]),
+            "tools": tool_contracts["toolCount"],
+            "all_input_schemas_closed": tool_contracts[
+                "allInputSchemasClosed"
+            ],
+        },
         "exact_atomic_check_assignments": exact_atomic_assignments,
         "deep_erp_evidence_tasks": deep_erp_evidence_tasks,
         "erp_tasks_with_task_native_state": erp_tasks_with_native_state,
@@ -645,6 +703,10 @@ def build(release: Path) -> dict:
         "unique_authored_decision_codes": len({spec.decision_code for spec in DECISION_SPECS.values()}) == 100,
         "exact_state_transition_every_task": exact_state_transitions == 100,
         "all_contracted_post_write_readbacks_every_task": post_write_readbacks == 100,
+        "strict_provider_input_schemas": (
+            tool_contracts["allInputSchemasClosed"]
+            and tool_contracts["toolCount"] == build_report["mcp_tools"]
+        ),
         "deep_real_shaped_erp_evidence": deep_erp_evidence_tasks == families.get("erpbench", 0),
         "task_native_state_every_erp_planning_job": (
             erp_tasks_with_native_state == families.get("erpbench", 0)
@@ -659,7 +721,7 @@ def build(release: Path) -> dict:
             and catalog.get("integrity", {}).get("erpbench_scenario_archetypes") == 27
             and catalog.get("integrity", {}).get("erp_qa_employee_question_archetypes") == 23
         ),
-        "twelve_negative_controls": len(qualification["negative_controls"]) == NEGATIVE_CONTROLS,
+        "fourteen_negative_controls": len(qualification["negative_controls"]) == NEGATIVE_CONTROLS,
         "zero_negative_false_accepts": not any(
             row["false_accepts"] for row in qualification["negative_controls"].values()
         ),

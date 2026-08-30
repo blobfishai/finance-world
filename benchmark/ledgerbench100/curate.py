@@ -27,7 +27,7 @@ from typing import Any
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 TASKS_ROOT = ROOT / "tasks"
-RELEASE_VERSION = "3.4.0"
+RELEASE_VERSION = "3.4.1"
 TARGET = 100
 
 
