@@ -21,6 +21,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 
+RELEASE_VERSION = "3.3.0"
 TARGET = 100
 # Families taken in full (every eligible task ships).
 FULL_FAMILIES = [
@@ -136,7 +137,7 @@ def main() -> int:
 
     catalog = {
         "benchmark": "LedgerBench-100",
-        "version": "1.0.0",
+        "version": RELEASE_VERSION,
         "task_count": len(entries),
         "selection_pool": {
             "candidates_scanned": len(scan),

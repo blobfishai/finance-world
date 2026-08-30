@@ -1,4 +1,4 @@
-"""Causal-realism contract for the LedgerBench-100 v3.2 release."""
+"""Causal-realism contract for the LedgerBench-100 v3.3 release."""
 
 from __future__ import annotations
 
@@ -10,12 +10,26 @@ import json
 import re
 import sqlite3
 import zipfile
+from collections import Counter
 from copy import deepcopy
 from html import escape
 from pathlib import Path
 from typing import Any
 
+from decision_model import (
+    CHAIN_ANSWER_FIELDS,
+    OPTION_EXCEPTION,
+    OPTION_HOLD,
+    OPTION_PROCEED,
+    ControlModel,
+    answer_checks as model_answer_checks,
+    answer_schema_rows,
+    control_model,
+)
 from decision_specs import DecisionSpec, decision_spec
+
+WORLD_EPOCH = "2026-03-02T12:00:00Z"
+CLOSE_CALENDAR_REVISION = "CLOSE-2026.03"
 
 
 PROVIDER_MAPPINGS = {
@@ -32,6 +46,8 @@ PROVIDER_MAPPINGS = {
 CONTEXT_REVISION = "FIN-CONTROL-2026.03"
 SUPERSEDED_REVISION = "FIN-CONTROL-2025.11"
 FIXED_XLSX_ZIP_TIMESTAMP = (2026, 3, 2, 12, 0, 0)
+ASSETS_PER_TASK = 30
+MATERIAL_ASSETS_PER_TASK = 14
 
 SEMANTIC_MILESTONE_WEIGHTS = {
     "investigation.scope": 4,
@@ -74,7 +90,19 @@ def task_number(entry: dict[str, Any]) -> int:
     return int(match.group(1))
 
 
-def case_contract(entry: dict[str, Any]) -> dict[str, Any]:
+def control_model_for(entry: dict[str, Any], contract: dict[str, Any]) -> ControlModel:
+    """Recompute the deterministic decision model behind a case contract."""
+
+    return control_model(
+        task_number(entry),
+        entry["task_id"],
+        entry["family"],
+        decision_spec(entry["source_task"]),
+        contract.get("world_now", WORLD_EPOCH),
+    )
+
+
+def case_contract(entry: dict[str, Any], world_now: str = WORLD_EPOCH) -> dict[str, Any]:
     number = task_number(entry)
     case_id = f"FINCASE-{number:03d}"
     prefix = f"lgr-{number:03d}"
@@ -82,21 +110,30 @@ def case_contract(entry: dict[str, Any]) -> dict[str, Any]:
     stale_book = f"{case_id.lower()}-prior-tracker.xlsx"
     subject = f"{case_id} completed — {decision_spec(entry['source_task']).decision_code}"
     thread_id = "t_" + hashlib.sha1(subject.casefold().encode()).hexdigest()[:10]
+    model = control_model(number, entry["task_id"], entry["family"], decision_spec(entry["source_task"]), world_now)
     return {
         "case_id": case_id,
+        "decoy_case_id": model.decoy_case_id,
+        "world_now": world_now,
         "current_policy_id": f"{prefix}-control-current",
         "prior_policy_id": f"{prefix}-control-prior",
         "evidence_map_id": f"{prefix}-evidence-map",
+        "close_calendar_id": f"{prefix}-close-calendar",
         "handoff_id": f"{prefix}-handoff-standard",
         "identity_id": f"{prefix}-identity-control",
         "exception_id": f"{prefix}-exception-policy",
         "request_email_id": f"em-{prefix}-request",
         "approval_email_id": f"em-{prefix}-approval",
         "operations_email_id": f"em-{prefix}-operations",
+        "counterparty_email_id": f"em-{prefix}-counterparty",
         "stale_email_id": f"em-{prefix}-prior",
         "challenge_email_id": f"em-{prefix}-challenge",
         "current_workbook": current_book,
         "stale_workbook": stale_book,
+        "support_range": f"A7:F{7 + len(model.support_rows)}",
+        "approval_request_id": model.approval_request_id,
+        "exception_request_id": model.exception_request_id,
+        "approval_policy_id": model.approval_policy_id,
         "completion_to": "finance-controls@contoso-sim.example",
         "completion_subject": subject,
         "completion_thread_id": thread_id,
@@ -105,6 +142,7 @@ def case_contract(entry: dict[str, Any]) -> dict[str, Any]:
             f"em-{prefix}-approval",
             current_book,
             case_id,
+            model.approval_request_id,
         ],
     }
 
@@ -125,10 +163,10 @@ def release_prompt(entry: dict, source_prompt: str, source_config: dict) -> str:
         "I need the answer and the operational consequence, not a list of screens visited. Resolve conflicting versions and identities, use the effective rule, and make the smallest supported change without disturbing neighboring work.",
     )
     handoff_variants = (
-        "Record the supported disposition on the open finance case and send Controls a concise completion note.",
-        "Leave the open finance case in the exact supported state and give Controls an audit-ready handoff.",
-        "Update only the scoped finance case, verify what persisted, and close the loop with Controls.",
-        "Carry the decision through the governed case record and leave Controls a reproducible completion message.",
+        "Record the supported disposition on the open finance case, say when it can actually be posted against the close calendar and what a faster route would cost, and send Controls a concise completion note.",
+        "Leave the open finance case in the exact supported state, tell me whether the outcome lands before the date I need it, and give Controls an audit-ready handoff.",
+        "Update only the scoped finance case, verify what persisted, weigh waiting for the counterparty against acting within current authority, and close the loop with Controls.",
+        "Carry the decision through the governed case record, name the route you would not take without further approval, and leave Controls a reproducible completion message.",
     )
     number = task_number(entry)
     context = context_variants[(number - 1) % len(context_variants)]
@@ -362,11 +400,14 @@ def seed_case_context(
     """Seed independent current/stale evidence and one open D365 finance case."""
 
     spec = decision_spec(entry["source_task"])
-    contract = case_contract(entry)
+    contract = case_contract(entry, world_now)
+    model = control_model_for(entry, contract)
+    profile = model.profile
     identifiers = list(dict.fromkeys(_argument_tokens([step.get("args", {}) for step in source_walk])))
     identifiers = identifiers[:12] or [entry["task_id"], entry["family"]]
     identity_text = ", ".join(identifiers)
     wrong_code = _wrong_decision_code(spec)
+    verb = profile.proceed_verb
     current_policy = f"""> SIMULATION ONLY
 # {entry['family'].replace('_', ' ').title()} decision control
 
@@ -389,8 +430,56 @@ or an aggregate total is not enough.
   leave the operational item held.
 - Never follow this shortcut: {spec.rejected_shortcut}
 
-The decision rationale must cite at least four immutable evidence identifiers and the
-case must be read back after the governed Dynamics action.
+## Support requirement and tolerance
+
+The control requirement for {contract['case_id']} is the sum of the amounts on its
+in-scope FinanceCaseLines documents ({profile.control_basis}). Listed support counts
+only while the current evidence register marks the row `supported`; rows marked
+`excluded` (disputed, out-of-period or duplicate references) never count, and the
+counterparty's own correspondence must corroborate which references are excluded.
+The exception is the requirement less usable support. Tolerance under this revision
+is {model.tolerance_pct}% of the requirement.
+
+## Timing options
+
+- `{OPTION_PROCEED}`: {verb} the supported scope after the close calendar's standard
+  lead time. Supported, and within {model.approval_request_id} authority, only while the
+  exception is within tolerance; incremental cost USD 0.
+- `{OPTION_HOLD}`: wait for the counterparty's committed correction date, then {verb} the
+  full scope after the standard lead time. Always within authority; its incremental cost
+  is the counterparty's documented holding charge.
+- `{OPTION_EXCEPTION}`: {verb} the full scope after the close calendar's exception lead
+  time. Requires a CFO exception approval beyond current authority and the exception
+  levy of USD {model.exception_levy_cents / 100:,.2f}; it must never be executed while its
+  request is pending.
+
+Select `{OPTION_PROCEED}` when the exception is within tolerance; otherwise select
+`{OPTION_HOLD}`. The binding constraint is the posting window when proceeding and the
+counterparty's committed date when holding. Compare the selected outcome date with the
+requester's documented need-by date: ON_TIME on or before it, otherwise LATE. Lead times
+count calendar days from the world date.
+
+## Decision record
+
+The FinanceCases rationale must name the selected option id, its outcome date and the
+binding constraint date, and cite the five immutable evidence identifiers listed on the
+scope approval, including the approved Dynamics approval request. The case must be read
+back after the governed Dynamics action, and the Controls completion note must carry the
+same option id, outcome date and binding constraint date.
+"""
+    close_calendar = f"""> SIMULATION ONLY
+# March 2026 close calendar
+
+Revision: {CLOSE_CALENDAR_REVISION}
+Effective: 2026-03-01
+Scope: {contract['case_id']}
+World date: {world_now[:10]}
+
+- The posting window for the {contract['case_id']} scope closes on {model.posting_window_close}.
+- Standard processing lead time: {model.standard_lead_days} calendar day(s) from the decision date.
+- Exception processing lead time: {model.exception_lead_days} calendar day(s), available only
+  under an approved CFO exception.
+- Items decided after the posting window roll into the next period and require a new case.
 """
     prior_policy = f"""> SIMULATION ONLY
 # Prior {entry['family'].replace('_', ' ')} control
@@ -443,6 +532,7 @@ records. A supported no-action or unavailable finding is a valid outcome.
         (contract["current_policy_id"], f"{contract['case_id']} current decision control", "policy", CONTEXT_REVISION, "2026-03-01", current_policy),
         (contract["prior_policy_id"], f"{contract['case_id']} prior decision control", "policy", SUPERSEDED_REVISION, "2025-11-01", prior_policy),
         (contract["evidence_map_id"], f"{contract['case_id']} evidence map", "workpaper", "MAP-2026.03", "2026-03-01", evidence_map),
+        (contract["close_calendar_id"], f"{contract['case_id']} close calendar", "calendar", CLOSE_CALENDAR_REVISION, "2026-03-01", close_calendar),
         (contract["handoff_id"], f"{contract['case_id']} handoff standard", "sop", "HANDOFF-2026.02", "2026-02-15", handoff),
         (contract["identity_id"], f"{contract['case_id']} identity control", "policy", "ID-2026.01", "2026-01-10", identity),
         (contract["exception_id"], f"{contract['case_id']} exception ownership", "policy", "EXC-2026.03", "2026-03-01", exception),
@@ -454,13 +544,28 @@ records. A supported no-action or unavailable finding is a valid outcome.
 
     request_body = (
         f"Please take ownership of {contract['case_id']}. {spec.employee_question} "
-        "The case record is open; use current evidence and preserve any unresolved exception."
+        "The case record is open; use current evidence and preserve any unresolved exception. "
+        f"I need the outcome by {model.business_need_date} for the operating review; treat that "
+        "date as the control date when you judge timing."
     )
     approval_body = (
         f"Scope approval for {contract['case_id']}: Finance Operations may record one supported "
         f"case decision after reconciling identity, authority, operations, and approval evidence. "
         f"Approved evidence anchors are {contract['current_policy_id']}, {contract['current_workbook']}, "
-        f"and this message {contract['approval_email_id']}. This approval does not predetermine the outcome."
+        f"this message {contract['approval_email_id']}, and Dynamics approval request "
+        f"{model.approval_request_id} under {model.approval_policy_id}. That request covers the "
+        f"supported scope only; the pending exception request {model.exception_request_id} is not "
+        "approved and must not be executed. This approval does not predetermine the outcome."
+    )
+    excluded_refs = ", ".join(
+        f"{row['support_ref']} ({row['reason']})" for row in model.support_rows if row["status"] != "supported"
+    )
+    counterparty_body = (
+        f"Regarding {contract['case_id']}: we can deliver the {profile.correction_noun} on "
+        f"{model.external_date}. Until then the references {excluded_refs} remain outside what we "
+        f"can confirm. Holding the {profile.scope_noun} beyond our terms carries a "
+        f"{profile.hold_charge_noun} of USD {model.hold_charge_cents / 100:,.2f}. "
+        f"-- {profile.party_name}"
     )
     operations_body = (
         f"Operations status for {contract['case_id']}: source records remain live as of {world_now}. "
@@ -479,6 +584,7 @@ records. A supported no-action or unavailable finding is a valid outcome.
         (contract["request_email_id"], "inbox", "requester@contoso-sim.example", "finance-ops@contoso-sim.example", f"{contract['case_id']} request", "2026-03-02T08:05:00Z", request_body, None, None),
         (contract["approval_email_id"], "inbox", "controller@contoso-sim.example", "finance-ops@contoso-sim.example", f"{contract['case_id']} scope approval", "2026-03-02T08:28:00Z", approval_body, f"{contract['case_id']}-approval.txt", approval_body),
         (contract["operations_email_id"], "inbox", "operations@contoso-sim.example", "finance-ops@contoso-sim.example", f"{contract['case_id']} current operations", "2026-03-02T08:42:00Z", operations_body, None, None),
+        (contract["counterparty_email_id"], "inbox", profile.party_address, "finance-ops@contoso-sim.example", f"{contract['case_id']} {profile.correction_noun} timing", "2026-03-02T08:55:00Z", counterparty_body, None, None),
         (contract["stale_email_id"], "inbox", "former-reviewer@contoso-sim.example", "finance-ops@contoso-sim.example", f"{contract['case_id']} prior draft", "2026-02-20T16:10:00Z", stale_body, None, None),
         (contract["challenge_email_id"], "inbox", "finance-controls@contoso-sim.example", "finance-ops@contoso-sim.example", f"{contract['case_id']} control challenge", "2026-03-02T09:01:00Z", challenge_body, None, None),
     ]
@@ -494,10 +600,23 @@ records. A supported no-action or unavailable finding is a valid outcome.
         [contract["case_id"], contract["operations_email_id"], "operations", world_now, "current", "locate raw system records"],
         [contract["case_id"], contract["approval_email_id"], "approval", "SCOPE-2026.03", "approved", "scope only; outcome not predetermined"],
     ]
+    support_header = ["case_id", "support_ref", "document_ref", "amount_usd", "status", "reason"]
+    current_rows.append([])
+    current_rows.append(support_header)
+    current_rows.extend(
+        [contract["case_id"], row["support_ref"], row["document_ref"], row["amount"], row["status"], row["reason"]]
+        for row in model.support_rows
+    )
     stale_rows = [
         ["case_id", "source_ref", "evidence_role", "revision", "status", "note"],
         [contract["case_id"], contract["prior_policy_id"], "authority", SUPERSEDED_REVISION, "superseded", spec.rejected_shortcut],
         [contract["case_id"], contract["stale_email_id"], "operations", "2026-02-20", "stale", "historical draft only"],
+        [],
+        support_header,
+        *[
+            [contract["case_id"], row["support_ref"], row["document_ref"], row["amount"], row["status"], row["reason"]]
+            for row in model.stale_support_rows
+        ],
     ]
     for name, owner, modified, description, rows in (
         (contract["current_workbook"], "Finance Controls", "2026-03-02T09:05:00Z", f"Current evidence register for {contract['case_id']}", current_rows),
@@ -525,10 +644,91 @@ records. A supported no-action or unavailable finding is a valid outcome.
             "2026-03-02T08:05:00Z",
         ),
     )
+    _seed_control_model(cx, entry, spec, contract, model, wrong_code)
     _seed_erpbench_demand_quotes(cx, entry, contract, world_now)
     cx.commit()
     cx.close()
     return contract
+
+
+CASE_LINES_DDL = (
+    "CREATE TABLE IF NOT EXISTS erp_finance_case_lines("
+    "case_id TEXT, line INTEGER, document_ref TEXT, description TEXT, amount REAL, "
+    "currency TEXT, control_basis TEXT, PRIMARY KEY(case_id, line))"
+)
+
+
+def _seed_control_model(
+    cx: sqlite3.Connection,
+    entry: dict[str, Any],
+    spec: DecisionSpec,
+    contract: dict[str, Any],
+    model: ControlModel,
+    wrong_code: str,
+) -> None:
+    """Seed the raw facts behind the graded decision model; never a derived value."""
+
+    cx.execute(CASE_LINES_DDL)
+    cx.execute("DELETE FROM erp_finance_case_lines WHERE case_id IN (?, ?)", (model.case_id, model.decoy_case_id))
+    cx.executemany(
+        "INSERT INTO erp_finance_case_lines(case_id,line,document_ref,description,amount,currency,control_basis) VALUES(?,?,?,?,?,?,?)",
+        [
+            (row["case_id"], row["line"], row["document_ref"], row["description"], row["amount"], row["currency"], row["control_basis"])
+            for row in [*model.lines, *model.decoy_lines]
+        ],
+    )
+    decoy_refs = json.dumps(
+        sorted([contract["prior_policy_id"], contract["stale_email_id"], contract["stale_workbook"], model.decoy_case_id]),
+        separators=(",", ":"),
+    )
+    cx.execute(
+        "INSERT OR REPLACE INTO erp_finance_cases(case_id,task_id,workflow,subject,status,decision_code,evidence_refs,rationale,owner,opened_at,decided_at) "
+        "VALUES(?,?,?,?, 'closed', ?, ?, ?, ?, ?, ?)",
+        (
+            model.decoy_case_id,
+            f"{entry['task_id']}::fy2025",
+            entry["family"],
+            f"{spec.employee_question} (FY2025 cycle)",
+            wrong_code,
+            decoy_refs,
+            f"Closed under {SUPERSEDED_REVISION}; the prior control permitted: {spec.rejected_shortcut}",
+            "former-reviewer",
+            "2025-11-18T09:00:00Z",
+            "2025-12-05T16:40:00Z",
+        ),
+    )
+    cx.executemany(
+        "INSERT OR REPLACE INTO erp_approval_policies(policy_id,dataareaid,doc_type,based_on,threshold_amount,currency,applies_to_role,approving_role,approving_user,escalation_policy_id,active) "
+        "VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+        [
+            (model.approval_policy_id, "USMF", "Finance Case", "Supported scope", model.authority_limit, "USD", "Finance Operations", "Controller", None, model.exception_policy_id, 1),
+            (model.exception_policy_id, "USMF", "Finance Case Exception", "Unsupported exception", 0.0, "USD", "Controller", "CFO", None, None, 1),
+        ],
+    )
+    cx.executemany(
+        "INSERT OR REPLACE INTO erp_approval_requests(request_id,dataareaid,doc_type,doc_id,amount,currency,submitted_by,submitted_at,note,policy_id,required_role,status,decided_by,decided_at,decision_reason) "
+        "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        [
+            (
+                model.approval_request_id, "USMF", "Finance Case", model.case_id, model.authority_limit, "USD",
+                "finance-operations", "2026-03-02T08:20:00Z",
+                f"Authority to decide {model.case_id} within the approved scope; unsupported exceptions are not covered",
+                model.approval_policy_id, "Controller", "approved", "controller@contoso-sim.example",
+                "2026-03-02T08:28:00Z", f"Approved within the {model.approval_policy_id} limit",
+            ),
+            (
+                model.exception_request_id, "USMF", "Finance Case Exception", model.case_id, None, "USD",
+                "former-reviewer", "2026-02-20T16:12:00Z",
+                f"CFO exception drafted under {SUPERSEDED_REVISION} to act on the unsupported exception; amount to be established",
+                model.exception_policy_id, "CFO", "pending", None, None, None,
+            ),
+        ],
+    )
+    first_ordinal = int(cx.execute("SELECT COALESCE(MAX(ordinal), 0) FROM answer_schema").fetchone()[0]) + 1
+    cx.executemany(
+        "INSERT OR REPLACE INTO answer_schema(ordinal,field,type,description) VALUES(?,?,?,?)",
+        answer_schema_rows(model, first_ordinal),
+    )
 
 
 def _context_groups(entry: dict[str, Any], contract: dict[str, Any]) -> list[list[dict[str, Any]]]:
@@ -560,12 +760,39 @@ def _context_groups(entry: dict[str, Any], contract: dict[str, Any]) -> list[lis
             {"server": "sheets", "tool": "get_drive_item", "args": {"item": contract["stale_workbook"]}},
             {"server": "sheets", "tool": "workbook_range", "args": {"item": contract["stale_workbook"], "address": "A1:F3"}},
         ],
+        [
+            *_control_model_reads(contract),
+            *_external_constraint_reads(contract),
+        ],
     ]
     orders = (
-        (0, 1, 2, 3), (1, 2, 0, 3), (2, 0, 3, 1),
-        (3, 1, 0, 2), (0, 3, 2, 1), (2, 1, 3, 0),
+        (0, 1, 2, 3, 4), (1, 2, 0, 4, 3), (2, 0, 3, 1, 4),
+        (3, 1, 0, 4, 2), (0, 3, 4, 2, 1), (2, 1, 3, 0, 4),
+        (0, 4, 1, 2, 3), (1, 0, 4, 3, 2),
     )
     return [groups[index] for index in orders[(number - 1) % len(orders)]]
+
+
+def _control_model_reads(contract: dict[str, Any]) -> list[dict[str, Any]]:
+    """Reads behind the graded requirement, coverage, authority and calendar values."""
+
+    return [
+        {"server": "erp", "tool": "data_get_entity_metadata", "args": {"entity": "FinanceCaseLines"}},
+        {"server": "erp", "tool": "data_find_entities", "args": {"entity": "FinanceCaseLines", "filters": {"case_id": contract["case_id"]}}},
+        {"server": "erp", "tool": "data_find_entities", "args": {"entity": "ApprovalPolicies", "filters": {"doc_type": "Finance Case"}}},
+        {"server": "erp", "tool": "data_find_entities", "args": {"entity": "ApprovalRequests", "filters": {"doc_id": contract["case_id"]}}},
+        {"server": "docs", "tool": "get_document", "args": {"doc_id": contract["close_calendar_id"]}},
+        {"server": "sheets", "tool": "workbook_range", "args": {"item": contract["current_workbook"], "address": contract["support_range"]}},
+        {"server": "email", "tool": "messages_get", "args": {"id": contract["request_email_id"]}},
+    ]
+
+
+def _external_constraint_reads(contract: dict[str, Any]) -> list[dict[str, Any]]:
+    """The counterparty's own message: the independently confirmed external input."""
+
+    return [
+        {"server": "email", "tool": "messages_get", "args": {"id": contract["counterparty_email_id"]}},
+    ]
 
 
 def _material_context_groups(contract: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
@@ -598,6 +825,8 @@ def _material_context_groups(contract: dict[str, Any]) -> dict[str, list[dict[st
             {"server": "sheets", "tool": "get_drive_item", "args": {"item": contract["stale_workbook"]}},
             {"server": "sheets", "tool": "workbook_range", "args": {"item": contract["stale_workbook"], "address": "A1:F3"}},
         ],
+        "control_model": _control_model_reads(contract),
+        "external_constraint": _external_constraint_reads(contract),
     }
 
 
@@ -791,7 +1020,13 @@ def reference_walk(
         [contract_row["readback"] for contract_row in source_postwrite_contracts]
     )
 
-    rationale = f"{spec.supported_condition} {spec.analysis_route}"
+    model = control_model_for(entry, contract)
+    rationale = (
+        f"Selected timing option {model.recommended_option} with outcome {model.recommended_outcome}; "
+        f"binding constraint {model.binding_constraint_label} ({model.binding_constraint_date}); "
+        f"authority {model.approval_request_id}. {spec.supported_condition} {spec.analysis_route}"
+    )
+    submit["args"]["answers"] = {**(submit["args"].get("answers") or {}), **model.answers}
     decide = {
         "server": "erp",
         "tool": "api_invoke_action",
@@ -818,6 +1053,9 @@ def reference_walk(
             "subject": contract["completion_subject"],
             "body": (
                 f"{contract['case_id']} is complete with decision {spec.decision_code}. "
+                f"Selected timing option {model.recommended_option}; outcome date {model.recommended_outcome}; "
+                f"binding constraint {model.binding_constraint_label} ({model.binding_constraint_date}); "
+                f"timing versus the {model.business_need_date} control date: {model.timing_status}. "
                 f"The result follows {CONTEXT_REVISION}; evidence references: "
                 + ", ".join(contract["evidence_refs"])
                 + ". The detailed numerical and record conclusion is filed in the finance reporting record."
@@ -850,6 +1088,11 @@ def reference_walk(
         "verify_independent_scope_approval",
         f"reject_{workflow_slug}_stale_or_single_system_shortcut",
         f"derive_{spec.decision_code.casefold()}",
+        "derive_control_requirement_from_case_lines",
+        "reconcile_register_support_with_counterparty_exclusions",
+        "net_exception_against_tolerance",
+        f"weigh_timing_options_select_{model.recommended_option}",
+        "compare_outcome_with_documented_need_date",
         f"persist_{workflow_slug}_task_native_outcome",
         "read_back_task_native_provider_state",
         "record_governed_dynamics_transition",
@@ -944,7 +1187,9 @@ def augment_checks(
     """Add exact causal gates and task-scoped state assertions."""
 
     spec = decision_spec(entry["source_task"])
+    model = control_model_for(entry, contract)
     checks = deepcopy(checks)
+    checks.setdefault("answer_checks", []).extend(model_answer_checks(model))
     # A handful of source workflows already send one operational email and grade
     # the total sent count.  V3 adds a separate Controls completion message, so
     # preserve the original assertion while accounting for that scoped second row.
@@ -958,6 +1203,29 @@ def augment_checks(
         ):
             state_check["expect"] += 1
     trace_checks = checks.setdefault("trace_checks", [])
+    # Every required evidence system is graded as a required server, and the
+    # graded lower bound on successful calls per server is the number of exact
+    # evidence requests that server must answer before the decision.
+    required_servers = next((check for check in trace_checks if check.get("type") == "required_servers"), None)
+    if required_servers is None:
+        required_servers = {"type": "required_servers", "servers": []}
+        trace_checks.insert(0, required_servers)
+    # A contracted provider-negative (expected_error_contains) is graded as exact
+    # evidence by required_calls but is not a successful call, so it never raises
+    # the per-server successful-call minimum.
+    evidence_servers = Counter(
+        call["server"]
+        for call in trace_contract["required_context_calls"]
+        if not call.get("expected_error_contains")
+    )
+    required_servers["servers"] = sorted(set(required_servers.get("servers", [])) | set(evidence_servers))
+    existing_minimums = {check.get("server"): check for check in trace_checks if check.get("type") == "min_calls"}
+    for server in sorted(evidence_servers):
+        minimum = existing_minimums.get(server)
+        if minimum is None:
+            trace_checks.append({"type": "min_calls", "server": server, "n": evidence_servers[server]})
+        else:
+            minimum["n"] = max(int(minimum.get("n", 1)), evidence_servers[server])
     for group_name, calls in trace_contract["material_context_groups"].items():
         trace_checks.extend(
             [
@@ -1036,43 +1304,36 @@ def augment_checks(
     escaped_case = contract["case_id"].replace("'", "''")
     escaped_code = spec.decision_code.replace("'", "''")
     escaped_subject = contract["completion_subject"].replace("'", "''")
+    escaped_option = model.recommended_option.replace("'", "''")
+    escaped_outcome = model.recommended_outcome.replace("'", "''")
+    escaped_binding = model.binding_constraint_date.replace("'", "''")
+    escaped_exception_request = model.exception_request_id.replace("'", "''")
     expected_refs = json.dumps(sorted(contract["evidence_refs"]), separators=(",", ":"))
+    decision_predicate = (
+        f"rationale LIKE '%{escaped_option}%' AND rationale LIKE '%{escaped_outcome}%' "
+        f"AND rationale LIKE '%{escaped_binding}%'"
+    )
     state_checks = checks.setdefault("state_checks", [])
     state_checks.extend(
         [
             {"type": "sql", "name": "finance_case_decided", "expect": "decided", "sql": f"SELECT status FROM erp_finance_cases WHERE case_id='{escaped_case}'"},
             {"type": "sql", "name": "finance_case_exact_decision", "expect": spec.decision_code, "sql": f"SELECT decision_code FROM erp_finance_cases WHERE case_id='{escaped_case}'"},
             {"type": "sql", "name": "finance_case_evidence_refs", "expect": expected_refs, "sql": f"SELECT evidence_refs FROM erp_finance_cases WHERE case_id='{escaped_case}' AND decision_code='{escaped_code}'"},
+            {"type": "sql", "name": "finance_case_selected_option", "expect": 1, "sql": f"SELECT CASE WHEN {decision_predicate} THEN 1 ELSE 0 END FROM erp_finance_cases WHERE case_id='{escaped_case}'"},
             {"type": "row_count", "name": "one_finance_case_audit", "expect": 1, "sql": f"SELECT COUNT(*) FROM erp_audit_trail WHERE entity_type='FinanceCase' AND entity_id='{escaped_case}' AND action='decide'"},
-            {"type": "row_count", "name": "one_completion_email", "expect": 1, "sql": f"SELECT COUNT(*) FROM email_messages WHERE folder='sent' AND subject='{escaped_subject}' AND body LIKE '%{escaped_code}%'"},
+            {"type": "sql", "name": "exception_request_untouched", "expect": "pending", "sql": f"SELECT status FROM erp_approval_requests WHERE request_id='{escaped_exception_request}'"},
+            {"type": "row_count", "name": "one_completion_email", "expect": 1, "sql": f"SELECT COUNT(*) FROM email_messages WHERE folder='sent' AND subject='{escaped_subject}' AND body LIKE '%{escaped_code}%' AND body LIKE '%{escaped_option}%' AND body LIKE '%{escaped_outcome}%' AND body LIKE '%{escaped_binding}%'"},
         ]
     )
     _merge_writes_only(checks, {"answers", "erp_finance_cases", "erp_audit_trail", "email_messages"})
     return checks
 
 
-def decision_options(entry: dict[str, Any]) -> list[dict[str, Any]]:
-    spec = decision_spec(entry["source_task"])
-    return [
-        {
-            "id": spec.decision_code.casefold().replace("_", "-"),
-            "label": spec.decision_code.replace("_", " ").title(),
-            "selected": True,
-            "reason": spec.supported_condition,
-        },
-        {
-            "id": _wrong_decision_code(spec).casefold().replace("_", "-"),
-            "label": _wrong_decision_code(spec).replace("_", " ").title(),
-            "selected": False,
-            "reason": "Use only when the required evidence intersection is incomplete or conflicting.",
-        },
-        {
-            "id": "unsupported-shortcut",
-            "label": "Unsupported Shortcut",
-            "selected": False,
-            "reason": spec.rejected_shortcut,
-        },
-    ]
+def decision_options(entry: dict[str, Any], contract: dict[str, Any] | None = None) -> list[dict[str, Any]]:
+    """Three costed timing alternatives; every outcome is graded as its own answer field."""
+
+    model = control_model_for(entry, contract or case_contract(entry))
+    return deepcopy(model.options)
 
 
 def _atomic_rubric_evidence(
@@ -1084,6 +1345,7 @@ def _atomic_rubric_evidence(
     """Validate detailed task-specific evidence behind the public milestones."""
 
     spec = decision_spec(entry["source_task"])
+    model = control_model_for(entry, contract)
     criteria: list[dict[str, str]] = []
 
     def add(category: str, key: str, description: str, enforced_by: str) -> None:
@@ -1274,18 +1536,96 @@ def _atomic_rubric_evidence(
         "workbook_range",
         {"item": contract["stale_workbook"], "address": "A1:F3"},
     )
+    # The graded control-date decision model: requirement, coverage, gap,
+    # external and internal constraints, costed alternatives, recommendation,
+    # control comparison and authority.  Each read below is an exact required
+    # call and each derived value is an exact answer check.
+    require_call(
+        "correlation",
+        "interpret-case-lines-schema",
+        "Inspect the FinanceCaseLines metadata so the in-scope documents and their amounts are read from the live schema rather than assumed.",
+        "erp",
+        "data_get_entity_metadata",
+        {"entity": "FinanceCaseLines"},
+    )
+    require_call(
+        "correlation",
+        "derive-control-requirement",
+        f"Read the in-scope FinanceCaseLines for {contract['case_id']} and derive the control requirement by summing their amounts; the FY2025 look-alike {contract['decoy_case_id']} stays out of scope.",
+        "erp",
+        "data_find_entities",
+        {"entity": "FinanceCaseLines", "filters": {"case_id": contract["case_id"]}},
+    )
+    require_call(
+        "correlation",
+        "reconcile-support-register",
+        f"Read {contract['support_range']} of {contract['current_workbook']} and separate supported rows from excluded rows before netting usable support against the requirement.",
+        "sheets",
+        "workbook_range",
+        {"item": contract["current_workbook"], "address": contract["support_range"]},
+    )
+    require_call(
+        "external",
+        "confirm-counterparty-constraint",
+        f"Open the counterparty's own message {contract['counterparty_email_id']} for its committed correction date, its holding charge, and the references it cannot confirm.",
+        "email",
+        "messages_get",
+        {"id": contract["counterparty_email_id"]},
+    )
+    require_call(
+        "internal",
+        "apply-close-calendar",
+        f"Read {contract['close_calendar_id']} for the posting window and the standard and exception lead times that shape every timing option.",
+        "docs",
+        "get_document",
+        {"doc_id": contract["close_calendar_id"]},
+    )
+    require_call(
+        "internal",
+        "document-business-need-date",
+        f"Open the request {contract['request_email_id']} and use the requester's documented need-by date as the control date, not the close calendar or the world date.",
+        "email",
+        "messages_get",
+        {"id": contract["request_email_id"]},
+    )
+    require_call(
+        "authority",
+        "apply-approval-policy",
+        "Read the Finance Case approval policies to establish the authority limit and the separate CFO exception policy.",
+        "erp",
+        "data_find_entities",
+        {"entity": "ApprovalPolicies", "filters": {"doc_type": "Finance Case"}},
+    )
+    require_call(
+        "authority",
+        "apply-approved-request",
+        f"Read the approval requests for {contract['case_id']} and apply the approved {contract['approval_request_id']} to the selected scope while leaving the pending {contract['exception_request_id']} untouched.",
+        "erp",
+        "data_find_entities",
+        {"entity": "ApprovalRequests", "filters": {"doc_id": contract["case_id"]}},
+    )
     for server in sorted({call["server"] for call in trace_contract["required_context_calls"]}):
         add("investigation", f"provider-{server}", f"Use the task-scoped {PROVIDER_MAPPINGS[server]} evidence needed for this case.", "successful required provider calls")
+    add("correlation", "requirement-derivation", "Derive the control requirement from the in-scope FinanceCaseLines amounts instead of reading a header or the approval amount.", "answer check control_requirement_usd")
+    add("correlation", "coverage-reconciliation", "Grade observed support, the excluded portion corroborated by the counterparty, and the usable remainder as separate values.", "answer checks observed_support_usd, excluded_support_usd, usable_support_usd")
+    add("correlation", "exception-tolerance", f"Net usable support against the requirement into the exception and test it against the {model.tolerance_pct}% tolerance.", "answer checks exception_usd, exception_within_tolerance")
+    add("external", "counterparty-date", "Carry the counterparty's committed correction date from its own message into the timing options.", "answer check external_constraint_date")
+    add("internal", "posting-window", "Carry the close calendar's posting window into the binding constraint.", "answer check posting_window_close_date")
     add("decision", "supported-condition", spec.supported_condition, "exact authored decision and final state")
     add("decision", "reject-shortcut", f"Reject the unsupported branch: {spec.rejected_shortcut}", "wrong-branch negative control")
     add("decision", "exact-code", f"Select `{spec.decision_code}` only after the evidence intersection supports it.", "FinanceCases decision_code assertion")
-    add("decision", "alternatives", "Keep evidence-insufficient or conflicting alternatives visible rather than forcing a clean answer.", "decision options and state containment")
+    add("decision", "alternatives-costed", f"Weigh `{OPTION_PROCEED}`, `{OPTION_HOLD}` and `{OPTION_EXCEPTION}`, each with an exact outcome date, incremental cost and authority status.", "answer checks for every option outcome date; decision options with outcome, incremental_cost and authority_status")
+    add("decision", "recommended-option", f"Select `{model.recommended_option}` with outcome {model.recommended_outcome} and its documented incremental cost.", "answer checks recommended_option, recommended_outcome_date, recommended_incremental_cost_usd; FinanceCases rationale assertion")
+    add("decision", "control-date-variance", f"Compare the selected outcome with the documented {model.business_need_date} need-by date into a signed day variance and an honest {model.timing_status} status.", "answer checks business_need_date, outcome_vs_control_days, decision_timing_status")
+    add("authority", "approval-applied", f"Apply {model.approval_request_id} and its authority limit to the selected scope; the exception option stays flagged as requiring approval beyond current authority.", "answer checks approval_request_id, approval_authority_limit_usd, escalation_approval_required")
+    add("authority", "exception-not-executed", f"Leave {model.exception_request_id} pending; the unauthorized alternative is never executed.", "exception_request_untouched state assertion")
     for check in checks.get("answer_checks", []):
         add("answer", check["field"], f"File the task-specific `{check['field']}` conclusion in the discovered reporting schema using its declared type and scale.", f"deterministic answer check: {check.get('type', 'string')}")
     add("state", "governed-transition", f"Use the Dynamics generic action surface to move only {contract['case_id']} from open to decided.", "exact SQL pre/post state")
-    add("state", "evidence-refs", "Persist the exact four independently sourced immutable references with the case decision.", "exact serialized evidence_refs assertion")
+    add("state", "evidence-refs", "Persist the exact five independently sourced immutable references with the case decision.", "exact serialized evidence_refs assertion")
+    add("state", "selected-option-recorded", "Persist the selected option id, its outcome date and the binding constraint date in the case rationale.", "FinanceCases rationale assertion")
     add("state", "audit-row", "Produce exactly one Dynamics audit event for the case transition.", "row-count assertion")
-    add("state", "completion-message", "Send exactly one scoped Controls handoff naming the case and supported decision.", "Gmail sent-state assertion")
+    add("state", "completion-message", "Send exactly one scoped Controls handoff naming the case, the supported decision, the selected option, its outcome date and the binding constraint.", "Gmail sent-state body assertion")
     add("procedure", "read-before-write", "Complete all required context reads before recording the case decision.", "reads_before_write")
     add("procedure", "case-readback", "Read the exact FinanceCases record after the decision action.", "post_write_readback")
     add("procedure", "message-readback", "Reopen the exact completion thread after sending it.", "post_write_readback")
@@ -1293,7 +1633,20 @@ def _atomic_rubric_evidence(
     add("containment", "write-scope", "Preserve every table outside the source task's authorized mutations, the finance case, its audit row, the completion email, and the reporting row.", "writes_only initial-state diff")
     if len(criteria) < 40:
         raise ValueError(f"{entry['task_id']} has only {len(criteria)} public criteria")
+    if len({row["id"] for row in criteria}) != len(criteria):
+        raise ValueError(f"{entry['task_id']} has duplicate public criteria ids")
     return criteria
+
+
+def public_criteria(
+    entry: dict[str, Any],
+    checks: dict[str, Any],
+    trace_contract: dict[str, Any],
+    contract: dict[str, Any],
+) -> list[dict[str, str]]:
+    """The atomic public rubric: every criterion names the exact check enforcing it."""
+
+    return _atomic_rubric_evidence(entry, checks, trace_contract, contract)
 
 
 def _check_slug(value: str) -> str:
@@ -1363,6 +1716,10 @@ def rubric_criteria(
                 target = "investigation.current_state"
             elif name == "material_source_systems":
                 target = "investigation.source_systems"
+            elif name == "material_control_model":
+                target = "analysis.causal_reasoning"
+            elif name == "material_external_constraint":
+                target = "investigation.current_state"
             elif name.endswith("_successful"):
                 target = "analysis.causal_reasoning"
             elif check_type in {"required_servers", "min_calls"}:
@@ -1381,8 +1738,10 @@ def rubric_criteria(
         elif source == "state":
             if check_type == "writes_only":
                 target = "containment.scope"
-            elif name == "finance_case_exact_decision":
+            elif name in {"finance_case_exact_decision", "finance_case_selected_option"}:
                 target = "decision.supported_path"
+            elif name == "exception_request_untouched":
+                target = "containment.scope"
             elif name == "finance_case_decided":
                 target = "state.case"
             elif name == "finance_case_evidence_refs":
@@ -1409,6 +1768,7 @@ def rubric_criteria(
         grouped["state.operational"].append(case_evidence_id)
 
     source_mutations = trace_contract["source_mutation_calls"]
+    model = control_model_for(entry, contract)
     mutation_surfaces = sorted(
         {f"{step['server']}.{step['tool']}" for step in source_mutations}
     )
@@ -1433,10 +1793,12 @@ def rubric_criteria(
             f"Complete the {source_read_count} task-native provider reads needed to {spec.analysis_route[0].lower() + spec.analysis_route[1:]}"
         ),
         "analysis.causal_reasoning": (
-            f"Join identity, authority, approval, and live {entry['family']} records to establish whether {spec.supported_condition[0].lower() + spec.supported_condition[1:]}"
+            f"Join identity, authority, approval, and live {entry['family']} records to establish whether {spec.supported_condition[0].lower() + spec.supported_condition[1:]} "
+            f"Then derive the control requirement from the FinanceCaseLines, net the register's usable support and the counterparty-corroborated exclusions into the exception, and test it against the {model.tolerance_pct}% tolerance."
         ),
         "decision.supported_path": (
-            f"Compare the supported path, the evidence-insufficient hold, and the rejected shortcut; select `{spec.decision_code}` only because the joined evidence supports it."
+            f"Compare the supported path, the evidence-insufficient hold, and the rejected shortcut; select `{spec.decision_code}` only because the joined evidence supports it, "
+            f"and select the timing option `{model.recommended_option}` (outcome {model.recommended_outcome}, bound by {model.binding_constraint_label}) over the costed alternatives, recording it on the case."
         ),
         "state.operational": (
             f"Leave the task-native {entry['family']} outcome in its exact supported state"
@@ -1459,7 +1821,7 @@ def rubric_criteria(
             f"Perform all {readback_count} provider-native readbacks after their writes, including the exact FinanceCases row and reopened Controls thread."
         ),
         "containment.scope": (
-            f"Keep every successful change inside the source task, {contract['case_id']}, its audit row, the completion message, and the answer record."
+            f"Keep every successful change inside the source task, {contract['case_id']}, its audit row, the completion message, and the answer record; leave the pending {model.exception_request_id} unexecuted."
         ),
         "answer.insights": (
             f"File the exact task-supported {', '.join(answer_fields)} conclusions in the discovered reporting schema with the correct units, identifiers, and scope."
@@ -1636,18 +1998,20 @@ def write_asset_views(
         f"03-{contract['current_policy_id']}.md",
         f"04-{contract['prior_policy_id']}.md",
         f"05-{contract['evidence_map_id']}.md",
-        f"10-{contract['approval_email_id']}.eml",
-        f"11-{contract['operations_email_id']}.eml",
-        f"12-{contract['stale_email_id']}.eml",
-        f"14-{contract['current_workbook']}",
-        f"15-{contract['stale_workbook']}",
-        "24-approvals-and-controls.json",
-        "25-lineage-and-currency.md",
+        f"06-{contract['close_calendar_id']}.md",
+        f"11-{contract['approval_email_id']}.eml",
+        f"12-{contract['operations_email_id']}.eml",
+        f"13-{contract['counterparty_email_id']}.eml",
+        f"14-{contract['stale_email_id']}.eml",
+        f"16-{contract['current_workbook']}",
+        f"17-{contract['stale_workbook']}",
+        "26-approvals-and-controls.json",
+        "27-lineage-and-currency.md",
     }
     if entry["family"] == "erpbench":
-        provider_material = "23-odoo-procurement.json"
+        provider_material = "25-odoo-procurement.json"
     elif entry["family"] in {"business_brief", "business_brief_fb"}:
-        provider_material = "22-filings-evidence.json"
+        provider_material = "24-filings-evidence.json"
     elif entry["family"] in {
         "anomaly_triage",
         "bank_rec",
@@ -1655,11 +2019,11 @@ def write_asset_views(
         "cash_forecast",
         "payment_ops",
     }:
-        provider_material = "20-bank-and-payment-state.csv"
+        provider_material = "22-bank-and-payment-state.csv"
     elif entry["family"] == "cross_system":
-        provider_material = "21-books-ledger.json"
+        provider_material = "23-books-ledger.json"
     else:
-        provider_material = "19-erp-transactions.csv"
+        provider_material = "21-erp-transactions.csv"
     material_assets = common_material | {provider_material}
 
     def add(name: str, source: str, content: str | bytes, *, role: str) -> None:
@@ -1680,49 +2044,70 @@ def write_asset_views(
 
     add("01-employee-request.md", "Teams", prompt + "\n", role="request")
     case = dict(cx.execute("SELECT * FROM erp_finance_cases WHERE case_id=?", (contract["case_id"],)).fetchone())
-    add("02-open-finance-case.json", "Dynamics FinanceCases", json.dumps(case, indent=2, sort_keys=True) + "\n", role="identity")
+    case_lines = [
+        dict(row)
+        for row in cx.execute(
+            "SELECT * FROM erp_finance_case_lines WHERE case_id=? ORDER BY line", (contract["case_id"],)
+        )
+    ]
+    add(
+        "02-open-finance-case.json",
+        "Dynamics FinanceCases",
+        json.dumps({"case": case, "lines": case_lines}, indent=2, sort_keys=True) + "\n",
+        role="identity",
+    )
 
     doc_ids = [
         contract["current_policy_id"], contract["prior_policy_id"], contract["evidence_map_id"],
-        contract["handoff_id"], contract["identity_id"], contract["exception_id"],
+        contract["close_calendar_id"], contract["handoff_id"], contract["identity_id"], contract["exception_id"],
     ]
     for index, doc_id in enumerate(doc_ids, 3):
         row = dict(cx.execute("SELECT * FROM docs_documents WHERE doc_id=?", (doc_id,)).fetchone())
         body = f"<!-- doc_id: {doc_id}; version: {row['version']}; effective: {row['effective_date']} -->\n{row['body']}"
-        role = "authority" if doc_id in {contract["current_policy_id"], contract["prior_policy_id"]} else "control"
+        if doc_id in {contract["current_policy_id"], contract["prior_policy_id"]}:
+            role = "authority"
+        elif doc_id == contract["close_calendar_id"]:
+            role = "calendar"
+        else:
+            role = "control"
         add(f"{index:02d}-{doc_id}.md", "Governed document library", body + "\n", role=role)
 
     email_ids = [
         contract["request_email_id"], contract["approval_email_id"], contract["operations_email_id"],
-        contract["stale_email_id"], contract["challenge_email_id"],
+        contract["counterparty_email_id"], contract["stale_email_id"], contract["challenge_email_id"],
     ]
-    for index, message_id in enumerate(email_ids, 9):
+    email_roles = {
+        contract["request_email_id"]: "request",
+        contract["approval_email_id"]: "approval",
+        contract["operations_email_id"]: "operations",
+        contract["counterparty_email_id"]: "counterparty",
+    }
+    for index, message_id in enumerate(email_ids, 10):
         message = dict(cx.execute("SELECT * FROM email_messages WHERE id=?", (message_id,)).fetchone())
-        role = "approval" if message_id == contract["approval_email_id"] else "operations" if message_id == contract["operations_email_id"] else "history"
-        add(f"{index:02d}-{message_id}.eml", "Gmail mailbox", _eml(message, contract["case_id"]), role=role)
+        add(f"{index:02d}-{message_id}.eml", "Gmail mailbox", _eml(message, contract["case_id"]), role=email_roles.get(message_id, "history"))
 
-    for index, workbook in enumerate((contract["current_workbook"], contract["stale_workbook"]), 14):
+    for index, workbook in enumerate((contract["current_workbook"], contract["stale_workbook"]), 16):
         rows = [json.loads(row[0]) for row in cx.execute("SELECT cells FROM sheet_rows WHERE file=? ORDER BY row_no", (workbook,))]
-        add(f"{index:02d}-{workbook}", "Microsoft Graph workbook", _xlsx(rows), role="current-register" if index == 14 else "stale-register")
+        add(f"{index:02d}-{workbook}", "Microsoft Graph workbook", _xlsx(rows), role="current-register" if index == 16 else "stale-register")
 
     current_policy = cx.execute("SELECT body FROM docs_documents WHERE doc_id=?", (contract["current_policy_id"],)).fetchone()[0]
-    add("16-current-control-copy.pdf", "Controlled PDF export", _pdf(f"Case {contract['case_id']}\n{current_policy}"), role="authority")
-    add("17-source-analysis-brief.pdf", "Finance workpaper PDF", _pdf(f"Case {contract['case_id']}\nQuestion: {spec.employee_question}\nAnalysis: {spec.analysis_route}\nNo conclusion is precomputed in this brief."), role="analysis-brief")
+    add("18-current-control-copy.pdf", "Controlled PDF export", _pdf(f"Case {contract['case_id']}\n{current_policy}"), role="authority")
+    add("19-source-analysis-brief.pdf", "Finance workpaper PDF", _pdf(f"Case {contract['case_id']}\nQuestion: {spec.employee_question}\nAnalysis: {spec.analysis_route}\nNo conclusion is precomputed in this brief."), role="analysis-brief")
 
     groups = [
-        ("18-erp-master-data.csv", ("erp_customers", "erp_vendors", "erp_items"), "ERP master"),
-        ("19-erp-transactions.csv", ("erp_cust_trans", "erp_vend_trans", "erp_gl", "erp_purch_orders", "erp_sales_orders"), "ERP transactions"),
-        ("20-bank-and-payment-state.csv", ("erp_bank_lines", "erp_payment_runs", "erp_payment_run_lines", "erp_settlements"), "Bank and payment"),
+        ("20-erp-master-data.csv", ("erp_customers", "erp_vendors", "erp_items"), "ERP master"),
+        ("21-erp-transactions.csv", ("erp_cust_trans", "erp_vend_trans", "erp_gl", "erp_purch_orders", "erp_sales_orders"), "ERP transactions"),
+        ("22-bank-and-payment-state.csv", ("erp_bank_lines", "erp_payment_runs", "erp_payment_run_lines", "erp_settlements"), "Bank and payment"),
     ]
     for filename, tables, source in groups:
         snapshots = [snapshot for table in tables if (snapshot := _snapshot(cx, table, tokens)) is not None]
         add(filename, source, _csv(snapshots, contract["case_id"]), role="operations")
 
     json_groups = [
-        ("21-books-ledger.json", ("books_customers", "books_invoices", "books_payments", "books_credit_memos"), "QuickBooks subsidiary ledger"),
-        ("22-filings-evidence.json", ("filings_companies", "filings_facts", "filings_documents"), "SEC filing snapshot"),
+        ("23-books-ledger.json", ("books_customers", "books_invoices", "books_payments", "books_credit_memos"), "QuickBooks subsidiary ledger"),
+        ("24-filings-evidence.json", ("filings_companies", "filings_facts", "filings_documents"), "SEC filing snapshot"),
         (
-            "23-odoo-procurement.json",
+            "25-odoo-procurement.json",
             (
                 "erpb_partners",
                 "erpb_products",
@@ -1740,18 +2125,18 @@ def write_asset_views(
             ),
             "Odoo ERP",
         ),
-        ("24-approvals-and-controls.json", ("erp_approval_requests", "erp_approval_policies", "approval_matrix", "close_tasks"), "Control records"),
+        ("26-approvals-and-controls.json", ("erp_approval_requests", "erp_approval_policies", "erp_fiscal_periods", "approval_matrix", "close_tasks"), "Control records"),
     ]
     for filename, tables, source in json_groups:
         snapshots = [snapshot for table in tables if (snapshot := _snapshot(cx, table, tokens)) is not None]
         add(filename, source, json.dumps({"case_id": contract["case_id"], "sources": snapshots}, indent=2, default=str, sort_keys=True) + "\n", role="operations")
 
-    add("25-lineage-and-currency.md", "Evidence custodian", f"# {contract['case_id']} lineage\n\nCurrent sources carry their own immutable ids, effective dates, filing accessions, workbook modified times, or ERP keys. Resolve those fields directly. A filename or display name alone is not identity.\n", role="lineage")
-    inventory_rows = [["case_id", "source_id", "role", "status"], *[[contract["case_id"], ref, role, "inspect"] for ref, role in zip(contract["evidence_refs"], ("authority", "approval", "register", "identity"))]]
+    add("27-lineage-and-currency.md", "Evidence custodian", f"# {contract['case_id']} lineage\n\nCurrent sources carry their own immutable ids, effective dates, filing accessions, workbook modified times, or ERP keys. Resolve those fields directly. A filename or display name alone is not identity. The FY2025 look-alike case {contract['decoy_case_id']} is closed history, not the open work item.\n", role="lineage")
+    inventory_rows = [["case_id", "source_id", "role", "status"], *[[contract["case_id"], ref, role, "inspect"] for ref, role in zip(contract["evidence_refs"], ("authority", "approval", "register", "identity", "approval-request"))]]
     inventory_csv = io.StringIO()
     csv.writer(inventory_csv).writerows(inventory_rows)
-    add("26-source-inventory.csv", "Case intake", inventory_csv.getvalue(), role="inventory")
-    add("27-current-versus-stale-notes.txt", "Controls", f"Case {contract['case_id']} has both {CONTEXT_REVISION} and {SUPERSEDED_REVISION} evidence. Current records must be established by effective dates and modified timestamps. The prior draft is retained to test, not to follow.\n", role="conflict")
+    add("28-source-inventory.csv", "Case intake", inventory_csv.getvalue(), role="inventory")
+    add("29-current-versus-stale-notes.txt", "Controls", f"Case {contract['case_id']} has both {CONTEXT_REVISION} and {SUPERSEDED_REVISION} evidence. Current records must be established by effective dates and modified timestamps. The prior draft is retained to test, not to follow. The prior tracker treats every support row as usable; the current register and the counterparty's own message decide which rows are excluded.\n", role="conflict")
 
     manifest_rows = [
         {
@@ -1762,13 +2147,13 @@ def write_asset_views(
         }
         for asset in assets
     ]
-    add("28-agent-visible-asset-manifest.json", "Release builder", json.dumps({"case_id": contract["case_id"], "gold_included": False, "oracle_walk_included": False, "assets": manifest_rows}, indent=2, sort_keys=True) + "\n", role="manifest")
+    add("30-agent-visible-asset-manifest.json", "Release builder", json.dumps({"case_id": contract["case_id"], "gold_included": False, "oracle_walk_included": False, "assets": manifest_rows}, indent=2, sort_keys=True) + "\n", role="manifest")
     cx.close()
-    if len(assets) != 28:
-        raise ValueError(f"expected 28 assets, wrote {len(assets)}")
+    if len(assets) != ASSETS_PER_TASK:
+        raise ValueError(f"expected {ASSETS_PER_TASK} assets, wrote {len(assets)}")
     material_count = sum(bool(asset["material"]) for asset in assets)
-    if material_count != 12:
-        raise ValueError(f"expected 12 material assets, wrote {material_count}")
+    if material_count != MATERIAL_ASSETS_PER_TASK:
+        raise ValueError(f"expected {MATERIAL_ASSETS_PER_TASK} material assets, wrote {material_count}")
     return assets
 
 

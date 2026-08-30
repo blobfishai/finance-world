@@ -3,36 +3,36 @@
     "exact_duplicates": 0,
     "format_counts": {
       "csv": 400,
-      "eml": 500,
+      "eml": 600,
       "json": 600,
-      "md": 800,
+      "md": 900,
       "pdf": 200,
       "txt": 100,
       "xlsx": 200
     },
     "gold_or_recipe_leakage_hits": [],
     "material_per_task": {
-      "max": 12,
-      "median": 12,
-      "min": 12
+      "max": 14,
+      "median": 14,
+      "min": 14
     },
-    "native_assets_parsed": 2800,
-    "total": 2800,
-    "unique_sha256": 2800
+    "native_assets_parsed": 3000,
+    "total": 3000,
+    "unique_sha256": 3000
   },
   "all_contracted_post_write_readbacks": 100,
   "authored_decision_specs": 100,
   "benchmark": "LedgerBench-100",
   "checks": {
-    "answer_checks_total": 434,
-    "checks_total": 3041,
-    "state_checks_total": 764,
-    "trace_checks_total": 1843
+    "answer_checks_total": 2634,
+    "checks_total": 6214,
+    "state_checks_total": 964,
+    "trace_checks_total": 2616
   },
   "context_files": {
     "tasks_with_context_files": 100,
-    "total": 2859,
-    "unique_sha256": 2836
+    "total": 3059,
+    "unique_sha256": 3036
   },
   "criteria_per_task": {
     "max": 14,
@@ -51,21 +51,38 @@
   "exact_duplicate_prompts": 0,
   "exact_finance_case_transitions": 100,
   "family_count": 22,
+  "fully_qualified_alternatives": 100,
   "generated_assets_per_task": {
-    "max": 28,
-    "median": 28,
-    "min": 28
+    "max": 30,
+    "median": 30,
+    "min": 30
+  },
+  "graded_answer_fields_per_task": {
+    "max": 30,
+    "median": 27,
+    "min": 24
+  },
+  "graded_decision_models": 100,
+  "graded_numeric_derivations_per_task": {
+    "max": 16,
+    "median": 11,
+    "min": 9
   },
   "mcp_servers": 8,
   "mcp_tools": 66,
   "metric": "LedgerScore",
   "points_possible": 100,
   "prompt_uniqueness": {
-    "maximum_jaccard_5_shingle": 0.635135,
+    "maximum_jaccard_5_shingle": 0.678571,
     "pair_indices": [
       38,
       58
     ]
+  },
+  "public_criteria_per_task": {
+    "max": 89,
+    "median": 85,
+    "min": 82
   },
   "quality_gates": {
     "all_assets_content_unique": true,
@@ -74,11 +91,14 @@
     "deep_evidence_intersection": true,
     "deep_real_shaped_erp_evidence": true,
     "deterministic_verifier": true,
-    "eleven_negative_controls": true,
+    "eight_graded_derivations_per_task": true,
     "every_atomic_check_assigned_exactly_once": true,
     "evidence_depth_varies": true,
     "exact_state_transition_every_task": true,
+    "forty_public_criteria_per_task": true,
+    "fourteen_material_assets_per_task": true,
     "fourteen_semantic_milestones_per_task": true,
+    "graded_decision_model_every_task": true,
     "high_level_prompt_bounds": true,
     "high_level_prompts_unique": true,
     "minimum_twenty_four_tool_calls": true,
@@ -90,40 +110,66 @@
     "real_native_formats_present": true,
     "reference_sequence_similarity_below_limit": true,
     "semantic_action_graph_similarity_below_limit": true,
+    "thirty_generated_assets_per_task": true,
+    "three_costed_alternatives_every_task": true,
     "three_options_one_selected": true,
-    "twelve_material_assets_per_task": true,
-    "twenty_eight_generated_assets_per_task": true,
+    "twelve_graded_answer_fields_per_task": true,
+    "twelve_negative_controls": true,
     "unique_authored_decision_codes": true,
     "unique_reference_tool_sequences": true,
     "unique_semantic_action_graphs": true,
     "zero_negative_false_accepts": true
   },
+  "reasoning_chain_fields": [
+    "case_id",
+    "control_requirement_usd",
+    "observed_support_usd",
+    "excluded_support_usd",
+    "usable_support_usd",
+    "exception_usd",
+    "exception_within_tolerance",
+    "external_constraint_date",
+    "posting_window_close_date",
+    "proceed_within_authority_outcome_date",
+    "hold_for_counterparty_correction_outcome_date",
+    "proceed_with_exception_approval_outcome_date",
+    "recommended_option",
+    "recommended_outcome_date",
+    "recommended_incremental_cost_usd",
+    "business_need_date",
+    "outcome_vs_control_days",
+    "decision_timing_status",
+    "approval_request_id",
+    "approval_authority_limit_usd",
+    "escalation_approval_required",
+    "binding_constraint_date"
+  ],
   "reference_context_reads_per_task": {
     "distinct_counts": 14,
-    "max": 35,
-    "median": 26,
-    "min": 22
+    "max": 43,
+    "median": 34,
+    "min": 30
   },
   "reference_sequence_similarity": {
-    "maximum_sequence_match": 0.964789,
+    "maximum_sequence_match": 0.972222,
     "pair_indices": [
-      49,
-      55
+      46,
+      54
     ]
   },
   "release_passed": true,
   "required_evidence_reads_per_task": {
     "distinct_counts": 10,
-    "max": 30,
-    "median": 23,
-    "min": 20
+    "max": 38,
+    "median": 31,
+    "min": 28
   },
   "schema_version": "ledgerbench.build.v4",
   "semantic_action_graph_similarity": {
-    "maximum_sequence_match": 0.692308,
+    "maximum_sequence_match": 0.777778,
     "pair_indices": [
       1,
-      2
+      3
     ]
   },
   "source_provider_post_write_readbacks": 65,
@@ -162,11 +208,11 @@
     "random_calls": 0,
     "wall_clock_reads_in_reward_path": 0
   },
-  "version": "3.2.0",
+  "version": "3.3.0",
   "walk_len": {
-    "max": 145,
-    "median": 34,
-    "min": 30,
-    "total": 4479
+    "max": 153,
+    "median": 42,
+    "min": 38,
+    "total": 5279
   }
 }
