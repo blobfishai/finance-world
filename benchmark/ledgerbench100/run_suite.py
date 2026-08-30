@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Execute every LedgerBench-100 pack against positive and adversarial trajectories.
 
-Per pack (13 executions, all against the pack's OWN contents — its gzipped world,
+Per pack (14 executions, all against the pack's OWN contents — its gzipped world,
 its runtime modules, its walk.json, its baked taskspec checks):
 
   oracle x2        replay solution/walk.json; reward must be 1; the two verifier
@@ -16,6 +16,9 @@ its runtime modules, its walk.json, its baked taskspec checks):
   wrong_value      every reported answer value corrupted; must score 0
   wrong_decision   case decision changed to an unsupported code; must score 0
   wrong_evidence   one persisted evidence reference changed; must score 0
+  wrong_option     the alternative that needs approval beyond current authority is
+                   recorded on the case, in the Controls note and in the answers;
+                   must score 0
   rejected_mutation an otherwise-correct run contains a rejected state-changing
                     Dynamics request; strict pass must remain false
 
@@ -40,7 +43,7 @@ from exporter import remove_generated_bytecode
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 RELEASE_NAME = "LedgerBench-100"
-RELEASE_VERSION = "3.2.0"
+RELEASE_VERSION = "3.3.0"
 CORRUPT_VALUE = "totally-wrong-answer-xyzzy"
 
 
@@ -265,6 +268,37 @@ def wrong_evidence_steps(world: PackWorld) -> list[dict]:
     return steps
 
 
+def wrong_option_steps(world: PackWorld) -> list[dict]:
+    """Execute the alternative the approval does not cover.
+
+    The case rationale, the Controls note and the reported recommendation all
+    name the option that requires approval beyond current authority; the exact
+    state, message-content and answer checks must all reject it.
+    """
+
+    options = world.realism["decision_options"]
+    selected = next(option for option in options if option.get("selected"))
+    unauthorized = next(
+        option for option in options
+        if option.get("authority_status") == "ADDITIONAL_APPROVAL_REQUIRED"
+    )
+    steps = json.loads(json.dumps(world.walk))
+    for step in steps:
+        arguments = step.get("args") or {}
+        if _is_finance_decision(step):
+            parameters = arguments["parameters"]
+            parameters["rationale"] = parameters["rationale"].replace(selected["id"], unauthorized["id"])
+        elif step["server"] == "email" and step["tool"] == "send_message":
+            arguments["body"] = arguments["body"].replace(selected["id"], unauthorized["id"])
+        elif step["server"] == "harness" and step["tool"] == "submit_answer":
+            answers = arguments.get("answers") or {}
+            if "recommended_option" in answers:
+                answers["recommended_option"] = unauthorized["id"]
+                answers["recommended_outcome_date"] = unauthorized["outcome"]
+                answers["recommended_incremental_cost_usd"] = unauthorized["incremental_cost"]
+    return steps
+
+
 NEGATIVES: list[tuple[str, Callable[[PackWorld], list[dict]]]] = [
     ("noop", noop_steps),
     ("shortcut", shortcut_steps),
@@ -275,6 +309,7 @@ NEGATIVES: list[tuple[str, Callable[[PackWorld], list[dict]]]] = [
     ("wrong_value", wrong_value_steps),
     ("wrong_decision", wrong_decision_steps),
     ("wrong_evidence", wrong_evidence_steps),
+    ("wrong_option", wrong_option_steps),
     ("rejected_mutation", rejected_mutation_steps),
 ]
 

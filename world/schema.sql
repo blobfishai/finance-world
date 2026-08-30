@@ -218,6 +218,14 @@ CREATE TABLE erp_finance_cases(
   status TEXT, decision_code TEXT, evidence_refs TEXT, rationale TEXT,
   owner TEXT, opened_at TEXT, decided_at TEXT);
 
+-- Documents in scope for a finance case (the FinanceCaseLines data entity): the
+-- control requirement is derived by summing these amounts, never read off a header.
+-- Seeded per case by the release builder, which also creates the table on demand so
+-- a core world built before this revision still serves it.
+CREATE TABLE erp_finance_case_lines(
+  case_id TEXT, line INTEGER, document_ref TEXT, description TEXT, amount REAL,
+  currency TEXT, control_basis TEXT, PRIMARY KEY(case_id, line));
+
 -- Deduction / short-pay reason codes (art.deduction_coding). Vocabulary follows AR
 -- cash-application practice: research/external/articles/cash-application--{highradius,stuut,
 -- zamp}.md — a deduction is coded, routed to an owner, and either conceded or charged back.

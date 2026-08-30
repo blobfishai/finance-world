@@ -43,10 +43,14 @@ import tempfile
 import tomllib
 from pathlib import Path
 
+from decision_model import CHAIN_FIELDS
 from realism import (
+    ASSETS_PER_TASK,
+    MATERIAL_ASSETS_PER_TASK,
     atomic_check_specs,
     augment_checks,
     decision_options,
+    public_criteria,
     reference_walk,
     release_prompt,
     rubric_criteria,
@@ -60,7 +64,7 @@ from prepare import prepare  # noqa: E402
 
 RELEASE_NAME = "LedgerBench-100"
 RELEASE_SLUG = "ledgerbench-100"
-RELEASE_VERSION = "3.2.0"
+RELEASE_VERSION = "3.3.0"
 HARBOR_ORG = "blobfishai"
 DATA_LICENSE = "CC-BY-4.0"
 CODE_LICENSE = "Apache-2.0"
@@ -548,8 +552,9 @@ def build_pack(
     )
     checks = augment_checks(entry, checks, contract, trace_contract)
     criteria = rubric_criteria(entry, checks, trace_contract, contract)
+    atomic_criteria = public_criteria(entry, checks, trace_contract, contract)
     atomic_contract = atomic_check_specs(checks)
-    options = decision_options(entry)
+    options = decision_options(entry, contract)
     (world_dir / "taskspec" / "tests" / "checks.json").write_text(
         json.dumps(checks, indent=1) + "\n")
     runtime = world_dir / "runtime"
@@ -582,14 +587,16 @@ def build_pack(
             "metric": "LedgerScore",
             "points_possible": 100,
             "criteria": criteria,
+            "public_criteria": atomic_criteria,
             "atomic_check_contract": atomic_contract,
             "decision_options": options,
+            "reasoning_chain_fields": {hop: list(fields) for hop, fields in CHAIN_FIELDS.items()},
             "case_contract": contract,
             "trace_contract": trace_contract,
             "semantic_action_graph": trace_contract["semantic_action_graph"],
             "asset_contract": {
-                "minimum_assets": 28,
-                "material_assets": 12,
+                "minimum_assets": ASSETS_PER_TASK,
+                "material_assets": MATERIAL_ASSETS_PER_TASK,
                 "systems": SERVERS,
                 "note": "Hugging Face exports agent-visible, native-format views of this exact initial SQLite state; gold and the oracle walk are excluded from the asset tree.",
             },

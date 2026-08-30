@@ -16,21 +16,40 @@ HERE = Path(__file__).resolve().parents[1]
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(HERE))
 
-from decision_specs import DECISION_SPECS  # noqa: E402
+from decision_model import (  # noqa: E402
+    ADDITIONAL_APPROVAL_REQUIRED,
+    AVAILABLE_NOT_RECOMMENDED,
+    CHAIN_ANSWER_FIELDS,
+    CHAIN_FIELDS,
+    NOT_SUPPORTED_BY_CURRENT_EVIDENCE,
+    OPTION_EXCEPTION,
+    OPTION_HOLD,
+    OPTION_PROCEED,
+    WITHIN_AUTHORITY,
+    control_model,
+    hold_recommended,
+)
+from decision_specs import DECISION_SPECS, decision_spec  # noqa: E402
 from exporter import prepare, remove_generated_bytecode  # noqa: E402
-from run_suite import incomplete_read_steps  # noqa: E402
+from run_suite import incomplete_read_steps, wrong_option_steps  # noqa: E402
 from realism import (  # noqa: E402
+    ASSETS_PER_TASK,
+    MATERIAL_ASSETS_PER_TASK,
     SEMANTIC_MILESTONE_WEIGHTS,
+    WORLD_EPOCH,
     _pdf,
     _xlsx,
     atomic_check_specs,
     augment_checks,
     case_contract,
+    control_model_for,
     decision_options,
+    public_criteria,
     reference_walk,
     release_prompt,
     rubric_criteria,
     seed_case_context,
+    task_number,
     validate_native_asset,
     write_asset_views,
 )
@@ -84,11 +103,139 @@ class LedgerBenchRealismTests(unittest.TestCase):
         self.assertEqual(100, len(raw_sequences))
         self.assertEqual(100, len(semantic_graphs))
 
-    def test_every_decision_has_one_supported_and_two_rejected_options(self) -> None:
+    def test_every_decision_has_three_costed_alternatives_with_authority(self) -> None:
+        hold_tasks = 0
+        late_tasks = 0
         for entry in self.catalog["tasks"]:
             options = decision_options(entry)
-            self.assertEqual(3, len(options))
+            self.assertEqual([OPTION_PROCEED, OPTION_HOLD, OPTION_EXCEPTION], [option["id"] for option in options])
             self.assertEqual(1, sum(bool(option["selected"]) for option in options))
+            statuses = {option["id"]: option["authority_status"] for option in options}
+            self.assertEqual(ADDITIONAL_APPROVAL_REQUIRED, statuses[OPTION_EXCEPTION])
+            for option in options:
+                self.assertRegex(option["outcome"], r"^2026-\d{2}-\d{2}$")
+                self.assertIsInstance(option["incremental_cost"], float)
+                self.assertEqual(f"{option['id']}_outcome_date", option["outcome_field"])
+                self.assertEqual(option["selected"], option["recommended"])
+            model = control_model_for(entry, case_contract(entry))
+            if hold_recommended(decision_spec(entry["source_task"])):
+                hold_tasks += 1
+                self.assertEqual(OPTION_HOLD, model.recommended_option)
+                self.assertEqual(NOT_SUPPORTED_BY_CURRENT_EVIDENCE, statuses[OPTION_PROCEED])
+                self.assertEqual(WITHIN_AUTHORITY, statuses[OPTION_HOLD])
+                self.assertFalse(model.within_tolerance)
+            else:
+                self.assertEqual(OPTION_PROCEED, model.recommended_option)
+                self.assertEqual(WITHIN_AUTHORITY, statuses[OPTION_PROCEED])
+                self.assertEqual(AVAILABLE_NOT_RECOMMENDED, statuses[OPTION_HOLD])
+                self.assertTrue(model.within_tolerance)
+            late_tasks += int(model.timing_status == "LATE")
+        self.assertGreaterEqual(hold_tasks, 8)
+        self.assertGreaterEqual(late_tasks, 10)
+        self.assertLessEqual(late_tasks, 90)
+
+    def test_decision_model_is_deterministic_and_self_consistent(self) -> None:
+        for entry in self.catalog["tasks"]:
+            number = task_number(entry)
+            spec = decision_spec(entry["source_task"])
+            first = control_model(number, entry["task_id"], entry["family"], spec, WORLD_EPOCH)
+            second = control_model(number, entry["task_id"], entry["family"], spec, WORLD_EPOCH)
+            self.assertEqual(first.answers, second.answers)
+            self.assertEqual(first.requirement_cents, sum(line["_cents"] for line in first.lines))
+            self.assertEqual(first.observed_cents, first.usable_cents + first.excluded_cents)
+            self.assertEqual(first.requirement_cents, first.usable_cents + first.exception_cents)
+            self.assertGreater(first.exception_cents, 0)
+            self.assertEqual(first.within_tolerance, first.exception_cents <= first.tolerance_cents)
+            supported = sum(row["_cents"] for row in first.support_rows if row["status"] == "supported")
+            excluded = [row for row in first.support_rows if row["status"] != "supported"]
+            self.assertEqual(first.usable_cents, supported)
+            self.assertGreaterEqual(len(excluded), 1)
+            self.assertEqual(first.excluded_cents, sum(row["_cents"] for row in excluded))
+            outcomes = {option["id"]: option["outcome"] for option in first.options}
+            self.assertLess(outcomes[OPTION_EXCEPTION], outcomes[OPTION_HOLD])
+            self.assertLessEqual(outcomes[OPTION_PROCEED], first.posting_window_close)
+            self.assertGreater(outcomes[OPTION_HOLD], first.external_date)
+            self.assertEqual(outcomes[first.recommended_option], first.recommended_outcome)
+            variance = first.answers["outcome_vs_control_days"]
+            self.assertEqual("ON_TIME" if variance <= 0 else "LATE", first.timing_status)
+            self.assertEqual(set(CHAIN_ANSWER_FIELDS), set(first.answers))
+            self.assertGreaterEqual(len(CHAIN_ANSWER_FIELDS), 12)
+            self.assertNotIn(first.case_id, first.decoy_case_id)
+            self.assertNotIn(first.decoy_case_id, first.case_id)
+
+    def test_augmented_checks_grade_the_whole_chain(self) -> None:
+        for entry in self.catalog["tasks"]:
+            source = ROOT / "tasks" / entry["source_task"]
+            source_walk = json.loads((source / "solution" / "walk.json").read_text())
+            contract = case_contract(entry)
+            walk, trace_contract = reference_walk(entry, source_walk, contract)
+            checks = json.loads((source / "tests" / "checks.json").read_text())
+            checks = augment_checks(entry, checks, contract, trace_contract)
+            model = control_model_for(entry, contract)
+            graded = {check["field"]: check for check in checks["answer_checks"]}
+            self.assertLessEqual(set(CHAIN_ANSWER_FIELDS), set(graded))
+            self.assertGreaterEqual(len(graded), 12)
+            self.assertGreaterEqual(sum(1 for c in checks["answer_checks"] if c["type"] == "number"), 8)
+            self.assertEqual([model.decoy_case_id], graded["case_id"]["forbid"])
+            self.assertEqual([model.exception_request_id], graded["approval_request_id"]["forbid"])
+            for option in model.options:
+                self.assertEqual(option["outcome"], graded[option["outcome_field"]]["expect"])
+            submitted = next(step for step in walk if step["tool"] == "submit_answer")["args"]["answers"]
+            for field_name in CHAIN_ANSWER_FIELDS:
+                self.assertIn(field_name, submitted)
+            servers = next(c for c in checks["trace_checks"] if c["type"] == "required_servers")["servers"]
+            self.assertLessEqual({"erp", "docs", "email", "sheets"}, set(servers))
+            minimums = {c["server"]: c["n"] for c in checks["trace_checks"] if c["type"] == "min_calls"}
+            self.assertGreaterEqual(sum(minimums.values()), 8)
+            successful_expected = {}
+            for call in trace_contract["required_context_calls"]:
+                if not call.get("expected_error_contains"):
+                    successful_expected[call["server"]] = successful_expected.get(call["server"], 0) + 1
+            for server, minimum in minimums.items():
+                walked = sum(
+                    1 for step in walk
+                    if step["server"] == server and not step.get("expected_error_contains")
+                )
+                self.assertLessEqual(minimum, walked, f"{entry['task_id']} min_calls {server}")
+            names = {c.get("name") for c in checks["trace_checks"]}
+            self.assertIn("material_control_model", names)
+            self.assertIn("material_external_constraint", names)
+            self.assertTrue(any(c["type"] == "post_write_readback" for c in checks["trace_checks"]))
+            state_names = {c.get("name") for c in checks["state_checks"]}
+            self.assertLessEqual(
+                {"finance_case_selected_option", "exception_request_untouched", "one_completion_email"},
+                state_names,
+            )
+            completion = next(c for c in checks["state_checks"] if c.get("name") == "one_completion_email")
+            for token in (model.recommended_option, model.recommended_outcome, model.binding_constraint_date):
+                self.assertIn(token, completion["sql"])
+            criteria = public_criteria(entry, checks, trace_contract, contract)
+            self.assertGreaterEqual(len(criteria), 40)
+            categories = {row["category"] for row in criteria}
+            self.assertLessEqual(
+                {"investigation", "correlation", "decision", "state", "answer", "containment", "authority", "external", "internal"},
+                categories,
+            )
+
+    def test_wrong_option_control_targets_the_unauthorized_alternative(self) -> None:
+        entry = self.catalog["tasks"][0]
+        source = ROOT / "tasks" / entry["source_task"]
+        source_walk = json.loads((source / "solution" / "walk.json").read_text())
+        contract = case_contract(entry)
+        walk, _ = reference_walk(entry, source_walk, contract)
+        world = SimpleNamespace(
+            spec={"task_id": entry["task_id"]},
+            realism={"decision_options": decision_options(entry, contract)},
+            walk=walk,
+        )
+        model = control_model_for(entry, contract)
+        mutated = wrong_option_steps(world)
+        submitted = next(step for step in mutated if step["tool"] == "submit_answer")["args"]["answers"]
+        self.assertEqual(OPTION_EXCEPTION, submitted["recommended_option"])
+        decide = next(step for step in mutated if (step.get("args") or {}).get("action") == "ContosoFinanceCaseDecide")
+        self.assertNotIn(model.recommended_option, decide["args"]["parameters"]["rationale"])
+        self.assertIn(OPTION_EXCEPTION, decide["args"]["parameters"]["rationale"])
+        self.assertEqual(len(walk), len(mutated))
 
     def test_public_rubric_is_semantic_and_covers_every_atomic_check_once(self) -> None:
         for entry in self.catalog["tasks"]:
@@ -269,10 +416,15 @@ class LedgerBenchRealismTests(unittest.TestCase):
                 entry,
                 contract,
             )
-            self.assertEqual(28, len(assets))
-            self.assertEqual(12, sum(bool(asset["material"]) for asset in assets))
+            self.assertEqual(ASSETS_PER_TASK, len(assets))
+            self.assertEqual(MATERIAL_ASSETS_PER_TASK, sum(bool(asset["material"]) for asset in assets))
+            case_asset = json.loads((asset_root / "02-open-finance-case.json").read_text())
+            self.assertEqual(contract["case_id"], case_asset["case"]["case_id"])
+            self.assertGreaterEqual(len(case_asset["lines"]), 2)
+            self.assertTrue((asset_root / f"13-{contract['counterparty_email_id']}.eml").exists())
+            self.assertTrue((asset_root / f"06-{contract['close_calendar_id']}.md").exists())
             odoo_asset = json.loads(
-                (asset_root / "23-odoo-procurement.json").read_text()
+                (asset_root / "25-odoo-procurement.json").read_text()
             )
             tables = {source["table"] for source in odoo_asset["sources"]}
             self.assertTrue(

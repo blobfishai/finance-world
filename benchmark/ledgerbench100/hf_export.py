@@ -30,16 +30,50 @@ import tomllib
 from difflib import SequenceMatcher
 from pathlib import Path
 
+from decision_model import (
+    ADDITIONAL_APPROVAL_REQUIRED,
+    AVAILABLE_NOT_RECOMMENDED,
+    CHAIN_ANSWER_FIELDS,
+    NOT_SUPPORTED_BY_CURRENT_EVIDENCE,
+)
 from decision_specs import DECISION_SPECS
-from realism import SEMANTIC_MILESTONE_WEIGHTS, validate_native_asset, write_asset_views
+from realism import (
+    ASSETS_PER_TASK,
+    MATERIAL_ASSETS_PER_TASK,
+    SEMANTIC_MILESTONE_WEIGHTS,
+    validate_native_asset,
+    write_asset_views,
+)
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 RELEASE_NAME = "LedgerBench-100"
 RELEASE_SLUG = "ledgerbench-100"
-RELEASE_VERSION = "3.2.0"
+RELEASE_VERSION = "3.3.0"
 HARBOR_ORG = "blobfishai"
-WORLD_ID = "ledgerbench-erp-world-v3-2"
+WORLD_ID = "ledgerbench-erp-world-v3-3"
+NEGATIVE_CONTROLS = 12
+
+
+def alternatives_fully_qualified(options: list[dict], checks: dict) -> bool:
+    """Three alternatives with graded outcome, cost and authority; one recommended;
+    one beyond current authority; one feasible-but-inferior or unsupported."""
+
+    graded = {check["field"]: check for check in checks.get("answer_checks", [])}
+    if len(options) != 3 or sum(bool(option.get("selected")) for option in options) != 1:
+        return False
+    for option in options:
+        if not option.get("outcome") or not option.get("authority_status"):
+            return False
+        if not isinstance(option.get("incremental_cost"), (int, float)):
+            return False
+        expected = graded.get(option.get("outcome_field"), {}).get("expect")
+        if expected != option["outcome"]:
+            return False
+    statuses = {option["authority_status"] for option in options}
+    return ADDITIONAL_APPROVAL_REQUIRED in statuses and bool(
+        statuses & {AVAILABLE_NOT_RECOMMENDED, NOT_SUPPORTED_BY_CURRENT_EVIDENCE}
+    )
 DATA_LICENSE = "CC-BY-4.0"
 CODE_LICENSE = "Apache-2.0"
 
@@ -125,6 +159,11 @@ def build(release: Path) -> dict:
     material_asset_counts: list[int] = []
     criteria_counts: list[int] = []
     criteria_point_totals: list[int] = []
+    public_criteria_counts: list[int] = []
+    graded_answer_counts: list[int] = []
+    graded_numeric_counts: list[int] = []
+    graded_decision_models = 0
+    fully_qualified_alternatives = 0
     doc_hashes: set[str] = set()
     asset_hashes: list[str] = []
     asset_format_counts: dict[str, int] = {}
@@ -221,6 +260,16 @@ def build(release: Path) -> dict:
         criteria_point_totals.append(
             sum(int(criterion["weight"]) for criterion in realism["criteria"])
         )
+        public_criteria_counts.append(len(realism["public_criteria"]))
+        graded_fields = {check["field"] for check in checks.get("answer_checks", [])}
+        graded_answer_counts.append(len(graded_fields))
+        graded_numeric_counts.append(
+            sum(1 for check in checks.get("answer_checks", []) if check.get("type") == "number")
+        )
+        graded_decision_models += int(set(CHAIN_ANSWER_FIELDS) <= graded_fields)
+        fully_qualified_alternatives += int(
+            alternatives_fully_qualified(realism["decision_options"], checks)
+        )
         prompts.append(prompt)
         exact_state_transitions += int(
             any(
@@ -284,9 +333,12 @@ def build(release: Path) -> dict:
                 "metric": "LedgerScore",
                 "points_possible": 100,
                 "milestones": realism["criteria"],
+                "criteria": realism["public_criteria"],
                 "atomic_check_contract": realism["atomic_check_contract"],
                 "internal_verifier_checks": checks,
+                "checks": checks,
                 "decision_options": realism["decision_options"],
+                "reasoning_chain_fields": realism["reasoning_chain_fields"],
                 "gates": [
                     "investigation and causal analysis use exact successful material reads",
                     "supported decisions and provider-native state transitions are graded from persisted state",
@@ -416,6 +468,24 @@ def build(release: Path) -> dict:
             "median": int(statistics.median(criteria_point_totals)),
             "max": max(criteria_point_totals),
         },
+        "public_criteria_per_task": {
+            "min": min(public_criteria_counts),
+            "median": int(statistics.median(public_criteria_counts)),
+            "max": max(public_criteria_counts),
+        },
+        "graded_answer_fields_per_task": {
+            "min": min(graded_answer_counts),
+            "median": int(statistics.median(graded_answer_counts)),
+            "max": max(graded_answer_counts),
+        },
+        "graded_numeric_derivations_per_task": {
+            "min": min(graded_numeric_counts),
+            "median": int(statistics.median(graded_numeric_counts)),
+            "max": max(graded_numeric_counts),
+        },
+        "graded_decision_models": graded_decision_models,
+        "fully_qualified_alternatives": fully_qualified_alternatives,
+        "reasoning_chain_fields": list(CHAIN_ANSWER_FIELDS),
         "unique_reference_tool_name_sequences": len(set(walk_sequences)),
         "reference_sequence_similarity": reference_similarity,
         "unique_semantic_action_graphs": len(set(semantic_sequences)),
@@ -452,7 +522,7 @@ def build(release: Path) -> dict:
         "minimum_twenty_four_tool_calls": min(walk_lens) >= 24,
         "deep_evidence_intersection": min(evidence_read_counts) >= 19,
         "evidence_depth_varies": len(set(evidence_read_counts)) >= 6,
-        "twenty_eight_generated_assets_per_task": min(generated_asset_counts) == 28 == max(generated_asset_counts),
+        "thirty_generated_assets_per_task": min(generated_asset_counts) == ASSETS_PER_TASK == max(generated_asset_counts),
         "all_native_assets_parse": native_assets_parsed == len(asset_hashes),
         "real_native_formats_present": {"xlsx", "pdf", "eml", "csv", "json", "md", "txt"} <= set(asset_format_counts),
         "no_gold_or_recipe_in_asset_room": not asset_leakage_hits,
@@ -465,15 +535,20 @@ def build(release: Path) -> dict:
             min(criteria_point_totals) == 100 == max(criteria_point_totals)
         ),
         "every_atomic_check_assigned_exactly_once": exact_atomic_assignments == 100,
-        "twelve_material_assets_per_task": (
-            min(material_asset_counts) == 12 == max(material_asset_counts)
+        "fourteen_material_assets_per_task": (
+            min(material_asset_counts) == MATERIAL_ASSETS_PER_TASK == max(material_asset_counts)
         ),
+        "forty_public_criteria_per_task": min(public_criteria_counts) >= 40,
+        "graded_decision_model_every_task": graded_decision_models == 100,
+        "three_costed_alternatives_every_task": fully_qualified_alternatives == 100,
+        "twelve_graded_answer_fields_per_task": min(graded_answer_counts) >= 12,
+        "eight_graded_derivations_per_task": min(graded_numeric_counts) >= 8,
         "one_hundred_authored_decisions": len(DECISION_SPECS) == 100,
         "unique_authored_decision_codes": len({spec.decision_code for spec in DECISION_SPECS.values()}) == 100,
         "exact_state_transition_every_task": exact_state_transitions == 100,
         "all_contracted_post_write_readbacks_every_task": post_write_readbacks == 100,
         "deep_real_shaped_erp_evidence": deep_erp_evidence_tasks == 10,
-        "eleven_negative_controls": len(qualification["negative_controls"]) == 11,
+        "twelve_negative_controls": len(qualification["negative_controls"]) == NEGATIVE_CONTROLS,
         "zero_negative_false_accepts": not any(
             row["false_accepts"] for row in qualification["negative_controls"].values()
         ),
@@ -564,11 +639,23 @@ state, collaboration, outcome verification, provider-native readback, containmen
 insights, and execution sequence. Strict pass still requires all 100 points. No LLM judge,
 network, clock, or randomness appears in the reward path.
 
+Every case also carries a graded control-date decision model: the control requirement is
+derived from the ERP's in-scope FinanceCaseLines, usable support is reconciled from the
+current evidence register net of counterparty-corroborated exclusions, the exception is
+tested against the policy tolerance, the counterparty's committed date and the close
+calendar's posting window bound three costed timing alternatives (one within authority,
+one held for the counterparty, one requiring a CFO exception), and the selected outcome is
+compared with the requester's documented need-by date into a signed variance and an honest
+timing status. All {len(build['reasoning_chain_fields'])} intermediate and final values are
+graded as their own answer fields, the selected option is persisted on the case, and the
+Controls note is graded on its content.
+
 ## Measured contents
 
 - Tasks: {build['task_count']} across {build['family_count']} families: {families}
 - Oracle walk length: min {build['walk_len']['min']} / median {build['walk_len']['median']} / max {build['walk_len']['max']} MCP calls ({build['walk_len']['total']} total); required distributed evidence reads are {build['required_evidence_reads_per_task']['min']}-{build['required_evidence_reads_per_task']['max']} per task
-- Executable checks: {build['checks']['answer_checks_total']} answer + {build['checks']['trace_checks_total']} trace + {build['checks']['state_checks_total']} state, each assigned exactly once beneath 14 semantic milestones / 100 LedgerScore points per task
+- Executable checks: {build['checks']['answer_checks_total']} answer + {build['checks']['trace_checks_total']} trace + {build['checks']['state_checks_total']} state, each assigned exactly once beneath 14 semantic milestones / 100 LedgerScore points per task; {build['public_criteria_per_task']['min']}-{build['public_criteria_per_task']['max']} public criteria per task each name the exact check enforcing them
+- Graded reasoning chain: {build['graded_answer_fields_per_task']['min']}-{build['graded_answer_fields_per_task']['max']} graded answer fields per task ({build['graded_numeric_derivations_per_task']['min']}-{build['graded_numeric_derivations_per_task']['max']} numeric derivations), a graded decision model in {build['graded_decision_models']}/100 tasks and three costed alternatives with authority status in {build['fully_qualified_alternatives']}/100
 - Inspectable assets: {build['generated_assets_per_task']['min']} agent-visible native files per task, exactly {build['agent_visible_assets']['material_per_task']['min']} marked decision-material, including valid XLSX, PDF, EML, CSV, JSON, Markdown, and text records; gold and oracle recipes are excluded from this tree
 - Readback depth: {build['source_provider_post_write_readbacks']} task-native provider readbacks across the release, plus the governed case and completion-thread readbacks in every task
 - Reference diversity: {build['unique_reference_tool_name_sequences']}/100 distinct raw server/tool sequences and {build['unique_semantic_action_graphs']}/100 distinct semantic action graphs
@@ -579,7 +666,7 @@ network, clock, or randomness appears in the reward path.
 
 - `data/tasks.jsonl`: apex-accounting-compatible records (`task_id`, `task_name`, `world_id`, `prompt`, `context_files`, `rubric`, `gold_output`, `metadata`).
 - `tasks/`: one readable JSON record per task.
-- `task_files/`: 28 task-scoped agent-visible evidence files plus any native seeded documents and inputs.
+- `task_files/`: {build['generated_assets_per_task']['min']} task-scoped agent-visible evidence files plus any native seeded documents and inputs.
 - `world/`: the world source — MCP framework, the eight servers, the deterministic verifier engine, the Streamable HTTP bridge, and the full SQL schema.
 - `trajectories/`: one normalized oracle MCP trajectory per task.
 - `reports/`: measured build and qualification evidence.

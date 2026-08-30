@@ -68,6 +68,7 @@ ENTITIES = {
     "CustomerPools":        ("erp_customer_pool", "Customer-to-collections-pool assignments"),
     "MethodsOfPayment":     ("erp_methods_of_payment", "Methods of payment and their payment accounts (customer and vendor sides)"),
     "FinanceCases":         ("erp_finance_cases", "Task-scoped finance work items: immutable case identity, workflow, subject, status, decision, evidence references, rationale, owner, and timestamps"),
+    "FinanceCaseLines":     ("erp_finance_case_lines", "Documents in scope for a finance case: case_id, line, document_ref, description, amount, currency, control_basis"),
 }
 
 def _unknown(entity):
