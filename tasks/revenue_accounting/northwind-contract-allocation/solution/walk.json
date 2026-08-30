@@ -1,0 +1,15 @@
+[
+  {"server": "harness", "tool": "reporting_fields", "args": {}},
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "Customers", "filters": {"account": "NW-HS-480"}}},
+  {"server": "erp", "tool": "data_find_entities_sql", "args": {"sql": "SELECT s.sales_id,s.status,s.amount,t.invoice,t.trans_date,t.amount AS invoice_amount FROM erp_sales_orders s JOIN erp_cust_trans t ON t.account=s.account WHERE s.sales_id='SO-NW-480'"}},
+  {"server": "docs", "tool": "search_documents", "args": {"query": "bundled allocation acceptance"}},
+  {"server": "docs", "tool": "get_document", "args": {"doc_id": "revenue-allocation-policy"}},
+  {"server": "docs", "tool": "get_document", "args": {"doc_id": "northwind-bundle-contract"}},
+  {"server": "sheets", "tool": "workbook_range", "args": {"item": "NW-SSP-ANALYSIS.xlsx", "address": "A1:D4"}},
+  {"server": "email", "tool": "messages_list", "args": {"q": "NW-BUNDLE-2026 acceptance"}},
+  {"server": "email", "tool": "messages_get", "args": {"id": "EM-REV-480"}},
+  {"server": "erp", "tool": "api_find_actions", "args": {"query": "decision work item"}},
+  {"server": "erp", "tool": "api_invoke_action", "args": {"action": "ContosoDecisionWorkItemDecide", "parameters": {"case_id": "REV-NW-2026", "decision_code": "RECOGNIZE_APPLIANCE_DEFER_SUPPORT", "evidence_refs": ["REV-POL-06", "NW-BUNDLE-2026", "NW-SSP-ANALYSIS.xlsx", "EM-REV-480", "INV-NW-480"], "rationale": "Allocate the 480000 transaction price using 300000 and 200000 standalone selling prices. Recognize 288000 when the appliance was accepted on 2026-02-27 and defer 192000 for support beginning 2026-03-01."}}},
+  {"server": "erp", "tool": "data_find_entities", "args": {"entity": "DecisionWorkItems", "filters": {"case_id": "REV-NW-2026"}}},
+  {"server": "harness", "tool": "submit_answer", "args": {"answers": {"revenue_review": "REV-NW-2026", "february_revenue": 288000.00, "deferred_revenue": 192000.00, "acceptance_date": "2026-02-27", "basis": "Allocate the 480000 bundle 60 percent to the accepted appliance and 40 percent to support. Recognize the 288000 appliance allocation on customer acceptance; defer 192000 because support begins 2026-03-01."}}}
+]

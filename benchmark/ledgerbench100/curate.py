@@ -27,8 +27,16 @@ from typing import Any
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 TASKS_ROOT = ROOT / "tasks"
-RELEASE_VERSION = "3.4.1"
+RELEASE_VERSION = "3.4.2"
 TARGET = 100
+
+DERIVED_SOURCE_PATTERN = re.compile(
+    r"(?:\bgrow:\s*escalated\b|\bescalated\s+variant\b|"
+    r"\bidentical\s+ground\s+truth\b|\bprompt\s+variant\b|"
+    r"\bretrieval\s+variant\b)",
+    re.IGNORECASE,
+)
+DERIVED_LINEAGE_FIELDS = ("parent_task", "variant_of", "derived_from")
 
 
 CURATED_SOURCE_TASKS = (
@@ -36,7 +44,7 @@ CURATED_SOURCE_TASKS = (
     "bank_rec/ach-return-mar",
     "bank_rec/statement-divergence-feb",
     "business_brief/brief-caterpillar",
-    "business_brief/brief-caterpillar-v2",
+    "fixed_assets/line7-capitalization",
     "cash_app/deduction-coding-mar",
     "cash_app/remittance-batch-mar02",
     "cash_forecast/cesp-four-week",
@@ -47,7 +55,7 @@ CURATED_SOURCE_TASKS = (
     "cross_system/email-invoice-meadow",
     "cross_system/intercompany-tieout-feb",
     "cross_system/total-ar-adventure-group",
-    "cross_system/total-ar-adventure-group-v2",
+    "revenue_accounting/northwind-contract-allocation",
     "cross_system/tracker-formula-drift",
     "erp_qa/ap-overdue-usmf",
     "erp_qa/ar-balance-fourthcoffee-east",
@@ -129,7 +137,7 @@ CURATED_SOURCE_TASKS = (
     "threeway_match/tolerance-dialect-mar",
     "vendor_master/bank-change-verify",
     "vendor_master/dormant-vendor-review",
-    "vendor_master/dormant-vendor-review-v2",
+    "treasury_fx/euro-payable-remeasurement",
     "vendor_master/missing-po-inquiry",
     "vendor_master/tac-find-signatories",
 )
@@ -179,10 +187,27 @@ def _source_record(source_task: str) -> dict[str, Any]:
     metadata = config.get("metadata", {})
     if metadata.get("generated"):
         raise ValueError(f"generated task selected: {source_task}")
+    lineage_fields = {
+        field: metadata[field]
+        for field in DERIVED_LINEAGE_FIELDS
+        if metadata.get(field)
+    }
+    origin = str(metadata.get("origin", ""))
+    if lineage_fields or DERIVED_SOURCE_PATTERN.search(origin):
+        reasons = sorted(lineage_fields) or ["origin"]
+        raise ValueError(
+            f"derived source task selected: {source_task}; lineage markers={reasons}"
+        )
     if metadata.get("multi_turn"):
         raise ValueError(f"multi-turn source is not representable by this release contract: {source_task}")
 
     walk = json.loads((source / "solution" / "walk.json").read_text())
+    declared_walk_len = metadata.get("walk_len")
+    if declared_walk_len is not None and int(declared_walk_len) != len(walk):
+        raise ValueError(
+            f"source walk length drift for {source_task}: "
+            f"metadata={declared_walk_len}, executable={len(walk)}"
+        )
     checks = json.loads((source / "tests" / "checks.json").read_text())
     submit_calls = [
         step for step in walk
@@ -257,6 +282,7 @@ def build_catalog() -> dict[str, Any]:
         },
         "integrity": {
             "prompt_variants": 0,
+            "derived_source_tasks": 0,
             "ticker_or_company_swaps_used_as_jobs": 0,
             "erpbench_scenario_archetypes": len(set(erp_archetypes)),
             "erp_qa_employee_question_archetypes": len(set(qa_archetypes)),

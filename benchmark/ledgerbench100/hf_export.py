@@ -53,7 +53,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 RELEASE_NAME = "LedgerBench-100"
 RELEASE_SLUG = "ledgerbench-100"
-RELEASE_VERSION = "3.4.1"
+RELEASE_VERSION = "3.4.2"
 HARBOR_ORG = "blobfishai"
 WORLD_ID = "ledgerbench-erp-world-v3-4"
 NEGATIVE_CONTROLS = 14
@@ -717,6 +717,7 @@ def build(release: Path) -> dict:
         ),
         "one_job_per_curated_archetype": (
             catalog.get("integrity", {}).get("prompt_variants") == 0
+            and catalog.get("integrity", {}).get("derived_source_tasks") == 0
             and catalog.get("integrity", {}).get("ticker_or_company_swaps_used_as_jobs") == 0
             and catalog.get("integrity", {}).get("erpbench_scenario_archetypes") == 27
             and catalog.get("integrity", {}).get("erp_qa_employee_question_archetypes") == 23
@@ -839,7 +840,7 @@ completion handoff is graded on its content.
 - Inspectable assets: {build['generated_assets_per_task']['min']}-{build['generated_assets_per_task']['max']} agent-visible native files per task, including {build['agent_visible_assets']['material_per_task']['min']}-{build['agent_visible_assets']['material_per_task']['max']} exact executed MCP responses bound one-for-one to the verifier's material reads; every material export carries request scope, bytes, and SHA-256, while gold and oracle recipes are excluded
 - Readback depth: {build['source_provider_post_write_readbacks']} task-native provider readbacks across the release, plus the governed case and completion-thread readbacks in every task
 - Reference diversity: {build['unique_reference_tool_name_sequences']}/100 distinct raw server/tool sequences (maximum sequence match {build['reference_sequence_similarity']['maximum_sequence_match']}) and {build['unique_semantic_action_graphs']}/100 distinct semantic action graphs
-- Human-job curation: {build['escalated_variant_pairs']} prompt variants; the release uses one instance of each of 27 ERP planning archetypes and 23 distinct ERP control questions, and does not count ticker or company-name swaps as new jobs
+- Human-job curation: {build['escalated_variant_pairs']} prompt variants and zero lineage-marked derived sources; the release uses one instance of each of 27 ERP planning archetypes and 23 distinct ERP control questions, plus separately authored fixed-asset capitalization, bundled-contract revenue allocation, and FX remeasurement workflows. Ticker or company-name swaps do not count as new jobs
 - Prompt uniqueness: {100 - build['exact_duplicate_prompts']} distinct employee requests; maximum pairwise 5-shingle Jaccard {build['prompt_uniqueness']['maximum_jaccard_5_shingle']}
 
 ## What is included

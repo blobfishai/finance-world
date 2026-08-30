@@ -1,0 +1,21 @@
+{
+  "answer_checks": [
+    {"field": "fx_review", "type": "contains_all", "expect": ["FX-EUR-2026"]},
+    {"field": "closing_carrying_amount_usd", "type": "number", "expect": 280000.00, "tol_abs": 0.01},
+    {"field": "remeasurement_loss_usd", "type": "number", "expect": 10000.00, "tol_abs": 0.01},
+    {"field": "closing_rate", "type": "number", "expect": 1.12, "tol_abs": 0.0001},
+    {"field": "rate_date", "type": "contains_all", "expect": ["2026-02-28"]},
+    {"field": "payment_date", "type": "contains_all", "expect": ["2026-03-10"]}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["sheets", "email", "docs", "erp"]},
+    {"type": "min_calls", "server": "erp", "n": 5},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [
+    {"type": "sql", "name": "review_decided", "expect": "decided", "sql": "SELECT status FROM erp_finance_cases WHERE case_id='FX-EUR-2026'"},
+    {"type": "sql", "name": "exact_fx_decision", "expect": "REMEASURE_EUR_PAYABLE_AT_CLOSE", "sql": "SELECT decision_code FROM erp_finance_cases WHERE case_id='FX-EUR-2026'"},
+    {"type": "sql", "name": "evidence_bound", "expect": "[\"EM-FX-250\",\"EUR-RATES-CLOSE.xlsx\",\"FX-POL-04\",\"LUMINA-EUR-250\",\"PINV-EUR-250\",\"RATE-2026-02-28\"]", "sql": "SELECT evidence_refs FROM erp_finance_cases WHERE case_id='FX-EUR-2026'"},
+    {"type": "writes_only", "tables": ["answers", "erp_finance_cases", "erp_audit_trail"]}
+  ]
+}

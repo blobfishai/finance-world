@@ -1,4 +1,4 @@
-"""Causal-realism contract for the LedgerBench-100 v3.4 release."""
+"""Causal-realism contract for the LedgerBench-100 v3.4.2 release."""
 
 from __future__ import annotations
 
@@ -101,6 +101,7 @@ STATE_CHANGING_ERP_ACTIONS = {
     "ContosoApprovalDecide",
     "ContosoPaymentRunPropose",
     "ContosoPaymentRunCommit",
+    "ContosoDecisionWorkItemDecide",
 }
 
 
@@ -1603,6 +1604,24 @@ def _source_postwrite_contracts(
     for write_step in erp_actions:
         action = (write_step.get("args") or {}).get("action")
         parameters = (write_step.get("args") or {}).get("parameters", {})
+        if action == "ContosoDecisionWorkItemDecide" and parameters.get("case_id"):
+            contracts.append(
+                {
+                    "write": {
+                        "server": "erp",
+                        "tool": "api_invoke_action",
+                        "args": {"action": action},
+                    },
+                    "readback": {
+                        "server": "erp",
+                        "tool": "data_find_entities",
+                        "args": {
+                            "entity": "DecisionWorkItems",
+                            "filters": {"case_id": parameters["case_id"]},
+                        },
+                    },
+                }
+            )
         if action == "ContosoIssueCollectionLetter":
             contracts.append(
                 {
@@ -1805,7 +1824,10 @@ def reference_walk(
     wrapper_write = {
         "server": "erp",
         "tool": "api_invoke_action",
-        "args": {"action": DECISION_ACTION},
+        "args": {
+            "action": DECISION_ACTION,
+            "parameters": {"case_id": contract["case_id"]},
+        },
     }
     wrapper_message = {
         "server": "email",

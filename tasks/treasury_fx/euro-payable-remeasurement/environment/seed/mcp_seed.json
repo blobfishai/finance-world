@@ -1,0 +1,49 @@
+{
+  "email_messages": [
+    {
+      "id": "EM-FX-250",
+      "folder": "inbox",
+      "from_addr": "ap.operations@contoso-sim.example",
+      "to_addr": "treasury@contoso-sim.example",
+      "subject": "Lumina PINV-EUR-250 remains open for 10 March",
+      "sent_at": "2026-02-28T17:02:00Z",
+      "body": "PINV-EUR-250 remains fully unpaid at 250,000 EUR. Payment is scheduled for the contractual due date, 2026-03-10. No hedge designation or settlement has been recorded. The 1.115 forward quote in Treasury's file was for cash-planning discussion only. SIMULATION ONLY.",
+      "attachment_name": null,
+      "attachment_text": null
+    },
+    {
+      "id": "EM-FX-BUDGET",
+      "folder": "inbox",
+      "from_addr": "fpna@contoso-sim.example",
+      "to_addr": "treasury@contoso-sim.example",
+      "subject": "FY26 budget rate reminder",
+      "sent_at": "2025-12-15T16:00:00Z",
+      "body": "The FY26 planning rate is 1.10 USD/EUR. It is for budget comparison and is not a close-accounting rate. SIMULATION ONLY.",
+      "attachment_name": null,
+      "attachment_text": null
+    }
+  ],
+  "sheet_files": [
+    {
+      "name": "EUR-RATES-CLOSE.xlsx",
+      "owner": "treasury.accounting",
+      "modified_at": "2026-02-28T18:00:00Z",
+      "description": "Controlled EUR/USD rate log distinguishing spot, budget, and forward rates"
+    }
+  ],
+  "sheet_rows": [
+    {"file": "EUR-RATES-CLOSE.xlsx", "row_no": 1, "cells": ["Rate date", "Rate USD per EUR", "Rate type", "Control status"]},
+    {"file": "EUR-RATES-CLOSE.xlsx", "row_no": 2, "cells": ["2026-02-10", 1.08, "invoice-date spot", "booked basis"]},
+    {"file": "EUR-RATES-CLOSE.xlsx", "row_no": 3, "cells": ["2026-02-28", 1.12, "closing spot", "RATE-2026-02-28 approved"]},
+    {"file": "EUR-RATES-CLOSE.xlsx", "row_no": 4, "cells": ["2026-02-28", 1.10, "FY26 budget rate", "planning only"]},
+    {"file": "EUR-RATES-CLOSE.xlsx", "row_no": 5, "cells": ["2026-03-10", 1.115, "indicative forward quote", "cash planning only; not designated"]}
+  ],
+  "answer_schema": [
+    {"ordinal": 1, "field": "fx_review", "type": "text", "description": "the FX review record"},
+    {"ordinal": 2, "field": "closing_carrying_amount_usd", "type": "number", "description": "USD value of the open payable at closing spot"},
+    {"ordinal": 3, "field": "remeasurement_loss_usd", "type": "number", "description": "February exchange loss relative to current carrying amount"},
+    {"ordinal": 4, "field": "closing_rate", "type": "number", "description": "USD per EUR closing spot"},
+    {"ordinal": 5, "field": "rate_date", "type": "text", "description": "the accounting rate date"},
+    {"ordinal": 6, "field": "payment_date", "type": "text", "description": "the contractual cash settlement date"}
+  ]
+}

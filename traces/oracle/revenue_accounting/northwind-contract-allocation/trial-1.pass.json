@@ -1,0 +1,119 @@
+{
+ "task": "revenue_accounting/northwind-contract-allocation",
+ "family": "revenue_accounting",
+ "agent": "oracle",
+ "model": null,
+ "infra_error": false,
+ "budget_exhausted": false,
+ "trial": 1,
+ "reward": 1,
+ "failed": [],
+ "servers_used": [
+  "docs",
+  "email",
+  "erp",
+  "harness",
+  "sheets"
+ ],
+ "n_tool_calls": 13,
+ "walk_len": 13,
+ "budget_turns": 116,
+ "num_turns": null,
+ "agent_error": false,
+ "duration_s": 0.3,
+ "cost_usd": null,
+ "final_text": "{\"walk_steps\": 13}\n",
+ "trace": [
+  {
+   "ts": 1788122982.338611,
+   "server": "harness",
+   "tool": "reporting_fields",
+   "args": "{}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.339843,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"Customers\", \"filters\": {\"account\": \"NW-HS-480\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.341106,
+   "server": "erp",
+   "tool": "data_find_entities_sql",
+   "args": "{\"sql\": \"SELECT s.sales_id,s.status,s.amount,t.invoice,t.trans_date,t.amount AS invoice_amount FROM erp_sales_orders s JOIN erp_cust_trans t ON t.account=s.account WHERE s.sales_id='SO-NW-480'\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.341975,
+   "server": "docs",
+   "tool": "search_documents",
+   "args": "{\"query\": \"bundled allocation acceptance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.342369,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"revenue-allocation-policy\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.34274,
+   "server": "docs",
+   "tool": "get_document",
+   "args": "{\"doc_id\": \"northwind-bundle-contract\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.343842,
+   "server": "sheets",
+   "tool": "workbook_range",
+   "args": "{\"item\": \"NW-SSP-ANALYSIS.xlsx\", \"address\": \"A1:D4\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.348031,
+   "server": "email",
+   "tool": "messages_list",
+   "args": "{\"q\": \"NW-BUNDLE-2026 acceptance\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.34857,
+   "server": "email",
+   "tool": "messages_get",
+   "args": "{\"id\": \"EM-REV-480\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.348628,
+   "server": "erp",
+   "tool": "api_find_actions",
+   "args": "{\"query\": \"decision work item\"}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.351168,
+   "server": "erp",
+   "tool": "api_invoke_action",
+   "args": "{\"action\": \"ContosoDecisionWorkItemDecide\", \"parameters\": {\"case_id\": \"REV-NW-2026\", \"decision_code\": \"RECOGNIZE_APPLIANCE_DEFER_SUPPORT\", \"evidence_refs\": [\"REV-POL-06\", \"NW-BUNDLE-2026\", \"NW-SSP-ANALYSIS.xlsx\", \"EM-REV-480\", \"INV-NW-480\"], \"rationale\": \"Allocate the 480000 transaction price using ",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.354073,
+   "server": "erp",
+   "tool": "data_find_entities",
+   "args": "{\"entity\": \"DecisionWorkItems\", \"filters\": {\"case_id\": \"REV-NW-2026\"}}",
+   "ok": true
+  },
+  {
+   "ts": 1788122982.3566341,
+   "server": "harness",
+   "tool": "submit_answer",
+   "args": "{\"answers\": {\"revenue_review\": \"REV-NW-2026\", \"february_revenue\": 288000.0, \"deferred_revenue\": 192000.0, \"acceptance_date\": \"2026-02-27\", \"basis\": \"Allocate the 480000 bundle 60 percent to the accepted appliance and 40 percent to support. Recognize the 288000 appliance allocation on customer accept",
+   "ok": true
+  }
+ ]
+}

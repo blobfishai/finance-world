@@ -1,0 +1,20 @@
+{
+  "answer_checks": [
+    {"field": "revenue_review", "type": "contains_all", "expect": ["REV-NW-2026"]},
+    {"field": "february_revenue", "type": "number", "expect": 288000.00, "tol_abs": 0.01},
+    {"field": "deferred_revenue", "type": "number", "expect": 192000.00, "tol_abs": 0.01},
+    {"field": "acceptance_date", "type": "contains_all", "expect": ["2026-02-27"]},
+    {"field": "basis", "type": "contains_all", "expect": ["60", "40", "support", "defer"]}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["erp", "docs", "sheets", "email"]},
+    {"type": "min_calls", "server": "erp", "n": 5},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [
+    {"type": "sql", "name": "review_decided", "expect": "decided", "sql": "SELECT status FROM erp_finance_cases WHERE case_id='REV-NW-2026'"},
+    {"type": "sql", "name": "exact_revenue_decision", "expect": "RECOGNIZE_APPLIANCE_DEFER_SUPPORT", "sql": "SELECT decision_code FROM erp_finance_cases WHERE case_id='REV-NW-2026'"},
+    {"type": "sql", "name": "evidence_bound", "expect": "[\"EM-REV-480\",\"INV-NW-480\",\"NW-BUNDLE-2026\",\"NW-SSP-ANALYSIS.xlsx\",\"REV-POL-06\"]", "sql": "SELECT evidence_refs FROM erp_finance_cases WHERE case_id='REV-NW-2026'"},
+    {"type": "writes_only", "tables": ["answers", "erp_finance_cases", "erp_audit_trail"]}
+  ]
+}

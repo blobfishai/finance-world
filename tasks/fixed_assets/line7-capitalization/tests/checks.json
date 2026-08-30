@@ -1,0 +1,20 @@
+{
+  "answer_checks": [
+    {"field": "capitalization_review", "type": "contains_all", "expect": ["FA-L7-2026"]},
+    {"field": "capitalizable_amount", "type": "number", "expect": 348000.00, "tol_abs": 0.01},
+    {"field": "expense_amount", "type": "number", "expect": 42000.00, "tol_abs": 0.01},
+    {"field": "ready_for_use_date", "type": "contains_all", "expect": ["2026-02-23"]},
+    {"field": "treatment", "type": "contains_all", "expect": ["training", "rework", "expense"]}
+  ],
+  "trace_checks": [
+    {"type": "required_servers", "servers": ["docs", "email", "sheets", "erp"]},
+    {"type": "min_calls", "server": "erp", "n": 5},
+    {"type": "reads_before_submit"}
+  ],
+  "state_checks": [
+    {"type": "sql", "name": "review_decided", "expect": "decided", "sql": "SELECT status FROM erp_finance_cases WHERE case_id='FA-L7-2026'"},
+    {"type": "sql", "name": "exact_capitalization_decision", "expect": "CAPITALIZE_LINE7_CORE_EXPENSE_POSTREADY", "sql": "SELECT decision_code FROM erp_finance_cases WHERE case_id='FA-L7-2026'"},
+    {"type": "sql", "name": "evidence_bound", "expect": "[\"EM-FA-701\",\"FA-POL-03\",\"LINE7-COSTS-FINAL.xlsx\",\"PO-L7-701\",\"SCOPE-L7-REV2\"]", "sql": "SELECT evidence_refs FROM erp_finance_cases WHERE case_id='FA-L7-2026'"},
+    {"type": "writes_only", "tables": ["answers", "erp_finance_cases", "erp_audit_trail"]}
+  ]
+}

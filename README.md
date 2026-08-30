@@ -58,7 +58,7 @@ Everything is simulation: all companies, balances, and documents in the world ar
   `write`, `action_confirm`) · `harness` (submit_answer only).
 - `tasks/<family>/<slug>/` — **Harbor task dirs** (`task.toml`, `instruction.md`,
   `environment/` incl. per-task `seed/` layers, `solution/` oracle walk, `tests/` verifier).
-  **1,534 tasks across 20 families.** Provenance is machine-readable and the three kinds are
+  **1,537 tasks across 23 families.** Provenance is machine-readable and the three kinds are
   never summed: a *ported* clone of a real source item, a *generated* instance of a ported
   pattern over another entity (`generated = true` + `pattern`), and an *escalated variant* of a
   ported task (`variant_of`). Conflating them is what let the parity ledger report 689%

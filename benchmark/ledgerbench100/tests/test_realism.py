@@ -32,13 +32,16 @@ from decision_model import (  # noqa: E402
     hold_recommended,
 )
 from decision_specs import DECISION_SPECS, decision_spec  # noqa: E402
+from curate import _source_record  # noqa: E402
 from exporter import prepare, remove_generated_bytecode  # noqa: E402
 from hf_export import public_semantic_milestones  # noqa: E402
 from run_suite import (  # noqa: E402
     incomplete_read_steps,
     keyword_stuffing_steps,
+    wrong_decision_steps,
     wrong_option_steps,
     wrong_target_steps,
+    write_before_read_steps,
 )
 from realism import (  # noqa: E402
     CONTEXTUAL_ASSETS_PER_TASK,
@@ -92,6 +95,31 @@ class LedgerBenchRealismTests(unittest.TestCase):
         erp_qa = [entry["workflow_archetype"] for entry in tasks if entry["family"] == "erp_qa_fb"]
         self.assertEqual((27, 27), (len(erp), len(set(erp))))
         self.assertEqual((23, 23), (len(erp_qa), len(set(erp_qa))))
+        self.assertEqual(0, self.catalog["integrity"]["derived_source_tasks"])
+        self.assertTrue(
+            {
+                "fixed_assets/line7-capitalization",
+                "revenue_accounting/northwind-contract-allocation",
+                "treasury_fx/euro-payable-remeasurement",
+            }
+            <= {entry["source_task"] for entry in tasks}
+        )
+        for entry in tasks:
+            source = ROOT / "tasks" / entry["source_task"]
+            metadata = tomllib.loads((source / "task.toml").read_text())["metadata"]
+            if "walk_len" in metadata:
+                self.assertEqual(metadata["walk_len"], entry["walk_len"])
+
+    def test_curator_rejects_lineage_marked_derived_jobs(self) -> None:
+        retired = (
+            "business_brief/brief-caterpillar-v2",
+            "cross_system/total-ar-adventure-group-v2",
+            "vendor_master/dormant-vendor-review-v2",
+        )
+        for source_task in retired:
+            with self.subTest(source_task=source_task):
+                with self.assertRaisesRegex(ValueError, "derived source task selected"):
+                    _source_record(source_task)
 
     def test_prompts_are_unique_high_level_requests(self) -> None:
         prompts = []
@@ -326,7 +354,10 @@ class LedgerBenchRealismTests(unittest.TestCase):
         walk, _ = reference_walk(entry, source_walk, contract)
         world = SimpleNamespace(
             spec={"task_id": entry["task_id"]},
-            realism={"decision_options": decision_options(entry, contract)},
+            realism={
+                "case_contract": contract,
+                "decision_options": decision_options(entry, contract),
+            },
             walk=walk,
         )
         model = control_model_for(entry, contract)
@@ -337,6 +368,49 @@ class LedgerBenchRealismTests(unittest.TestCase):
         self.assertNotIn(model.recommended_option, decide["args"]["parameters"]["rationale"])
         self.assertIn(OPTION_EXCEPTION, decide["args"]["parameters"]["rationale"])
         self.assertEqual(len(walk), len(mutated))
+
+    def test_wrapper_controls_bind_the_exact_case_when_source_uses_same_action(self) -> None:
+        entry = next(
+            row for row in self.catalog["tasks"]
+            if row["source_task"] == "fixed_assets/line7-capitalization"
+        )
+        source = ROOT / "tasks" / entry["source_task"]
+        source_walk = json.loads((source / "solution" / "walk.json").read_text())
+        contract = case_contract(entry)
+        walk, trace_contract = reference_walk(entry, source_walk, contract)
+        world = SimpleNamespace(
+            spec={"task_id": entry["task_id"]},
+            realism={"case_contract": contract},
+            walk=walk,
+        )
+
+        self.assertEqual(
+            contract["case_id"],
+            trace_contract["write_call"]["args"]["parameters"]["case_id"],
+        )
+        self.assertEqual(
+            "FA-L7-2026",
+            trace_contract["source_first_write_call"]["args"]["parameters"]["case_id"],
+        )
+        early = write_before_read_steps(world)[1]
+        self.assertEqual(contract["case_id"], early["args"]["parameters"]["case_id"])
+        mutated = wrong_decision_steps(world)
+        source_decision = next(
+            step for step in mutated
+            if (step.get("args") or {}).get("parameters", {}).get("case_id") == "FA-L7-2026"
+        )
+        wrapper_decision = next(
+            step for step in mutated
+            if (step.get("args") or {}).get("parameters", {}).get("case_id") == contract["case_id"]
+        )
+        self.assertEqual(
+            "CAPITALIZE_LINE7_CORE_EXPENSE_POSTREADY",
+            source_decision["args"]["parameters"]["decision_code"],
+        )
+        self.assertNotEqual(
+            decision_spec(entry["source_task"]).decision_code,
+            wrapper_decision["args"]["parameters"]["decision_code"],
+        )
 
     def test_completion_controls_reject_wrong_target_and_keyword_dump(self) -> None:
         entry = self.catalog["tasks"][0]

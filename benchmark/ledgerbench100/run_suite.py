@@ -47,7 +47,7 @@ from exporter import remove_generated_bytecode
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 RELEASE_NAME = "LedgerBench-100"
-RELEASE_VERSION = "3.4.1"
+RELEASE_VERSION = "3.4.2"
 CORRUPT_VALUE = "totally-wrong-answer-xyzzy"
 DECISION_ACTION = "ContosoDecisionWorkItemDecide"
 
@@ -138,16 +138,23 @@ def shortcut_steps(world: PackWorld) -> list[dict]:
     ]
 
 
-def _is_decision_work_item(step: dict) -> bool:
+def _is_decision_work_item(step: dict, case_id: str | None = None) -> bool:
+    arguments = step.get("args") or {}
+    parameters = arguments.get("parameters") or {}
     return (
         step["server"] == "erp"
         and step["tool"] == "api_invoke_action"
-        and (step.get("args") or {}).get("action") == DECISION_ACTION
+        and arguments.get("action") == DECISION_ACTION
+        and (case_id is None or parameters.get("case_id") == case_id)
     )
 
 
 def state_only_steps(world: PackWorld) -> list[dict]:
-    decision_index = next(index for index, step in enumerate(world.walk) if _is_decision_work_item(step))
+    case_id = world.realism["case_contract"]["case_id"]
+    decision_index = next(
+        index for index, step in enumerate(world.walk)
+        if _is_decision_work_item(step, case_id)
+    )
     return [world.walk[0], *world.walk[max(1, decision_index - 1):]]
 
 
@@ -200,7 +207,10 @@ def incomplete_read_steps(world: PackWorld) -> list[dict]:
 
 
 def write_before_read_steps(world: PackWorld) -> list[dict]:
-    decision = next(step for step in world.walk if _is_decision_work_item(step))
+    case_id = world.realism["case_contract"]["case_id"]
+    decision = next(
+        step for step in world.walk if _is_decision_work_item(step, case_id)
+    )
     return [world.walk[0], decision, *[step for step in world.walk[1:] if step is not decision]]
 
 
@@ -253,8 +263,9 @@ def wrong_value_steps(world: PackWorld) -> list[dict]:
 
 def wrong_decision_steps(world: PackWorld) -> list[dict]:
     steps = json.loads(json.dumps(world.walk))
+    case_id = world.realism["case_contract"]["case_id"]
     for step in steps:
-        if _is_decision_work_item(step):
+        if _is_decision_work_item(step, case_id):
             current = step["args"]["parameters"]["decision_code"]
             step["args"]["parameters"]["decision_code"] = (
                 "NO_ACTION" if current.startswith("HOLD_") else "HOLD_FOR_EVIDENCE"
@@ -265,8 +276,9 @@ def wrong_decision_steps(world: PackWorld) -> list[dict]:
 
 def wrong_evidence_steps(world: PackWorld) -> list[dict]:
     steps = json.loads(json.dumps(world.walk))
+    case_id = world.realism["case_contract"]["case_id"]
     for step in steps:
-        if _is_decision_work_item(step):
+        if _is_decision_work_item(step, case_id):
             refs = step["args"]["parameters"]["evidence_refs"]
             step["args"]["parameters"]["evidence_refs"] = [*refs[:-1], "UNRELATED-EVIDENCE-REF"]
             break
@@ -288,9 +300,10 @@ def wrong_option_steps(world: PackWorld) -> list[dict]:
         if option.get("authority_status") == "ADDITIONAL_APPROVAL_REQUIRED"
     )
     steps = json.loads(json.dumps(world.walk))
+    case_id = world.realism["case_contract"]["case_id"]
     for step in steps:
         arguments = step.get("args") or {}
-        if _is_decision_work_item(step):
+        if _is_decision_work_item(step, case_id):
             parameters = arguments["parameters"]
             parameters["rationale"] = parameters["rationale"].replace(selected["id"], unauthorized["id"])
         elif step["server"] == "email" and step["tool"] == "send_message":

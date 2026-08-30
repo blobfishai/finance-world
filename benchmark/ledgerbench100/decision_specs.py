@@ -1,4 +1,4 @@
-"""Authored causal decisions for the LedgerBench-100 v3.4 release.
+"""Authored causal decisions for the LedgerBench-100 v3.4.2 release.
 
 Each source task already contains a grounded finance problem and a deterministic
 answer.  This table supplies the second half of a real employee workflow: why the
@@ -129,6 +129,9 @@ vendor_master/tac-find-signatories|Give First National the current authorized-si
 # Keeping the old table above makes the curation change auditable; _parse drops
 # its variants and clustered corpus slices before adding these authored records.
 _V34_ADDITIONS = r"""
+fixed_assets/line7-capitalization|How much of the Line 7 retrofit belongs in the asset register, what must be expensed, and which cut-off controls?|Join the final supplier scope and cost schedule to purchase and receipt records, commissioning acceptance, ready-for-use policy, and post-release work timing.|Only directly attributable pre-ready costs capitalize; training and abnormal post-ready rework are February expense.|CAPITALIZE_LINE7_CORE_EXPENSE_POSTREADY|Capitalize the entire bundled invoice or use the earlier estimate.
+revenue_accounting/northwind-contract-allocation|What can February recognize from Northwind's bundled order, and what remains deferred?|Resolve contract obligations, transaction price, inception standalone selling prices, invoice, customer acceptance, support start, and operative revenue policy.|Relative standalone selling price allocation assigns 288000 to the appliance accepted 2026-02-27 and 192000 to support beginning in March.|RECOGNIZE_APPLIANCE_DEFER_SUPPORT|Recognize the full invoice in February or allocate from a superseded draft.
+treasury_fx/euro-payable-remeasurement|What is the February carrying value and FX impact for the open Lumina EUR payable, distinct from settlement cash?|Join exact payable identity and open status to invoice-date carrying amount, approved closing spot, rate type and date, hedge status, policy, and due date.|The monetary payable remeasures at 1.12 on 2026-02-28 to 280000 USD, producing a 10000 loss; cash remains due 2026-03-10.|REMEASURE_EUR_PAYABLE_AT_CLOSE|Use the budget or forward rate, or treat the eventual cash quote as the close measurement.
 erp_qa_fb/ap-invoices-1|Can AP clear any of Lande Packaging's approval backlog today, and which invoices still need an approver?|Correlate the exact vendor account, live invoice workflow states, approval requests and decisions, holds, and the effective approval thresholds.|Only open invoices with an incomplete current approval chain remain in the queue; completed, rejected, settled, and other-entity documents stay out.|HOLD_LANDE_PENDING_APPROVALS|Treat every invoice carrying a pending-looking label as the same approval case.
 erp_qa_fb/ap-invoices-5|Tell me whether Ade Supply's latest invoices actually passed three-way match and what is stopping any that did not.|Join each invoice line to its purchase order, receipt, quantity and price tolerances, workflow state, and supplier identity.|An invoice is match-ready only when its exact ordered and received lines satisfy the operative tolerance and no unresolved exception survives.|HOLD_ADE_MATCH_EXCEPTIONS|Use the invoice header status without reconstructing the purchase-order and receipt evidence.
 erp_qa_fb/ap-payments-1|Before payroll and check payments are released, confirm which USMF cash accounts each method will really hit.|Resolve legal entity, vendor payment-method codes, effective account mappings, bank-account status, and any superseded setup rows.|The release uses the active effective mapping for Payroll_CK and Check in USMF, with similarly named or expired mappings excluded.|CERTIFY_PAYMENT_METHOD_ACCOUNTS|Return the first two account names containing payroll or operating.
@@ -180,6 +183,13 @@ erpbench/2290-hard-repair-plan-hard|Assembly Line 1 is down; give Operations the
 """.strip()
 
 
+RETIRED_DERIVED_SOURCES = {
+    "business_brief/brief-caterpillar-v2",
+    "cross_system/total-ar-adventure-group-v2",
+    "vendor_master/dormant-vendor-review-v2",
+}
+
+
 def _parse() -> dict[str, DecisionSpec]:
     specs: dict[str, DecisionSpec] = {}
     sources = (
@@ -198,6 +208,7 @@ def _parse() -> dict[str, DecisionSpec]:
                 family = spec.source_task.split("/", 1)[0]
                 retired = (
                     "-esc-burie-quiet" in spec.source_task
+                    or spec.source_task in RETIRED_DERIVED_SOURCES
                     or family in {"business_brief_fb", "finance_qa_fb"}
                     or (family == "erpbench" and spec.source_task != "erpbench/2160-hard-17-shared-component-subassemblies-branch-assigned")
                     or (family == "erp_qa_fb" and spec.source_task != "erp_qa_fb/aged-balance-12")
