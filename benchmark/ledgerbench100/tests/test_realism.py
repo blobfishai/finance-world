@@ -3,10 +3,12 @@ from __future__ import annotations
 import importlib.util
 import json
 import os
+import re
 import sys
 import tempfile
 import tomllib
 import unittest
+from difflib import SequenceMatcher
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -31,12 +33,17 @@ from decision_model import (  # noqa: E402
 )
 from decision_specs import DECISION_SPECS, decision_spec  # noqa: E402
 from exporter import prepare, remove_generated_bytecode  # noqa: E402
+from hf_export import public_semantic_milestones  # noqa: E402
 from run_suite import incomplete_read_steps, wrong_option_steps  # noqa: E402
 from realism import (  # noqa: E402
-    ASSETS_PER_TASK,
-    MATERIAL_ASSETS_PER_TASK,
+    CONTEXTUAL_ASSETS_PER_TASK,
+    DECISION_ACTION,
+    MIN_TASK_NATIVE_POINTS,
+    MIN_MATERIAL_ASSETS_PER_TASK,
     SEMANTIC_MILESTONE_WEIGHTS,
+    TASK_NATIVE_MILESTONES,
     WORLD_EPOCH,
+    _erpbench_plan_facts,
     _pdf,
     _xlsx,
     atomic_check_specs,
@@ -70,6 +77,17 @@ class LedgerBenchRealismTests(unittest.TestCase):
         self.assertEqual(100, len({spec.decision_code for spec in DECISION_SPECS.values()}))
         self.assertEqual(100, len({spec.employee_question for spec in DECISION_SPECS.values()}))
 
+    def test_catalog_contains_one_real_job_per_source_archetype(self) -> None:
+        tasks = self.catalog["tasks"]
+        self.assertEqual(100, len(tasks))
+        self.assertTrue(all(entry["provenance"] == "ported" for entry in tasks))
+        self.assertFalse(any("-esc-burie-quiet" in entry["source_task"] for entry in tasks))
+        self.assertFalse(any(entry["family"] in {"business_brief_fb", "finance_qa_fb"} for entry in tasks))
+        erp = [entry["workflow_archetype"] for entry in tasks if entry["family"] == "erpbench"]
+        erp_qa = [entry["workflow_archetype"] for entry in tasks if entry["family"] == "erp_qa_fb"]
+        self.assertEqual((27, 27), (len(erp), len(set(erp))))
+        self.assertEqual((23, 23), (len(erp_qa), len(set(erp_qa))))
+
     def test_prompts_are_unique_high_level_requests(self) -> None:
         prompts = []
         for entry in self.catalog["tasks"]:
@@ -80,17 +98,32 @@ class LedgerBenchRealismTests(unittest.TestCase):
             self.assertLessEqual(len(prompt.split()), 125)
             self.assertNotIn("submit_answer", prompt)
             self.assertNotIn("api_invoke_action", prompt)
+            self.assertNotIn(entry["task_id"], prompt)
+            self.assertNotIn("Evidence is distributed across", prompt)
             prompts.append(prompt)
         self.assertEqual(100, len(set(prompts)))
+        shingles = []
+        for prompt in prompts:
+            words = re.findall(r"[a-z0-9]+", prompt.casefold())
+            shingles.append({tuple(words[index:index + 5]) for index in range(len(words) - 4)})
+        maximum = max(
+            len(left & right) / len(left | right)
+            for index, left in enumerate(shingles)
+            for right in shingles[index + 1:]
+        )
+        self.assertLess(maximum, 0.72)
 
     def test_reference_and_semantic_graphs_are_unique(self) -> None:
         raw_sequences = set()
+        raw_sequence_list = []
         semantic_graphs = set()
         for entry in self.catalog["tasks"]:
             source = ROOT / "tasks" / entry["source_task"]
             source_walk = json.loads((source / "solution" / "walk.json").read_text())
             walk, contract = reference_walk(entry, source_walk, case_contract(entry))
-            raw_sequences.add(tuple((step["server"], step["tool"]) for step in walk))
+            sequence = tuple((step["server"], step["tool"]) for step in walk)
+            raw_sequences.add(sequence)
+            raw_sequence_list.append(sequence)
             semantic_graphs.add(tuple(contract["semantic_action_graph"]))
             self.assertGreaterEqual(len(walk), 24)
             self.assertGreaterEqual(len(contract["required_context_calls"]), 19)
@@ -102,6 +135,12 @@ class LedgerBenchRealismTests(unittest.TestCase):
             )
         self.assertEqual(100, len(raw_sequences))
         self.assertEqual(100, len(semantic_graphs))
+        maximum_similarity = max(
+            SequenceMatcher(None, left, right, autojunk=False).ratio()
+            for index, left in enumerate(raw_sequence_list)
+            for right in raw_sequence_list[index + 1:]
+        )
+        self.assertLess(maximum_similarity, 0.95)
 
     def test_every_decision_has_three_costed_alternatives_with_authority(self) -> None:
         hold_tasks = 0
@@ -163,6 +202,60 @@ class LedgerBenchRealismTests(unittest.TestCase):
             self.assertNotIn(first.case_id, first.decoy_case_id)
             self.assertNotIn(first.decoy_case_id, first.case_id)
 
+    def test_erp_planning_dates_costs_and_constraints_are_source_bound(self) -> None:
+        for entry in (
+            row for row in self.catalog["tasks"] if row["family"] == "erpbench"
+        ):
+            facts = _erpbench_plan_facts(entry)["answers"]
+            contract = case_contract(entry)
+            model = control_model_for(entry, contract)
+            source = ROOT / "tasks" / entry["source_task"]
+            source_walk = json.loads((source / "solution" / "walk.json").read_text())
+            walk, trace_contract = reference_walk(entry, source_walk, contract)
+            submitted = next(
+                step for step in walk if step["tool"] == "submit_answer"
+            )["args"]["answers"]
+            checks = augment_checks(
+                entry,
+                json.loads((source / "tests" / "checks.json").read_text()),
+                contract,
+                trace_contract,
+            )
+            graded = {check["field"]: check for check in checks["answer_checks"]}
+
+            self.assertEqual(
+                facts["source_plan_completion_date"], model.recommended_outcome
+            )
+            self.assertEqual(
+                facts["source_plan_completion_date"],
+                model.answers["recommended_outcome_date"],
+            )
+            self.assertEqual(
+                facts["new_purchase_spend_usd"],
+                model.answers["recommended_incremental_cost_usd"],
+            )
+            self.assertEqual("ON_TIME", model.timing_status)
+            for field, value in facts.items():
+                self.assertEqual(value, submitted[field])
+                if graded[field]["type"] == "contains_all":
+                    lowered = str(value).casefold()
+                    self.assertTrue(
+                        all(token in lowered for token in graded[field]["expect"])
+                    )
+                else:
+                    self.assertEqual(value, graded[field]["expect"])
+
+            criteria = rubric_criteria(entry, checks, trace_contract, contract)
+            state = next(row for row in criteria if row["id"] == "state.operational")
+            self.assertNotIn("task_native_mutation_calls", state)
+            self.assertTrue(state["task_native_mutation_surfaces"])
+            self.assertTrue(
+                all(
+                    "values" not in surface and "domain" not in surface
+                    for surface in state["task_native_mutation_surfaces"]
+                )
+            )
+
     def test_augmented_checks_grade_the_whole_chain(self) -> None:
         for entry in self.catalog["tasks"]:
             source = ROOT / "tasks" / entry["source_task"]
@@ -203,7 +296,7 @@ class LedgerBenchRealismTests(unittest.TestCase):
             self.assertTrue(any(c["type"] == "post_write_readback" for c in checks["trace_checks"]))
             state_names = {c.get("name") for c in checks["state_checks"]}
             self.assertLessEqual(
-                {"finance_case_selected_option", "exception_request_untouched", "one_completion_email"},
+                {"decision_work_item_selected_option", "exception_request_untouched", "one_completion_email"},
                 state_names,
             )
             completion = next(c for c in checks["state_checks"] if c.get("name") == "one_completion_email")
@@ -232,7 +325,7 @@ class LedgerBenchRealismTests(unittest.TestCase):
         mutated = wrong_option_steps(world)
         submitted = next(step for step in mutated if step["tool"] == "submit_answer")["args"]["answers"]
         self.assertEqual(OPTION_EXCEPTION, submitted["recommended_option"])
-        decide = next(step for step in mutated if (step.get("args") or {}).get("action") == "ContosoFinanceCaseDecide")
+        decide = next(step for step in mutated if (step.get("args") or {}).get("action") == DECISION_ACTION)
         self.assertNotIn(model.recommended_option, decide["args"]["parameters"]["rationale"])
         self.assertIn(OPTION_EXCEPTION, decide["args"]["parameters"]["rationale"])
         self.assertEqual(len(walk), len(mutated))
@@ -247,9 +340,18 @@ class LedgerBenchRealismTests(unittest.TestCase):
             checks = augment_checks(entry, checks, contract, trace_contract)
             criteria = rubric_criteria(entry, checks, trace_contract, contract)
 
-            self.assertEqual(14, len(criteria))
+            self.assertEqual(16, len(criteria))
             self.assertEqual(100, sum(row["weight"] for row in criteria))
             self.assertEqual(set(SEMANTIC_MILESTONE_WEIGHTS), {row["id"] for row in criteria})
+            task_native_points = sum(
+                row["weight"] for row in criteria if row["task_native_core"]
+            )
+            self.assertEqual(
+                TASK_NATIVE_MILESTONES,
+                {row["id"] for row in criteria if row["task_native_core"]},
+            )
+            self.assertGreater(task_native_points, 50)
+            self.assertGreaterEqual(task_native_points, MIN_TASK_NATIVE_POINTS)
             atomic_ids = {row["id"] for row in atomic_check_specs(checks)}
             assigned = [
                 check_id
@@ -261,6 +363,23 @@ class LedgerBenchRealismTests(unittest.TestCase):
             self.assertTrue(
                 all(entry["family"] in row["description"] or row["id"] != "state.operational"
                     for row in criteria)
+            )
+            public = public_semantic_milestones({"criteria": criteria})
+            self.assertEqual(16, len(public))
+            for row in public:
+                self.assertNotIn("atomic_check_ids", row)
+                self.assertNotIn("atomic_checks", row)
+                self.assertNotIn("deterministic_state_contract", row)
+                self.assertNotIn("deterministic_answer_contract", row)
+            public_state = next(
+                row for row in public if row["id"] == "state.operational"
+            )
+            internal_state = next(
+                row for row in criteria if row["id"] == "state.operational"
+            )
+            self.assertEqual(
+                internal_state["task_native_mutation_surfaces"],
+                public_state["task_native_mutation_surfaces"],
             )
 
     def test_native_pdf_and_workbook_are_parseable(self) -> None:
@@ -280,7 +399,9 @@ class LedgerBenchRealismTests(unittest.TestCase):
         erp = (ROOT / "mcp" / "servers" / "erp_server.py").read_text()
         self.assertIn('@S.tool("data_find_entities"', erp)
         self.assertIn('@S.tool("api_invoke_action"', erp)
-        self.assertIn("ContosoFinanceCaseDecide", erp)
+        self.assertIn('"DecisionWorkItems"', erp)
+        self.assertIn('"DecisionScopeLines"', erp)
+        self.assertIn(DECISION_ACTION, erp)
         self.assertNotIn('@S.tool("approve_invoice"', erp)
 
     def test_incomplete_read_removes_a_uniquely_required_request(self) -> None:
@@ -311,7 +432,7 @@ class LedgerBenchRealismTests(unittest.TestCase):
                 {
                     "server": "erp",
                     "tool": "api_invoke_action",
-                    "args": {"action": "ContosoFinanceCaseDecide"},
+                    "args": {"action": DECISION_ACTION},
                 }
             ],
         }
@@ -324,7 +445,7 @@ class LedgerBenchRealismTests(unittest.TestCase):
         rejected_write = {
             "server": "erp",
             "tool": "api_invoke_action",
-            "args": {"action": "ContosoFinanceCaseDecide", "parameters": {}},
+            "args": {"action": DECISION_ACTION, "parameters": {}},
             "ok": False,
         }
 
@@ -352,7 +473,10 @@ class LedgerBenchRealismTests(unittest.TestCase):
 
     def test_erp_task_exposes_demand_bom_supply_capacity_and_material_assets(self) -> None:
         entry = next(
-            row for row in self.catalog["tasks"] if row["family"] == "erpbench"
+            row
+            for row in self.catalog["tasks"]
+            if row["source_task"]
+            == "erpbench/2160-hard-17-shared-component-subassemblies-branch-assigned"
         )
         source = ROOT / "tasks" / entry["source_task"]
         source_walk = json.loads((source / "solution" / "walk.json").read_text())
@@ -415,14 +539,35 @@ class LedgerBenchRealismTests(unittest.TestCase):
                 prompt,
                 entry,
                 contract,
+                trace_contract,
+                server_root=ROOT / "mcp",
+                world_now=prepared["env"]["WORLD_NOW"],
+                world_role=prepared["env"]["WORLD_ROLE"],
             )
-            self.assertEqual(ASSETS_PER_TASK, len(assets))
-            self.assertEqual(MATERIAL_ASSETS_PER_TASK, sum(bool(asset["material"]) for asset in assets))
-            case_asset = json.loads((asset_root / "02-open-finance-case.json").read_text())
+            material = [asset for asset in assets if asset["material"]]
+            self.assertGreaterEqual(len(material), MIN_MATERIAL_ASSETS_PER_TASK)
+            self.assertEqual(
+                len(trace_contract["required_context_calls"]), len(material)
+            )
+            self.assertEqual(
+                CONTEXTUAL_ASSETS_PER_TASK, len(assets) - len(material)
+            )
+            for asset in material:
+                self.assertTrue(asset["filename"].startswith("material/"))
+                self.assertGreater(asset["bytes"], 0)
+                self.assertRegex(asset["sha256"], r"^[0-9a-f]{64}$")
+                self.assertIsInstance(asset["query_scope"], dict)
+                self.assertTrue(asset["material_reason"])
+            case_asset = json.loads((asset_root / "02-open-decision-work-item.json").read_text())
             self.assertEqual(contract["case_id"], case_asset["case"]["case_id"])
             self.assertGreaterEqual(len(case_asset["lines"]), 2)
             self.assertTrue((asset_root / f"13-{contract['counterparty_email_id']}.eml").exists())
             self.assertTrue((asset_root / f"06-{contract['close_calendar_id']}.md").exists())
+            planning_window = (
+                asset_root / f"06-{contract['close_calendar_id']}.md"
+            ).read_text()
+            self.assertIn("production planning window", planning_window)
+            self.assertNotIn("close calendar", planning_window.casefold())
             odoo_asset = json.loads(
                 (asset_root / "25-odoo-procurement.json").read_text()
             )
@@ -437,6 +582,58 @@ class LedgerBenchRealismTests(unittest.TestCase):
                     "erpb_workcenters",
                 }
                 <= tables
+            )
+
+    def test_expected_provider_absence_is_exported_as_exact_material_evidence(self) -> None:
+        entry = next(
+            row
+            for row in self.catalog["tasks"]
+            if row["source_task"] == "finance_qa/unavailable-concept"
+        )
+        source = ROOT / "tasks" / entry["source_task"]
+        source_walk = json.loads((source / "solution" / "walk.json").read_text())
+        config = tomllib.loads((source / "task.toml").read_text())
+        prompt = release_prompt(entry, (source / "instruction.md").read_text(), config)
+        with tempfile.TemporaryDirectory() as temporary:
+            staged = Path(temporary) / "run"
+            prepared = prepare(source, staged)
+            contract = seed_case_context(
+                staged / "world.sqlite",
+                entry,
+                source_walk,
+                prepared["env"]["WORLD_NOW"],
+            )
+            _, trace_contract = reference_walk(entry, source_walk, contract)
+            expected = [
+                call
+                for call in trace_contract["required_context_calls"]
+                if call.get("expected_error_contains")
+            ]
+            self.assertEqual(1, len(expected))
+            asset_root = Path(temporary) / "assets"
+            assets = write_asset_views(
+                asset_root,
+                staged / "world.sqlite",
+                prompt,
+                entry,
+                contract,
+                trace_contract,
+                server_root=ROOT / "mcp",
+                world_now=prepared["env"]["WORLD_NOW"],
+                world_role=prepared["env"]["WORLD_ROLE"],
+            )
+            absence_payloads = []
+            for asset in assets:
+                if not asset["material"]:
+                    continue
+                payload = json.loads((asset_root / asset["filename"]).read_text())
+                if payload["expected_absence"]:
+                    absence_payloads.append(payload)
+            self.assertEqual(1, len(absence_payloads))
+            self.assertTrue(absence_payloads[0]["response"]["verified_absence"])
+            self.assertIn(
+                expected[0]["expected_error_contains"],
+                absence_payloads[0]["response"]["provider_error"],
             )
 
     def test_release_cleanup_removes_only_generated_bytecode(self) -> None:

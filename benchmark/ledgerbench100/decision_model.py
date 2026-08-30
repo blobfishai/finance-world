@@ -1,11 +1,11 @@
-"""Graded control-date decision model for every LedgerBench-100 case (v3.3).
+"""Graded control-date decision model for every LedgerBench-100 case (v3.4).
 
 Each released case carries one deterministic decision model layered on the
 authored decision (``decision_specs.py``).  The model is the reasoning chain a
 finance operator works before closing a case:
 
 * requirement — the amount the current control requires to be supported, derived
-  by summing the in-scope ``FinanceCaseLines`` documents in the ERP (H2);
+  by summing the in-scope ``DecisionScopeLines`` records in the ERP (H2);
 * coverage — the gross support on the current evidence register, the rows the
   control excludes (disputed, out-of-period, duplicate) and the usable remainder,
   corroborated by the counterparty's own message (H3);
@@ -202,8 +202,8 @@ def control_model(number: int, task_id: str, family: str, spec: DecisionSpec, wo
     profile = family_profile(family)
     draw = _Draw(number)
     today = dt.date.fromisoformat(world_now[:10])
-    case_id = f"FINCASE-{number:03d}"
-    decoy_case_id = f"FINCASE-2025-{number:03d}"
+    case_id = f"WORKITEM-{number:03d}"
+    decoy_case_id = f"WORKITEM-2025-{number:03d}"
     hold = hold_recommended(spec)
 
     # --- requirement: in-scope documents in the ERP -------------------------
@@ -494,8 +494,9 @@ def answer_schema_rows(model: ControlModel, first_ordinal: int) -> list[tuple[in
     """Reporting-schema rows the harness exposes through ``reporting_fields``."""
 
     verb = model.profile.proceed_verb
+    planning_scope = model.profile.scope_noun == "purchase and production commitments in the plan"
     descriptions: dict[str, tuple[str, str]] = {
-        "case_id": ("text", "immutable FinanceCases identifier of the open work item this filing resolves"),
+        "case_id": ("text", "immutable DecisionWorkItems identifier of the open work item this filing resolves"),
         "control_requirement_usd": ("number", "USD the current control requires to be supported before the case can close"),
         "observed_support_usd": ("number", "USD of gross support listed on the current evidence register before any exclusion"),
         "excluded_support_usd": ("number", "USD of listed support the current control excludes"),
@@ -503,7 +504,14 @@ def answer_schema_rows(model: ControlModel, first_ordinal: int) -> list[tuple[in
         "exception_usd": ("number", "USD of the requirement that current evidence does not support"),
         "exception_within_tolerance": ("yes/no", "is the unsupported exception within the current control's tolerance"),
         "external_constraint_date": ("date", "date the counterparty has committed, in its own message, to deliver its correction"),
-        "posting_window_close_date": ("date", "last posting date of the current close window"),
+        "posting_window_close_date": (
+            "date",
+            (
+                "last date of the approved factory planning window"
+                if planning_scope
+                else "last posting date of the current close window"
+            ),
+        ),
         f"{OPTION_PROCEED}_outcome_date": ("date", f"date on which the option {OPTION_PROCEED} would {verb} the supported scope"),
         f"{OPTION_HOLD}_outcome_date": ("date", f"date on which the option {OPTION_HOLD} would {verb} the full scope"),
         f"{OPTION_EXCEPTION}_outcome_date": ("date", f"date on which the option {OPTION_EXCEPTION} would {verb} the full scope"),

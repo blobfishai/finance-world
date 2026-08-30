@@ -67,8 +67,13 @@ ENTITIES = {
     "CollectionPools":      ("erp_collection_pools", "Collections pool definitions"),
     "CustomerPools":        ("erp_customer_pool", "Customer-to-collections-pool assignments"),
     "MethodsOfPayment":     ("erp_methods_of_payment", "Methods of payment and their payment accounts (customer and vendor sides)"),
-    "FinanceCases":         ("erp_finance_cases", "Task-scoped finance work items: immutable case identity, workflow, subject, status, decision, evidence references, rationale, owner, and timestamps"),
-    "FinanceCaseLines":     ("erp_finance_case_lines", "Documents in scope for a finance case: case_id, line, document_ref, description, amount, currency, control_basis"),
+    "DecisionWorkItems":    ("erp_finance_cases", "Task-scoped decision work items: immutable identity, workflow, subject, status, decision, evidence references, rationale, owner, and timestamps"),
+    "DecisionScopeLines":   ("erp_finance_case_lines", "Documents or commitments in scope for a decision work item: case_id, line, document_ref, description, amount, currency, control_basis"),
+    # Compatibility aliases for source tasks authored before the neutral
+    # DecisionWorkItems extension name was introduced. New releases do not use
+    # these aliases in prompts, evidence contracts, or reference trajectories.
+    "FinanceCases":         ("erp_finance_cases", "Legacy alias for DecisionWorkItems"),
+    "FinanceCaseLines":     ("erp_finance_case_lines", "Legacy alias for DecisionScopeLines"),
 }
 
 def _unknown(entity):
@@ -426,7 +431,8 @@ ACTIONS = {
     "ContosoApprovalDecide": {"description": "WRITE (Controller role): approve or reject a pending request (params: request_id, decision 'approve'|'reject', reason). A rejection requires a reason.", "requires_role": "controller"},
     "ContosoPaymentRunPropose": {"description": "WRITE (Treasury role): build a payment proposal for a pay date against a bank account's available cash (params: pay_date, bank_account, vendor_account?). Returns every eligible obligation ranked, the cash available, and the shortfall if the eligible net exceeds it, plus a confirm_token.", "requires_role": "treasury"},
     "ContosoPaymentRunCommit": {"description": "WRITE (Treasury role): commit a proposed run (params: run_id, confirm_token, paid[invoice...], rejected[{invoice, reason_code, reason}]). Every eligible obligation must appear in exactly one of paid or rejected, and the paid net must not exceed available cash — a short run is committed by naming what goes unpaid, not by dropping it.", "requires_role": "treasury"},
-    "ContosoFinanceCaseDecide": {"description": "WRITE: decide one open FinanceCases work item after source review (params: case_id, decision_code, evidence_refs[immutable source ids], rationale). Updates only that case and writes the Dynamics audit trail."},
+    "ContosoDecisionWorkItemDecide": {"description": "WRITE: decide one open DecisionWorkItems record after source review (params: case_id, decision_code, evidence_refs[immutable source ids], rationale). Updates only that work item and writes the Dynamics audit trail."},
+    "ContosoFinanceCaseDecide": {"description": "Legacy compatibility action for ContosoDecisionWorkItemDecide."},
 }
 
 # Reason codes for the rejected half of a payment run. Vocabulary follows ERPNext's
@@ -855,7 +861,17 @@ def api_invoke_action(action, parameters=None):
         return _payment_run_propose(cx, p)
     if action == "ContosoPaymentRunCommit":
         return _payment_run_commit(cx, p)
-    if action == "ContosoFinanceCaseDecide":
+    if action in {"ContosoDecisionWorkItemDecide", "ContosoFinanceCaseDecide"}:
+        work_item_label = (
+            "DecisionWorkItems"
+            if action == "ContosoDecisionWorkItemDecide"
+            else "FinanceCases"
+        )
+        audit_entity = (
+            "DecisionWorkItem"
+            if action == "ContosoDecisionWorkItemDecide"
+            else "FinanceCase"
+        )
         case_id = str(p.get("case_id") or "").strip()
         decision_code = str(p.get("decision_code") or "").strip()
         evidence_refs = p.get("evidence_refs") or []
@@ -874,9 +890,9 @@ def api_invoke_action(action, parameters=None):
             "SELECT * FROM erp_finance_cases WHERE case_id=?", (case_id,)
         ).fetchone()
         if not row:
-            return {"error": f"FinanceCases record {case_id!r} was not found"}
+            return {"error": f"{work_item_label} record {case_id!r} was not found"}
         if row["status"] != "open":
-            return {"error": f"FinanceCases record {case_id!r} is {row['status']!r}, not open"}
+            return {"error": f"{work_item_label} record {case_id!r} is {row['status']!r}, not open"}
         before = dict(row)
         normalized_refs = json.dumps(sorted(map(str, evidence_refs)), separators=(",", ":"))
         cx.execute(
@@ -887,7 +903,7 @@ def api_invoke_action(action, parameters=None):
         after = dict(
             cx.execute("SELECT * FROM erp_finance_cases WHERE case_id=?", (case_id,)).fetchone()
         )
-        _audit(cx, "FinanceCase", case_id, "decide", before=before, after=after)
+        _audit(cx, audit_entity, case_id, "decide", before=before, after=after)
         cx.commit()
         return {
             "case_id": case_id,

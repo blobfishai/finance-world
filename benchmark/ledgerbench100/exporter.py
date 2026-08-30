@@ -45,8 +45,8 @@ from pathlib import Path
 
 from decision_model import CHAIN_FIELDS
 from realism import (
-    ASSETS_PER_TASK,
-    MATERIAL_ASSETS_PER_TASK,
+    CONTEXTUAL_ASSETS_PER_TASK,
+    MIN_MATERIAL_ASSETS_PER_TASK,
     atomic_check_specs,
     augment_checks,
     decision_options,
@@ -64,7 +64,7 @@ from prepare import prepare  # noqa: E402
 
 RELEASE_NAME = "LedgerBench-100"
 RELEASE_SLUG = "ledgerbench-100"
-RELEASE_VERSION = "3.3.0"
+RELEASE_VERSION = "3.4.0"
 HARBOR_ORG = "blobfishai"
 DATA_LICENSE = "CC-BY-4.0"
 CODE_LICENSE = "Apache-2.0"
@@ -595,10 +595,12 @@ def build_pack(
             "trace_contract": trace_contract,
             "semantic_action_graph": trace_contract["semantic_action_graph"],
             "asset_contract": {
-                "minimum_assets": ASSETS_PER_TASK,
-                "material_assets": MATERIAL_ASSETS_PER_TASK,
+                "minimum_assets": CONTEXTUAL_ASSETS_PER_TASK + MIN_MATERIAL_ASSETS_PER_TASK,
+                "contextual_assets": CONTEXTUAL_ASSETS_PER_TASK,
+                "minimum_material_assets": MIN_MATERIAL_ASSETS_PER_TASK,
+                "material_asset_binding": "one executed MCP response per required_context_call",
                 "systems": SERVERS,
-                "note": "Hugging Face exports agent-visible, native-format views of this exact initial SQLite state; gold and the oracle walk are excluded from the asset tree.",
+                "note": "Hugging Face exports contextual native files plus exact responses from every verifier-required pre-write MCP read against this frozen state; gold and the oracle walk are excluded.",
             },
         },
     )
