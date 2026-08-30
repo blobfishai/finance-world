@@ -34,7 +34,12 @@ from decision_model import (  # noqa: E402
 from decision_specs import DECISION_SPECS, decision_spec  # noqa: E402
 from exporter import prepare, remove_generated_bytecode  # noqa: E402
 from hf_export import public_semantic_milestones  # noqa: E402
-from run_suite import incomplete_read_steps, wrong_option_steps  # noqa: E402
+from run_suite import (  # noqa: E402
+    incomplete_read_steps,
+    keyword_stuffing_steps,
+    wrong_option_steps,
+    wrong_target_steps,
+)
 from realism import (  # noqa: E402
     CONTEXTUAL_ASSETS_PER_TASK,
     DECISION_ACTION,
@@ -302,6 +307,9 @@ class LedgerBenchRealismTests(unittest.TestCase):
             completion = next(c for c in checks["state_checks"] if c.get("name") == "one_completion_email")
             for token in (model.recommended_option, model.recommended_outcome, model.binding_constraint_date):
                 self.assertIn(token, completion["sql"])
+            self.assertIn(contract["completion_to"], completion["sql"])
+            self.assertIn("length(trim(body))", completion["sql"])
+            self.assertIn("ltrim(body) NOT LIKE", completion["sql"])
             criteria = public_criteria(entry, checks, trace_contract, contract)
             self.assertGreaterEqual(len(criteria), 40)
             categories = {row["category"] for row in criteria}
@@ -329,6 +337,116 @@ class LedgerBenchRealismTests(unittest.TestCase):
         self.assertNotIn(model.recommended_option, decide["args"]["parameters"]["rationale"])
         self.assertIn(OPTION_EXCEPTION, decide["args"]["parameters"]["rationale"])
         self.assertEqual(len(walk), len(mutated))
+
+    def test_completion_controls_reject_wrong_target_and_keyword_dump(self) -> None:
+        entry = self.catalog["tasks"][0]
+        source = ROOT / "tasks" / entry["source_task"]
+        source_walk = json.loads((source / "solution" / "walk.json").read_text())
+        contract = case_contract(entry)
+        walk, _ = reference_walk(entry, source_walk, contract)
+        world = SimpleNamespace(
+            spec={"task_id": entry["task_id"]},
+            realism={
+                "case_contract": contract,
+                "decision_options": decision_options(entry, contract),
+            },
+            walk=walk,
+        )
+
+        wrong_target = next(
+            step
+            for step in wrong_target_steps(world)
+            if step["server"] == "email" and step["tool"] == "send_message"
+            and step["args"]["subject"] == contract["completion_subject"]
+        )
+        self.assertNotEqual(contract["completion_to"], wrong_target["args"]["to"])
+        self.assertIn(
+            wrong_target["args"]["to"],
+            {
+                "finance-controls@contoso-sim.example",
+                "operations-control@contoso-sim.example",
+            },
+        )
+
+        stuffed = next(
+            step
+            for step in keyword_stuffing_steps(world)
+            if step["server"] == "email" and step["tool"] == "send_message"
+            and step["args"]["subject"] == contract["completion_subject"]
+        )
+        body = stuffed["args"]["body"]
+        model = control_model_for(entry, contract)
+        for token in (
+            decision_spec(entry["source_task"]).decision_code,
+            model.recommended_option,
+            model.recommended_outcome,
+            model.binding_constraint_date,
+        ):
+            self.assertIn(token, body)
+        self.assertLess(len(body.split()), 30)
+
+    def test_completion_controls_do_not_mutate_a_task_native_email_write(self) -> None:
+        entry = next(
+            entry
+            for entry in self.catalog["tasks"]
+            if entry["task_id"] == "lgr100-099-missing-po-inquiry"
+        )
+        source = ROOT / "tasks" / entry["source_task"]
+        source_walk = json.loads((source / "solution" / "walk.json").read_text())
+        contract = case_contract(entry)
+        walk, _ = reference_walk(entry, source_walk, contract)
+        world = SimpleNamespace(
+            spec={"task_id": entry["task_id"]},
+            realism={
+                "case_contract": contract,
+                "decision_options": decision_options(entry, contract),
+            },
+            walk=walk,
+        )
+        source_email = next(
+            step
+            for step in walk
+            if step["server"] == "email"
+            and step["tool"] == "send_message"
+            and step["args"]["subject"] != contract["completion_subject"]
+        )
+        for mutated in (wrong_target_steps(world), keyword_stuffing_steps(world)):
+            preserved = next(
+                step
+                for step in mutated
+                if step["server"] == "email"
+                and step["tool"] == "send_message"
+                and step["args"]["subject"] == source_email["args"]["subject"]
+            )
+            self.assertEqual(source_email, preserved)
+
+    def test_every_mcp_tool_exposes_a_closed_input_schema(self) -> None:
+        from importlib import util
+        import sys
+
+        lib = str(ROOT / "mcp" / "lib")
+        sys.path.insert(0, lib)
+        try:
+            for path in sorted((ROOT / "mcp" / "servers").glob("*_server.py")):
+                spec = util.spec_from_file_location(
+                    f"ledgerbench_schema_test_{path.stem}", path
+                )
+                self.assertIsNotNone(spec)
+                self.assertIsNotNone(spec.loader)
+                module = util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+                for _, schema in module.S.tools.values():
+                    input_schema = schema["inputSchema"]
+                    self.assertEqual("object", input_schema["type"])
+                    self.assertIs(False, input_schema["additionalProperties"])
+                    self.assertLessEqual(
+                        set(input_schema["required"]),
+                        set(input_schema["properties"]),
+                    )
+        finally:
+            if lib in sys.path:
+                sys.path.remove(lib)
+            sys.modules.pop("framework", None)
 
     def test_public_rubric_is_semantic_and_covers_every_atomic_check_once(self) -> None:
         for entry in self.catalog["tasks"]:

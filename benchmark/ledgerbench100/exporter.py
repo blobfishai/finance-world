@@ -64,7 +64,7 @@ from prepare import prepare  # noqa: E402
 
 RELEASE_NAME = "LedgerBench-100"
 RELEASE_SLUG = "ledgerbench-100"
-RELEASE_VERSION = "3.4.0"
+RELEASE_VERSION = "3.4.1"
 HARBOR_ORG = "blobfishai"
 DATA_LICENSE = "CC-BY-4.0"
 CODE_LICENSE = "Apache-2.0"

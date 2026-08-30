@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Execute every LedgerBench-100 pack against positive and adversarial trajectories.
 
-Per pack (14 executions, all against the pack's OWN contents — its gzipped world,
+Per pack (16 executions, all against the pack's OWN contents — its gzipped world,
 its runtime modules, its walk.json, its baked taskspec checks):
 
   oracle x2        replay solution/walk.json; reward must be 1; the two verifier
@@ -21,6 +21,10 @@ its runtime modules, its walk.json, its baked taskspec checks):
                    must score 0
   rejected_mutation an otherwise-correct run contains a rejected state-changing
                     Dynamics request; strict pass must remain false
+  wrong_target     the otherwise-correct completion goes to another real Controls
+                   mailbox; must score 0
+  keyword_stuffing all previously required completion tokens are present without a
+                   human handoff narrative; must score 0
 
 Zero false accepts across all negative controls is a release gate. Writes
 reports/qualification.json (release + huggingface copies) and one normalized
@@ -43,7 +47,7 @@ from exporter import remove_generated_bytecode
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 RELEASE_NAME = "LedgerBench-100"
-RELEASE_VERSION = "3.4.0"
+RELEASE_VERSION = "3.4.1"
 CORRUPT_VALUE = "totally-wrong-answer-xyzzy"
 DECISION_ACTION = "ContosoDecisionWorkItemDecide"
 
@@ -300,6 +304,53 @@ def wrong_option_steps(world: PackWorld) -> list[dict]:
     return steps
 
 
+def _completion_step(world: PackWorld, steps: list[dict]) -> dict:
+    """Resolve the governed completion message, not another valid email write."""
+
+    contract = world.realism["case_contract"]
+    matches = [
+        step
+        for step in steps
+        if step["server"] == "email"
+        and step["tool"] == "send_message"
+        and step.get("args", {}).get("subject") == contract["completion_subject"]
+        and step.get("args", {}).get("to") == contract["completion_to"]
+    ]
+    if len(matches) != 1:
+        raise ValueError(
+            f"{world.spec['task_id']} has {len(matches)} governed completion messages"
+        )
+    return matches[0]
+
+
+def wrong_target_steps(world: PackWorld) -> list[dict]:
+    """Send the correct handoff to a real but out-of-scope Controls mailbox."""
+
+    steps = json.loads(json.dumps(world.walk))
+    completion = _completion_step(world, steps)
+    current = completion["args"]["to"]
+    completion["args"]["to"] = (
+        "operations-control@contoso-sim.example"
+        if current == "finance-controls@contoso-sim.example"
+        else "finance-controls@contoso-sim.example"
+    )
+    return steps
+
+
+def keyword_stuffing_steps(world: PackWorld) -> list[dict]:
+    """Keep every old email anchor while removing the employee-facing narrative."""
+
+    steps = json.loads(json.dumps(world.walk))
+    completion = _completion_step(world, steps)
+    required_tokens = world.realism["case_contract"].get(
+        "completion_required_tokens"
+    )
+    if not isinstance(required_tokens, list) or len(required_tokens) != 5:
+        raise ValueError(f"{world.spec['task_id']} completion token contract drifted")
+    completion["args"]["body"] = " ".join(str(token) for token in required_tokens)
+    return steps
+
+
 NEGATIVES: list[tuple[str, Callable[[PackWorld], list[dict]]]] = [
     ("noop", noop_steps),
     ("shortcut", shortcut_steps),
@@ -312,6 +363,8 @@ NEGATIVES: list[tuple[str, Callable[[PackWorld], list[dict]]]] = [
     ("wrong_evidence", wrong_evidence_steps),
     ("wrong_option", wrong_option_steps),
     ("rejected_mutation", rejected_mutation_steps),
+    ("wrong_target", wrong_target_steps),
+    ("keyword_stuffing", keyword_stuffing_steps),
 ]
 
 
